@@ -1,0 +1,8 @@
+{
+  "spellCircle": {
+    "category": "block",
+    "sounds": [
+      {"name" : "spellCircle"}
+    ]
+  }
+}
