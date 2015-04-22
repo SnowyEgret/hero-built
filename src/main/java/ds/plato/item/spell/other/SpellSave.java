@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.vecmath.Point3i;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
 
 import org.lwjgl.input.Keyboard;
 
@@ -61,7 +62,8 @@ public class SpellSave extends Spell implements ITextSetable {
 			SpellDelete s = new SpellDelete(undoManager, selectionManager, pickManager);
 			pickManager.reset(s.getNumPicks());
 			// Can't remember why this world is preferable, or maybe I just didn't set world and slotEntries in invoke
-			EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
+			//1.8
+			EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
 			s.invoke(new WorldWrapper(player.worldObj), (HotbarSlot[]) null);
 		}
 		selectionManager.clearSelections();

@@ -18,7 +18,6 @@ import ds.plato.api.IPlayer;
 import ds.plato.api.ISpell;
 import ds.plato.api.IWorld;
 import ds.plato.item.spell.Spell;
-import ds.plato.item.staff.OldStaff;
 import ds.plato.item.staff.Staff;
 
 public class Player implements IPlayer {
@@ -160,8 +159,8 @@ public class Player implements IPlayer {
 			Item item = stack.getItem();
 			if (item instanceof Spell) {
 				spell = (ISpell) item;
-			} else if (item instanceof OldStaff) {
-				spell = ((OldStaff) item).getSpell();
+//			} else if (item instanceof OldStaff) {
+//				spell = ((OldStaff) item).getSpell();
 			} else if (item instanceof Staff) {
 				spell = ((Staff) item).getSpell(stack);
 			}

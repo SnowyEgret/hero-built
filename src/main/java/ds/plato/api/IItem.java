@@ -1,6 +1,7 @@
 package ds.plato.api;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 
 public interface IItem {
@@ -15,5 +16,5 @@ public interface IItem {
 
 	public boolean hasRecipe();
 
-	public void onMouseClickLeft(ItemStack stack, int x, int y, int z, int side);
+	public void onMouseClickLeft(ItemStack stack, int x, int y, int z, EnumFacing sideHit);
 }

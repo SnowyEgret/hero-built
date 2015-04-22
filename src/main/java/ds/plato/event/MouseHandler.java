@@ -7,6 +7,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
+import net.minecraft.util.Vec3;
 import net.minecraftforge.client.event.MouseEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -44,11 +45,11 @@ public class MouseHandler {
 		}
 
 		IPlayer player = Player.getPlayer();
-		MovingObjectPosition p = Minecraft.getMinecraft().objectMouseOver;
+		MovingObjectPosition pos = Minecraft.getMinecraft().objectMouseOver;
 		// System.out.println("[MouseHandler.onMouseEvent] position.typeOfHit=" + position.typeOfHit +
 		// ", e.button=" + e.button);
 
-		if (p.typeOfHit == MovingObjectType.MISS) {
+		if (pos.typeOfHit == MovingObjectType.MISS) {
 			if (e.button == 0) {
 				selectionManager.clearSelections();
 
@@ -58,7 +59,7 @@ public class MouseHandler {
 			// Fix for Left click stuck in loop when block is broken against sky #60
 			// Do not cancel event
 
-		} else if (p.typeOfHit == MovingObjectType.BLOCK) {
+		} else if (pos.typeOfHit == MovingObjectType.BLOCK) {
 
 			ItemStack stack = player.getHeldItemStack();
 			if (stack == null) {
@@ -84,7 +85,9 @@ public class MouseHandler {
 
 				if (e.button == 0) {
 					// Select
-					selector.onMouseClickLeft(stack, p.blockX, p.blockY, p.blockZ, p.sideHit);
+					//1.8
+					Vec3 v = pos.hitVec;
+					selector.onMouseClickLeft(stack, (int)v.xCoord, (int)v.yCoord, (int)v.zCoord, pos.sideHit);
 					e.setCanceled(true);
 
 				} else if (e.button == 1) {
@@ -99,7 +102,9 @@ public class MouseHandler {
 				ItemBlock itemBlock = (ItemBlock) item;
 				if (e.button == 1) {
 					// Fill the selections with the block in hand
-					if (selectionManager.isSelected(p.blockX, p.blockY, p.blockZ)) {
+					//1.8
+					Vec3 v = pos.hitVec;
+					if (selectionManager.isSelected((int)v.xCoord, (int)v.yCoord, (int)v.zCoord)) {
 						Block b = itemBlock.getBlock();
 						int metadata = stack.getItemDamage();
 						new SpellFill(undoManager, selectionManager, pickManager).invoke(player.getWorld(), new HotbarSlot(b,

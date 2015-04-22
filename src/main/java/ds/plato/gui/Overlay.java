@@ -1,10 +1,9 @@
 package ds.plato.gui;
 
-import javax.vecmath.Vector3d;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Vec3;
 
 import org.lwjgl.input.Keyboard;
 
@@ -19,7 +18,9 @@ import ds.plato.item.staff.Staff;
 public class Overlay {
 
 	private ISelect selectionManager;
-	private Vector3d displacement;
+	//1.8 Seems Minecraft has a Vec3 class
+	//private Vector3d displacement;
+	private Vec3 displacement;
 	private final int white = 0xffffff;
 	private final int red = 0xffaaaa;
 	private final int green = 0xaaffaa;
@@ -29,7 +30,8 @@ public class Overlay {
 		this.selectionManager = selectionManager;
 	}
 
-	public void setDisplacement(Vector3d displacement) {
+	//public void setDisplacement(Vector3d displacement) {
+		public void setDisplacement(Vec3 displacement) {
 		this.displacement = displacement;
 	}
 
@@ -37,7 +39,9 @@ public class Overlay {
 	public void drawSpell(ISpell spell) {
 		int x = 10;
 		int y = x;
-		FontRenderer r = Minecraft.getMinecraft().fontRenderer;
+		//1.8
+		//FontRenderer r = Minecraft.getMinecraft().fontRenderer;
+		FontRenderer r = Minecraft.getMinecraft().fontRendererObj;
 		int dy = r.FONT_HEIGHT + 5;
 		
 		SpellInfo info = spell.getInfo();
@@ -49,12 +53,12 @@ public class Overlay {
 
 		if (spell.isPicking() || (!spell.isPicking() && Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))) {
 			if (displacement != null) {
-				int dx = (int) displacement.x;
-				int dz = (int) displacement.z;
+				int dx = (int) displacement.xCoord;
+				int dz = (int) displacement.zCoord;
 				// Add 1 to get distance instead of displacement
 				r.drawStringWithShadow(((dx >= 0) ? "East" : "West") + ": " + (Math.abs(dx) + 1) + "  "
 						+ ((dz >= 0) ? "North" : "South") + ": " + (Math.abs(dz) + 1), x, y += dy, red);
-				r.drawStringWithShadow("Height: " + (Math.abs((int) displacement.y) + 1), x, y += dy, red);
+				r.drawStringWithShadow("Height: " + (Math.abs((int) displacement.yCoord) + 1), x, y += dy, red);
 			}
 		}
 
@@ -75,7 +79,7 @@ public class Overlay {
 	public void drawStaff(Staff staff, ItemStack stack) {
 		int x = 10;
 		int y = x;
-		FontRenderer r = Minecraft.getMinecraft().fontRenderer;
+		FontRenderer r = Minecraft.getMinecraft().fontRendererObj;
 		String staffName = staff.getItemStackDisplayName(stack);
 		r.drawStringWithShadow(staffName + " has no spells", x, y, white);
 	}

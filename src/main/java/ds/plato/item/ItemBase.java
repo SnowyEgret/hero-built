@@ -2,6 +2,7 @@ package ds.plato.item;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import ds.plato.Plato;
 import ds.plato.api.IItem;
@@ -53,6 +54,6 @@ public abstract class ItemBase extends Item implements IItem {
 	}
 
 	@Override
-	public abstract void onMouseClickLeft(ItemStack stack, int x, int y, int z, int side);
+	public abstract void onMouseClickLeft(ItemStack stack, int x, int y, int z, EnumFacing sideHit);
 
 }

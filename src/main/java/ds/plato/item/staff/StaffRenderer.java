@@ -1,6 +1,7 @@
 package ds.plato.item.staff;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -15,8 +16,9 @@ import ds.plato.item.spell.Spell;
 //Based on http://greyminecraftcoder.blogspot.com.au/2013/09/custom-item-rendering-using.html
 public class StaffRenderer implements IItemRenderer {
 
-	private IModelCustom staffModel;
-	private ResourceLocation staffTextureResourceLocation;
+	//private IModelCustom staffModel;
+	private ResourceLocation modelResourceLocation;
+	private ResourceLocation textureResourceLocation;
 
 	private enum TransformationTypes {
 		NONE,
@@ -26,16 +28,18 @@ public class StaffRenderer implements IItemRenderer {
 	};
 
 	public StaffRenderer(IItem staff) {
-		staffModel = staff.getModel();
-		staffTextureResourceLocation = staff.getTextureResourceLocation();
+		//staffModel = staff.getModel();
+		modelResourceLocation = staff.getModelResourceLocation();
+		textureResourceLocation = staff.getTextureResourceLocation();
 	}
 
 	@Override
 	public void renderItem(ItemRenderType type, ItemStack stack, Object... data) {
-		EntityClientPlayerMP p = Minecraft.getMinecraft().thePlayer;
+		//1.8
+		//EntityClientPlayerMP p = Minecraft.getMinecraft().thePlayer;
+		EntityPlayerSP p = Minecraft.getMinecraft().thePlayer;
 		if (!p.isSprinting()) {
 			TransformationTypes transformationToBeUndone = doTransform(type);
-			// renderLampshade();
 			renderStaff();
 			renderSpell(stack);
 			undoTransform(transformationToBeUndone);
@@ -129,12 +133,13 @@ public class StaffRenderer implements IItemRenderer {
 	}
 	
 	private void renderStaff() {
-		GL11.glPushMatrix();
-		GL11.glTranslated(0, 0, .5);
-		GL11.glRotated(-15, 0, 0, 1);
-		Minecraft.getMinecraft().renderEngine.bindTexture(staffTextureResourceLocation);
-		staffModel.renderAll();
-		GL11.glPopMatrix();
+		//1.8
+//		GL11.glPushMatrix();
+//		GL11.glTranslated(0, 0, .5);
+//		GL11.glRotated(-15, 0, 0, 1);
+//		Minecraft.getMinecraft().renderEngine.bindTexture(textureResourceLocation);
+//		staffModel.renderAll();
+//		GL11.glPopMatrix();
 	}
 
 	private void renderSpell(ItemStack stack) {
@@ -142,16 +147,17 @@ public class StaffRenderer implements IItemRenderer {
 		if (staff != null) {
 			Spell spell = staff.getSpell(stack);
 			if (spell != null) {
-				IModelCustom spellModel = spell.getModel();
-				if (spellModel != null) {
-					GL11.glPushMatrix();
-					GL11.glTranslated(0, 1.5, 0);
-					GL11.glScaled(.6, .6, .6);
-					ResourceLocation spellTexture = spell.getTextureResourceLocation();
-					Minecraft.getMinecraft().renderEngine.bindTexture(spellTexture);
-					spellModel.renderAll();
-					GL11.glPopMatrix();
-				}
+				//1.8
+//				IModelCustom spellModel = spell.getModel();
+//				if (spellModel != null) {
+//					GL11.glPushMatrix();
+//					GL11.glTranslated(0, 1.5, 0);
+//					GL11.glScaled(.6, .6, .6);
+//					ResourceLocation spellTexture = spell.getTextureResourceLocation();
+//					Minecraft.getMinecraft().renderEngine.bindTexture(spellTexture);
+//					spellModel.renderAll();
+//					GL11.glPopMatrix();
+//				}
 			}
 		}
 	}

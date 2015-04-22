@@ -38,13 +38,13 @@ public abstract class StaffPreset extends Staff {
 		for (Spell s : spells) {
 			if (i < 9) {
 				String n = s.getClass().getSimpleName();
-				stack.stackTagCompound.setString(String.valueOf(i), n);
+				stack.getTagCompound().setString(String.valueOf(i), n);
 				i++;
 			} else {
 				System.out.println("[StaffPreset.setTag] No room on staff for spell " + s);
 			}
 		}
-		stack.stackTagCompound.setInteger("o=", 0);
+		stack.getTagCompound().setInteger("o=", 0);
 	}
 	
 	

@@ -46,11 +46,12 @@ public class GuiSavesList extends GuiListExtended {
 			this.button = button;
 		}
 
-		@Override
-		public void drawEntry(int p1, int p2, int y, int p4, int p5, Tessellator p6, int p7, int p8, boolean p9) {
-			button.yPosition = y;
-			button.drawButton(mc, p7, p8);
-		}
+//1.8
+		//		@Override
+//		public void drawEntry(int p1, int p2, int y, int p4, int p5, Tessellator p6, int p7, int p8, boolean p9) {
+//			button.yPosition = y;
+//			button.drawButton(mc, p7, p8);
+//		}
 
 		@Override
 		public boolean mousePressed(int p1, int p2, int p3, int p4, int p5, int p6) {
@@ -64,6 +65,22 @@ public class GuiSavesList extends GuiListExtended {
 		@Override
 		public void mouseReleased(int p1, int p2, int p3, int p4, int p5, int p6) {
 			button.mouseReleased(p2, p3);
+		}
+		
+		//1.8-------------------------------------------a
+
+		@Override
+		public void setSelected(int p_178011_1_, int p_178011_2_,
+				int p_178011_3_) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void drawEntry(int slotIndex, int x, int y, int listWidth,
+				int slotHeight, int mouseX, int mouseY, boolean isSelected) {
+			button.yPosition = y;
+			button.drawButton(mc, mouseX, mouseY);
 		}
 
 	}

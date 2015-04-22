@@ -1,6 +1,7 @@
 package ds.plato.gui;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,16 +46,18 @@ public class GuiRestore extends GuiDialog {
 	}
 
 	@Override
-	protected void mouseClicked(int par1, int par2, int par3) {
+	protected void mouseClicked(int par1, int par2, int par3) throws IOException {
 		super.mouseClicked(par1, par2, par3);
-		list.func_148179_a(par1, par2, par3);
+		//1.8s
+		//list.func_148179_a(par1, par2, par3);
 	}
 
-	@Override
-	protected void mouseMovedOrUp(int p1, int p2, int p3) {
-		super.mouseMovedOrUp(p1, p2, p3);
-		list.func_148181_b(p1, p2, p3);
-	}
+//1.8
+	//	@Override
+//	protected void mouseMovedOrUp(int p1, int p2, int p3) {
+//		super.mouseMovedOrUp(p1, p2, p3);
+//		list.func_148181_b(p1, p2, p3);
+//	}
 
 	@Override
 	public void drawScreen(int par1, int par2, float par3) {

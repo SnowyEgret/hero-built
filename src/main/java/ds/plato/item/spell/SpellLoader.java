@@ -21,7 +21,6 @@ import com.google.common.reflect.ClassPath.ClassInfo;
 import ds.plato.api.IPick;
 import ds.plato.api.ISelect;
 import ds.plato.api.IUndo;
-import ds.plato.item.staff.OldStaff;
 import ds.plato.item.staff.Staff;
 import ds.plato.item.staff.StaffPreset;
 import ds.plato.util.StringUtils;

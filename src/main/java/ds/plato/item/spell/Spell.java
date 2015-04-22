@@ -7,6 +7,7 @@ import javax.vecmath.Point3i;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
 import org.lwjgl.input.Keyboard;
@@ -49,7 +50,7 @@ public abstract class Spell extends ItemBase implements ISpell {
 	}
 
 	@Override
-	public void onMouseClickLeft(ItemStack stack, int x, int y, int z, int side) {
+	public void onMouseClickLeft(ItemStack stack, int x, int y, int z, EnumFacing sideHit) {
 
 		IPlayer player = Player.getPlayer();
 		IWorld w = player.getWorld();

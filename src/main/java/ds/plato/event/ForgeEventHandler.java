@@ -1,10 +1,10 @@
 package ds.plato.event;
 
 import javax.vecmath.Point3i;
-import javax.vecmath.Vector3d;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -53,10 +53,12 @@ public class ForgeEventHandler {
 				}
 			}
 			if (p != null) {
-				Vector3d d = new Vector3d();
-				d.x = p.x - pos.blockX;
-				d.y = p.y - pos.blockY;
-				d.z = p.z - pos.blockZ;
+				//1.8
+//				Vector3d d = new Vector3d();
+//				d.x = p.x - pos.blockX;
+//				d.y = p.y - pos.blockY;
+//				d.z = p.z - pos.blockZ;
+				Vec3 d = pos.hitVec;
 				overlay.setDisplacement(d);
 			}
 		}

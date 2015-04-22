@@ -24,7 +24,6 @@ import ds.plato.api.IWorld;
 import ds.plato.core.Player;
 import ds.plato.item.spell.matrix.SpellCopy;
 import ds.plato.item.spell.transform.SpellDelete;
-import ds.plato.item.staff.OldStaff;
 import ds.plato.item.staff.Staff;
 
 public class KeyHandler {
@@ -88,13 +87,14 @@ public class KeyHandler {
 			ItemStack stack = Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem();
 			if (stack != null) {
 				Item i = stack.getItem();
-				if (i instanceof OldStaff) {
-					if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
-						((OldStaff) i).previousSpell();
-					} else {
-						((OldStaff) i).nextSpell();
-					}
-				}
+				//1.8
+//				if (i instanceof OldStaff) {
+//					if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
+//						((OldStaff) i).previousSpell();
+//					} else {
+//						((OldStaff) i).nextSpell();
+//					}
+//				}
 				if (i instanceof Staff) {
 					if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
 						((Staff) i).previousSpell(stack);

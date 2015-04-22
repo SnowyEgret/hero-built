@@ -6,6 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -34,9 +35,9 @@ public abstract class Staff extends ItemBase implements IStaff {
 	}
 
 @Override
-	public void onMouseClickLeft(ItemStack stack, int x, int y, int z, int side) {
+	public void onMouseClickLeft(ItemStack stack, int x, int y, int z, EnumFacing sideHit) {
 		if (!isEmpty(stack)) {
-			getSpell(stack).onMouseClickLeft(stack, x, y, z, side);
+			getSpell(stack).onMouseClickLeft(stack, x, y, z, sideHit);
 		}
 	}
 
