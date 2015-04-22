@@ -4,6 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.IChatComponent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import ds.plato.Plato;
 import ds.plato.item.spell.Spell;
@@ -62,15 +63,17 @@ public class InventoryStaff implements IInventory {
 		return size;
 	}
 
-	@Override
-	public String getInventoryName() {
-		return null;
-	}
+//1.8
+//	@Override
+//	public String getInventoryName() {
+//		return null;
+//	}
 
-	@Override
-	public boolean hasCustomInventoryName() {
-		return false;
-	}
+//1.8
+//	@Override
+//	public boolean hasCustomInventoryName() {
+//		return false;
+//	}
 
 	@Override
 	public int getInventoryStackLimit() {
@@ -86,17 +89,75 @@ public class InventoryStaff implements IInventory {
 		return true;
 	}
 
-	@Override
-	public void openInventory() {
-	}
+	//1.8
+//	@Override
+//	public void openInventory() {
+//	}
 
-	@Override
-	public void closeInventory() {
-	}
+	//1.8
+//	@Override
+//	public void closeInventory() {
+//	}
 
 	@Override
 	public boolean isItemValidForSlot(int i, ItemStack stack) {
 		return true;
+	}
+	
+	//---------------------------------- New methods in IInventory
+	
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean hasCustomName() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public IChatComponent getDisplayName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void openInventory(EntityPlayer player) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void closeInventory(EntityPlayer player) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int getField(int id) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void setField(int id, int value) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int getFieldCount() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void clear() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	private class TagWrapper {
@@ -141,4 +202,6 @@ public class InventoryStaff implements IInventory {
 			System.out.println("[TagWrapper.setItemStack] i=" + i + ", tag=@" + System.identityHashCode(tag) + tag);
 		}
 	}
+
+
 }

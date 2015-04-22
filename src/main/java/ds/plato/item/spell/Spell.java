@@ -40,44 +40,13 @@ public abstract class Spell extends ItemBase implements ISpell {
 	protected String Y = "Y,";
 	protected String Z = "Z,";
 
-	// private final String modelPath = "models/" + StringUtils.toCamelCase(getClass());
-	// private final ResourceLocation modelLocation = new ResourceLocation(Plato.ID, modelPath + ".obj");
-	// private final ResourceLocation modelTextureLocation = new ResourceLocation(Plato.ID, modelPath + ".png");
-	// protected IModelCustom model;
-
-	// private boolean hasModel = true;
-
 	public Spell(int numPicks, IUndo undoManager, ISelect selectionManager, IPick pickManager) {
 		this.numPicks = numPicks;
 		this.undoManager = undoManager;
 		this.selectionManager = selectionManager;
 		this.pickManager = pickManager;
 		info = new SpellInfo(this);
-		// try {
-		// model = AdvancedModelLoader.loadModel(modelLocation);
-		// } catch (Exception e) {
-		// System.out.print("(No model found at resource location " + modelLocation+")");
-		// }
 	}
-
-	// public IModelCustom getModel() {
-	// return model;
-	// }
-
-	// public ResourceLocation getModelTextureResourceLocation() {
-	// return modelTextureLocation;
-	// }
-
-	// @Override
-	// public int getSpriteNumber() {
-	// return model == null ? 1 : 0;
-	// }
-
-	// public abstract Object[] getRecipe();
-
-	// public boolean hasRecipe() {
-	// return getRecipe() != null;
-	// }
 
 	@Override
 	public void onMouseClickLeft(ItemStack stack, int x, int y, int z, int side) {

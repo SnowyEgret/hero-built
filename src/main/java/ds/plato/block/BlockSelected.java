@@ -11,10 +11,11 @@ public class BlockSelected extends Block {
 		setStepSound(soundTypeGravel);
 	}
 
-	@Override
-	public boolean renderAsNormalBlock() {
-		return false;
-	}
+//Upgrade to 1.8
+//	@Override
+//	public boolean renderAsNormalBlock() {
+//		return false;
+//	}
 
 	@Override
 	public int getRenderType() {

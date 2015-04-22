@@ -2,15 +2,11 @@ package ds.plato.proxy;
 
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import ds.plato.Plato;
 import ds.plato.api.IPick;
 import ds.plato.api.ISelect;
 import ds.plato.api.IUndo;
-import ds.plato.block.BlockModelRenderer;
-import ds.plato.block.BlockPickedRenderer;
-import ds.plato.block.BlockSelectedRenderer;
 import ds.plato.event.ForgeEventHandler;
 import ds.plato.event.KeyHandler;
 import ds.plato.event.MouseHandler;
@@ -24,18 +20,20 @@ public class ClientProxy extends CommonProxy {
 
 	@Override
 	public void setCustomRenderers(ISelect select, IPick pick, Iterable<Staff> staffs, Iterable<Spell> spells) {
-		RenderingRegistry.registerBlockHandler(new BlockSelectedRenderer(select));
-		RenderingRegistry.registerBlockHandler(new BlockPickedRenderer(select, pick));
-		RenderingRegistry.registerBlockHandler(new BlockModelRenderer());
+//		RenderingRegistry.registerBlockHandler(new BlockSelectedRenderer(select));
+//		RenderingRegistry.registerBlockHandler(new BlockPickedRenderer(select, pick));
+//		RenderingRegistry.registerBlockHandler(new BlockModelRenderer());
 		for (Staff s : staffs) {
-			if (s.getModel() == null) {
+			//if (s.getModel() == null) {
+			if (s.getModelResourceLocation() == null) {
 				System.out.println("[ClientProxy.setCustomRenderers] Missing model for class=" + s.getClass());
 			} else {
 				MinecraftForgeClient.registerItemRenderer(s, new StaffRenderer(s));
 			}
 		}
 		for (Spell s : spells) {
-			if (s.getModel() == null) {
+			//if (s.getModel() == null) {
+				if (s.getModelResourceLocation() == null) {
 				System.out.println("[ClientProxy.setCustomRenderers] Missing model for class=" + s.getClass());
 			} else {
 				MinecraftForgeClient.registerItemRenderer(s, new SpellRenderer(s));

@@ -1,20 +1,19 @@
 package ds.plato.item.spell;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IItemRenderer;
 
-import org.lwjgl.opengl.GL11;
-
 //Based on http://greyminecraftcoder.blogspot.com.au/2013/09/custom-item-rendering-using.html
 public class SpellRenderer implements IItemRenderer {
 
-	private IModelCustom model;
+	//private IModelCustom model;
+	private ResourceLocation modelResourceLocation;
 	private ResourceLocation textureResourceLocation;
 
 	public SpellRenderer(Spell spell) {
-		model = spell.getModel();
+		//model = spell.getModel();
+		modelResourceLocation = spell.getTextureResourceLocation();
 		textureResourceLocation = spell.getTextureResourceLocation();
 	}
 
@@ -49,11 +48,13 @@ public class SpellRenderer implements IItemRenderer {
 
 	@Override
 	public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-		if (model != null) {
-			GL11.glPushMatrix();
-			Minecraft.getMinecraft().renderEngine.bindTexture(textureResourceLocation);
-			model.renderAll();
-			GL11.glPopMatrix();
+		//if (model != null) {
+		if (modelResourceLocation != null) {
+			//1.8
+//			GL11.glPushMatrix();
+//			Minecraft.getMinecraft().renderEngine.bindTexture(textureResourceLocation);
+//			model.renderAll();
+//			GL11.glPopMatrix();
 		}
 	}
 

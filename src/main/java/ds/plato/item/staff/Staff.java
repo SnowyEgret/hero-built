@@ -24,18 +24,13 @@ public abstract class Staff extends ItemBase implements IStaff {
 
 	int size = 9;
 	IPick pickManager;
-	protected IModelCustom model;
+	//protected IModelCustom model;
 	private final String modelPath = "models/" + StringUtils.toCamelCase(getClass());
 	private final ResourceLocation modelLocation = new ResourceLocation("plato", modelPath + ".obj");
-	private final ResourceLocation modelTextureLocation = new ResourceLocation("plato", modelPath + ".png");
+	private final ResourceLocation textureLocation = new ResourceLocation("plato", modelPath + ".png");
 	
 	protected Staff(IPick pickManager) {
 		this.pickManager = pickManager;
-//		try {
-//			model = AdvancedModelLoader.loadModel(modelLocation);
-//		} catch (Exception e) {
-//			// ClientProxy.setCustomRenderers logs missing model
-//		}
 	}
 
 @Override
@@ -45,31 +40,6 @@ public abstract class Staff extends ItemBase implements IStaff {
 		}
 	}
 
-//	@Override
-//	public IModelCustom getModel() {
-//		return model;
-//	}
-
-//	@Override
-//	public ResourceLocation getTextureResourceLocation() {
-//		return modelTextureLocation;
-//	}
-
-//	// https://github.com/TheGreyGhost/ItemRendering/blob/master/src/TestItemRendering/items/ItemLampshade.java
-//	@Override
-//	public int getSpriteNumber() {
-//		return model == null ? 1 : 0;
-//	}
-
-//	@Override
-//	public Object[] getRecipe() {
-//		return new Object[] { "#  ", " # ", "  #", '#', Items.bone };
-//	}
-
-//	@Override
-//	public boolean hasRecipe() {
-//		return getRecipe() != null;
-//	}
 
 	// Adds information to rollover in creative tab
 	@Override

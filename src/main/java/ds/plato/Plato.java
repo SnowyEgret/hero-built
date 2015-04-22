@@ -78,11 +78,6 @@ public class Plato {
 		// TODO what is this stringID
 		// GameRegistry.registerTileEntity(BlockModelTileEntity.class, "stringID");
 
-		// ItemFoo foo = new ItemFoo();
-		// foo.setUnlocalizedName("foo");
-		// foo.setCreativeTab(CreativeTabs.tabMisc);
-		// GameRegistry.registerItem(foo, foo.getClass().getSimpleName());
-
 		undoManager = new UndoManager();
 		selectionManager = new SelectionManager(blockSelected);
 		pickManager = new PickManager(blockPicked);
@@ -173,7 +168,7 @@ public class Plato {
 		String classname = block.getClass().getSimpleName();
 		String name = classname.substring(0, 1).toLowerCase() + classname.substring(1);
 		block.setUnlocalizedName(name);
-		block.setBlockTextureName(ID + ":" + name);
+		//block.setBlockTextureName(ID + ":" + name);
 		GameRegistry.registerBlock(block, ID + name);
 		return block;
 	}
