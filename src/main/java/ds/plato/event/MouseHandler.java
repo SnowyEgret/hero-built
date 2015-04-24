@@ -52,7 +52,7 @@ public class MouseHandler {
 
 		if (objectPosition.typeOfHit == MovingObjectType.MISS) {
 			if (e.button == 0) {
-				selectionManager.clearSelections();
+				selectionManager.clearSelections(player.getWorld());
 
 			} else if (e.button == 1) {
 				pickManager.clearPicks();

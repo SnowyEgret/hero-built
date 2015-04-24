@@ -124,13 +124,13 @@ public class SpellText extends Spell implements ITextSetable {
 		}
 
 		System.out.println("[SpellText.invoke] points.size()=" + points.size());
-		selectionManager.clearSelections();
+		selectionManager.clearSelections(world);
 		Transaction t = undoManager.newTransaction();
 		for (BlockPos p : points) {
 			t.add(new SetBlock(world, selectionManager, p, slotEntries[0].block).set());
 		}
 		t.commit();
-		selectionManager.clearSelections();
+		selectionManager.clearSelections(world);
 		pickManager.clearPicks();
 	}
 

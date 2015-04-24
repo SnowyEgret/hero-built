@@ -1,7 +1,6 @@
 package ds.plato.select;
 
 import javax.vecmath.Point3d;
-import javax.vecmath.Point3i;
 
 import net.minecraft.block.Block;
 import net.minecraft.util.BlockPos;
@@ -43,8 +42,6 @@ public class Selection {
 		return builder.toString();
 	}
 	
-	//BlockPos does not implement hashCode and equals
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;

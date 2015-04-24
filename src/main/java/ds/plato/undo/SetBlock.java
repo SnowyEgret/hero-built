@@ -39,7 +39,7 @@ public class SetBlock implements IUndoable {
 
 	public SetBlock set() {
 
-		Selection s = selectionManager.selectionAt(pos);
+		Selection s = selectionManager.getSelection(pos);
 		if (s != null) {
 			prevBlock = s.getBlock();
 			//prevMetadata = s.metadata;
@@ -49,6 +49,7 @@ public class SetBlock implements IUndoable {
 		//FIXME Unit test fails.
 		if (block instanceof BlockAir) {
 			//We do not want a selection pointing to a newly set air block.
+			//This is the only place removeSelection is called
 			selectionManager.removeSelection(pos);
 		} else {
 			selectionManager.select(world, pos);
@@ -58,7 +59,7 @@ public class SetBlock implements IUndoable {
 
 	@Override
 	public void undo() {
-		selectionManager.clearSelections();
+		selectionManager.clearSelections(world);
 		//TODO commented out for now
 		// pickManager.clearPicks();
 		world.setBlock(pos, prevBlock);

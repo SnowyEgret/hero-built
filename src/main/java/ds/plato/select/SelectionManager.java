@@ -21,7 +21,7 @@ public class SelectionManager implements ISelect {
 
 	private final Map<BlockPos, Selection> selections = new ConcurrentHashMap<>();
 	// private final Map<Point3i, Selection> selections = new HashMap<>();
-	private IWorld world;
+	//private IWorld world;
 	private Block blockSelected;
 	private List<BlockPos> lastSelections;
 	private List<BlockPos> grownSelections = new ArrayList<>();
@@ -40,37 +40,39 @@ public class SelectionManager implements ISelect {
 
 	@Override
 	//public Selection selectionAt(int x, int y, int z) {
-	public Selection selectionAt(BlockPos pos) {
+	public Selection getSelection(BlockPos pos) {
 		return selections.get(pos);
 	}
 
 	@Override
-	public void select(IWorld world, BlockPos pos) {
+	public Selection select(IWorld world, BlockPos pos) {
 		Block prevBlock = world.getBlock(pos);
 		//int metadata = world.getMetadata(pos);
 		world.setBlock(pos, blockSelected);
 		Selection s = new Selection(pos, prevBlock);
 		selections.put(s.getPos(), s);
-		this.world = world;
+		//TODO Remove this field and pass world to delelect also
+		//this.world = world;
+		return s;
+	}
+
+//	@Override
+//	public void deselect(BlockPos pos) {
+//		deselect(getSelection(pos));
+//	}
+
+	@Override
+	public void deselect(IWorld world, Selection selection) {
+		selections.remove(selection.getPos());
+		world.setBlock(selection.getPos(), selection.getBlock());
 	}
 
 	@Override
-	public void deselect(BlockPos pos) {
-		deselect(selectionAt(pos));
-	}
-
-	@Override
-	public void deselect(Selection s) {
-		selections.remove(s.getPos());
-		world.setBlock(s.getPos(), s.getBlock() );
-	}
-
-	@Override
-	public void clearSelections() {
+	public void clearSelections(IWorld world) {
 		if (!selections.isEmpty()) {
 			lastSelections = Lists.newArrayList(selections.keySet());
 			for (Selection s : selections.values()) {
-				deselect(s);
+				deselect(world, s);
 			}
 		}
 		grownSelections.clear();
@@ -86,11 +88,12 @@ public class SelectionManager implements ISelect {
 		return selections.containsKey(pos);
 	}
 
-	@Override
-	public Collection<BlockPos> selectedPoints() {
-		return selections.keySet();
-	}
+//	@Override
+//	public Collection<BlockPos> selectedPoints() {
+//		return selections.keySet();
+//	}
 
+	//TODO Does not set a block so doesn't need world. Only called by SetBlock.set(). Is there another way?
 	@Override
 	public Selection removeSelection(BlockPos pos) {
 		return selections.remove(pos);
@@ -132,7 +135,7 @@ public class SelectionManager implements ISelect {
 	}
 
 	@Override
-	public void reselectLast() {
+	public void reselect(IWorld world) {
 		if (lastSelections != null) {
 			for (BlockPos pos : lastSelections) {
 				select(world, pos);
@@ -158,18 +161,18 @@ public class SelectionManager implements ISelect {
 		grownSelections.clear();
 	}
 
-	// TODO Used only by Test class. Make default when test class is in same package.
-	public void addSelection(Selection s) {
-		selections.put(s.getPos(), s);
-	}
-
 	@Override
 	public String toString() {
-		return "SelectionManager [world=" + idOf(world) + ", selections=" + selections.size() + "]";
+		//return "SelectionManager [world=" + idOf(world) + ", selections=" + selections.size() + "]";
+		return "SelectionManager [selections=" + selections.size() + "]";
 	}
 
-	private String idOf(Object o) {
-		return o.getClass().getSimpleName() + "@" + Integer.toHexString(o.hashCode());
-	}
+//	private String idOf(Object o) {
+//		return o.getClass().getSimpleName() + "@" + Integer.toHexString(o.hashCode());
+//	}
 
+//	//Used only by SelectionManagerTest.
+//	void add(Selection s) {
+//		selections.put(s.getPos(), s);
+//	}
 }

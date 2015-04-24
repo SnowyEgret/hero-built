@@ -50,7 +50,7 @@ public class SpellHoleFill extends Spell {
 					}
 				}
 			}
-			selectionManager.deselect(s);
+			selectionManager.deselect(world, s);
 		}
 		t.commit();
 	}

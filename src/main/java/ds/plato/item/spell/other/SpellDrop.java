@@ -44,7 +44,7 @@ public class SpellDrop extends Spell {
 				}
 				b = nextBlockDown;
 			}
-			selectionManager.deselect(s);
+			selectionManager.deselect(world, s);
 			if (deleteOriginal) {
 				transaction.add(new SetBlock(world, selectionManager, s.getPos(), Blocks.air).set());
 			}

@@ -11,25 +11,25 @@ import ds.plato.select.Selection;
 
 public interface ISelect {
 
+	public Selection select(IWorld world, BlockPos pos);
+
+	//public void deselect(BlockPos pos);
+
+	public void deselect(IWorld world, Selection selection);
+
 	public Iterable<Selection> getSelections();
 
-	public Selection selectionAt(BlockPos pos);
+	public Selection getSelection(BlockPos pos);
 
-	public void select(IWorld world, BlockPos pos);
+	public void reselect(IWorld world);
 
-	public void deselect(BlockPos pos);
-
-	public void deselect(Selection s);
-
-	public void reselectLast();
-
-	public void clearSelections();
+	public void clearSelections(IWorld world);
 
 	public Selection removeSelection(BlockPos pos);
 
 	public int size();
 
-	public Collection<BlockPos> selectedPoints();
+	//public Collection<BlockPos> selectedPoints();
 
 	public boolean isSelected(BlockPos pos);
 	

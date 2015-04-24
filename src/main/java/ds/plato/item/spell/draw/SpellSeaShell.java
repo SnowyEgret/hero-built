@@ -20,7 +20,7 @@ public class SpellSeaShell extends AbstractSpellDraw {
 
 	@Override
 	public void invoke(IWorld world, HotbarSlot... slotEntries) {
-		selectionManager.clearSelections();
+		selectionManager.clearSelections(world);
 		Pick[] picks = pickManager.getPicks();
 		IDrawable d = new SeaShell(picks[0].point3d());
 		draw(d, world, slotEntries[0].block, slotEntries[0].metadata);

@@ -90,7 +90,7 @@ public abstract class AbstractSpellSelect extends Spell {
 			}
 		}
 		for (Selection s : shrunkSelections) {
-			selectionManager.deselect(s);
+			selectionManager.deselect(world, s);
 		}
 		selectionManager.clearGrownSelections();
 	}

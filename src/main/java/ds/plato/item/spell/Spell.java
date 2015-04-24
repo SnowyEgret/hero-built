@@ -59,7 +59,7 @@ public abstract class Spell extends ItemBase implements ISpell {
 		if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) && selectionManager.size() != 0) {
 			// Standard selection behavior. Shift replaces the current selection set with a region.
 			Point3d lastPointSelected = selectionManager.lastSelection().point3d();
-			selectionManager.clearSelections();
+			selectionManager.clearSelections(w);
 			Box b = new Box(lastPointSelected, new Point3d(pos.getX(), pos.getY(), pos.getZ()), false);
 			for (Point3i p : b.voxelize()) {
 				selectionManager.select(w, new BlockPos(p.x, p.y, p.z));
@@ -67,17 +67,17 @@ public abstract class Spell extends ItemBase implements ISpell {
 
 		} else if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
 			// Control adds or subtracts a selection to the current selection set
-			Selection s = selectionManager.selectionAt(pos);
+			Selection s = selectionManager.getSelection(pos);
 			System.out.println("[Spell.onMouseClickLeft] s=" + s);
 			if (s == null) {
 				selectionManager.select(w, pos);
 			} else {
-				selectionManager.deselect(s);
+				selectionManager.deselect(w, s);
 			}
 
 		} else {
 			// Replaces the current selection set with a selection
-			selectionManager.clearSelections();
+			selectionManager.clearSelections(w);
 			selectionManager.select(w, pos);
 		}
 	}

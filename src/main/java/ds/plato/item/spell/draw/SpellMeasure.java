@@ -43,7 +43,7 @@ public class SpellMeasure extends AbstractSpellDraw {
 		}
 		if (!points.isEmpty()) {
 			draw(points, world, slotEntries[0].block, slotEntries[0].metadata);
-			selectionManager.clearSelections();
+			selectionManager.clearSelections(world);
 		}
 		pickManager.clearPicks();
 	}

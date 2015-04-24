@@ -72,12 +72,6 @@ public class Plato {
 		Block blockSelected = initBlock(new BlockSelected());
 		Block blockPicked = initBlock(new BlockPicked());
 
-		// Try loading a Wavefront model
-		// Block blockModel = initBlock(new BlockModel());
-		// blockModel.setCreativeTab(CreativeTabs.tabBlock);
-		// TODO what is this stringID
-		// GameRegistry.registerTileEntity(BlockModelTileEntity.class, "stringID");
-
 		undoManager = new UndoManager();
 		selectionManager = new SelectionManager(blockSelected);
 		pickManager = new PickManager(blockPicked);
@@ -86,26 +80,6 @@ public class Plato {
 		configuration = new Configuration(event.getSuggestedConfigurationFile());
 		SpellLoader loader = new SpellLoader(configuration, undoManager, selectionManager, pickManager, ID);
 		try {
-//			spells = loader.loadSpellsFromPackage("ds.plato.item.spell");
-//			log.info("[Plato.preInit] loaded spells=" + spells);
-//
-//			Staff selectionStaff = loader.loadStaff(StaffSelect.class);
-//			Staff transformStaff = loader.loadStaff(StaffTransform.class);
-//			Staff drawStaff = loader.loadStaff(StaffDraw.class);
-//
-//			for (Spell s : spells) {
-//				if (s instanceof AbstractSpellSelect) {
-//					selectionStaff.addSpell(s);
-//				} else if (s instanceof AbstractSpellTransform || s instanceof AbstractSpellMatrix) {
-//					transformStaff.addSpell(s);
-//				} else if (s instanceof AbstractSpellDraw) {
-//					drawStaff.addSpell(s);
-//				}
-//			}
-//
-//			log.info("[Plato.preInit] selectionStaff=" + selectionStaff);
-//			log.info("[Plato.preInit] transformStaff=" + transformStaff);
-//			log.info("[Plato.preInit] drawStaff=" + drawStaff);
 			
 			spells = new ArrayList<>();
 			List<Spell> drawSpells = loader.loadSpellsFromPackage("ds.plato.item.spell.draw");
@@ -160,7 +134,8 @@ public class Plato {
 	@EventHandler
 	public void serverStopping(FMLServerStoppingEvent event) {
 		log.info("[Plato.serverStopping]");
-		selectionManager.clearSelections();
+		//TODO pass world to clearSelections
+		selectionManager.clearSelections(null);
 		pickManager.clearPicks();
 	}
 

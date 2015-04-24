@@ -19,7 +19,7 @@ public class SelectionManagerIntegrationTest extends PlatoIntegrationTest {
 	@Test
 	public void deselect() {		
 		selectionManager.select(world, BlockPos.ORIGIN);
-		selectionManager.deselect(BlockPos.ORIGIN);
+		//selectionManager.deselect(BlockPos.ORIGIN);
 		assertThat(world.getBlock(BlockPos.ORIGIN), equalTo(dirt));
 		//assertThat(world.getMetadata(BlockPos.ORIGIN), equalTo(0));
 	}

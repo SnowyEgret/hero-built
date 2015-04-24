@@ -40,14 +40,14 @@ public class SetBlockTest extends PlatoTest {
 	@Test
 	public void set_selectedAfterSet() {		
 		new SetBlock(w, sm, BlockPos.ORIGIN, sand).set();
-		Selection s = sm.selectionAt(BlockPos.ORIGIN);
+		Selection s = sm.getSelection(BlockPos.ORIGIN);
 		assertEquals(sand, s.getBlock());
 	}
 
 	@Test
 	public void set_airIsNotSelected() {		
 		new SetBlock(w, sm, BlockPos.ORIGIN, air).set();
-		assertThat("Air is not selected", sm.selectionAt(BlockPos.ORIGIN), is(nullValue()));
+		assertThat("Air is not selected", sm.getSelection(BlockPos.ORIGIN), is(nullValue()));
 	}
 
 	@Test

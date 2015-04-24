@@ -40,7 +40,7 @@ public abstract class AbstractSpellMatrix extends Spell {
 		
 		for (Selection s : selections) {
 			if (!newBlockLocations.contains(s.point3d())) {
-				selectionManager.deselect(s);
+				selectionManager.deselect(world, s);
 			}
 		}
 	}

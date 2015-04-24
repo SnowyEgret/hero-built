@@ -38,11 +38,15 @@ public class PlatoTest {
 	@Mock protected EntityPlayer player;
 	@Mock protected InventoryPlayer inventory;
 	@Mock protected Configuration config;
-	//@Mock protected BlockPos.O
 	//@Mock protected Property property;
+	protected BlockPos p0, p1, p2, p3;
 
 	@Before
 	public void setUp() {
+		p0 = new BlockPos(0,0,0);
+		p1 = new BlockPos(1,1,1);
+		p2 = new BlockPos(2,2,2);
+		p3 = new BlockPos(3,3,3);
 		MockitoAnnotations.initMocks(this);
 		when(dirt.getLocalizedName()).thenReturn("dirt");
 		when(sand.getLocalizedName()).thenReturn("sand");

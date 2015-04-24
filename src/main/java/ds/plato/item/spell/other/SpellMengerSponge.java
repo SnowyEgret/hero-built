@@ -33,7 +33,7 @@ public class SpellMengerSponge extends Spell {
 		//TODO use enclosing cube
 		recursivelySubtract(selectionManager.voxelSet());
 		System.out.println("[SpellMengerSponge.invoke] pointsToDelete=" + pointsToDelete);
-		selectionManager.clearSelections();
+		selectionManager.clearSelections(world);
 		pickManager.clearPicks();
 		Transaction t = undoManager.newTransaction();
 		for (BlockPos v : pointsToDelete) {

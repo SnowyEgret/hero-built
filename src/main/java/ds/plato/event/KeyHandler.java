@@ -111,7 +111,7 @@ public class KeyHandler {
 		}
 
 		if (keyBindings.get("lastSelection").isPressed()) {
-			selectionManager.reselectLast();
+			selectionManager.reselect(w);
 		}
 
 		if (keyBindings.get("left").isPressed()) {
