@@ -4,13 +4,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.vecmath.Point3i;
-
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.BlockPos;
 import ds.plato.api.IWorld;
 
-public class Shell implements Iterable<Point3i> {
+public class Shell implements Iterable<BlockPos> {
 
 	public enum Type {
 		ALL,
@@ -38,47 +37,48 @@ public class Shell implements Iterable<Point3i> {
 		EDGE_UNDER
 	}
 
-	private List<Point3i> points = new ArrayList<>();
+	private List<BlockPos> points = new ArrayList<>();
 	private final Type type;
 
-	public Shell(Type type, Point3i p0, IWorld w) {
+	public Shell(Type type, BlockPos p0, IWorld w) {
 		this.type = type;
 
-		List<Point3i> noCorners = new ArrayList<>();
-		noCorners.add(new Point3i(0, -1, 0));
-		noCorners.add(new Point3i(0, 0, -1));
-		noCorners.add(new Point3i(-1, 0, 0));
-		noCorners.add(new Point3i(1, 0, 0));
-		noCorners.add(new Point3i(0, 0, 1));
-		noCorners.add(new Point3i(0, 1, 0));
-		for (Point3i p : noCorners) {
+		List<BlockPos> noCorners = new ArrayList<>();
+		noCorners.add(new BlockPos(0, -1, 0));
+		noCorners.add(new BlockPos(0, 0, -1));
+		noCorners.add(new BlockPos(-1, 0, 0));
+		noCorners.add(new BlockPos(1, 0, 0));
+		noCorners.add(new BlockPos(0, 0, 1));
+		noCorners.add(new BlockPos(0, 1, 0));
+		for (BlockPos p : noCorners) {
 			p.add(p0);
 		}
 
-		List<Point3i> allPoints = new ArrayList<>();
+		List<BlockPos> allPoints = new ArrayList<>();
 		for (int x = 0; x < 3; x++) {
 			for (int y = 0; y < 3; y++) {
 				for (int z = 0; z < 3; z++) {
-					Point3i p = new Point3i(p0.x + x - 1, p0.y + y - 1, p0.z + z - 1);
+					//BlockPos p = new BlockPos(p0.getX() + x - 1, p0.getY() + y - 1, p0.getZ() + z - 1);
+					BlockPos p = new BlockPos(p0.add(x-1,y-1,x-1));
 					if (!p.equals(p0))
 						allPoints.add(p);
 				}
 			}
 		}
 
-		List<Point3i> cross = new ArrayList<>();
+		List<BlockPos> cross = new ArrayList<>();
 		for (int x = -1; x < 2; x++) {
 			for (int y = -1; y < 2; y++) {
 				for (int z = -1; z < 2; z++) {
-					Point3i p = new Point3i(x, y, z);
-					if (p.x == 0 || p.z == 0) {
-						if (!(p.x == 0 && p.z == 0))
+					BlockPos p = new BlockPos(x, y, z);
+					if (p.getX() == 0 || p.getZ() == 0) {
+						if (!(p.getX() == 0 && p.getZ() == 0))
 							cross.add(p);
 					}
 				}
 			}
 		}
-		for (Point3i p : cross) {
+		for (BlockPos p : cross) {
 			p.add(p0);
 		}
 
@@ -89,64 +89,64 @@ public class Shell implements Iterable<Point3i> {
 			break;
 
 		case HORIZONTAL:
-			for (Point3i p : noCorners) {
-				if (p.y == p0.y)
+			for (BlockPos p : noCorners) {
+				if (p.getY() == p0.getY())
 					points.add(p);
 			}
 			break;
 
 		case ABOVE:
-			for (Point3i p : noCorners) {
-				if (p.y >= p0.y)
+			for (BlockPos p : noCorners) {
+				if (p.getY() >= p0.getY())
 					points.add(p);
 			}
 			break;
 
 		case ABOVE_ALL:
-			for (Point3i p : allPoints) {
-				if (p.y >= p0.y)
+			for (BlockPos p : allPoints) {
+				if (p.getY() >= p0.getY())
 					points.add(p);
 			}
 			break;
 
 		case BELLOW:
-			for (Point3i p : noCorners) {
-				if (p.y <= p0.y)
+			for (BlockPos p : noCorners) {
+				if (p.getY() <= p0.getY())
 					points.add(p);
 			}
 			break;
 
 		case TOP:
-			for (Point3i p : noCorners) {
-				if (p.y > p0.y)
+			for (BlockPos p : noCorners) {
+				if (p.getY() > p0.getY())
 					points.add(p);
 			}
 			break;
 
 		case TOP_ALL:
-			for (Point3i p : allPoints) {
-				if (p.y > p0.y)
+			for (BlockPos p : allPoints) {
+				if (p.getY() > p0.getY())
 					points.add(p);
 			}
 			break;
 
 		case TOP_CROSS:
-			for (Point3i p : cross) {
-				if (p.y > p0.y)
+			for (BlockPos p : cross) {
+				if (p.getY() > p0.getY())
 					points.add(p);
 			}
 			break;
 
 		case BOTTOM:
-			for (Point3i p : noCorners) {
-				if (p.y < p0.y)
+			for (BlockPos p : noCorners) {
+				if (p.getY() < p0.getY())
 					points.add(p);
 			}
 			break;
 
 		case BOTTOM_ALL:
-			for (Point3i p : allPoints) {
-				if (p.y < p0.y)
+			for (BlockPos p : allPoints) {
+				if (p.getY() < p0.getY())
 					points.add(p);
 			}
 			break;
@@ -156,43 +156,46 @@ public class Shell implements Iterable<Point3i> {
 			break;
 
 		case DOWN:
-			for (Point3i p : noCorners) {
-				if (p.z == p0.z && p.x == p0.x && p.y < p0.y)
+			for (BlockPos p : noCorners) {
+				if (p.getZ() == p0.getZ() && p.getX() == p0.getX() && p.getY() < p0.getY())
 					points.add(p);
 			}
 			break;
 
 		case UP:
-			for (Point3i p : noCorners) {
-				if (p.z == p0.z && p.x == p0.x && p.y > p0.y)
+			for (BlockPos p : noCorners) {
+				if (p.getZ() == p0.getZ() && p.getX() == p0.getX() && p.getY() > p0.getY())
 					points.add(p);
 			}
 			break;
 
 		case FLOOR:
-			for (Point3i p : noCorners) {
-				Block b = w.getBlock(p.x, p.y + 1, p.z);
-				if (p.y == p0.y && b == Blocks.air)
+			for (BlockPos p : noCorners) {
+				//Block b = w.getBlock(p.getX(), p.getY() + 1, p.getZ());
+				Block b = w.getBlock(p.up());
+				if (p.getY() == p0.getY() && b == Blocks.air)
 					points.add(p);
 			}
 			break;
 
 		case CEILING:
-			for (Point3i p : noCorners) {
-				Block b = w.getBlock(p.x, p.y - 1, p.z);
-				if (p.y == p0.y && b == Blocks.air)
+			for (BlockPos p : noCorners) {
+				//Block b = w.getBlock(p.getX(), p.getY() - 1, p.getZ());
+				Block b = w.getBlock(p.down());
+				if (p.getY() == p0.getY() && b == Blocks.air)
 					points.add(p);
 			}
 			break;
 
 		// FIXME leaks out though diagonal corner
 		case EDGE:
-			for (Point3i p : allPoints) {
-				if (p.y == p0.y) {
-					if (w.getBlock(p.x, p.y + 1, p.z) == Blocks.air) {
-						// for (Point3i pointAbove : new Shell(Type.TOP_CROSS, p, w)) {
-						for (Point3i pointAbove : new Shell(Type.TOP_ALL, p, w)) {
-							Block b = w.getBlock(pointAbove.x, pointAbove.y, pointAbove.z);
+			for (BlockPos p : allPoints) {
+				if (p.getY() == p0.getY()) {
+					//if (w.getBlock(p.getX(), p.getY() + 1, p.getZ()) == Blocks.air) {
+					if (w.getBlock(p.up()) == Blocks.air) {
+						// for (BlockPos pointAbove : new Shell(Type.TOP_CROSS, p, w)) {
+						for (BlockPos pointAbove : new Shell(Type.TOP_ALL, p, w)) {
+							Block b = w.getBlock(pointAbove);
 							if (b != Blocks.air) {
 								points.add(p);
 								break;
@@ -204,11 +207,13 @@ public class Shell implements Iterable<Point3i> {
 			break;
 
 		case EDGE_UNDER:
-			for (Point3i p : allPoints) {
-				if (p.y == p0.y) {
-					if (w.getBlock(p.x, p.y - 1, p.z) == Blocks.air) {
-						for (Point3i pointBellow : new Shell(Type.BOTTOM_ALL, p, w)) {
-							Block b = w.getBlock(pointBellow.x, pointBellow.y, pointBellow.z);
+			for (BlockPos p : allPoints) {
+				if (p.getY() == p0.getY()) {
+					//TODO Does add modify p?
+					//if (w.getBlock(p.getX(), p.getY() - 1, p.getZ()) == Blocks.air) {
+					if (w.getBlock(p.down()) == Blocks.air) {
+						for (BlockPos pointBellow : new Shell(Type.BOTTOM_ALL, p, w)) {
+							Block b = w.getBlock(pointBellow);
 							if (b != Blocks.air) {
 								points.add(p);
 								break;
@@ -220,12 +225,12 @@ public class Shell implements Iterable<Point3i> {
 			break;
 
 		// case FLOOR_EDGE:
-		// for (Point3i p : allPoints) {
-		// if (p.y == p0.y) {
-		// if (w.getBlock(p.x, p.y + 1, p.z) == Blocks.air) {
+		// for (BlockPos p : allPoints) {
+		// if (p.getY() == p0.getY()) {
+		// if (w.getBlock(p.getX(), p.getY() + 1, p.getZ()) == Blocks.air) {
 		// Shell s = new Shell(Type.ABOVE, p, w);
-		// for (Point3i pp : s) {
-		// if (pp.y > p.y && w.getBlock(pp.x, pp.y, pp.z) != Blocks.air) {
+		// for (BlockPos pp : s) {
+		// if (pp.getY() > p.getY() && w.getBlock(pp.getX(), pp.getY(), pp.getZ()) != Blocks.air) {
 		// points.add(p);
 		// break;
 		// }
@@ -235,12 +240,12 @@ public class Shell implements Iterable<Point3i> {
 		// }
 		// break;
 		// case CEILING_EDGE:
-		// for (Point3i p : allPoints) {
-		// if (p.y == p0.y) {
-		// if (w.getBlock(p.x, p.y - 1, p.z) == Blocks.air) {
+		// for (BlockPos p : allPoints) {
+		// if (p.getY() == p0.getY()) {
+		// if (w.getBlock(p.getX(), p.getY() - 1, p.getZ()) == Blocks.air) {
 		// Shell s = new Shell(Type.BELLOW, p, w);
-		// for (Point3i pp : s) {
-		// if (pp.y < p.y && w.getBlock(pp.x, pp.y, pp.z) != Blocks.air) {
+		// for (BlockPos pp : s) {
+		// if (pp.getY() < p.getY() && w.getBlock(pp.getX(), pp.getY(), pp.getZ()) != Blocks.air) {
 		// points.add(p);
 		// break;
 		// }
@@ -250,42 +255,42 @@ public class Shell implements Iterable<Point3i> {
 		// }
 		// break;
 		case X:
-			for (Point3i p : noCorners) {
-				if (p.z == p0.z && p.y == p0.y)
+			for (BlockPos p : noCorners) {
+				if (p.getZ() == p0.getZ() && p.getY() == p0.getY())
 					points.add(p);
 			}
 			break;
 
 		case Y:
-			for (Point3i p : noCorners) {
-				if (p.z == p0.z && p.x == p0.x)
+			for (BlockPos p : noCorners) {
+				if (p.getZ() == p0.getZ() && p.getX() == p0.getX())
 					points.add(p);
 			}
 			break;
 
 		case Z:
-			for (Point3i p : noCorners) {
-				if (p.x == p0.x && p.y == p0.y)
+			for (BlockPos p : noCorners) {
+				if (p.getX() == p0.getX() && p.getY() == p0.getY())
 					points.add(p);
 			}
 			break;
 
 		case XY:
-			for (Point3i p : noCorners) {
-				if (p.z == p0.z)
+			for (BlockPos p : noCorners) {
+				if (p.getZ() == p0.getZ())
 					points.add(p);
 			}
 			break;
 
 		case XZ:
-			for (Point3i p : noCorners) {
-				if (p.y == p0.y)
+			for (BlockPos p : noCorners) {
+				if (p.getY() == p0.getY())
 					points.add(p);
 			}
 			break;
 		case YZ:
-			for (Point3i p : noCorners) {
-				if (p.x == p0.x)
+			for (BlockPos p : noCorners) {
+				if (p.getX() == p0.getX())
 					points.add(p);
 			}
 			break;
@@ -294,15 +299,15 @@ public class Shell implements Iterable<Point3i> {
 		}
 	}
 
-	// private static List<Point3i> initPoints() {
+	// private static List<BlockPos> initPoints() {
 	// System.out.println("[Shell.initPoints]");
-	// List<Point3i> pts = new ArrayList<>();
-	// pts.add(new Point3i(0, -1, 0));
-	// pts.add(new Point3i(0, 0, -1));
-	// pts.add(new Point3i(-1, 0, 0));
-	// pts.add(new Point3i(1, 0, 0));
-	// pts.add(new Point3i(0, 0, 1));
-	// pts.add(new Point3i(0, 1, 0));
+	// List<BlockPos> pts = new ArrayList<>();
+	// pts.add(new BlockPos(0, -1, 0));
+	// pts.add(new BlockPos(0, 0, -1));
+	// pts.add(new BlockPos(-1, 0, 0));
+	// pts.add(new BlockPos(1, 0, 0));
+	// pts.add(new BlockPos(0, 0, 1));
+	// pts.add(new BlockPos(0, 1, 0));
 	// return pts;
 	// }
 

@@ -7,6 +7,7 @@ import java.util.List;
 import javax.vecmath.Point3i;
 
 import net.minecraft.init.Blocks;
+import net.minecraft.util.BlockPos;
 import ds.geom.IntegerDomain;
 import ds.geom.VoxelSet;
 import ds.plato.api.IPick;
@@ -21,7 +22,7 @@ import ds.plato.undo.Transaction;
 public class SpellMengerSponge extends Spell {
 
 	int level = 0;
-	List<Point3i> pointsToDelete = new ArrayList<>();
+	List<BlockPos> pointsToDelete = new ArrayList<>();
 
 	public SpellMengerSponge(IUndo undoManager, ISelect selectionManager, IPick pickManager) {
 		super(1, undoManager, selectionManager, pickManager);
@@ -35,8 +36,8 @@ public class SpellMengerSponge extends Spell {
 		selectionManager.clearSelections();
 		pickManager.clearPicks();
 		Transaction t = undoManager.newTransaction();
-		for (Point3i v : pointsToDelete) {
-			t.add(new SetBlock(world, selectionManager, v.x, v.y, v.z, Blocks.air, 0).set());
+		for (BlockPos v : pointsToDelete) {
+			t.add(new SetBlock(world, selectionManager, v, Blocks.air).set());
 		}
 		t.commit();
 	}
@@ -62,7 +63,8 @@ public class SpellMengerSponge extends Spell {
 				i++;
 			}
 			if (domainsToDelete.contains(domain.count)) {
-				pointsToDelete.add(p);
+				//pointsToDelete.add(p);
+				pointsToDelete.add(new BlockPos(p.x, p.y, p.z));
 			}
 		}
 		

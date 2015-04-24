@@ -5,6 +5,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.util.Vec3;
@@ -45,11 +46,11 @@ public class MouseHandler {
 		}
 
 		IPlayer player = Player.getPlayer();
-		MovingObjectPosition pos = Minecraft.getMinecraft().objectMouseOver;
+		MovingObjectPosition objectPosition = Minecraft.getMinecraft().objectMouseOver;
 		// System.out.println("[MouseHandler.onMouseEvent] position.typeOfHit=" + position.typeOfHit +
 		// ", e.button=" + e.button);
 
-		if (pos.typeOfHit == MovingObjectType.MISS) {
+		if (objectPosition.typeOfHit == MovingObjectType.MISS) {
 			if (e.button == 0) {
 				selectionManager.clearSelections();
 
@@ -59,7 +60,7 @@ public class MouseHandler {
 			// Fix for Left click stuck in loop when block is broken against sky #60
 			// Do not cancel event
 
-		} else if (pos.typeOfHit == MovingObjectType.BLOCK) {
+		} else if (objectPosition.typeOfHit == MovingObjectType.BLOCK) {
 
 			ItemStack stack = player.getHeldItemStack();
 			if (stack == null) {
@@ -85,9 +86,7 @@ public class MouseHandler {
 
 				if (e.button == 0) {
 					// Select
-					//1.8
-					Vec3 v = pos.hitVec;
-					selector.onMouseClickLeft(stack, (int)v.xCoord, (int)v.yCoord, (int)v.zCoord, pos.sideHit);
+					selector.onMouseClickLeft(stack, objectPosition.getBlockPos(), objectPosition.sideHit);
 					e.setCanceled(true);
 
 				} else if (e.button == 1) {
@@ -103,8 +102,8 @@ public class MouseHandler {
 				if (e.button == 1) {
 					// Fill the selections with the block in hand
 					//1.8
-					Vec3 v = pos.hitVec;
-					if (selectionManager.isSelected((int)v.xCoord, (int)v.yCoord, (int)v.zCoord)) {
+					BlockPos pos = objectPosition.getBlockPos();
+					if (selectionManager.isSelected(pos)) {
 						Block b = itemBlock.getBlock();
 						int metadata = stack.getItemDamage();
 						new SpellFill(undoManager, selectionManager, pickManager).invoke(player.getWorld(), new HotbarSlot(b,

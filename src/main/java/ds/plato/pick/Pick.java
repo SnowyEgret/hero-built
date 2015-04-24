@@ -4,21 +4,24 @@ import javax.vecmath.Point3d;
 import javax.vecmath.Point3i;
 
 import net.minecraft.block.Block;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 
 public class Pick {
 
 	public int x, y, z;
 	public Block block;
-	public int metadata;
-	public int side;
+	//public int metadata;
+	public EnumFacing side;
 
-	public Pick(int x, int y, int z, Block block, int metadata, int side) {
+	//public Pick(int x, int y, int z, Block block, int metadata, int side) {
+	public Pick(BlockPos pos, Block block, EnumFacing side) {
 		// super(x, y, z);
-		this.x = x;
-		this.y = y;
-		this.z = z;
+		this.x = pos.getX();
+		this.y = pos.getY();
+		this.z = pos.getZ();
 		this.block = block;
-		this.metadata = metadata;
+		//this.metadata = metadata;
 		this.side = side;
 	}
 
@@ -59,8 +62,8 @@ public class Pick {
 		StringBuilder builder = new StringBuilder();
 		builder.append("Pick [block=");
 		builder.append(block);
-		builder.append(", metadata=");
-		builder.append(metadata);
+//		builder.append(", metadata=");
+//		builder.append(metadata);
 		builder.append(", side=");
 		builder.append(side);
 		builder.append(", x=");
@@ -75,5 +78,9 @@ public class Pick {
 
 	public Point3i point3i() {
 		return new Point3i(x, y, z);
+	}
+
+	public BlockPos getPos() {
+		return new BlockPos(x, y, z);
 	}
 }

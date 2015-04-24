@@ -1,5 +1,6 @@
 package ds.plato.item.spell.select;
 
+import net.minecraft.util.EnumFacing;
 import ds.plato.api.IPick;
 import ds.plato.api.ISelect;
 import ds.plato.api.IUndo;
@@ -20,11 +21,11 @@ public class SpellGrowFloor extends AbstractSpellSelect {
 
 	@Override
 	public void invoke(IWorld world, HotbarSlot...slotEntries) {
-		int side = pickManager.getPicks()[0].side;
+		EnumFacing side = pickManager.getPicks()[0].side;
 		System.out.println("[SpellGrowFloor.invoke] side=" + side);
-		if (side == 0) {
+		if (side == EnumFacing.DOWN) {
 				shellType = Shell.Type.CEILING;
-		} else if (side == 1) {
+		} else if (side == EnumFacing.UP) {
 				shellType = Shell.Type.FLOOR;
 		} else {
 			System.out.println("[SpellGrowFloor.invoke] Got unexpected side=" + side);

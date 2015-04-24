@@ -1,7 +1,10 @@
 package ds.plato.core;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.multiplayer.WorldClient;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import ds.plato.Plato;
 import ds.plato.api.IWorld;
@@ -20,23 +23,32 @@ public class WorldWrapper implements IWorld {
 	}
 
 	@Override
-	public Block getBlock(int x, int y, int z) {
-		return world.getBlock(x, y, z);
+	//public Block getBlock(int x, int y, int z) {
+	public Block getBlock(BlockPos pos) {
+		IBlockState b = world.getBlockState(pos);
+		//return world.getBlock(x, y, z);
+		return b.getBlock();
 	}
 
-	@Override
-	public int getMetadata(int x, int y, int z) {
-		return world.getBlockMetadata(x, y, z);
-	}
+//	@Override
+	//public int getMetadata(int x, int y, int z) {
+//	public int getMetadata(BlockPos pos) {
+//		//return world.getBlockMetadata(x, y, z);
+//		//getBlock(pos).getgetStateFromMeta(pos);
+//		//TODO return metadata
+//		return 0;
+//	}
 
 	@Override
-	public void setBlock(int x, int y, int z, Block block, int metadata) {
+	//public void setBlock(int x, int y, int z, Block block, int metadata) {
+	public void setBlock(BlockPos pos, Block block) {
 		// TODO try this for preventing dropping
 		// world.removeTileEntity(x, y, z);
-		world.setBlock(x, y, z, block, metadata, 3);
-		// System.out.println("[WorldWrapper.setBlock] sendPackets=" + sendPackets);
+		//world.setBlock(x, y, z, block, metadata, 3);
+		IBlockState state = (IBlockState) block.getBlockState();
+		world.setBlockState(pos, state, 3);
 		if (sendPackets) {
-			Plato.network.sendToServer(new SetBlockMessage(x, y, z, block, metadata));
+			Plato.network.sendToServer(new SetBlockMessage(pos, block));
 		}
 	}
 

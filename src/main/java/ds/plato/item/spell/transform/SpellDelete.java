@@ -21,7 +21,7 @@ public class SpellDelete extends AbstractSpellTransform {
 			@Override
 			public Selection transform(Selection s) {
 				// Create a copy here because we don't want to modify the selectionManager's selection list.
-				return new Selection(s.x, s.y, s.z, Blocks.air, 0);
+				return new Selection(s.getPos(), Blocks.air);
 			}
 		});
 	}

@@ -7,8 +7,8 @@ public class BlockPicked extends BlockSelected {
 		super();
 	}
 	
-	@Override
-	public int getRenderType() {
-		return BlockPickedRenderer.id;
-	}
+//	@Override
+//	public int getRenderType() {
+//		return BlockPickedRenderer.id;
+//	}
 }

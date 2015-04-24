@@ -32,7 +32,7 @@ public class GuiHandler implements IGuiHandler {
 		case 0:
 			return new GuiTextInputDialog(player);
 		case 1:
-			return new GuiRestore(player);
+			//return new GuiRestore(player);
 		case 2:
 			return new GuiSpellText(player);
 		case 3:

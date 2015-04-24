@@ -9,21 +9,22 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.vecmath.Point3i;
 
 import net.minecraft.block.Block;
+import net.minecraft.util.BlockPos;
 
 import com.google.common.collect.Lists;
 
+import ds.geom.VoxelSet;
 import ds.plato.api.ISelect;
 import ds.plato.api.IWorld;
-import ds.geom.VoxelSet;
 
 public class SelectionManager implements ISelect {
 
-	private final Map<Point3i, Selection> selections = new ConcurrentHashMap<>();
+	private final Map<BlockPos, Selection> selections = new ConcurrentHashMap<>();
 	// private final Map<Point3i, Selection> selections = new HashMap<>();
 	private IWorld world;
 	private Block blockSelected;
-	private List<Point3i> lastSelections;
-	private List<Point3i> grownSelections = new ArrayList<>();
+	private List<BlockPos> lastSelections;
+	private List<BlockPos> grownSelections = new ArrayList<>();
 
 	public SelectionManager(Block blockSelected) {
 		this.blockSelected = blockSelected;
@@ -37,35 +38,31 @@ public class SelectionManager implements ISelect {
 		return l;
 	}
 
-	// @Override
-	// public Iterable<Selection> getSelections() {
-	// return selections.values();
-	// }
-
 	@Override
-	public Selection selectionAt(int x, int y, int z) {
-		return selections.get(new Point3i(x, y, z));
+	//public Selection selectionAt(int x, int y, int z) {
+	public Selection selectionAt(BlockPos pos) {
+		return selections.get(pos);
 	}
 
 	@Override
-	public void select(IWorld world, int x, int y, int z) {
-		Block prevBlock = world.getBlock(x, y, z);
-		int metadata = world.getMetadata(x, y, z);
-		world.setBlock(x, y, z, blockSelected, 0);
-		Selection s = new Selection(x, y, z, prevBlock, metadata);
-		selections.put(s.point3i(), s);
+	public void select(IWorld world, BlockPos pos) {
+		Block prevBlock = world.getBlock(pos);
+		//int metadata = world.getMetadata(pos);
+		world.setBlock(pos, blockSelected);
+		Selection s = new Selection(pos, prevBlock);
+		selections.put(s.getPos(), s);
 		this.world = world;
 	}
 
 	@Override
-	public void deselect(int x, int y, int z) {
-		deselect(selectionAt(x, y, z));
+	public void deselect(BlockPos pos) {
+		deselect(selectionAt(pos));
 	}
 
 	@Override
 	public void deselect(Selection s) {
-		selections.remove(new Point3i(s.x, s.y, s.z));
-		world.setBlock(s.x, s.y, s.z, s.block, s.metadata);
+		selections.remove(s.getPos());
+		world.setBlock(s.getPos(), s.getBlock() );
 	}
 
 	@Override
@@ -85,25 +82,30 @@ public class SelectionManager implements ISelect {
 	}
 
 	@Override
-	public boolean isSelected(int x, int y, int z) {
-		return selections.containsKey(new Point3i(x, y, z));
+	public boolean isSelected(BlockPos pos) {
+		return selections.containsKey(pos);
 	}
 
 	@Override
-	public Collection<Point3i> selectedPoints() {
+	public Collection<BlockPos> selectedPoints() {
 		return selections.keySet();
 	}
 
 	@Override
-	public Selection removeSelection(int x, int y, int z) {
-		return selections.remove(new Point3i(x, y, z));
+	public Selection removeSelection(BlockPos pos) {
+		return selections.remove(pos);
 	}
 
 	@Override
 	public VoxelSet voxelSet() {
-		return new VoxelSet(selections.keySet());
+		VoxelSet set = new VoxelSet();
+		for (BlockPos pos : selections.keySet()) {
+			set.add(new Point3i(pos.getX(), pos.getY(), pos.getZ()));
+		}
+		return set;
+		///return new VoxelSet(selections.keySet());
 	}
-
+	
 	@Override
 	public List<Selection> getSelectionList() {
 		List<Selection> l = new ArrayList<>();
@@ -132,14 +134,14 @@ public class SelectionManager implements ISelect {
 	@Override
 	public void reselectLast() {
 		if (lastSelections != null) {
-			for (Point3i p : lastSelections) {
-				select(world, p.x, p.y, p.z);
+			for (BlockPos pos : lastSelections) {
+				select(world, pos);
 			}
 		}
 	}
 
 	@Override
-	public List<Point3i> getGrownSelections() {
+	public List<BlockPos> getGrownSelections() {
 		if (grownSelections.isEmpty()) {
 			grownSelections.addAll(selections.keySet());
 		}
@@ -147,7 +149,7 @@ public class SelectionManager implements ISelect {
 	}
 
 	@Override
-	public void setGrownSelections(List<Point3i> points) {
+	public void setGrownSelections(List<BlockPos> points) {
 		grownSelections = points;
 	}
 
@@ -158,7 +160,7 @@ public class SelectionManager implements ISelect {
 
 	// TODO Used only by Test class. Make default when test class is in same package.
 	public void addSelection(Selection s) {
-		selections.put(s.point3i(), s);
+		selections.put(s.getPos(), s);
 	}
 
 	@Override

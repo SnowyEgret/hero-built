@@ -1,10 +1,9 @@
 package ds.plato.item.spell.other;
 
-import javax.vecmath.Point3i;
-
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.util.BlockPos;
 
 import org.lwjgl.input.Keyboard;
 
@@ -37,15 +36,17 @@ public class SpellHoleFill extends Spell {
 		Transaction t = undoManager.newTransaction();
 		for (Selection s : selectionManager.getSelections()) {
 			Shell.Type type = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) ? Shell.Type.HORIZONTAL : Shell.Type.BELLOW;
-			Shell shell = new Shell(type, s.point3i(), world);
-			for (Point3i p : shell) {
-				Block b = world.getBlock(p.x, p.y, p.z);
+			//Shell shell = new Shell(type, s.point3i(), world);
+			Shell shell = new Shell(type, s.getPos(), world);
+			//Shell shell = new Shell(type, new Point3i(s.g), world);
+			for (BlockPos p : shell) {
+				Block b = world.getBlock(p);
 				if (b == Blocks.air || b == Blocks.water) {
 					if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
 						HotbarSlot e = slotEntries[0];
-						t.add(new SetBlock(world, selectionManager, p.x, p.y, p.z, e.block, e.metadata).set());
+						t.add(new SetBlock(world, selectionManager, p, e.block).set());
 					} else {
-						t.add(new SetBlock(world, selectionManager, p.x, p.y, p.z, s.block, s.metadata).set());
+						t.add(new SetBlock(world, selectionManager, p, s.getBlock()).set());
 					}
 				}
 			}

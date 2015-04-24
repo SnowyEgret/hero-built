@@ -5,6 +5,7 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
@@ -35,9 +36,9 @@ public abstract class Staff extends ItemBase implements IStaff {
 	}
 
 @Override
-	public void onMouseClickLeft(ItemStack stack, int x, int y, int z, EnumFacing sideHit) {
+	public void onMouseClickLeft(ItemStack stack, BlockPos pos, EnumFacing sideHit) {
 		if (!isEmpty(stack)) {
-			getSpell(stack).onMouseClickLeft(stack, x, y, z, sideHit);
+			getSpell(stack).onMouseClickLeft(stack, pos, sideHit);
 		}
 	}
 
@@ -53,7 +54,7 @@ public abstract class Staff extends ItemBase implements IStaff {
 	}
 
 	@Override
-	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
+	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side,
 			float sx, float sy, float sz) {
 		if (!world.isRemote && Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
 			player.openGui(Plato.instance, 3, world, 0, 0, 0);
@@ -64,7 +65,7 @@ public abstract class Staff extends ItemBase implements IStaff {
 		} else if (!world.isRemote && !isEmpty(stack)) {
 			Spell s = getSpell(stack);
 			System.out.println("[StaffWood.onItemUse] s=" + s);
-			s.onItemUse(stack, player, world, x, y, z, side, sx, sy, sz);
+			s.onItemUse(stack, player, world, pos, side, sx, sy, sz);
 		}
 		return true;
 	}

@@ -14,6 +14,7 @@ import javax.vecmath.Vector3d;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Items;
+import net.minecraft.util.BlockPos;
 import ds.plato.Plato;
 import ds.plato.api.IPick;
 import ds.plato.api.ISelect;
@@ -108,15 +109,15 @@ public class SpellText extends Spell implements ITextSetable {
 		g2.rotate(angle);
 		g2.drawString(text, 0, 0);
 
-		Set<Point3i> points = new HashSet<>();
+		Set<BlockPos> points = new HashSet<>();
 		for (int h = 0; h < height; h++) {
 			for (int w = 0; w < width; w++) {
 				int pixel = image.getRGB(w, h);
 				// if (pixel == -16777216) {
 				if (pixel == -1) {
-					Point3i p = new Point3i(w - (width / 2), 0, h - (height / 2));
+					BlockPos p = new BlockPos(w - (width / 2), 0, h - (height / 2));
 					//Point3i p = new Point3i(w - (width / 2), h - (height / 2), 0);
-					p.add(picks[0].point3i());
+					p.add(picks[0].getPos());
 					points.add(p);
 				}
 			}
@@ -125,9 +126,8 @@ public class SpellText extends Spell implements ITextSetable {
 		System.out.println("[SpellText.invoke] points.size()=" + points.size());
 		selectionManager.clearSelections();
 		Transaction t = undoManager.newTransaction();
-		for (Point3i p : points) {
-			t.add(new SetBlock(world, selectionManager, p.x, p.y, p.z, slotEntries[0].block, slotEntries[0].metadata)
-					.set());
+		for (BlockPos p : points) {
+			t.add(new SetBlock(world, selectionManager, p, slotEntries[0].block).set());
 		}
 		t.commit();
 		selectionManager.clearSelections();

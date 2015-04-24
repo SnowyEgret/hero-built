@@ -17,8 +17,8 @@ public class BlockSelected extends Block {
 //		return false;
 //	}
 
-	@Override
-	public int getRenderType() {
-		return BlockSelectedRenderer.id;
-	}
+//	@Override
+//	public int getRenderType() {
+//		return BlockSelectedRenderer.id;
+//	}
 }

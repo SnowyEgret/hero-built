@@ -1,13 +1,13 @@
 package ds.plato.api;
 
-import javax.vecmath.Point3i;
-
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import ds.plato.pick.Pick;
-import net.minecraft.block.Block;
 
 public interface IPick {
 
-	public void pick(IWorld world, int x, int y, int z, int side);
+	//public void pick(IWorld world, int x, int y, int z, int side);
+	public void pick(IWorld w, BlockPos pos, EnumFacing side);
 
 	public void clearPicks();
 
@@ -17,11 +17,9 @@ public interface IPick {
 
 	public boolean isPicking();
 
-	public Pick getPickAt(int x, int y, int z);
-
+	//public Pick getPickAt(int x, int y, int z);
+	public Pick getPickAt(BlockPos pos); 
 	public void reset(int numPicks);
-
-//	public IPick setWorld(IWorld world);
 
 	public Pick lastPick();
 }

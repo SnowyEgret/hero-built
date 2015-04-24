@@ -4,6 +4,8 @@ import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
 import net.minecraft.block.Block;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import ds.plato.api.IPick;
 import ds.plato.api.IWorld;
 import ds.plato.block.BlockPicked;
@@ -20,12 +22,13 @@ public class PickManager implements IPick {
 	}
 
 	@Override
-	public void pick(IWorld world, int x, int y, int z, int side) {
+	//public void pick(IWorld world, int x, int y, int z, int side) {
+	public void pick(IWorld world, BlockPos pos, EnumFacing side) {
 		// TODO: Handle case where location is already a selection
-		Block block = world.getBlock(x, y, z);
-		int metadata = world.getMetadata(x, y, z);
-		world.setBlock(x, y, z, blockPicked, 0);
-		addPick(x, y, z, block, metadata, side);
+		Block block = world.getBlock(pos);
+		//int metadata = world.getMetadata(pos);
+		world.setBlock(pos, blockPicked);
+		addPick(pos, block, side);
 		this.world = world;
 	}
 
@@ -54,18 +57,19 @@ public class PickManager implements IPick {
 	@Override
 	public void clearPicks() {
 		for (Pick p : getPicks()) {
-			Block block = world.getBlock(p.x, p.y, p.z);
+			Block block = world.getBlock(p.getPos());
 			if (block instanceof BlockPicked) {
-				world.setBlock(p.x, p.y, p.z, p.block, p.metadata);
+				world.setBlock(p.getPos(), p.block);
 			}
 		}
 		picks.clear();
 	}
 
 	@Override
-	public Pick getPickAt(int x, int y, int z) {
+	//public Pick getPickAt(int x, int y, int z) {
+	public Pick getPickAt(BlockPos pos) {
 		for (Pick p : picks) {
-			if (p.equals(new Pick(x, y, z, null, 0, 0))) {
+			if (p.equals(new Pick(pos, null, null))) {
 				return p;
 			}
 		}
@@ -103,9 +107,10 @@ public class PickManager implements IPick {
 		return picks.size();
 	}
 
-	Pick addPick(int x, int y, int z, Block block, int metadata, int side) {
+	//Pick addPick(int x, int y, int z, Block block, int metadata, int side) {
+	Pick addPick(BlockPos pos, Block block, EnumFacing side) {
 		if (picks.size() < maxPicks) {
-			Pick p = new Pick(x, y, z, block, metadata, side);
+			Pick p = new Pick(pos, block, side);
 			picks.add(p);
 			return p;
 		} else {

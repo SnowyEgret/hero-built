@@ -4,6 +4,7 @@ import javax.vecmath.Point3i;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.BlockPos;
 import ds.geom.IDrawable;
 import ds.geom.VoxelSet;
 import ds.geom.solid.Solid;
@@ -33,7 +34,7 @@ public abstract class AbstractSpellDraw extends Spell {
 			voxels = voxels.shell();
 		}
 		for (Point3i p : voxels) {
-			t.add(new SetBlock(world, selectionManager, p.x, p.y, p.z, block, metadata).set());
+			t.add(new SetBlock(world, selectionManager, new BlockPos(p.x, p.y, p.z), block).set());
 		}
 		t.commit();
 		

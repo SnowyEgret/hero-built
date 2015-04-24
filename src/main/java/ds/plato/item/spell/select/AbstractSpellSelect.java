@@ -3,12 +3,11 @@ package ds.plato.item.spell.select;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.vecmath.Point3i;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.util.BlockPos;
 
 import org.lwjgl.input.Keyboard;
 
@@ -42,7 +41,7 @@ public abstract class AbstractSpellSelect extends Spell {
 		Pick p = pickManager.getPicks()[0];
 		pickManager.clearPicks();
 		if (selectionManager.size() == 0) {
-			selectionManager.select(world, p.x, p.y, p.z);
+			selectionManager.select(world, p.getPos());
 		}
 		
 		// Shrink or grow selections
@@ -50,24 +49,24 @@ public abstract class AbstractSpellSelect extends Spell {
 			shrinkSelections(shellType, world);
 		} else {
 			// Is this really the first block? getSelections gets the values from a map.
-			Block patternBlock = selectionManager.getSelections().iterator().next().block;
+			Block patternBlock = selectionManager.getSelections().iterator().next().getBlock();
 			growSelections(shellType, world, patternBlock);
 		}
 	}
 
 	protected void growSelections(Shell.Type shellType, IWorld world, Block patternBlock) {
-		List<Point3i> newGrownSelections = new ArrayList();
-		for (Point3i center : selectionManager.getGrownSelections()) {
+		List<BlockPos> newGrownSelections = new ArrayList();
+		for (BlockPos center : selectionManager.getGrownSelections()) {
 			Shell shell = new Shell(shellType, center, world);
-			for (Point3i p : shell) {
-				Block block = world.getBlock(p.x, p.y, p.z);
+			for (BlockPos p : shell) {
+				Block block = world.getBlock(p);
 				if (!(block instanceof BlockAir) && !(block instanceof BlockSelected)) {
 					if (Keyboard.isKeyDown(Keyboard.KEY_LMENU)) { // Alt
-						selectionManager.select(world, p.x, p.y, p.z);
+						selectionManager.select(world, p);
 						newGrownSelections.add(p);
 					} else {
 						if (block == patternBlock) {
-							selectionManager.select(world, p.x, p.y, p.z);
+							selectionManager.select(world, p);
 							newGrownSelections.add(p);
 						}
 					}
@@ -80,9 +79,9 @@ public abstract class AbstractSpellSelect extends Spell {
 	protected void shrinkSelections(Shell.Type shellType, IWorld world) {
 		List<Selection> shrunkSelections = new ArrayList<>();
 		for (Selection s : selectionManager.getSelections()) {
-			Shell shell = new Shell(shellType, s.point3i(), world);
-			for (Point3i p : shell) {
-				Block b = world.getBlock(p.x, p.y, p.z);
+			Shell shell = new Shell(shellType, s.getPos(), world);
+			for (BlockPos p : shell) {
+				Block b = world.getBlock(p);
 				if (!(b instanceof BlockSelected)) {
 					shrunkSelections.add(s);
 					break;

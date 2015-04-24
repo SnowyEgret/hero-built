@@ -6,6 +6,8 @@ import java.util.Set;
 import javax.vecmath.Point3d;
 import javax.vecmath.Point3i;
 
+import net.minecraft.util.BlockPos;
+
 import org.lwjgl.input.Keyboard;
 
 import ds.geom.GeomUtil;
@@ -32,7 +34,7 @@ public class SpellThicken extends AbstractSpellTransform {
 
 	@Override
 	public void invoke(final IWorld world, HotbarSlot... slotEntries) {
-		Set<Point3i> points = new HashSet<>();
+		Set<BlockPos> points = new HashSet<>();
 		Selection first = selectionManager.getSelections().iterator().next();
 		VoxelSet voxels = selectionManager.voxelSet();
 		IntegerDomain domain = selectionManager.voxelSet().getDomain();
@@ -44,24 +46,27 @@ public class SpellThicken extends AbstractSpellTransform {
 
 		selectionManager.clearSelections();
 		Transaction t = undoManager.newTransaction();
-		for (Point3i p : points) {
-			t.add(new SetBlock(world, selectionManager, p.x, p.y, p.z, first.block, first.metadata).set());
+		for (BlockPos p : points) {
+			t.add(new SetBlock(world, selectionManager, p, first.getBlock()).set());
 		}
 		t.commit();
 		pickManager.clearPicks();
 	}
 
-	private void thicken(Set<Point3i> points, VoxelSet voxels, IWorld world) {
+	private void thicken(Set<BlockPos> points, VoxelSet voxels, IWorld world) {
 		final Point3d centroid = GeomUtil.toPoint3d(voxels.centroid());
 		for (Selection s : selectionManager.getSelections()) {
 			double d = s.point3d().distance(centroid);
-			Shell shell = new Shell(Shell.Type.XYZ, s.point3i(), world);
-			for (Point3i p : shell) {
-				double dd = GeomUtil.toPoint3d(p).distance(centroid);
+			//double d = s.getPos().distanceSq(centroid);
+			Shell shell = new Shell(Shell.Type.XYZ, s.getPos(), world);
+			for (BlockPos p : shell) {
+				//double dd = GeomUtil.toPoint3d(p).distance(centroid);
+				double dd = new Point3d(p.getX(), p.getY(), p.getZ()).distance(centroid);
 				boolean in = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL);
 				boolean out = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
 				if ((in && dd < d) || (out && dd > d) || (!in && !out)) {
-					if (!selectionManager.isSelected(p.x, p.y, p.z)) {
+					//if (!selectionManager.isSelected(p.x, p.y, p.z)) {
+					if (!selectionManager.isSelected(p)) {
 						points.add(p);
 					}
 				}
@@ -69,7 +74,7 @@ public class SpellThicken extends AbstractSpellTransform {
 		}
 	}
 
-	private void thickenPlane(Set<Point3i> points, IntegerDomain domain, IWorld world) {
+	private void thickenPlane(Set<BlockPos> points, IntegerDomain domain, IWorld world) {
 		boolean withinPlane = Keyboard.isKeyDown(Keyboard.KEY_LMENU);
 		Shell.Type shellType = null;
 		System.out.println("[SpellThicken.thickenPlane] domain.getPlane()=" + domain.getPlane());
@@ -87,9 +92,9 @@ public class SpellThicken extends AbstractSpellTransform {
 		}
 		System.out.println("[SpellThicken.thickenPlane] shellType=" + shellType);
 		for (Selection s : selectionManager.getSelections()) {
-			Shell shell = new Shell(shellType, s.point3i(), world);
-			for (Point3i p : shell) {
-				if (!selectionManager.isSelected(p.x, p.y, p.z)) {
+			Shell shell = new Shell(shellType, s.getPos(), world);
+			for (BlockPos p : shell) {
+				if (!selectionManager.isSelected(p)) {
 					points.add(p);
 				}
 			}

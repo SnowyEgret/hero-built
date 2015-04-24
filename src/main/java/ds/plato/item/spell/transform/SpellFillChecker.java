@@ -1,5 +1,6 @@
 package ds.plato.item.spell.transform;
 
+import net.minecraft.util.BlockPos;
 import ds.plato.api.IPick;
 import ds.plato.api.ISelect;
 import ds.plato.api.IUndo;
@@ -19,14 +20,18 @@ public class SpellFillChecker extends AbstractSpellTransform {
 			@Override
 			public Selection transform(Selection s) {
 				int index = 0;
-				if (((s.x & 1) == 0 && (s.z & 1) == 0) || ((s.x & 1) == 1 && (s.z & 1) == 1)) {
-					index = ((s.y & 1) == 0) ? 0 : 1;
+				BlockPos pos = s.getPos();
+				int x = pos.getX();
+				int y = pos.getY();
+				int z = pos.getZ();
+				if (((x & 1) == 0 && (z & 1) == 0) || ((x & 1) == 1 && (z & 1) == 1)) {
+					index = ((y & 1) == 0) ? 0 : 1;
 				} else {
-					index = ((s.y & 1) == 0) ? 1 : 0;
+					index = ((y & 1) == 0) ? 1 : 0;
 				}
 				HotbarSlot entry = slotEntries[index];
-				s.block = entry.block;
-				s.metadata = entry.metadata;
+				s.setBlock(entry.block);
+				//s.metadata = entry.metadata;
 				return s;
 			}
 		});

@@ -4,38 +4,53 @@ import javax.vecmath.Point3d;
 import javax.vecmath.Point3i;
 
 import net.minecraft.block.Block;
+import net.minecraft.util.BlockPos;
 
 public class Selection {
 
-	public int x, y, z;
-	public Block block;
-	public int metadata;
+	private BlockPos pos;
+	private Block block;
 
-	public Selection(int x, int y, int z, Block block, int metadata) {
-		this.x = x;
-		this.y = y;
-		this.z = z;
+	public Selection(BlockPos pos, Block block) {
+		this.pos = pos;
 		this.block = block;
-		this.metadata = metadata;
-	}
-
-	@Deprecated
-	public Selection(Point3i p, Block block, int metadata) {
-		this(p.x, p.y, p.z, block, metadata);
 	}
 
 	public Point3d point3d() {
-		return new Point3d(x, y, z);
+		return new Point3d(pos.getX(), pos.getY(), pos.getZ());
 	}
 
+	public BlockPos getPos() {
+		return pos;
+	}
+	
+	public void setBlock(Block block) {
+		this.block = block;
+	}
+	
+	public Block getBlock() {
+		return block;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Selection [pos=");
+		builder.append(pos);
+		builder.append(", block=");
+		builder.append(block);
+		builder.append("]");
+		return builder.toString();
+	}
+	
+	//BlockPos does not implement hashCode and equals
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + x;
-		result = prime * result + y;
-		result = prime * result + z;
+		result = prime * result + ((block == null) ? 0 : block.hashCode());
+		result = prime * result + ((pos == null) ? 0 : pos.hashCode());
 		return result;
 	}
 
@@ -48,22 +63,17 @@ public class Selection {
 		if (getClass() != obj.getClass())
 			return false;
 		Selection other = (Selection) obj;
-		if (x != other.x)
+		if (block == null) {
+			if (other.block != null)
+				return false;
+		} else if (!block.equals(other.block))
 			return false;
-		if (y != other.y)
-			return false;
-		if (z != other.z)
+		if (pos == null) {
+			if (other.pos != null)
+				return false;
+		} else if (!pos.equals(other.pos))
 			return false;
 		return true;
 	}
 
-	public Point3i point3i() {
-		return new Point3i(x, y, z);
-		
-	}
-
-	@Override
-	public String toString() {
-		return "Selection [x=" + x + ", y=" + y + ", z=" + z + ", block=" + block + ", metadata=" + metadata + "]";
-	}
 }

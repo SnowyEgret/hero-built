@@ -7,6 +7,7 @@ import javax.vecmath.Point3i;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
@@ -50,7 +51,7 @@ public abstract class Spell extends ItemBase implements ISpell {
 	}
 
 	@Override
-	public void onMouseClickLeft(ItemStack stack, int x, int y, int z, EnumFacing sideHit) {
+	public void onMouseClickLeft(ItemStack stack, BlockPos pos, EnumFacing sideHit) {
 
 		IPlayer player = Player.getPlayer();
 		IWorld w = player.getWorld();
@@ -59,17 +60,17 @@ public abstract class Spell extends ItemBase implements ISpell {
 			// Standard selection behavior. Shift replaces the current selection set with a region.
 			Point3d lastPointSelected = selectionManager.lastSelection().point3d();
 			selectionManager.clearSelections();
-			Box b = new Box(lastPointSelected, new Point3d(x, y, z), false);
+			Box b = new Box(lastPointSelected, new Point3d(pos.getX(), pos.getY(), pos.getZ()), false);
 			for (Point3i p : b.voxelize()) {
-				selectionManager.select(w, p.x, p.y, p.z);
+				selectionManager.select(w, new BlockPos(p.x, p.y, p.z));
 			}
 
 		} else if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
 			// Control adds or subtracts a selection to the current selection set
-			Selection s = selectionManager.selectionAt(x, y, z);
+			Selection s = selectionManager.selectionAt(pos);
 			System.out.println("[Spell.onMouseClickLeft] s=" + s);
 			if (s == null) {
-				selectionManager.select(w, x, y, z);
+				selectionManager.select(w, pos);
 			} else {
 				selectionManager.deselect(s);
 			}
@@ -77,16 +78,21 @@ public abstract class Spell extends ItemBase implements ISpell {
 		} else {
 			// Replaces the current selection set with a selection
 			selectionManager.clearSelections();
-			selectionManager.select(w, x, y, z);
+			selectionManager.select(w, pos);
 		}
 	}
-
+	
+	//1.8
+	//public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
+	//		float sx, float sy, float sz) {
 	@Override
-	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
-			float sx, float sy, float sz) {
+	public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World world, 
+			BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ) {
+
 		if (!world.isRemote) {
 			IWorld w = new WorldWrapper(world);
-			pickManager.pick(w, x, y, z, side);
+			//pickManager.pick(w, pos.getX(), pos.getY(), pos.getZ(), side);
+			pickManager.pick(w, pos, side);
 			if (pickManager.isFinishedPicking()) {
 				invoke(w, Player.getPlayer().getHotbarSlots());
 			}

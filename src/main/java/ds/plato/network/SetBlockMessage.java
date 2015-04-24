@@ -2,6 +2,8 @@ package ds.plato.network;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
@@ -10,18 +12,18 @@ public class SetBlockMessage implements IMessage {
 	public int x;
 	public int y;
 	public int z;
+	public BlockPos pos;
 	public Block block;
 	public int metadata;
 	int size = 5;
 	
-	public SetBlockMessage() {
-	}
-
-	public SetBlockMessage(int x, int y, int z, Block block, int metadata) {
-		this.x = x;
-		this.y = y;
-		this.z = z;
-		this.metadata = metadata;
+	public SetBlockMessage(BlockPos pos, Block block) {
+		this.x = pos.getX();
+		this.y = pos.getY();
+		this.z = pos.getZ();
+		this.pos = pos;
+		//1.8
+		this.metadata = block.getMetaFromState((IBlockState) block.getBlockState());
 		this.block = block;
 	}
 
@@ -61,6 +63,11 @@ public class SetBlockMessage implements IMessage {
 		builder.append(metadata);
 		builder.append("]");
 		return builder.toString();
+	}
+
+	//TODO 
+	public BlockPos getPos() {
+		return pos;
 	}
 
 }

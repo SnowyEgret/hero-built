@@ -1,9 +1,7 @@
 package ds.plato.event;
 
-import javax.vecmath.Point3i;
-
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
@@ -38,27 +36,21 @@ public class ForgeEventHandler {
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void onDrawBlockHightlight(DrawBlockHighlightEvent e) {
-		MovingObjectPosition pos = e.target;
 
 		if (spell != null) {
-			Point3i p = null;
+			BlockPos p = null;
 			Pick pick = pickManager.lastPick();
 			if (pick != null) {
-				p = pick.point3i();
+				p = pick.getPos();
 			}
 			if (p == null) {
 				Selection s = selectionManager.firstSelection();
 				if (s != null) {
-					p = s.point3i();
+					p = s.getPos();
 				}
 			}
 			if (p != null) {
-				//1.8
-//				Vector3d d = new Vector3d();
-//				d.x = p.x - pos.blockX;
-//				d.y = p.y - pos.blockY;
-//				d.z = p.z - pos.blockZ;
-				Vec3 d = pos.hitVec;
+				Vec3 d = e.target.hitVec;
 				overlay.setDisplacement(d);
 			}
 		}

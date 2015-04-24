@@ -21,7 +21,7 @@ public class SpellFill extends AbstractSpellTransform {
 				// Create a copy here because we don't want to modify the selection list.
 				// Use first (left-most) block in inventory
 				HotbarSlot e = slotEntries[0];
-				return new Selection(s.x, s.y, s.z, e.block, e.metadata);
+				return new Selection(s.getPos(), e.block);
 			}
 		});
 	}

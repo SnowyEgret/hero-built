@@ -7,6 +7,7 @@ import javax.vecmath.Matrix4d;
 import javax.vecmath.Point3d;
 
 import net.minecraft.init.Blocks;
+import net.minecraft.util.BlockPos;
 import ds.plato.api.IPick;
 import ds.plato.api.ISelect;
 import ds.plato.api.IUndo;
@@ -30,10 +31,10 @@ public abstract class AbstractSpellMatrix extends Spell {
 			Point3d p = s.point3d();
 			matrix.transform(p);
 			if (deleteInitialBlocks) {
-				t.add(new SetBlock(world, selectionManager, s.x, s.y, s.z, Blocks.air, 0).set());
+				t.add(new SetBlock(world, selectionManager, s.getPos(), Blocks.air).set());
 			}
 			newBlockLocations.add(p);
-			t.add(new SetBlock(world, selectionManager, (int) p.x, (int) p.y, (int) p.z, s.block, s.metadata).set());
+			t.add(new SetBlock(world, selectionManager, new BlockPos(p.x, p.y, p.z), s.getBlock()).set());
 		}
 		t.commit();
 		

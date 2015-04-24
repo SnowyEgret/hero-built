@@ -21,8 +21,8 @@ public class SpellFillRandom extends AbstractSpellTransform {
 			public Selection transform(Selection s) {
 				HotbarDistribution d = new HotbarDistribution(slotEntries);
 				HotbarSlot entry = d.randomEntry();
-				s.block = entry.block;
-				s.metadata = entry.metadata;
+				s.setBlock(entry.block);
+				//s.metadata = entry.metadata;
 				return s;
 			}
 		});

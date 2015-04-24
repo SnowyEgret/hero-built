@@ -1,5 +1,6 @@
 package ds.plato.item.spell.select;
 
+import net.minecraft.util.EnumFacing;
 import ds.plato.api.IPick;
 import ds.plato.api.ISelect;
 import ds.plato.api.IUndo;
@@ -19,11 +20,11 @@ public class SpellGrowEdge extends AbstractSpellSelect {
 
 	@Override
 	public void invoke(IWorld world, HotbarSlot...slotEntries) {
-		int side = pickManager.getPicks()[0].side;
+		EnumFacing side = pickManager.getPicks()[0].side;
 		System.out.println("[SpellGrowEdge.invoke] side=" + side);
-		if (side == 1) {
+		if (side == EnumFacing.UP) {
 			shellType = Shell.Type.EDGE;
-		} else if (side == 0) {
+		} else if (side == EnumFacing.DOWN) {
 			shellType = Shell.Type.EDGE_UNDER;
 		} else {
 			System.out.println("[SpellGrowEdge.invoke] Got unexpected side=" + side);

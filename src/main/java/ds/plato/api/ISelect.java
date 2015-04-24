@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.vecmath.Point3i;
 
+import net.minecraft.util.BlockPos;
 import ds.geom.VoxelSet;
 import ds.plato.select.Selection;
 
@@ -12,11 +13,11 @@ public interface ISelect {
 
 	public Iterable<Selection> getSelections();
 
-	public Selection selectionAt(int x, int y, int z);
+	public Selection selectionAt(BlockPos pos);
 
-	public void select(IWorld world, int x, int y, int z);
+	public void select(IWorld world, BlockPos pos);
 
-	public void deselect(int x, int y, int z);
+	public void deselect(BlockPos pos);
 
 	public void deselect(Selection s);
 
@@ -24,16 +25,13 @@ public interface ISelect {
 
 	public void clearSelections();
 
-	public Selection removeSelection(int x, int y, int z);
+	public Selection removeSelection(BlockPos pos);
 
 	public int size();
 
-	//public Collection<? extends Point3i> selectedPoints();
-	public Collection<Point3i> selectedPoints();
+	public Collection<BlockPos> selectedPoints();
 
-	public boolean isSelected(int x, int y, int z);
-
-	//public ISelect setWorld(IWorld world);
+	public boolean isSelected(BlockPos pos);
 	
 	public Selection firstSelection();
 
@@ -43,9 +41,9 @@ public interface ISelect {
 
 	public List<Selection> getSelectionList();
 
-	public List<Point3i> getGrownSelections();
+	public List<BlockPos> getGrownSelections();
 
-	public void setGrownSelections(List<Point3i> points);
+	public void setGrownSelections(List<BlockPos> points);
 
 	public void clearGrownSelections();
 

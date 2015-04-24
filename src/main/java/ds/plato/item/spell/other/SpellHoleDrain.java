@@ -3,11 +3,10 @@ package ds.plato.item.spell.other;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.vecmath.Point3i;
-
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.util.BlockPos;
 
 import com.google.common.collect.Lists;
 
@@ -24,7 +23,7 @@ import ds.plato.undo.Transaction;
 
 public class SpellHoleDrain extends Spell {
 
-	private Set<Point3i> points = new HashSet<>();
+	private Set<BlockPos> points = new HashSet<>();
 	private int numBlocksDrained = 0;
 	private int maxBlocksDrained = 9999;
 	private int lastPointsSize = 0;
@@ -48,18 +47,19 @@ public class SpellHoleDrain extends Spell {
 		int y = pick.y;
 		while (true) {
 			y++;
-			Block b = world.getBlock(pick.x, y, pick.z);
+			//Block b = world.getBlock(pick.x, y, pick.z);
+			Block b = world.getBlock(new BlockPos(pick.getPos().getX(), y, pick.getPos().getZ()));
 			if (b == Blocks.air) {
 				y--;
 				break;
 			}
 		}
 
-		points.add(new Point3i(pick.x, y, pick.z));
+		points.add(new BlockPos(pick.x, y, pick.z));
 		recursivelyDrainWater(world);
 		Transaction t = undoManager.newTransaction();
-		for (Point3i p : points) {
-			t.add(new SetBlock(world, selectionManager, p.x, p.y, p.z, Blocks.air, 0).set());
+		for (BlockPos p : points) {
+			t.add(new SetBlock(world, selectionManager, p, Blocks.air).set());
 		}
 		t.commit();
 		pickManager.clearPicks();
@@ -69,10 +69,10 @@ public class SpellHoleDrain extends Spell {
 
 	private void recursivelyDrainWater(IWorld world) {
 		// To avoid concurrent modification
-		for (Point3i center : Lists.newArrayList(points)) {
+		for (BlockPos center : Lists.newArrayList(points)) {
 			Shell shell = new Shell(Shell.Type.HORIZONTAL, center, world);
-			for (Point3i p : shell) {
-				Block b = world.getBlock(p.x, p.y, p.z);
+			for (BlockPos p : shell) {
+				Block b = world.getBlock(p);
 				if (b == Blocks.water) {
 					numBlocksDrained++;
 					points.add(p);

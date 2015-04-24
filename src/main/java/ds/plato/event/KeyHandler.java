@@ -7,6 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
@@ -144,19 +145,24 @@ public class KeyHandler {
 	private void copy(IPlayer player, IWorld w, int lr, int ud) {
 		pickManager.clearPicks();
 		pickManager.reset(2);
-		pickManager.pick(w, 0, 0, 0, 0);
+		//pickManager.pick(w, 0, 0, 0, 0);
+		pickManager.pick(w, new BlockPos(0,0,0), null);
 		switch (player.getDirection()) {
 		case NORTH:
-			pickManager.pick(w, lr, 0, ud, 0);
+			//pickManager.pick(w, lr, 0, ud, 0);
+			pickManager.pick(w, new BlockPos(lr,0,ud), null);
 			break;
 		case SOUTH:
-			pickManager.pick(w, -lr, 0, -ud, 0);
+			//pickManager.pick(w, -lr, 0, -ud, 0);
+			pickManager.pick(w, new BlockPos(-lr,0,-ud), null);
 			break;
 		case EAST:
-			pickManager.pick(w, -ud, 0, lr, 0);
+			//pickManager.pick(w, -ud, 0, lr, 0);
+			pickManager.pick(w, new BlockPos(-ud,0,lr), null);
 			break;
 		case WEST:
-			pickManager.pick(w, ud, 0, -lr, 0);
+			//pickManager.pick(w, ud, 0, -lr, 0);
+			pickManager.pick(w, new BlockPos(ud,0,-lr), null);
 			break;
 		}
 		if (selectionManager.size() != 0) {
@@ -168,8 +174,9 @@ public class KeyHandler {
 	private void copyVertical(IPlayer player, IWorld w, int d) {
 		pickManager.clearPicks();
 		pickManager.reset(2);
-		pickManager.pick(w, 0, 0, 0, 0);
-		pickManager.pick(w, 0, d, 0, 0);
+		//1.8
+		pickManager.pick(w, new BlockPos(0,0,0), null);
+		pickManager.pick(w, new BlockPos(0,0,0), null);
 		new SpellCopy(undoManager, selectionManager, pickManager).invoke(w, player.getHotbarSlots());
 		pickManager.clearPicks();
 	}
