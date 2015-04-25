@@ -32,37 +32,37 @@ public class SetBlockTest extends PlatoTest {
 
 	@Test
 	public void set() {		
-		new SetBlock(w, sm, BlockPos.ORIGIN, sand).set();
-		Block b = w.getBlock(BlockPos.ORIGIN);
+		new SetBlock(w, sm, p1, sand).set();
+		Block b = w.getBlock(p1);
 		assertEquals(blockSelected, b);
 	}
 	
 	@Test
 	public void set_selectedAfterSet() {		
-		new SetBlock(w, sm, BlockPos.ORIGIN, sand).set();
-		Selection s = sm.getSelection(BlockPos.ORIGIN);
+		new SetBlock(w, sm, p1, sand).set();
+		Selection s = sm.getSelection(p1);
 		assertEquals(sand, s.getBlock());
 	}
 
 	@Test
 	public void set_airIsNotSelected() {		
-		new SetBlock(w, sm, BlockPos.ORIGIN, air).set();
-		assertThat("Air is not selected", sm.getSelection(BlockPos.ORIGIN), is(nullValue()));
+		new SetBlock(w, sm, p1, air).set();
+		assertThat("Air is not selected", sm.getSelection(p1), is(nullValue()));
 	}
 
 	@Test
 	public void undo() {
-		SetBlock undoable = new SetBlock(w, sm, BlockPos.ORIGIN, sand).set();
+		SetBlock undoable = new SetBlock(w, sm, p1, sand).set();
 		undoable.undo();
-		assertEquals(dirt, w.getBlock(BlockPos.ORIGIN));
+		assertEquals(air, w.getBlock(p1));
 	}
 
 	@Test
 	public void redo() {
-		SetBlock undoable = new SetBlock(w, sm, BlockPos.ORIGIN, sand).set();
+		SetBlock undoable = new SetBlock(w, sm, p1, sand).set();
 		undoable.undo();
 		undoable.redo();
-		assertEquals(sand,  w.getBlock(BlockPos.ORIGIN));
+		assertEquals(sand,  w.getBlock(p1));
 	}
 
 }

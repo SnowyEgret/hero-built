@@ -13,14 +13,10 @@ public class SetBlock implements IUndoable {
 
 	IWorld world;
 	ISelect selectionManager;
-	//TODO change to BlockPos
-	//public final int x, y, z;
 	BlockPos pos;
 	Block block, prevBlock;
-	//int metadata, prevMetadata;
 
 	public SetBlock(IWorld world, ISelect selectionManager, Selection s) {
-		//this(world, selectionManager, s.x, s.y, s.z, s.block, s.metadata);
 		this(world, selectionManager, s.getPos(), s.getBlock());
 	}
 
@@ -28,13 +24,8 @@ public class SetBlock implements IUndoable {
 		this.world = world;
 		this.selectionManager = selectionManager;
 		this.pos = pos;
-//		this.x = pos.getX();
-//		this.y = pos.getY();
-//		this.z = pos.getZ();
 		this.block = block;
 		prevBlock = world.getBlock(pos);
-		//this.metadata = metadata;
-		//prevMetadata = world.getMetadata(x, y, z);
 	}
 
 	public SetBlock set() {
@@ -42,7 +33,6 @@ public class SetBlock implements IUndoable {
 		Selection s = selectionManager.getSelection(pos);
 		if (s != null) {
 			prevBlock = s.getBlock();
-			//prevMetadata = s.metadata;
 		}
 		world.setBlock(pos, block);
 
@@ -61,7 +51,7 @@ public class SetBlock implements IUndoable {
 	public void undo() {
 		selectionManager.clearSelections(world);
 		//TODO commented out for now
-		// pickManager.clearPicks();
+		//pickManager.clearPicks();
 		world.setBlock(pos, prevBlock);
 	}
 
@@ -120,6 +110,4 @@ public class SetBlock implements IUndoable {
 		builder.append("]");
 		return builder.toString();
 	}
-
-
 }

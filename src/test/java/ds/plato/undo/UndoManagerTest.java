@@ -31,7 +31,7 @@ public class UndoManagerTest extends PlatoTest {
 	}
 
 	@Test
-	public void maxSize() {
+	public void constructor_maxSize() {
 		m = new UndoManager(3);
 		createTransactions(5);	
 		assertThat(m.size(), equalTo(3));
@@ -112,6 +112,8 @@ public class UndoManagerTest extends PlatoTest {
 		m.clear();
 		assertThat(m.size(), equalTo(0));
 	}
+	
+	// Private ---------------------------------------------------------------
 
 	private void createTransactions(int numTransactions) {
 		for (int i = 0; i < numTransactions; i++) {

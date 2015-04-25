@@ -44,7 +44,7 @@ public class SpellHoleDrain extends Spell {
 		lastPointsSize = 0;
 		Pick pick = pickManager.getPicks()[0];
 		// Pick is some block under water. Find the top water block
-		int y = pick.y;
+		int y = pick.getPos().getY();
 		while (true) {
 			y++;
 			//Block b = world.getBlock(pick.x, y, pick.z);
@@ -55,7 +55,7 @@ public class SpellHoleDrain extends Spell {
 			}
 		}
 
-		points.add(new BlockPos(pick.x, y, pick.z));
+		points.add(new BlockPos(pick.getPos().getX(), y, pick.getPos().getZ()));
 		recursivelyDrainWater(world);
 		Transaction t = undoManager.newTransaction();
 		for (BlockPos p : points) {

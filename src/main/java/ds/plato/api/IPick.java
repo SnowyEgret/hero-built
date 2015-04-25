@@ -6,19 +6,18 @@ import ds.plato.pick.Pick;
 
 public interface IPick {
 
-	//public void pick(IWorld world, int x, int y, int z, int side);
-	public void pick(IWorld w, BlockPos pos, EnumFacing side);
-
-	public void clearPicks();
+	public Pick pick(IWorld w, BlockPos pos, EnumFacing side);
 
 	public Pick[] getPicks();
 
-	public boolean isFinishedPicking();
+	public Pick getPickAt(BlockPos pos); 
+	
+	public void clearPicks();
 
 	public boolean isPicking();
 
-	//public Pick getPickAt(int x, int y, int z);
-	public Pick getPickAt(BlockPos pos); 
+	public boolean isFinishedPicking();
+
 	public void reset(int numPicks);
 
 	public Pick lastPick();

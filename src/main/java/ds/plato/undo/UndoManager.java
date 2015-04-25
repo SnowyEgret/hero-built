@@ -18,6 +18,8 @@ public class UndoManager implements IUndo {
 	public UndoManager() {
 		this(50);
 	}
+	
+	// Interface IUndo -------------------------------------
 
 	public void addUndoable(IUndoable undoable) {
 		Node node = new Node(undoable);
@@ -28,12 +30,11 @@ public class UndoManager implements IUndo {
 			removeLeftEnd();
 	}
 
-	public void redo() {
-		if (currentNode.right == null)
-			throw new NoSuchElementException("Nothing left to redo.");
-		currentNode = currentNode.right;
-		currentNode.undoable.redo();
+	public Transaction newTransaction() {
+		return new Transaction(this);
 	}
+
+	// Interface IUndoable -------------------------------------
 
 	public void undo() {
 		if (currentNode.left == null) {
@@ -43,7 +44,16 @@ public class UndoManager implements IUndo {
 		currentNode = currentNode.left;
 	}
 
-	public int size() {
+	public void redo() {
+		if (currentNode.right == null)
+			throw new NoSuchElementException("Nothing left to redo.");
+		currentNode = currentNode.right;
+		currentNode.undoable.redo();
+	}
+	
+	// Default for testing -----------------------------------------------------------
+
+	int size() {
 		int size = 0;
 		Node n = currentNode;
 		while (n.right != null) {
@@ -58,11 +68,11 @@ public class UndoManager implements IUndo {
 		return size;
 	}
 
-	public void clear() {
+	void clear() {
 		currentNode = new Node();
 	}
 
-	public void removeLeftEnd() {
+	void removeLeftEnd() {
 		Node n = currentNode;
 		while (n.left != null) {
 			n = n.left;
@@ -70,6 +80,8 @@ public class UndoManager implements IUndo {
 		n = n.right;
 		n.left = null;
 	}
+	
+	// Private ---------------------------------------------------------
 
 	private class Node {
 
@@ -84,9 +96,5 @@ public class UndoManager implements IUndo {
 		public Node() {
 			undoable = null;
 		}
-	}
-
-	public Transaction newTransaction() {
-		return new Transaction(this);
 	}
 }

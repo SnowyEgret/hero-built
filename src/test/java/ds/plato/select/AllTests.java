@@ -5,7 +5,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({ SelectionManagerIntegrationTest.class, SelectionTest.class, SelectionManagerTest.class })
+@SuiteClasses({ SelectionTest.class, SelectionManagerTest.class })
 public class AllTests {
 
 }

@@ -22,24 +22,12 @@ public class PickManager implements IPick {
 	}
 
 	@Override
-	//public void pick(IWorld world, int x, int y, int z, int side) {
-	public void pick(IWorld world, BlockPos pos, EnumFacing side) {
-		// TODO: Handle case where location is already a selection
-		Block block = world.getBlock(pos);
-		//int metadata = world.getMetadata(pos);
-		world.setBlock(pos, blockPicked);
-		addPick(pos, block, side);
+	public Pick pick(IWorld world, BlockPos pos, EnumFacing side) {
+		// TODO: Handle case where location is a selection
 		this.world = world;
-	}
-
-	@Override
-	public boolean isPicking() {
-		return picks.size() > 0 && !isFinishedPicking();
-	}
-
-	@Override
-	public boolean isFinishedPicking() {
-		return (picks.size() == maxPicks);
+		Block block = world.getBlock(pos);
+		world.setBlock(pos, blockPicked);
+		return addPick(pos, block, side);
 	}
 
 	@Override
@@ -49,9 +37,13 @@ public class PickManager implements IPick {
 	}
 
 	@Override
-	public void reset(int maxPicks) {
-		this.maxPicks = maxPicks;
-		picks.clear();
+	public Pick getPickAt(BlockPos pos) {
+		for (Pick p : picks) {
+			if (p.equals(new Pick(pos, null, null))) {
+				return p;
+			}
+		}
+		return null;
 	}
 
 	@Override
@@ -66,14 +58,19 @@ public class PickManager implements IPick {
 	}
 
 	@Override
-	//public Pick getPickAt(int x, int y, int z) {
-	public Pick getPickAt(BlockPos pos) {
-		for (Pick p : picks) {
-			if (p.equals(new Pick(pos, null, null))) {
-				return p;
-			}
-		}
-		return null;
+	public boolean isPicking() {
+		return picks.size() > 0 && !isFinishedPicking();
+	}
+
+	@Override
+	public boolean isFinishedPicking() {
+		return (picks.size() == maxPicks);
+	}
+
+	@Override
+	public void reset(int maxPicks) {
+		this.maxPicks = maxPicks;
+		picks.clear();
 	}
 
 	@Override
@@ -96,18 +93,16 @@ public class PickManager implements IPick {
 		return builder.toString();
 	}
 
-	PickManager() {
-	}
-
-	Pick getPick(int i) {
+	//Default - also used by test class---------------------------------------------------------------
+	
+	private Pick getPick(int i) {
 		return picks.get(i);
 	}
 
-	int size() {
+	private int size() {
 		return picks.size();
 	}
 
-	//Pick addPick(int x, int y, int z, Block block, int metadata, int side) {
 	Pick addPick(BlockPos pos, Block block, EnumFacing side) {
 		if (picks.size() < maxPicks) {
 			Pick p = new Pick(pos, block, side);

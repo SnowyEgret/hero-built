@@ -16,19 +16,19 @@ public class SelectionTest extends PlatoTest {
 
 	@Test
 	public void point3d() {
-		Selection s = new Selection(new BlockPos(1,1,1), dirt);
+		Selection s = new Selection(p1, dirt);
 		assertThat(s.point3d(), equalTo(new Point3d(1,1,1)));
 	}
 
 	@Test
 	public void getPos() {
-		Selection s = new Selection(new BlockPos(1,1,1), dirt);
-		assertThat(s.getPos(), equalTo(new BlockPos(1,1,1)));
+		Selection s = new Selection(p1, dirt);
+		assertThat(s.getPos(), equalTo(p1));
 	}
 
 	@Test
 	public void getBlock() {
-		Selection s = new Selection(BlockPos.ORIGIN, sand);
+		Selection s = new Selection(p1, sand);
 		//FIXME Mokito is set up in PlatoTest to return string "sand" when getUnlocalizedName is called
 		//or.. understand this why assertThat won't accept Matcher
 		//assertThat(s.getBlock().getUnlocalizedName(), equalTo("sand"));

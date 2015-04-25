@@ -9,33 +9,26 @@ import net.minecraft.util.EnumFacing;
 
 public class Pick {
 
-	public int x, y, z;
+	BlockPos pos;
 	public Block block;
-	//public int metadata;
 	public EnumFacing side;
 
-	//public Pick(int x, int y, int z, Block block, int metadata, int side) {
 	public Pick(BlockPos pos, Block block, EnumFacing side) {
-		// super(x, y, z);
-		this.x = pos.getX();
-		this.y = pos.getY();
-		this.z = pos.getZ();
+		this.pos=pos;
 		this.block = block;
-		//this.metadata = metadata;
 		this.side = side;
 	}
 
 	public Point3d point3d() {
-		return new Point3d(x, y, z);
+		return new Point3d(pos.getX(),pos.getY(), pos.getZ());
 	}
+
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + x;
-		result = prime * result + y;
-		result = prime * result + z;
+		result = prime * result + ((pos == null) ? 0 : pos.hashCode());
 		return result;
 	}
 
@@ -48,11 +41,10 @@ public class Pick {
 		if (getClass() != obj.getClass())
 			return false;
 		Pick other = (Pick) obj;
-		if (x != other.x)
-			return false;
-		if (y != other.y)
-			return false;
-		if (z != other.z)
+		if (pos == null) {
+			if (other.pos != null)
+				return false;
+		} else if (!pos.equals(other.pos))
 			return false;
 		return true;
 	}
@@ -60,27 +52,21 @@ public class Pick {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Pick [block=");
+		builder.append("Pick [pos=");
+		builder.append(pos);
+		builder.append(", block=");
 		builder.append(block);
-//		builder.append(", metadata=");
-//		builder.append(metadata);
 		builder.append(", side=");
 		builder.append(side);
-		builder.append(", x=");
-		builder.append(x);
-		builder.append(", y=");
-		builder.append(y);
-		builder.append(", z=");
-		builder.append(z);
 		builder.append("]");
 		return builder.toString();
 	}
 
 	public Point3i point3i() {
-		return new Point3i(x, y, z);
+		return new Point3i(pos.getX(),pos.getY(), pos.getZ());
 	}
 
 	public BlockPos getPos() {
-		return new BlockPos(x, y, z);
+		return pos;
 	}
 }
