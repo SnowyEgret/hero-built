@@ -24,7 +24,7 @@ public class SpellLine extends AbstractSpellDraw {
 		Pick[] picks = pickManager.getPicks();
 		IDrawable d = new Line(picks[0].point3d(), picks[1].point3d());
 		if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
-			draw(d, world, slotEntries[0].block, slotEntries[0].metadata);
+			draw(d, world, slotEntries[0].block);
 			pickManager.clearPicks();
 			pickManager.reset(2);
 			//pickManager.pick(world, picks[1].x, picks[1].y, picks[1].z, 0);
@@ -33,7 +33,7 @@ public class SpellLine extends AbstractSpellDraw {
 			selectionManager.clearSelections(world);
 			// Best in this order
 			pickManager.clearPicks();
-			draw(d, world, slotEntries[0].block, slotEntries[0].metadata);
+			draw(d, world, slotEntries[0].block);
 		}
 	}
 

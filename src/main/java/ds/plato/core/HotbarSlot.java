@@ -5,25 +5,25 @@ import net.minecraft.block.Block;
 public class HotbarSlot {
 
 	public Block block;
-	public int metadata;
+	//public int metadata;
 	int slotNumber;
 	
-	public HotbarSlot(Block block, int metadata, int slotNumber) {
+	//public HotbarSlot(Block block, int metadata, int slotNumber) {
+	public HotbarSlot(Block block, int slotNumber) {
 		super();
 		this.block = block;
-		this.metadata = metadata;
+		//this.metadata = metadata;
 		this.slotNumber = slotNumber;
 	}
 
 	public HotbarSlot(Block block) {
-		this(block, 0, 0);
+		this(block, 0);
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + metadata;
 		result = prime * result + ((block == null) ? 0 : block.hashCode());
 		result = prime * result + slotNumber;
 		return result;
@@ -38,8 +38,6 @@ public class HotbarSlot {
 		if (getClass() != obj.getClass())
 			return false;
 		HotbarSlot other = (HotbarSlot) obj;
-		if (metadata != other.metadata)
-			return false;
 		if (block == null) {
 			if (other.block != null)
 				return false;

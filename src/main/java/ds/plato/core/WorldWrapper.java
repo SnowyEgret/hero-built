@@ -45,7 +45,7 @@ public class WorldWrapper implements IWorld {
 		// TODO try this for preventing dropping
 		// world.removeTileEntity(x, y, z);
 		//world.setBlock(x, y, z, block, metadata, 3);
-		IBlockState state = (IBlockState) block.getBlockState();
+		IBlockState state = block.getBlockState().getBaseState();
 		world.setBlockState(pos, state, 3);
 		if (sendPackets) {
 			Plato.network.sendToServer(new SetBlockMessage(pos, block));
@@ -65,5 +65,4 @@ public class WorldWrapper implements IWorld {
 	public World getWorld() {
 		return world;
 	}
-
 }

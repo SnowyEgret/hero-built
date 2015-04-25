@@ -22,7 +22,7 @@ public class SpellBox extends AbstractSpellDraw {
 	}
 
 	@Override
-	public void invoke(IWorld world, HotbarSlot... slotEntries) {
+	public void invoke(IWorld world, HotbarSlot... slots) {
 		selectionManager.clearSelections(world);
 		Pick[] picks = pickManager.getPicks();
 		boolean isCube = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL);
@@ -35,7 +35,7 @@ public class SpellBox extends AbstractSpellDraw {
 		}
 		IDrawable d = new Box(p0, p1, isCube);
 		boolean isHollow = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
-		draw(d, world, slotEntries[0].block, slotEntries[0].metadata, isHollow);
+		draw(d, world, slots[0].block, isHollow);
 		pickManager.clearPicks();
 	}
 

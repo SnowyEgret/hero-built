@@ -37,7 +37,7 @@ public class SpellCircle extends AbstractSpellDraw {
 			p1.y += 1;
 		}
 		IDrawable d = new CircleXZ(p0, p1);
-		draw(d, world, slotEntries[0].block, slotEntries[0].metadata);
+		draw(d, world, slotEntries[0].block);
 		pickManager.clearPicks();
 	}
 

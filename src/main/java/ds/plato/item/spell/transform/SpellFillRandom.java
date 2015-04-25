@@ -15,11 +15,11 @@ public class SpellFillRandom extends AbstractSpellTransform {
 	}
 
 	@Override
-	public void invoke(IWorld world, final HotbarSlot...slotEntries) {
+	public void invoke(IWorld world, final HotbarSlot...slots) {
 		transformSelections(world, new ITransform() {
 			@Override
 			public Selection transform(Selection s) {
-				HotbarDistribution d = new HotbarDistribution(slotEntries);
+				HotbarDistribution d = new HotbarDistribution(slots);
 				HotbarSlot entry = d.randomEntry();
 				s.setBlock(entry.block);
 				//s.metadata = entry.metadata;

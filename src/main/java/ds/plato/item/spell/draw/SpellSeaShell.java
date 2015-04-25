@@ -23,7 +23,7 @@ public class SpellSeaShell extends AbstractSpellDraw {
 		selectionManager.clearSelections(world);
 		Pick[] picks = pickManager.getPicks();
 		IDrawable d = new SeaShell(picks[0].point3d());
-		draw(d, world, slotEntries[0].block, slotEntries[0].metadata);
+		draw(d, world, slotEntries[0].block);
 		pickManager.clearPicks();
 	}
 

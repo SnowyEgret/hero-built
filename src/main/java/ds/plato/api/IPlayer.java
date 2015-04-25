@@ -11,7 +11,7 @@ public interface IPlayer {
 
 	public abstract IWorld getWorld();
 
-	public abstract HotbarSlot[] getHotbarSlots();
+	public abstract HotbarSlot[] getHotbar();
 
 	public abstract Direction getDirection();
 

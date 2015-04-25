@@ -33,7 +33,7 @@ public class SpellPyramid extends AbstractSpellDraw {
 		boolean isSquare = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL);
 		IDrawable d = new RectangularPyramid(p0, p1, isSquare);
 		boolean isHollow = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
-		draw(d, world, slotEntries[0].block, slotEntries[0].metadata, isHollow);
+		draw(d, world, slotEntries[0].block, isHollow);
 		pickManager.clearPicks();
 	}
 

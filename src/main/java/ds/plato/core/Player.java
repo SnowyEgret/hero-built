@@ -54,14 +54,14 @@ public class Player implements IPlayer {
 	}
 
 	@Override
-	public HotbarSlot[] getHotbarSlots() {
-		List<HotbarSlot> entries = new ArrayList<>();
+	public HotbarSlot[] getHotbar() {
+		List<HotbarSlot> slots = new ArrayList<>();
 		InventoryPlayer inventory = player.inventory;
 		for (int i = 0; i < 9; i++) {
 			ItemStack stack = inventory.getStackInSlot(i);
 			if (stack != null) {
 				Item item = stack.getItem();
-				int metadata = stack.getItemDamage();
+				//int metadata = stack.getItemDamage();
 
 				Block b = null;
 				if (item instanceof ItemBlock) {
@@ -86,16 +86,18 @@ public class Player implements IPlayer {
 				}
 
 				if (b != null) {
-					HotbarSlot entry = new HotbarSlot(b, metadata, i + 1);
-					entries.add(entry);
+					//HotbarSlot slot = new HotbarSlot(b, metadata, i + 1);
+					HotbarSlot slot = new HotbarSlot(b, i + 1);
+					slots.add(slot);
 				}
 			}
 		}
-		if (entries.isEmpty()) {
-			entries.add(new HotbarSlot(Blocks.dirt));
+		if (slots.isEmpty()) {
+			slots.add(new HotbarSlot(Blocks.dirt));
 		}
-		HotbarSlot[] array = new HotbarSlot[entries.size()];
-		return entries.toArray(array);
+		//Prepare an array of appropriate size to be returned
+		HotbarSlot[] array = new HotbarSlot[slots.size()];
+		return slots.toArray(array);
 	}
 
 	@Override
@@ -138,7 +140,7 @@ public class Player implements IPlayer {
 
 	@Override
 	public HotbarDistribution getHotbarDistribution() {
-		return new HotbarDistribution(getHotbarSlots());
+		return new HotbarDistribution(getHotbar());
 	}
 
 	@Override

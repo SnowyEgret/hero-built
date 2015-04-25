@@ -23,7 +23,7 @@ public class SpellCopy extends AbstractSpellMatrix {
 	}
 
 	@Override
-	public void invoke(IWorld world, final HotbarSlot... slotEntries) {
+	public void invoke(IWorld world, final HotbarSlot... slots) {
 		Pick[] picks = pickManager.getPicks();
 		Point3d from = picks[0].point3d();
 		Point3d to = picks[1].point3d();

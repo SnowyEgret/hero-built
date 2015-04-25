@@ -15,14 +15,12 @@ import ds.plato.test.PlatoTest;
 public class PickManagerTest extends PlatoTest {
 
 	IPick m;
-	BlockPos origin;
 
 	@Before
 	public void setUp() {
 		super.setUp();
 		m = new PickManager(blockPicked);
 		m.reset(3);
-		origin = new BlockPos(0,0,0);
 	}
 
 //	@Test

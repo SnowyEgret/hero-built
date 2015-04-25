@@ -82,19 +82,15 @@ public abstract class Spell extends ItemBase implements ISpell {
 		}
 	}
 	
-	//1.8
-	//public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
-	//		float sx, float sy, float sz) {
 	@Override
 	public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World world, 
 			BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ) {
 
 		if (!world.isRemote) {
 			IWorld w = new WorldWrapper(world);
-			//pickManager.pick(w, pos.getX(), pos.getY(), pos.getZ(), side);
 			pickManager.pick(w, pos, side);
 			if (pickManager.isFinishedPicking()) {
-				invoke(w, Player.getPlayer().getHotbarSlots());
+				invoke(w, Player.getPlayer().getHotbar());
 			}
 			return true;
 		}
@@ -109,7 +105,7 @@ public abstract class Spell extends ItemBase implements ISpell {
 	// ISpell --------------------------------------------
 
 	@Override
-	public abstract void invoke(IWorld world, final HotbarSlot... slotEntries);
+	public abstract void invoke(IWorld world, final HotbarSlot... slots);
 
 	@Override
 	public String getMessage() {

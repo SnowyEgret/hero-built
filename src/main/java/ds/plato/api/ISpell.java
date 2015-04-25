@@ -5,7 +5,9 @@ import ds.plato.item.spell.SpellInfo;
 
 public interface ISpell {
 
-	public abstract void invoke(IWorld world, HotbarSlot... hotbarSlot);
+	//Takes one or more slots in the players hotbar. Some spells (SpellFill, SpellFillRandom, SpellFillChecker) use
+	//more than one block and also the position of the block in the hotbar
+	public abstract void invoke(IWorld world, HotbarSlot... slots);
 
 	public abstract String getMessage();
 

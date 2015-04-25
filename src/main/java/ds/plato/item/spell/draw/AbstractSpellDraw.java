@@ -23,11 +23,12 @@ public abstract class AbstractSpellDraw extends Spell {
 		super(numPicks, undoManager, selectionManager, pickManager);
 	}
 
-	protected void draw(IDrawable drawable, IWorld world, Block block, int metadata) {
-		draw(drawable, world, block, metadata, false);
+	//protected void draw(IDrawable drawable, IWorld world, Block block, int metadata) {
+	protected void draw(IDrawable drawable, IWorld world, Block block) {
+		draw(drawable, world, block, false);
 	}
 
-	protected void draw(IDrawable drawable, IWorld world, Block block, int metadata, boolean isHollow) {
+	protected void draw(IDrawable drawable, IWorld world, Block block, boolean isHollow) {
 		Transaction t = undoManager.newTransaction();
 		VoxelSet voxels = drawable.voxelize();
 		if (drawable instanceof Solid && isHollow) {

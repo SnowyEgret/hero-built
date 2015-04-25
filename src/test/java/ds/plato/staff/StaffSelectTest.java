@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 
 import org.junit.Before;
@@ -30,13 +29,14 @@ public class StaffSelectTest extends PlatoTest {
 	@Mock SpellDelete mockDelete;
 	@Mock SpellCopy mockMove;
 	StaffSelect staff;
+	//FIXME No public constructor
 	ItemStack stack;
 
 	@Before
 	public void setUp() {
 		super.setUp();
 		MockitoAnnotations.initMocks(this);
-		Pick[] picks = new Pick[] { new Pick(new BlockPos(1, 1, 1), dirt, null), new Pick(new BlockPos(2, 2, 2), dirt, null) };
+		Pick[] picks = new Pick[] { new Pick(p1, dirt, null), new Pick(p2, dirt, null) };
 		when(pickManager.getPicks()).thenReturn(picks);
 		when(pickManager.isFinishedPicking()).thenReturn(true);
 		List spells = new ArrayList();
@@ -93,6 +93,5 @@ public class StaffSelectTest extends PlatoTest {
 		assertEquals(mockMove, staff.getSpell(stack));
 		staff.nextSpell(stack);
 		assertEquals(mockDelete, staff.getSpell(stack));
-
 	}
 }

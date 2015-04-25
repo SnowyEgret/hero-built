@@ -101,13 +101,11 @@ public class MouseHandler {
 				ItemBlock itemBlock = (ItemBlock) item;
 				if (e.button == 1) {
 					// Fill the selections with the block in hand
-					//1.8
 					BlockPos pos = objectPosition.getBlockPos();
 					if (selectionManager.isSelected(pos)) {
 						Block b = itemBlock.getBlock();
-						int metadata = stack.getItemDamage();
-						new SpellFill(undoManager, selectionManager, pickManager).invoke(player.getWorld(), new HotbarSlot(b,
-								metadata, 0));
+						//int metadata = stack.getItemDamage();
+						new SpellFill(undoManager, selectionManager, pickManager).invoke(player.getWorld(), new HotbarSlot(b, 0));
 						e.setCanceled(true);
 					}
 				} else if (e.button == 0) {
