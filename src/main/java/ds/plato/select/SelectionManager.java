@@ -63,8 +63,8 @@ public class SelectionManager implements ISelect {
 
 	@Override
 	public void deselect(IWorld world, Selection selection) {
-		selections.remove(selection.getPos());
 		world.setBlock(selection.getPos(), selection.getBlock());
+		selections.remove(selection.getPos());
 	}
 
 	@Override

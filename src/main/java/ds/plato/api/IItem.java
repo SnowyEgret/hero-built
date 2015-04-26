@@ -7,8 +7,6 @@ import net.minecraft.util.ResourceLocation;
 
 public interface IItem {
 
-	//1.8
-	//public IModelCustom getModel();
 	public ResourceLocation getModelResourceLocation();
 
 	public ResourceLocation getTextureResourceLocation();
