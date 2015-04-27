@@ -64,7 +64,7 @@ public abstract class Staff extends ItemBase implements IStaff {
 			// }
 		} else if (!world.isRemote && !isEmpty(stack)) {
 			Spell s = getSpell(stack);
-			System.out.println("[StaffWood.onItemUse] s=" + s);
+			System.out.println("s=" + s);
 			s.onItemUse(stack, player, world, pos, side, sx, sy, sz);
 		}
 		return true;

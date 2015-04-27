@@ -13,8 +13,6 @@ public interface ISelect {
 
 	public Selection select(IWorld world, BlockPos pos);
 
-	//public void deselect(BlockPos pos);
-
 	public void deselect(IWorld world, Selection selection);
 
 	public Iterable<Selection> getSelections();
@@ -29,17 +27,20 @@ public interface ISelect {
 
 	public int size();
 
-	//public Collection<BlockPos> selectedPoints();
-
 	public boolean isSelected(BlockPos pos);
 	
+	public List<Selection> getSelectionList();
+	
+	//Broken used only by onDrawBlockHightlight
 	public Selection firstSelection();
 
 	public Selection lastSelection();
 	
+	//TODO this is messy.
 	public VoxelSet voxelSet();
 
-	public List<Selection> getSelectionList();
+	//Below used only by AbstractSpellSelect -----------------------------
+	//TODO Moveto AbstractSpellSelect
 
 	public List<BlockPos> getGrownSelections();
 

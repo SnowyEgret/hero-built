@@ -16,26 +16,32 @@ import ds.plato.api.IWorld;
 
 public class StubWorldTest extends PlatoTest {
 
-	IWorld world;
+	IWorld w;
 
 	@Before
 	public void setUp() {
 		super.setUp();
-		world = newStubWorld();
+		w = newStubWorld();
 	}
 
 	@Test
 	public void setBlock_getBlock() {
 		Block blockSet = sand;
-		world.setBlock(BlockPos.ORIGIN, blockSet);
-		Block blockGot = world.getBlock(BlockPos.ORIGIN);
-		//int metadata = world.getMetadata(BlockPos.ORIGIN);
+		w.setBlock(p0, blockSet);
+		Block blockGot = w.getBlock(p0);
 		assertEquals(blockSet, blockGot);
 	}
 
 	@Test
 	public void getBlock_atPointNotSetReturnsAir() {
-		assertEquals(air, world.getBlock(BlockPos.ORIGIN));
+		assertEquals(air, w.getBlock(p0));
+	}
+
+	@Test
+	public void setBlock_twice() {
+		w.setBlock(p0, sand);
+		w.setBlock(p0, dirt);
+		assertEquals(dirt, w.getBlock(p0));
 	}
 
 //	@Test

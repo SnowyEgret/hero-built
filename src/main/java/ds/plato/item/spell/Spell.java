@@ -60,17 +60,12 @@ public abstract class Spell extends ItemBase implements ISpell {
 		if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) && selectionManager.size() != 0) {
 			
 			// Standard selection behavior. Shift replaces the current selection set with a region.
+			//FIXME firstSelection and lastSelection is broken
 			BlockPos lastPos = selectionManager.lastSelection().getPos();
 			Iterator i = BlockPos.getAllInBox(lastPos, pos).iterator();
 			while (i.hasNext()) {
 				selectionManager.select(w, (BlockPos)i.next());
 			}
-//			Point3d lastPointSelected = selectionManager.lastSelection().point3d();
-//			selectionManager.clearSelections(w);
-//			Box b = new Box(lastPointSelected, new Point3d(pos.getX(), pos.getY(), pos.getZ()), false);
-//			for (Point3i p : b.voxelize()) {
-//				selectionManager.select(w, new BlockPos(p.x, p.y, p.z));
-//			}
 
 		} else if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
 			// Control adds or subtracts a selection to the current selection set
@@ -136,7 +131,6 @@ public abstract class Spell extends ItemBase implements ISpell {
 
 	@Override
 	public void reset() {
-		// System.out.println("[Spell.reset] resetting");
 		pickManager.clearPicks();
 		pickManager.reset(numPicks);
 		message = null;

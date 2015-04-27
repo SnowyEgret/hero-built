@@ -23,7 +23,7 @@ public class SpellHollow extends AbstractSpellTransform {
 	}
 
 	@Override
-	public void invoke(IWorld world, HotbarSlot...slotEntries) {
+	public void invoke(IWorld world, HotbarSlot...slots) {
 		transformSelections(world, new ITransform() {
 			VoxelSet selections = selectionManager.voxelSet();
 

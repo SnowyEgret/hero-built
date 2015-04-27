@@ -30,6 +30,24 @@ public class SelectionManager implements ISelect {
 		this.blockSelected = blockSelected;
 	}
 
+	@Override
+	public Selection select(IWorld world, BlockPos pos) {
+		Block prevBlock = world.getBlock(pos);
+		//int metadata = world.getMetadata(pos);
+		world.setBlock(pos, blockSelected);
+		Selection s = new Selection(pos, prevBlock);
+		selections.put(s.getPos(), s);
+		//TODO Remove this field and pass world to delelect also
+		//this.world = world;
+		return s;
+	}
+
+	@Override
+	public void deselect(IWorld world, Selection selection) {
+		world.setBlock(selection.getPos(), selection.getBlock());
+		selections.remove(selection.getPos());
+	}
+
 	// Returns a copy to avoid concurrent modification
 	@Override
 	public Iterable<Selection> getSelections() {
@@ -45,37 +63,30 @@ public class SelectionManager implements ISelect {
 	}
 
 	@Override
-	public Selection select(IWorld world, BlockPos pos) {
-		Block prevBlock = world.getBlock(pos);
-		//int metadata = world.getMetadata(pos);
-		world.setBlock(pos, blockSelected);
-		Selection s = new Selection(pos, prevBlock);
-		selections.put(s.getPos(), s);
-		//TODO Remove this field and pass world to delelect also
-		//this.world = world;
-		return s;
-	}
-
-//	@Override
-//	public void deselect(BlockPos pos) {
-//		deselect(getSelection(pos));
-//	}
-
-	@Override
-	public void deselect(IWorld world, Selection selection) {
-		world.setBlock(selection.getPos(), selection.getBlock());
-		selections.remove(selection.getPos());
+	public void reselect(IWorld world) {
+		if (lastSelections != null) {
+			for (BlockPos pos : lastSelections) {
+				select(world, pos);
+			}
+		}
 	}
 
 	@Override
 	public void clearSelections(IWorld world) {
 		if (!selections.isEmpty()) {
 			lastSelections = Lists.newArrayList(selections.keySet());
-			for (Selection s : selections.values()) {
+			//getSelections returns a copy so that it is not modified by deselect
+			for (Selection s : getSelections()) {
 				deselect(world, s);
 			}
 		}
 		grownSelections.clear();
+	}
+
+	//TODO Does not set a block so doesn't need world. Only called by SetBlock.set(). Is there another way?
+	@Override
+	public Selection removeSelection(BlockPos pos) {
+		return selections.remove(pos);
 	}
 
 	@Override
@@ -88,27 +99,6 @@ public class SelectionManager implements ISelect {
 		return selections.containsKey(pos);
 	}
 
-//	@Override
-//	public Collection<BlockPos> selectedPoints() {
-//		return selections.keySet();
-//	}
-
-	//TODO Does not set a block so doesn't need world. Only called by SetBlock.set(). Is there another way?
-	@Override
-	public Selection removeSelection(BlockPos pos) {
-		return selections.remove(pos);
-	}
-
-	@Override
-	public VoxelSet voxelSet() {
-		VoxelSet set = new VoxelSet();
-		for (BlockPos pos : selections.keySet()) {
-			set.add(new Point3i(pos.getX(), pos.getY(), pos.getZ()));
-		}
-		return set;
-		///return new VoxelSet(selections.keySet());
-	}
-	
 	@Override
 	public List<Selection> getSelectionList() {
 		List<Selection> l = new ArrayList<>();
@@ -121,6 +111,7 @@ public class SelectionManager implements ISelect {
 		if (selections.isEmpty()) {
 			return null;
 		}
+		//FIXME getSelectionList does not return an ordered list
 		return getSelectionList().get(0);
 	}
 
@@ -135,14 +126,15 @@ public class SelectionManager implements ISelect {
 	}
 
 	@Override
-	public void reselect(IWorld world) {
-		if (lastSelections != null) {
-			for (BlockPos pos : lastSelections) {
-				select(world, pos);
-			}
+	public VoxelSet voxelSet() {
+		VoxelSet set = new VoxelSet();
+		for (BlockPos pos : selections.keySet()) {
+			set.add(new Point3i(pos.getX(), pos.getY(), pos.getZ()));
 		}
+		return set;
+		///return new VoxelSet(selections.keySet());
 	}
-
+	
 	@Override
 	public List<BlockPos> getGrownSelections() {
 		if (grownSelections.isEmpty()) {
@@ -169,10 +161,5 @@ public class SelectionManager implements ISelect {
 
 //	private String idOf(Object o) {
 //		return o.getClass().getSimpleName() + "@" + Integer.toHexString(o.hashCode());
-//	}
-
-//	//Used only by SelectionManagerTest.
-//	void add(Selection s) {
-//		selections.put(s.getPos(), s);
 //	}
 }

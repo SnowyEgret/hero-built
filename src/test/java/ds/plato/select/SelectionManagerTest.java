@@ -86,9 +86,24 @@ public class SelectionManagerTest extends PlatoTest {
 	}
 
 	@Test
-	public void isSelected() {
-		m.select(w, p1);
-		assertThat(m.isSelected(p1), is(true));
+	public void clearSelections() {
+		Iterable ps = BlockPos.getAllInBox(p0, p3);
+		for (Object o : ps) {
+			m.select(w, ((BlockPos)o));
+		}
+		m.clearSelections(w);
+		for (Object o : ps) {
+			assertEquals(w.getBlock(((BlockPos)o)), air);
+		}
+	}
+
+	@Test
+	public void removeSelection() {
+		Selection s = m.select(w, p1);
+		m.select(w, p2);
+		m.select(w, p3);
+		assertThat(m.removeSelection(p1), is(s));
+		assertThat(m.size(), is(2));
 	}
 
 	@Test
@@ -100,22 +115,36 @@ public class SelectionManagerTest extends PlatoTest {
 	}
 
 	@Test
-	public void clearSelections() {
+	public void isSelected() {
 		m.select(w, p1);
-		m.select(w, p2);
-		m.select(w, p3);
-		m.clearSelections(w);
-		assertThat(m.size(), is(0));
+		assertThat(m.isSelected(p1), is(true));
 	}
 
-//	@Test
-//	public void removeSelection() {
-//		Selection[] ss = arrayOfThreeSelections();
-//		m.addSelection(ss[0]);
-//		m.addSelection(ss[1]);
-//		m.addSelection(ss[2]);
-//		assertThat(m.removeSelection(1, 0, 0), is(ss[1]));
-//		assertThat(m.size(), is(2));
-//	}
+	@Test
+	public void getSelectionList_isOrdered() {
+		Selection s0 = m.select(w, p0);
+		Selection s1 = m.select(w, p1);
+		Selection s2 = m.select(w, p2);
+		List<Selection> l = m.getSelectionList();
+		assertThat(l.get(0), is(s0));
+		assertThat(l.get(1), is(s1));
+		assertThat(l.get(2), is(s2));
+	}
+
+	@Test
+	public void firstSelection() {
+		Selection s = m.select(w, p1);
+		m.select(w, p2);
+		m.select(w, p3);
+		assertThat(m.firstSelection(), is(s));
+	}
+
+	@Test
+	public void lastSelection() {
+		m.select(w, p1);
+		m.select(w, p2);
+		Selection s = m.select(w, p3);
+		assertThat(m.firstSelection(), is(s));
+	}
 
 }
