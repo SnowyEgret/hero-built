@@ -48,6 +48,11 @@ public class SelectionManager implements ISelect {
 		selections.remove(selection.getPos());
 	}
 
+	@Override
+	public void deselect(IWorld world, BlockPos pos) {
+		deselect(world, getSelection(pos));
+	}
+
 	// Returns a copy to avoid concurrent modification
 	@Override
 	public Iterable<Selection> getSelections() {

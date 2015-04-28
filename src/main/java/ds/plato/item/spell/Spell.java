@@ -57,31 +57,30 @@ public abstract class Spell extends ItemBase implements ISpell {
 		IPlayer player = Player.getPlayer();
 		IWorld w = player.getWorld();
 
+		// Standard selection behavior. Shift replaces the current selection set with a region.
+		//FIXME firstSelection and lastSelection is broken
 		if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) && selectionManager.size() != 0) {
-			
-			// Standard selection behavior. Shift replaces the current selection set with a region.
-			//FIXME firstSelection and lastSelection is broken
 			BlockPos lastPos = selectionManager.lastSelection().getPos();
-			Iterator i = BlockPos.getAllInBox(lastPos, pos).iterator();
-			while (i.hasNext()) {
-				selectionManager.select(w, (BlockPos)i.next());
+			for (Object o : BlockPos.getAllInBox(lastPos, pos)) {
+				selectionManager.select(w, (BlockPos)o);
 			}
-
-		} else if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
-			// Control adds or subtracts a selection to the current selection set
-			Selection s = selectionManager.getSelection(pos);
-			System.out.println("[Spell.onMouseClickLeft] s=" + s);
-			if (s == null) {
-				selectionManager.select(w, pos);
-			} else {
-				selectionManager.deselect(w, s);
-			}
-
-		} else {
-			// Replaces the current selection set with a selection
-			selectionManager.clearSelections(w);
-			selectionManager.select(w, pos);
+			return;
 		}
+		
+		// Control adds or subtracts a selection to the current selection set
+		if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
+			System.out.println("pos=" + pos);
+			if (selectionManager.isSelected(pos)) {
+				selectionManager.deselect(w, pos);
+			} else {
+				selectionManager.select(w, pos);
+			}
+			return;
+		}
+		
+		// Replace the current selection set with a selection
+		selectionManager.clearSelections(w);
+		selectionManager.select(w, pos);
 	}
 	
 	@Override

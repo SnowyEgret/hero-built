@@ -13,6 +13,8 @@ public interface ISelect {
 
 	public Selection select(IWorld world, BlockPos pos);
 
+	public void deselect(IWorld world, BlockPos pos);
+	
 	public void deselect(IWorld world, Selection selection);
 
 	public Iterable<Selection> getSelections();
