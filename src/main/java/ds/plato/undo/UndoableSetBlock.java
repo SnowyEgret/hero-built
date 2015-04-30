@@ -9,18 +9,18 @@ import ds.plato.api.IWorld;
 import ds.plato.select.Selection;
 import ds.plato.util.StringUtils;
 
-public class SetBlock implements IUndoable {
+public class UndoableSetBlock implements IUndoable {
 
 	IWorld world;
 	ISelect selectionManager;
 	BlockPos pos;
 	Block block, prevBlock;
 
-	public SetBlock(IWorld world, ISelect selectionManager, Selection s) {
+	public UndoableSetBlock(IWorld world, ISelect selectionManager, Selection s) {
 		this(world, selectionManager, s.getPos(), s.getBlock());
 	}
 
-	public SetBlock(IWorld world, ISelect selectionManager, BlockPos pos, Block block) {
+	public UndoableSetBlock(IWorld world, ISelect selectionManager, BlockPos pos, Block block) {
 		this.world = world;
 		this.selectionManager = selectionManager;
 		this.pos = pos;
@@ -28,7 +28,7 @@ public class SetBlock implements IUndoable {
 		prevBlock = world.getBlock(pos);
 	}
 
-	public SetBlock set() {
+	public UndoableSetBlock set() {
 
 		Selection s = selectionManager.getSelection(pos);
 		if (s != null) {
@@ -40,7 +40,8 @@ public class SetBlock implements IUndoable {
 		if (block instanceof BlockAir) {
 			//We do not want a selection pointing to a newly set air block.
 			//This is the only place removeSelection is called
-			selectionManager.removeSelection(pos);
+			//selectionManager.removeSelection(pos);
+			System.out.println("Should we have selected block air?");
 		} else {
 			selectionManager.select(world, pos);
 		}
@@ -79,7 +80,7 @@ public class SetBlock implements IUndoable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		SetBlock other = (SetBlock) obj;
+		UndoableSetBlock other = (UndoableSetBlock) obj;
 		if (block == null) {
 			if (other.block != null)
 				return false;

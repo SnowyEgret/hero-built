@@ -97,14 +97,14 @@ public class SelectionManagerTest extends PlatoTest {
 		}
 	}
 
-	@Test
-	public void removeSelection() {
-		Selection s = m.select(w, p1);
-		m.select(w, p2);
-		m.select(w, p3);
-		assertThat(m.removeSelection(p1), is(s));
-		assertThat(m.size(), is(2));
-	}
+//	@Test
+//	public void removeSelection() {
+//		Selection s = m.select(w, p1);
+//		m.select(w, p2);
+//		m.select(w, p3);
+//		assertThat(m.removeSelection(p1), is(s));
+//		assertThat(m.size(), is(2));
+//	}
 
 	@Test
 	public void size() {

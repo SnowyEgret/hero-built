@@ -22,7 +22,7 @@ import ds.plato.item.spell.Modifier;
 import ds.plato.item.spell.select.Shell;
 import ds.plato.item.spell.transform.AbstractSpellTransform;
 import ds.plato.select.Selection;
-import ds.plato.undo.SetBlock;
+import ds.plato.undo.UndoableSetBlock;
 import ds.plato.undo.Transaction;
 
 public class SpellThicken extends AbstractSpellTransform {
@@ -47,7 +47,7 @@ public class SpellThicken extends AbstractSpellTransform {
 		selectionManager.clearSelections(world);
 		Transaction t = undoManager.newTransaction();
 		for (BlockPos p : points) {
-			t.add(new SetBlock(world, selectionManager, p, first.getBlock()).set());
+			t.add(new UndoableSetBlock(world, selectionManager, p, first.getBlock()).set());
 		}
 		t.commit();
 		pickManager.clearPicks();

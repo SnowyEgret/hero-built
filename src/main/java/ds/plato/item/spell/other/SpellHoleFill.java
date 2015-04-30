@@ -16,7 +16,7 @@ import ds.plato.item.spell.Modifier;
 import ds.plato.item.spell.Spell;
 import ds.plato.item.spell.select.Shell;
 import ds.plato.select.Selection;
-import ds.plato.undo.SetBlock;
+import ds.plato.undo.UndoableSetBlock;
 import ds.plato.undo.Transaction;
 
 public class SpellHoleFill extends Spell {
@@ -44,9 +44,9 @@ public class SpellHoleFill extends Spell {
 				if (b == Blocks.air || b == Blocks.water) {
 					if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
 						HotbarSlot e = slotEntries[0];
-						t.add(new SetBlock(world, selectionManager, p, e.block).set());
+						t.add(new UndoableSetBlock(world, selectionManager, p, e.block).set());
 					} else {
-						t.add(new SetBlock(world, selectionManager, p, s.getBlock()).set());
+						t.add(new UndoableSetBlock(world, selectionManager, p, s.getBlock()).set());
 					}
 				}
 			}

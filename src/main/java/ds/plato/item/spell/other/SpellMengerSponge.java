@@ -16,7 +16,7 @@ import ds.plato.api.IUndo;
 import ds.plato.api.IWorld;
 import ds.plato.core.HotbarSlot;
 import ds.plato.item.spell.Spell;
-import ds.plato.undo.SetBlock;
+import ds.plato.undo.UndoableSetBlock;
 import ds.plato.undo.Transaction;
 
 public class SpellMengerSponge extends Spell {
@@ -37,7 +37,7 @@ public class SpellMengerSponge extends Spell {
 		pickManager.clearPicks();
 		Transaction t = undoManager.newTransaction();
 		for (BlockPos v : pointsToDelete) {
-			t.add(new SetBlock(world, selectionManager, v, Blocks.air).set());
+			t.add(new UndoableSetBlock(world, selectionManager, v, Blocks.air).set());
 		}
 		t.commit();
 	}

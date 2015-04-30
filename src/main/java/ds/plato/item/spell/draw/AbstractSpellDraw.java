@@ -13,7 +13,7 @@ import ds.plato.api.ISelect;
 import ds.plato.api.IUndo;
 import ds.plato.api.IWorld;
 import ds.plato.item.spell.Spell;
-import ds.plato.undo.SetBlock;
+import ds.plato.undo.UndoableSetBlock;
 import ds.plato.undo.Transaction;
 import ds.plato.util.StringUtils;
 
@@ -23,7 +23,6 @@ public abstract class AbstractSpellDraw extends Spell {
 		super(numPicks, undoManager, selectionManager, pickManager);
 	}
 
-	//protected void draw(IDrawable drawable, IWorld world, Block block, int metadata) {
 	protected void draw(IDrawable drawable, IWorld world, Block block) {
 		draw(drawable, world, block, false);
 	}
@@ -35,7 +34,7 @@ public abstract class AbstractSpellDraw extends Spell {
 			voxels = voxels.shell();
 		}
 		for (Point3i p : voxels) {
-			t.add(new SetBlock(world, selectionManager, new BlockPos(p.x, p.y, p.z), block).set());
+			t.add(new UndoableSetBlock(world, selectionManager, new BlockPos(p.x, p.y, p.z), block).set());
 		}
 		t.commit();
 		

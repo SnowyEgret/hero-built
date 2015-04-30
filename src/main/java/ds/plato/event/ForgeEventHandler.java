@@ -52,7 +52,6 @@ public class ForgeEventHandler {
 					p = s.getPos();
 				}
 			}
-			System.out.println(p);
 			if (p != null) {
 				Vec3 d = e.target.hitVec;
 				overlay.setDisplacement(p.subtract(new Vec3i(d.xCoord, d.yCoord, d.zCoord)));

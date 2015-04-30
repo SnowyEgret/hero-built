@@ -18,7 +18,7 @@ import ds.plato.core.HotbarSlot;
 import ds.plato.item.spell.Spell;
 import ds.plato.item.spell.select.Shell;
 import ds.plato.pick.Pick;
-import ds.plato.undo.SetBlock;
+import ds.plato.undo.UndoableSetBlock;
 import ds.plato.undo.Transaction;
 
 public class SpellHoleDrain extends Spell {
@@ -59,7 +59,7 @@ public class SpellHoleDrain extends Spell {
 		recursivelyDrainWater(world);
 		Transaction t = undoManager.newTransaction();
 		for (BlockPos p : points) {
-			t.add(new SetBlock(world, selectionManager, p, Blocks.air).set());
+			t.add(new UndoableSetBlock(world, selectionManager, p, Blocks.air).set());
 		}
 		t.commit();
 		pickManager.clearPicks();

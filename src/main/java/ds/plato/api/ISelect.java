@@ -25,7 +25,7 @@ public interface ISelect {
 
 	public void clearSelections(IWorld world);
 
-	public Selection removeSelection(BlockPos pos);
+	//public Selection removeSelection(BlockPos pos);
 
 	public int size();
 
@@ -33,7 +33,6 @@ public interface ISelect {
 	
 	public List<Selection> getSelectionList();
 	
-	//Broken used only by onDrawBlockHightlight
 	public Selection firstSelection();
 
 	public Selection lastSelection();

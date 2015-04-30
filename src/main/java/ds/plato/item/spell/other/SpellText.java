@@ -24,7 +24,7 @@ import ds.plato.core.HotbarSlot;
 import ds.plato.gui.ITextSetable;
 import ds.plato.item.spell.Spell;
 import ds.plato.pick.Pick;
-import ds.plato.undo.SetBlock;
+import ds.plato.undo.UndoableSetBlock;
 import ds.plato.undo.Transaction;
 
 public class SpellText extends Spell implements ITextSetable {
@@ -127,7 +127,7 @@ public class SpellText extends Spell implements ITextSetable {
 		selectionManager.clearSelections(world);
 		Transaction t = undoManager.newTransaction();
 		for (BlockPos p : points) {
-			t.add(new SetBlock(world, selectionManager, p, slotEntries[0].block).set());
+			t.add(new UndoableSetBlock(world, selectionManager, p, slotEntries[0].block).set());
 		}
 		t.commit();
 		selectionManager.clearSelections(world);

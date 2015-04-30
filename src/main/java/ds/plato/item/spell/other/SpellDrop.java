@@ -13,7 +13,7 @@ import ds.plato.core.HotbarSlot;
 import ds.plato.item.spell.Modifier;
 import ds.plato.item.spell.Spell;
 import ds.plato.select.Selection;
-import ds.plato.undo.SetBlock;
+import ds.plato.undo.UndoableSetBlock;
 import ds.plato.undo.Transaction;
 
 public class SpellDrop extends Spell {
@@ -40,13 +40,13 @@ public class SpellDrop extends Spell {
 				if (fill || nextBlockDown != Blocks.air) {
 //					transaction.add(new SetBlock(world, selectionManager, s.x, s.y - drop, s.z, s.block, s.metadata)
 //					.set());
-					transaction.add(new SetBlock(world, selectionManager, s.getPos().add(0, -drop, 0), s.getBlock()).set());
+					transaction.add(new UndoableSetBlock(world, selectionManager, s.getPos().add(0, -drop, 0), s.getBlock()).set());
 				}
 				b = nextBlockDown;
 			}
 			selectionManager.deselect(world, s);
 			if (deleteOriginal) {
-				transaction.add(new SetBlock(world, selectionManager, s.getPos(), Blocks.air).set());
+				transaction.add(new UndoableSetBlock(world, selectionManager, s.getPos(), Blocks.air).set());
 			}
 		}
 		transaction.commit();

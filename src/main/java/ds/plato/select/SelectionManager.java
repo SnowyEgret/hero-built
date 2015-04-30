@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.vecmath.Point3i;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockAir;
 import net.minecraft.util.BlockPos;
 
 import com.google.common.collect.Lists;
@@ -31,11 +32,13 @@ public class SelectionManager implements ISelect {
 	@Override
 	public Selection select(IWorld world, BlockPos pos) {
 		Block prevBlock = world.getBlock(pos);
+		//Policy is not to select air
+		if (prevBlock instanceof BlockAir) {
+			return null;
+		}
 		world.setBlock(pos, blockSelected);
 		Selection s = new Selection(pos, prevBlock);
 		selections.put(s.getPos(), s);
-		//TODO Remove this field and pass world to delelect also
-		//this.world = world;
 		return s;
 	}
 
@@ -85,10 +88,10 @@ public class SelectionManager implements ISelect {
 	}
 
 	//TODO Does not set a block so doesn't need world. Only called by SetBlock.set(). Is there another way?
-	@Override
-	public Selection removeSelection(BlockPos pos) {
-		return selections.remove(pos);
-	}
+//	@Override
+//	public Selection removeSelection(BlockPos pos) {
+//		return selections.remove(pos);
+//	}
 
 	@Override
 	public int size() {
@@ -121,8 +124,6 @@ public class SelectionManager implements ISelect {
 		if (selections.isEmpty()) {
 			return null;
 		}
-		// FIXME going out of bounds using ConcurrentHashMap when the selections are being deleted
-		// onDrawBlockHightlight using firstSelection() instead
 		return getSelectionList().get(selections.size() - 1);
 	}
 

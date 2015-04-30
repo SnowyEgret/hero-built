@@ -14,7 +14,7 @@ import ds.plato.api.IUndo;
 import ds.plato.api.IWorld;
 import ds.plato.item.spell.Spell;
 import ds.plato.select.Selection;
-import ds.plato.undo.SetBlock;
+import ds.plato.undo.UndoableSetBlock;
 import ds.plato.undo.Transaction;
 
 public abstract class AbstractSpellMatrix extends Spell {
@@ -31,10 +31,10 @@ public abstract class AbstractSpellMatrix extends Spell {
 			Point3d p = s.point3d();
 			matrix.transform(p);
 			if (deleteInitialBlocks) {
-				t.add(new SetBlock(world, selectionManager, s.getPos(), Blocks.air).set());
+				t.add(new UndoableSetBlock(world, selectionManager, s.getPos(), Blocks.air).set());
 			}
 			newBlockLocations.add(p);
-			t.add(new SetBlock(world, selectionManager, new BlockPos(p.x, p.y, p.z), s.getBlock()).set());
+			t.add(new UndoableSetBlock(world, selectionManager, new BlockPos(p.x, p.y, p.z), s.getBlock()).set());
 		}
 		t.commit();
 		
