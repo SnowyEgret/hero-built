@@ -3,6 +3,7 @@ package ds.plato.event;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.Vec3;
+import net.minecraft.util.Vec3i;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -33,10 +34,12 @@ public class ForgeEventHandler {
 		this.overlay = overlay;
 	}
 
+	//When the cursor falls on a new block update the overlay so that when it is rendered
+	//in onRenderGameOverlayEvent below it will show the distance from the first pick or selection.
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void onDrawBlockHightlight(DrawBlockHighlightEvent e) {
-
+		//Seems we are only getting this on client side		
 		if (spell != null) {
 			BlockPos p = null;
 			Pick pick = pickManager.lastPick();
@@ -49,14 +52,16 @@ public class ForgeEventHandler {
 					p = s.getPos();
 				}
 			}
+			System.out.println(p);
 			if (p != null) {
 				Vec3 d = e.target.hitVec;
-				overlay.setDisplacement(d);
+				overlay.setDisplacement(p.subtract(new Vec3i(d.xCoord, d.yCoord, d.zCoord)));
 			}
 		}
 	}
 
-	@SideOnly(Side.CLIENT)
+	//On this event the player may have changed spells on a staff. Reset picking on the spell and update field spell.
+	@SideOnly(Side.CLIENT)	
 	@SubscribeEvent
 	public void onLivingUpdate(LivingUpdateEvent e) {
 		World w = e.entity.worldObj;
@@ -68,6 +73,7 @@ public class ForgeEventHandler {
 			if (s == null) {
 				spell = null;
 			} else {
+				//If the spell has changed reset it.
 				if (s != spell) {
 					spell = s;
 					s.reset();

@@ -54,7 +54,7 @@ public class KeyHandler {
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void onKeyInput(KeyInputEvent event) {
-
+		
 		IPlayer player = Player.getPlayer();
 		IWorld w = player.getWorld();
 
@@ -68,8 +68,8 @@ public class KeyHandler {
 					}
 				}
 			} catch (Exception e) {
-				// TODO Log to chat
-				Plato.log.info("[KeyInputEventHandler.onKeyInput]" + e.getMessage());
+				// TODO Log to overlay. Create info line in overlay
+				System.out.println(e.getMessage());
 			}
 		}
 
@@ -80,22 +80,14 @@ public class KeyHandler {
 				}
 			} catch (Exception e) {
 				// TODO Log to overlay. Create info line in overlay
-				Plato.log.info("[KeyInputEventHandler.onKeyInput]" + e.getMessage());
+				System.out.println(e.getMessage());
 			}
 		}
 
 		if (keyBindings.get("toggle").isPressed()) {
-			ItemStack stack = Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem();
+			ItemStack stack = player.getHeldItemStack();
 			if (stack != null) {
 				Item i = stack.getItem();
-				//1.8
-//				if (i instanceof OldStaff) {
-//					if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
-//						((OldStaff) i).previousSpell();
-//					} else {
-//						((OldStaff) i).nextSpell();
-//					}
-//				}
 				if (i instanceof Staff) {
 					if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
 						((Staff) i).previousSpell(stack);
@@ -141,27 +133,24 @@ public class KeyHandler {
 		if (event.isCancelable())
 			event.setCanceled(true);
 	}
+	
+	//Private ------------------------------------------------------------------------------------
 
 	private void copy(IPlayer player, IWorld w, int lr, int ud) {
 		pickManager.clearPicks();
 		pickManager.reset(2);
-		//pickManager.pick(w, 0, 0, 0, 0);
 		pickManager.pick(w, new BlockPos(0,0,0), null);
 		switch (player.getDirection()) {
 		case NORTH:
-			//pickManager.pick(w, lr, 0, ud, 0);
 			pickManager.pick(w, new BlockPos(lr,0,ud), null);
 			break;
 		case SOUTH:
-			//pickManager.pick(w, -lr, 0, -ud, 0);
 			pickManager.pick(w, new BlockPos(-lr,0,-ud), null);
 			break;
 		case EAST:
-			//pickManager.pick(w, -ud, 0, lr, 0);
 			pickManager.pick(w, new BlockPos(-ud,0,lr), null);
 			break;
 		case WEST:
-			//pickManager.pick(w, ud, 0, -lr, 0);
 			pickManager.pick(w, new BlockPos(ud,0,-lr), null);
 			break;
 		}
@@ -174,8 +163,6 @@ public class KeyHandler {
 	private void copyVertical(IPlayer player, IWorld w, int d) {
 		pickManager.clearPicks();
 		pickManager.reset(2);
-		//1.8
-		pickManager.pick(w, new BlockPos(0,0,0), null);
 		pickManager.pick(w, new BlockPos(0,0,0), null);
 		new SpellCopy(undoManager, selectionManager, pickManager).invoke(w, player.getHotbar());
 		pickManager.clearPicks();

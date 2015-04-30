@@ -26,24 +26,23 @@ public abstract class Staff extends ItemBase implements IStaff {
 
 	int size = 9;
 	IPick pickManager;
-	//protected IModelCustom model;
-	private final String modelPath = "models/" + StringUtils.toCamelCase(getClass());
-	private final ResourceLocation modelLocation = new ResourceLocation("plato", modelPath + ".obj");
-	private final ResourceLocation textureLocation = new ResourceLocation("plato", modelPath + ".png");
+//	private final String modelPath = "models/" + StringUtils.toCamelCase(getClass());
+//	private final ResourceLocation modelLocation = new ResourceLocation("plato", modelPath + ".obj");
+//	private final ResourceLocation textureLocation = new ResourceLocation("plato", modelPath + ".png");
 	
 	protected Staff(IPick pickManager) {
 		this.pickManager = pickManager;
 	}
 
-@Override
+	//Passes call on to current spell
+	@Override
 	public void onMouseClickLeft(ItemStack stack, BlockPos pos, EnumFacing sideHit) {
 		if (!isEmpty(stack)) {
 			getSpell(stack).onMouseClickLeft(stack, pos, sideHit);
 		}
 	}
 
-
-	// Adds information to rollover in creative tab
+	//Adds information to rollover in creative tab
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List rollOver, boolean par4) {
 		if (isEmpty(stack)) {
@@ -56,18 +55,22 @@ public abstract class Staff extends ItemBase implements IStaff {
 	@Override
 	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side,
 			float sx, float sy, float sz) {
-		if (!world.isRemote && Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
-			player.openGui(Plato.instance, 3, world, 0, 0, 0);
-			// } else if (!world.isRemote && !isEmpty(stack)) {
-			// } else if (world.isRemote && !isEmpty(stack)) {
-			// getSpell(stack).onMouseClickRight(stack, x, y, z, side);
-			// }
-		} else if (!world.isRemote && !isEmpty(stack)) {
-			Spell s = getSpell(stack);
-			System.out.println("s=" + s);
-			s.onItemUse(stack, player, world, pos, side, sx, sy, sz);
+		
+		if(world.isRemote) {
+			return false;
 		}
-		return true;
+		//Open staff gui if space in down
+		if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
+			player.openGui(Plato.instance, 3, world, 0, 0, 0);
+			return true;
+		}
+		//Get the current spell and call use it
+		if (!isEmpty(stack)) {
+			Spell s = getSpell(stack);
+			s.onItemUse(stack, player, world, pos, side, sx, sy, sz);
+			return true;
+		}
+		return false;
 	}
 	
 	// IStaff ----------------------------------------------------------------------
@@ -76,13 +79,13 @@ public abstract class Staff extends ItemBase implements IStaff {
 	public Spell getSpell(ItemStack stack) {
 		if (isEmpty(stack)) {
 			return null;
-		} else {
-			Spell s = getSpellAtIndex(stack, getOrdinal(stack));
-			if (s == null) {
-				s = nextSpell(stack);
-			}
-			return s;
 		}
+		Spell s = getSpellAtIndex(stack, getOrdinal(stack));
+		//System.out.println(s);
+		if (s == null) {
+			s = nextSpell(stack);
+		}
+		return s;
 	}
 
 	@Override
@@ -102,7 +105,6 @@ public abstract class Staff extends ItemBase implements IStaff {
 				break;
 			}
 		}
-		// System.out.println("[StaffWood.nextSpell] s=" + s);
 		return s;
 	}
 
@@ -114,7 +116,6 @@ public abstract class Staff extends ItemBase implements IStaff {
 				setOrdinal(stack, size - 1);
 			} else {
 				incrementOrdinal(stack, -1);
-
 			}
 			s = getSpellAtIndex(stack, getOrdinal(stack));
 			if (s == null) {
@@ -185,6 +186,7 @@ public abstract class Staff extends ItemBase implements IStaff {
 	private NBTTagCompound getTag(ItemStack stack) {
 		NBTTagCompound t = stack.getTagCompound();
 		if (t == null) {
+			System.out.println("Tag null - created a new one");
 			t = new NBTTagCompound();
 			stack.setTagCompound(t);
 		}

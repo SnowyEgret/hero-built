@@ -49,7 +49,6 @@ public class Player implements IPlayer {
 		} else {
 			w = mc.theWorld;
 		}
-		// System.out.println("[Player.getWorld] w=" + w);
 		return new WorldWrapper(w);
 	}
 
@@ -86,7 +85,6 @@ public class Player implements IPlayer {
 				}
 
 				if (b != null) {
-					//HotbarSlot slot = new HotbarSlot(b, metadata, i + 1);
 					HotbarSlot slot = new HotbarSlot(b, i + 1);
 					slots.add(slot);
 				}
@@ -161,8 +159,6 @@ public class Player implements IPlayer {
 			Item item = stack.getItem();
 			if (item instanceof Spell) {
 				spell = (ISpell) item;
-//			} else if (item instanceof OldStaff) {
-//				spell = ((OldStaff) item).getSpell();
 			} else if (item instanceof Staff) {
 				spell = ((Staff) item).getSpell(stack);
 			}

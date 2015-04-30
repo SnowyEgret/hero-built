@@ -57,7 +57,7 @@ public abstract class Spell extends ItemBase implements ISpell {
 		IPlayer player = Player.getPlayer();
 		IWorld w = player.getWorld();
 
-		// Standard selection behavior. Shift replaces the current selection set with a region.
+		//Shift replaces the current selections with a region.
 		//FIXME firstSelection and lastSelection is broken
 		if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) && selectionManager.size() != 0) {
 			BlockPos lastPos = selectionManager.lastSelection().getPos();
@@ -67,7 +67,7 @@ public abstract class Spell extends ItemBase implements ISpell {
 			return;
 		}
 		
-		// Control adds or subtracts a selection to the current selection set
+		//Control adds or subtracts a selection to the current selections
 		if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
 			System.out.println("pos=" + pos);
 			if (selectionManager.isSelected(pos)) {
@@ -78,7 +78,7 @@ public abstract class Spell extends ItemBase implements ISpell {
 			return;
 		}
 		
-		// Replace the current selection set with a selection
+		//No modifier replaces the current selections with a new selection
 		selectionManager.clearSelections(w);
 		selectionManager.select(w, pos);
 	}
@@ -87,15 +87,15 @@ public abstract class Spell extends ItemBase implements ISpell {
 	public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World world, 
 			BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ) {
 
-		if (!world.isRemote) {
-			IWorld w = new WorldWrapper(world);
-			pickManager.pick(w, pos, side);
-			if (pickManager.isFinishedPicking()) {
-				invoke(w, Player.getPlayer().getHotbar());
-			}
-			return true;
+		if (world.isRemote) {
+			return false;
 		}
-		return false;
+		IWorld w = new WorldWrapper(world);
+		pickManager.pick(w, pos, side);
+		if (pickManager.isFinishedPicking()) {
+			invoke(w, Player.getPlayer().getHotbar());
+		}
+		return true;
 	}
 
 	@Override
