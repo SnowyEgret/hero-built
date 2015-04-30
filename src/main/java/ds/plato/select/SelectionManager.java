@@ -1,10 +1,9 @@
 package ds.plato.select;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import javax.vecmath.Point3i;
 
@@ -16,12 +15,11 @@ import com.google.common.collect.Lists;
 import ds.geom.VoxelSet;
 import ds.plato.api.ISelect;
 import ds.plato.api.IWorld;
+import ds.plato.core.Player;
 
 public class SelectionManager implements ISelect {
 
-	private final Map<BlockPos, Selection> selections = new ConcurrentHashMap<>();
-	// private final Map<Point3i, Selection> selections = new HashMap<>();
-	//private IWorld world;
+	private final Map<BlockPos, Selection> selections = new LinkedHashMap<>();
 	private Block blockSelected;
 	private List<BlockPos> lastSelections;
 	private List<BlockPos> grownSelections = new ArrayList<>();
@@ -33,7 +31,6 @@ public class SelectionManager implements ISelect {
 	@Override
 	public Selection select(IWorld world, BlockPos pos) {
 		Block prevBlock = world.getBlock(pos);
-		//int metadata = world.getMetadata(pos);
 		world.setBlock(pos, blockSelected);
 		Selection s = new Selection(pos, prevBlock);
 		selections.put(s.getPos(), s);
@@ -62,7 +59,6 @@ public class SelectionManager implements ISelect {
 	}
 
 	@Override
-	//public Selection selectionAt(int x, int y, int z) {
 	public Selection getSelection(BlockPos pos) {
 		return selections.get(pos);
 	}

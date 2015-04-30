@@ -27,6 +27,7 @@ import ds.plato.api.ISelect;
 import ds.plato.api.IUndo;
 import ds.plato.block.BlockPicked;
 import ds.plato.block.BlockSelected;
+import ds.plato.core.Player;
 import ds.plato.gui.GuiHandler;
 import ds.plato.item.spell.Spell;
 import ds.plato.item.spell.SpellLoader;
@@ -134,8 +135,7 @@ public class Plato {
 	@EventHandler
 	public void serverStopping(FMLServerStoppingEvent event) {
 		log.info("[Plato.serverStopping]");
-		//TODO pass world to clearSelections
-		selectionManager.clearSelections(null);
+		selectionManager.clearSelections(Player.getPlayer().getWorld());
 		pickManager.clearPicks();
 	}
 
@@ -143,7 +143,6 @@ public class Plato {
 		String classname = block.getClass().getSimpleName();
 		String name = classname.substring(0, 1).toLowerCase() + classname.substring(1);
 		block.setUnlocalizedName(name);
-		//block.setBlockTextureName(ID + ":" + name);
 		GameRegistry.registerBlock(block, ID + name);
 		return block;
 	}

@@ -10,15 +10,4 @@ public class BlockSelected extends Block {
 		setHardness(-1F);
 		setStepSound(soundTypeGravel);
 	}
-
-//Upgrade to 1.8
-//	@Override
-//	public boolean renderAsNormalBlock() {
-//		return false;
-//	}
-
-//	@Override
-//	public int getRenderType() {
-//		return BlockSelectedRenderer.id;
-//	}
 }

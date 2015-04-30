@@ -18,8 +18,6 @@ import ds.plato.item.staff.Staff;
 public class Overlay {
 
 	private ISelect selectionManager;
-	//1.8 Seems Minecraft has a Vec3 class
-	//private Vector3d displacement;
 	private Vec3i displacement;
 	private final int white = 0xffffff;
 	private final int red = 0xffaaaa;
@@ -39,8 +37,6 @@ public class Overlay {
 	public void drawSpell(ISpell spell) {
 		int x = 10;
 		int y = x;
-		//1.8
-		//FontRenderer r = Minecraft.getMinecraft().fontRenderer;
 		FontRenderer r = Minecraft.getMinecraft().fontRendererObj;
 		int rowHeight = r.FONT_HEIGHT + 5;
 		
@@ -51,6 +47,7 @@ public class Overlay {
 		r.drawStringWithShadow(info.getModifiers(), x, y += rowHeight, blue);
 
 
+		//Display the dimensions of the impending volume if player is picking or shift selecting
 		if (spell.isPicking() || (!spell.isPicking() && Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))) {
 			if (displacement != null) {
 				int dx = displacement.getX();
