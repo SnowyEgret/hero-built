@@ -58,9 +58,9 @@ public abstract class Spell extends ItemBase implements ISpell {
 		IWorld w = player.getWorld();
 
 		//Shift replaces the current selections with a region.
-		//FIXME firstSelection and lastSelection is broken
 		if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) && selectionManager.size() != 0) {
 			BlockPos lastPos = selectionManager.lastSelection().getPos();
+			selectionManager.clearSelections(w);
 			for (Object o : BlockPos.getAllInBox(lastPos, pos)) {
 				selectionManager.select(w, (BlockPos)o);
 			}
