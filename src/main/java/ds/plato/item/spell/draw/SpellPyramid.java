@@ -18,22 +18,21 @@ public class SpellPyramid extends AbstractSpellDraw {
 
 	public SpellPyramid(IUndo undoManager, ISelect selectionManager, IPick pickManager) {
 		super(2, undoManager, selectionManager, pickManager);
-		info.addModifiers(Modifier.CTRL, Modifier.SHIFT);
+		info.addModifiers(Modifier.CTRL);
 	}
 
 	@Override
 	public void invoke(IWorld world, HotbarSlot... slotEntries) {
 		selectionManager.clearSelections(world);
+		boolean isSquare = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL);
+//		boolean isHollow = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
+//		boolean onSurface = Keyboard.isKeyDown(Keyboard.KEY_LMENU);
 		Pick[] picks = pickManager.getPicks();
 		Point3d p0 = picks[0].point3d();
 		Point3d p1 = picks[1].point3d();
-		// Pyramid sits on ground like cube
-		// p0.y += 1;
-		// p1.y += 1;
-		boolean isSquare = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL);
 		IDrawable d = new RectangularPyramid(p0, p1, isSquare);
-		boolean isHollow = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
-		draw(d, world, slotEntries[0].block, isHollow);
+		//draw(d, world, slotEntries[0].block, isHollow, onSurface);
+		draw(d, world, slotEntries[0].block);
 		pickManager.clearPicks();
 	}
 

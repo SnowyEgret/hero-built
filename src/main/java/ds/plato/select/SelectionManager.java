@@ -93,10 +93,10 @@ public class SelectionManager implements ISelect {
 	}
 
 	//TODO Does not set a block so doesn't need world. Only called by SetBlock.set(). Is there another way?
-//	@Override
-//	public Selection removeSelection(BlockPos pos) {
-//		return selections.remove(pos);
-//	}
+	@Override
+	public Selection removeSelection(BlockPos pos) {
+		return selections.remove(pos);
+	}
 
 	@Override
 	public int size() {

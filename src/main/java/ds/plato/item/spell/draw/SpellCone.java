@@ -16,16 +16,18 @@ public class SpellCone extends AbstractSpellDraw {
 
 	public SpellCone(IUndo undoManager, ISelect selectionManager, IPick pickManager) {
 		super(3, undoManager, selectionManager, pickManager);
-		info.addModifiers(Modifier.SHIFT);
+		//info.addModifiers(Modifier.SHIFT, Modifier.ALT);
 	}
 
 	@Override
 	public void invoke(IWorld world, HotbarSlot... slotEntries) {
 		selectionManager.clearSelections(world);
+//		boolean isHollow = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
+//		boolean onSurface = Keyboard.isKeyDown(Keyboard.KEY_LMENU);
 		Pick[] picks = pickManager.getPicks();
 		IDrawable d = new Cone(picks[0].point3d(), picks[1].point3d(), picks[2].point3d());
-		boolean isHollow = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
-		draw(d, world, slotEntries[0].block, isHollow);
+		//draw(d, world, slotEntries[0].block, isHollow, onSurface);
+		draw(d, world, slotEntries[0].block);
 		pickManager.clearPicks();
 	}
 

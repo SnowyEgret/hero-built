@@ -31,18 +31,21 @@ public class UndoableSetBlock implements IUndoable {
 	public UndoableSetBlock set() {
 
 		Selection s = selectionManager.getSelection(pos);
+		selectionManager.removeSelection(pos);
 		if (s != null) {
 			prevBlock = s.getBlock();
 		}
 		world.setBlock(pos, block);
 
 		//FIXME Unit test fails.
-		if (block instanceof BlockAir) {
+		//Select the newly set blocks
+		if (!(block instanceof BlockAir)) {
 			//We do not want a selection pointing to a newly set air block.
 			//This is the only place removeSelection is called
+			//Moved removeSelection up a few lines
 			//selectionManager.removeSelection(pos);
-			System.out.println("Should we have selected block air?");
-		} else {
+			//System.out.println("Should we have selected block air?");
+		//} else {
 			selectionManager.select(world, pos);
 		}
 		return this;

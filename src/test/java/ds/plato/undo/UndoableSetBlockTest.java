@@ -18,7 +18,7 @@ import ds.plato.select.Selection;
 import ds.plato.select.SelectionManager;
 import ds.plato.test.PlatoTest;
 
-public class SetBlockTest extends PlatoTest {
+public class UndoableSetBlockTest extends PlatoTest {
 	
 	IWorld w;
 	ISelect sm;
@@ -45,7 +45,7 @@ public class SetBlockTest extends PlatoTest {
 	}
 
 	@Test
-	public void set_airIsNotSelected() {		
+	public void set_airNotSelected() {		
 		new UndoableSetBlock(w, sm, p1, air).set();
 		assertThat("Air is not selected", sm.getSelection(p1), is(nullValue()));
 	}

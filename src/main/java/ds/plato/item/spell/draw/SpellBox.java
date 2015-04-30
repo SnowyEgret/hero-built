@@ -18,24 +18,21 @@ public class SpellBox extends AbstractSpellDraw {
 
 	public SpellBox(IUndo undoManager, ISelect selectionManager, IPick pickManager) {
 		super(2, undoManager, selectionManager, pickManager);
-		info.addModifiers(Modifier.CTRL, Modifier.SHIFT, Modifier.ALT);
+		info.addModifiers(Modifier.CTRL);
 	}
 
 	@Override
 	public void invoke(IWorld world, HotbarSlot... slots) {
 		selectionManager.clearSelections(world);
-		Pick[] picks = pickManager.getPicks();
 		boolean isCube = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL);
+//		boolean onSurface = Keyboard.isKeyDown(Keyboard.KEY_LMENU);
+//		boolean isHollow = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
+		Pick[] picks = pickManager.getPicks();
 		Point3d p0 = picks[0].point3d();
 		Point3d p1 = picks[1].point3d();
-		boolean onSurface = Keyboard.isKeyDown(Keyboard.KEY_LMENU);
-		if (onSurface) {
-			p0.y += 1;
-			p1.y += 1;
-		}
 		IDrawable d = new Box(p0, p1, isCube);
-		boolean isHollow = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
-		draw(d, world, slots[0].block, isHollow);
+		//draw(d, world, slots[0].block, isHollow, onSurface);
+		draw(d, world, slots[0].block);
 		pickManager.clearPicks();
 	}
 

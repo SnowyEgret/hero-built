@@ -25,7 +25,7 @@ public interface ISelect {
 
 	public void clearSelections(IWorld world);
 
-	//public Selection removeSelection(BlockPos pos);
+	public Selection removeSelection(BlockPos pos);
 
 	public int size();
 
