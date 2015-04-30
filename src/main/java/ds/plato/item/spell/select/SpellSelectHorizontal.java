@@ -4,9 +4,9 @@ import ds.plato.api.IPick;
 import ds.plato.api.ISelect;
 import ds.plato.api.IUndo;
 
-public class SpellGrowHorizontal extends AbstractSpellSelect {
+public class SpellSelectHorizontal extends AbstractSpellSelect {
 
-	public SpellGrowHorizontal(IUndo undo, ISelect select, IPick pick) {
+	public SpellSelectHorizontal(IUndo undo, ISelect select, IPick pick) {
 		super(Shell.Type.HORIZONTAL, undo, select, pick);
 	}
 

@@ -31,6 +31,8 @@ public abstract class AbstractSpellSelect extends Spell {
 	public AbstractSpellSelect(Shell.Type type, IUndo undo, ISelect select, IPick pick) {
 		super(1, undo, select, pick);
 		this.shellType = type;
+		//CTRL shrinks selection instead of grows
+		//ALT (MENU) ignores pattern block
 		info.addModifiers(Modifier.CTRL, Modifier.ALT);
 	}
 
@@ -38,6 +40,7 @@ public abstract class AbstractSpellSelect extends Spell {
 	public void invoke(IWorld world, final HotbarSlot...hotbarSlots) {
 		
 		// Select the pick if there are no selections
+		//Any way the pickManager must be cleared
 		Pick p = pickManager.getPicks()[0];
 		pickManager.clearPicks();
 		if (selectionManager.size() == 0) {
@@ -48,8 +51,7 @@ public abstract class AbstractSpellSelect extends Spell {
 		if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
 			shrinkSelections(shellType, world);
 		} else {
-			// Is this really the first block? getSelections gets the values from a map.
-			Block patternBlock = selectionManager.getSelections().iterator().next().getBlock();
+			Block patternBlock = selectionManager.firstSelection().getBlock();
 			growSelections(shellType, world, patternBlock);
 		}
 	}

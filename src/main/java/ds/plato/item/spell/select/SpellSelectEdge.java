@@ -7,9 +7,9 @@ import ds.plato.api.IUndo;
 import ds.plato.api.IWorld;
 import ds.plato.core.HotbarSlot;
 
-public class SpellGrowEdge extends AbstractSpellSelect {
+public class SpellSelectEdge extends AbstractSpellSelect {
 
-	public SpellGrowEdge(IUndo undo, ISelect select, IPick pick) {
+	public SpellSelectEdge(IUndo undo, ISelect select, IPick pick) {
 		super(null, undo, select, pick);
 	}
 

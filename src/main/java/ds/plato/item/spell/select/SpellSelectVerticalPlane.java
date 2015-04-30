@@ -9,9 +9,9 @@ import ds.plato.api.IWorld;
 import ds.plato.core.HotbarSlot;
 import ds.plato.item.spell.Modifier;
 
-public class SpellGrowVerticalPlane extends AbstractSpellSelect {
+public class SpellSelectVerticalPlane extends AbstractSpellSelect {
 
-	public SpellGrowVerticalPlane(IUndo undo, ISelect select, IPick pick) {
+	public SpellSelectVerticalPlane(IUndo undo, ISelect select, IPick pick) {
 		super(Shell.Type.XY, undo, select, pick);
 		info.addModifiers(Modifier.SHIFT);
 	}

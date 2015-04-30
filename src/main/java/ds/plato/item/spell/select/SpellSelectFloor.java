@@ -7,9 +7,9 @@ import ds.plato.api.IUndo;
 import ds.plato.api.IWorld;
 import ds.plato.core.HotbarSlot;
 
-public class SpellGrowFloor extends AbstractSpellSelect {
+public class SpellSelectFloor extends AbstractSpellSelect {
 
-	public SpellGrowFloor(IUndo undo, ISelect select, IPick pick) {
+	public SpellSelectFloor(IUndo undo, ISelect select, IPick pick) {
 		super(Shell.Type.FLOOR, undo, select, pick);
 	}
 

@@ -1,31 +1,43 @@
 package ds.plato.util;
 
-import java.util.Iterator;
+import java.util.Arrays;
 
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
-import net.minecraft.util.Cartesian;
-import net.minecraft.util.Rotations;;
-
 
 public class ExtendedBlockPos {
-	BlockPos pos;
+	
+	private BlockPos pos;
+	private BlockPos[][][] exPos = new BlockPos[3][3][3];
 
 	public ExtendedBlockPos(BlockPos pos) {
 		super();
 		this.pos = pos;
+		for(int x = -1; x<= 1; x++) {
+			for(int y = -1; y<= 1; y++) {
+				for(int z = -1; z<= 1; z++) {
+					exPos[x+1][y+1][z+1] = pos.add(x, y, z);
+				}
+			}
+		}
 	}
 	
-	public Iterator<BlockPos> ground() {
-//		AxisAlignedBB bb = new AxisAlignedBB(pos1, pos2);
-//		//bb.
-//		pos.getAllInBox(from, to);
-//		Cartesian c = new Cartesian();
-//		c.cartesianProduct(sets);
-//		Rotations r = new Rotations(0, 0, 0);
-//		float rx = r.getX();
-//		r.
-		return null;
+	public Iterable<BlockPos> all() {
+		return BlockPos.getAllInBox(exPos[0][0][0], exPos[2][2][2]);
+	}
+
+	public Iterable<BlockPos> ground() {
+		return BlockPos.getAllInBox(exPos[0][1][0], exPos[2][1][2]);
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("ExtendedBlockPos [pos=");
+		builder.append(pos);
+		builder.append(", exPos=");
+		builder.append(Arrays.deepToString(exPos));
+		builder.append("]");
+		return builder.toString();
 	}
 
 }

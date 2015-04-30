@@ -21,7 +21,7 @@ import ds.plato.Plato;
 import ds.plato.item.spell.Spell;
 import ds.plato.item.spell.SpellLoader;
 import ds.plato.item.spell.matrix.SpellCopy;
-import ds.plato.item.spell.select.SpellGrowAll;
+import ds.plato.item.spell.select.SpellSelectAll;
 import ds.plato.item.spell.transform.SpellDelete;
 import ds.plato.test.PlatoTest;
 

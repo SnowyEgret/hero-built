@@ -4,9 +4,9 @@ import ds.plato.api.IPick;
 import ds.plato.api.ISelect;
 import ds.plato.api.IUndo;
 
-public class SpellGrowDown extends AbstractSpellSelect {
+public class SpellSelectDown extends AbstractSpellSelect {
 
-	public SpellGrowDown(IUndo undo, ISelect select, IPick pick) {
+	public SpellSelectDown(IUndo undo, ISelect select, IPick pick) {
 		super(Shell.Type.DOWN, undo, select, pick);
 	}
 
