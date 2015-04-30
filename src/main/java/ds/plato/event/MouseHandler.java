@@ -81,6 +81,7 @@ public class MouseHandler {
 		// Select on mouse click left when player is holding a staff or spell
 		// Picking is handled by onItemUse. Do not cancel event on mouse click right.
 		if (item instanceof IItem) {
+			System.out.println(item);
 			if (e.button == 0) {
 				//TODO temporary fix for getting two events
 				if (e.nanoseconds - lastTime  > 999999999) {

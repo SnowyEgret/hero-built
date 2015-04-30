@@ -7,8 +7,11 @@ import net.minecraft.block.Block;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import ds.plato.api.IPick;
+import ds.plato.api.ISelect;
 import ds.plato.api.IWorld;
 import ds.plato.block.BlockPicked;
+import ds.plato.block.BlockSelected;
+import ds.plato.select.Selection;
 
 public class PickManager implements IPick {
 
@@ -16,16 +19,23 @@ public class PickManager implements IPick {
 	private int maxPicks = 0;
 	private IWorld world;
 	private Block blockPicked;
+	private ISelect selectionManager;
 
-	public PickManager(Block blockPicked) {
+	public PickManager(Block blockPicked, ISelect selectionManager) {
 		this.blockPicked = blockPicked;
+		this.selectionManager = selectionManager;
 	}
 
 	@Override
 	public Pick pick(IWorld world, BlockPos pos, EnumFacing side) {
-		// TODO: Handle case where location is a selection
 		this.world = world;
 		Block block = world.getBlock(pos);
+//		if (block instanceof BlockSelected) {
+//			Selection s = selectionManager.getSelection(pos);
+//			if (s != null) {
+//				block = s.getBlock();
+//			}
+//		}
 		world.setBlock(pos, blockPicked);
 		return addPick(pos, block, side);
 	}

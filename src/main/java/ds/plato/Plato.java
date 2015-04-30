@@ -75,7 +75,7 @@ public class Plato {
 
 		undoManager = new UndoManager();
 		selectionManager = new SelectionManager(blockSelected);
-		pickManager = new PickManager(blockPicked);
+		pickManager = new PickManager(blockPicked, selectionManager);
 
 		log.info("[Plato.preInit] Initializing spells and staffs");
 		configuration = new Configuration(event.getSuggestedConfigurationFile());

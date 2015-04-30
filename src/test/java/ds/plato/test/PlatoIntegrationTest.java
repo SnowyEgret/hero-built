@@ -33,8 +33,8 @@ public class PlatoIntegrationTest {
 		dirt = new StubBlockDirt();
 		world = new StubWorld(dirt);
 		undoManager = new UndoManager();
-		selectionManager = new SelectionManager(blockSelected);//.setWorld(world);
-		pickManager = new PickManager(blockPicked);//.setWorld(world);
+		selectionManager = new SelectionManager(blockSelected);
+		pickManager = new PickManager(blockPicked, selectionManager);
 	}
 	
 	protected class StubBlockDirt extends BlockSelected {}

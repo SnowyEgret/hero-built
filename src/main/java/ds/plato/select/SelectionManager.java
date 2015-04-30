@@ -16,7 +16,7 @@ import com.google.common.collect.Lists;
 import ds.geom.VoxelSet;
 import ds.plato.api.ISelect;
 import ds.plato.api.IWorld;
-import ds.plato.core.Player;
+import ds.plato.block.BlockPicked;
 
 public class SelectionManager implements ISelect {
 
@@ -44,6 +44,11 @@ public class SelectionManager implements ISelect {
 
 	@Override
 	public void deselect(IWorld world, Selection selection) {
+//		Block b = selection.getBlock();
+//		if (b instanceof BlockPicked) {
+//			//Look up pick from pickManager
+//			//b = ((BlockPicked)b).getPos())
+//		}
 		world.setBlock(selection.getPos(), selection.getBlock());
 		selections.remove(selection.getPos());
 	}

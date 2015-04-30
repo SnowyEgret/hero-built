@@ -19,7 +19,7 @@ public class PickManagerTest extends PlatoTest {
 	@Before
 	public void setUp() {
 		super.setUp();
-		m = new PickManager(blockPicked);
+		m = new PickManager(blockPicked, selectionManager);
 		m.reset(3);
 	}
 

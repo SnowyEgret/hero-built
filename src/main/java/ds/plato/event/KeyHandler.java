@@ -3,7 +3,6 @@ package ds.plato.event;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -32,8 +31,7 @@ public class KeyHandler {
 	private IUndo undoManager;
 	private ISelect selectionManager;
 	private IPick pickManager;
-	Map<String, KeyBinding> keyBindings = new HashMap<>();
-
+	private Map<String, KeyBinding> keyBindings = new HashMap<>();
 
 	public KeyHandler(IUndo undo, ISelect select, IPick pick) {
 		this.undoManager = undo;
@@ -136,22 +134,22 @@ public class KeyHandler {
 	
 	//Private ------------------------------------------------------------------------------------
 
-	private void copy(IPlayer player, IWorld w, int lr, int ud) {
+	private void copy(IPlayer player, IWorld w, int leftRight, int upDown) {
 		pickManager.clearPicks();
 		pickManager.reset(2);
 		pickManager.pick(w, new BlockPos(0,0,0), null);
 		switch (player.getDirection()) {
 		case NORTH:
-			pickManager.pick(w, new BlockPos(lr,0,ud), null);
+			pickManager.pick(w, new BlockPos(leftRight,0,upDown), null);
 			break;
 		case SOUTH:
-			pickManager.pick(w, new BlockPos(-lr,0,-ud), null);
+			pickManager.pick(w, new BlockPos(-leftRight,0,-upDown), null);
 			break;
 		case EAST:
-			pickManager.pick(w, new BlockPos(-ud,0,lr), null);
+			pickManager.pick(w, new BlockPos(-upDown,0,leftRight), null);
 			break;
 		case WEST:
-			pickManager.pick(w, new BlockPos(ud,0,-lr), null);
+			pickManager.pick(w, new BlockPos(upDown,0,-leftRight), null);
 			break;
 		}
 		if (selectionManager.size() != 0) {
@@ -160,10 +158,11 @@ public class KeyHandler {
 		pickManager.clearPicks();
 	}
 
-	private void copyVertical(IPlayer player, IWorld w, int d) {
+	private void copyVertical(IPlayer player, IWorld w, int upDown) {
 		pickManager.clearPicks();
 		pickManager.reset(2);
 		pickManager.pick(w, new BlockPos(0,0,0), null);
+		pickManager.pick(w, new BlockPos(0,upDown,0), null);
 		new SpellCopy(undoManager, selectionManager, pickManager).invoke(w, player.getHotbar());
 		pickManager.clearPicks();
 	}
