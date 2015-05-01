@@ -1,4 +1,4 @@
-package ds.plato.staff;
+package ds.plato.item.staff;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.times;

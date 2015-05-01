@@ -1,4 +1,4 @@
-package ds.plato.spell.select;
+package ds.plato.item.spell.select;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;

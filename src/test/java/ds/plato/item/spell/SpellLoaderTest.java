@@ -1,4 +1,4 @@
-package ds.plato.spell;
+package ds.plato.item.spell;
 
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;

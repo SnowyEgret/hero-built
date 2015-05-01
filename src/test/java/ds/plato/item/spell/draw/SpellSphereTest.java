@@ -1,4 +1,4 @@
-package ds.plato.spell.draw;
+package ds.plato.item.spell.draw;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;

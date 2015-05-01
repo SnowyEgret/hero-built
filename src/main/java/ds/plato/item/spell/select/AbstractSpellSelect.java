@@ -27,6 +27,15 @@ public abstract class AbstractSpellSelect extends Spell {
 	protected Shell.Type shellType;
 	protected Item ingredientA = Items.feather;
 	protected Item ingredientB = Items.coal;
+	private BlockPos[] positions;
+
+	public AbstractSpellSelect(BlockPos[] positions, IUndo undo, ISelect select, IPick pick) {
+		super(1, undo, select, pick);
+		this.positions = positions;
+		//CTRL shrinks selection instead of grows
+		//ALT (MENU) ignores pattern block
+		info.addModifiers(Modifier.CTRL, Modifier.ALT);
+	}
 
 	public AbstractSpellSelect(Shell.Type type, IUndo undo, ISelect select, IPick pick) {
 		super(1, undo, select, pick);
@@ -39,8 +48,8 @@ public abstract class AbstractSpellSelect extends Spell {
 	@Override
 	public void invoke(IWorld world, final HotbarSlot...hotbarSlots) {
 		
-		// Select the pick if there are no selections
-		//Any way the pickManager must be cleared
+		//Select the pick if there are no selections.
+		//Either way the pickManager must be cleared.
 		Pick p = pickManager.getPicks()[0];
 		pickManager.clearPicks();
 		if (selectionManager.size() == 0) {
@@ -49,21 +58,26 @@ public abstract class AbstractSpellSelect extends Spell {
 		
 		// Shrink or grow selections
 		if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
-			shrinkSelections(shellType, world);
+			shrinkSelections(world);
 		} else {
 			Block patternBlock = selectionManager.firstSelection().getBlock();
-			growSelections(shellType, world, patternBlock);
+			growSelections(world, patternBlock);
 		}
 	}
+	
+	//Private-------------------------------------------------------------------------------
 
-	protected void growSelections(Shell.Type shellType, IWorld world, Block patternBlock) {
+	private void growSelections(IWorld world, Block patternBlock) {
 		List<BlockPos> newGrownSelections = new ArrayList();
 		for (BlockPos center : selectionManager.getGrownSelections()) {
-			Shell shell = new Shell(shellType, center, world);
-			for (BlockPos p : shell) {
+			//Shell shell = new Shell(shellType, center, world);
+			//for (BlockPos p : shell) {
+			for (BlockPos p : positions) {
+				//Block block = world.getBlock(p);
+				p = p.add(center);
 				Block block = world.getBlock(p);
 				if (!(block instanceof BlockAir) && !(block instanceof BlockSelected)) {
-					if (Keyboard.isKeyDown(Keyboard.KEY_LMENU)) { // Alt
+					if (Keyboard.isKeyDown(Keyboard.KEY_LMENU)) {
 						selectionManager.select(world, p);
 						newGrownSelections.add(p);
 					} else {
@@ -78,11 +92,12 @@ public abstract class AbstractSpellSelect extends Spell {
 		selectionManager.setGrownSelections(newGrownSelections);
 	}
 
-	protected void shrinkSelections(Shell.Type shellType, IWorld world) {
+	private void shrinkSelections(IWorld world) {
 		List<Selection> shrunkSelections = new ArrayList<>();
 		for (Selection s : selectionManager.getSelections()) {
-			Shell shell = new Shell(shellType, s.getPos(), world);
-			for (BlockPos p : shell) {
+			//Shell shell = new Shell(shellType, s.getPos(), world);
+			//for (BlockPos p : shell) {
+			for (BlockPos p : positions) {
 				Block b = world.getBlock(p);
 				if (!(b instanceof BlockSelected)) {
 					shrunkSelections.add(s);
