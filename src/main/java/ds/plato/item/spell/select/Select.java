@@ -16,16 +16,16 @@ public class Select {
 	}
 
 	public static BlockPos[] all() {
-		return concatArray(topALL(), middleALL(), bottomALL());
+		return concat(topALL(), middleALL(), bottomALL());
 	}
 	
 	public static BlockPos[] allCross() {
-		return concatArray(topCross(), middleALL(), bottomCross());
+		return concat(topCross(), middleALL(), bottomCross());
 	}
 	
 	//Private------------------------------------------------
 	
-	static BlockPos[] concatArray(BlockPos[] a, BlockPos[] b, BlockPos[] c) {
+	static BlockPos[] concat(BlockPos[] a, BlockPos[] b, BlockPos[] c) {
 	   int aLen = a.length;
 	   int bLen = b.length;
 	   int cLen = c.length;

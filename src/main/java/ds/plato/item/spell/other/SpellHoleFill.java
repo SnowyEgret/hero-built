@@ -11,10 +11,10 @@ import ds.plato.api.IPick;
 import ds.plato.api.ISelect;
 import ds.plato.api.IUndo;
 import ds.plato.api.IWorld;
-import ds.plato.core.HotbarSlot;
 import ds.plato.item.spell.Modifier;
 import ds.plato.item.spell.Spell;
 import ds.plato.item.spell.select.Shell;
+import ds.plato.player.HotbarSlot;
 import ds.plato.select.Selection;
 import ds.plato.undo.UndoableSetBlock;
 import ds.plato.undo.Transaction;
@@ -36,9 +36,7 @@ public class SpellHoleFill extends Spell {
 		Transaction t = undoManager.newTransaction();
 		for (Selection s : selectionManager.getSelections()) {
 			Shell.Type type = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) ? Shell.Type.HORIZONTAL : Shell.Type.BELLOW;
-			//Shell shell = new Shell(type, s.point3i(), world);
 			Shell shell = new Shell(type, s.getPos(), world);
-			//Shell shell = new Shell(type, new Point3i(s.g), world);
 			for (BlockPos p : shell) {
 				Block b = world.getBlock(p);
 				if (b == Blocks.air || b == Blocks.water) {

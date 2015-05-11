@@ -9,11 +9,11 @@ import org.lwjgl.input.Keyboard;
 
 import ds.plato.api.ISelect;
 import ds.plato.api.ISpell;
-import ds.plato.core.HotbarDistribution;
-import ds.plato.core.Player;
 import ds.plato.item.spell.SpellInfo;
 import ds.plato.item.spell.transform.SpellFillRandom;
 import ds.plato.item.staff.Staff;
+import ds.plato.player.HotbarDistribution;
+import ds.plato.player.Player;
 
 public class Overlay {
 

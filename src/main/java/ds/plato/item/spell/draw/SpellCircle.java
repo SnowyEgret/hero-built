@@ -13,11 +13,11 @@ import ds.plato.api.IPick;
 import ds.plato.api.ISelect;
 import ds.plato.api.IUndo;
 import ds.plato.api.IWorld;
-import ds.plato.core.Player;
-import ds.plato.core.HotbarSlot;
 import ds.geom.IDrawable;
 import ds.geom.curve.CircleXZ;
 import ds.plato.pick.Pick;
+import ds.plato.player.HotbarSlot;
+import ds.plato.player.Player;
 
 public class SpellCircle extends AbstractSpellDraw {
 
@@ -43,8 +43,6 @@ public class SpellCircle extends AbstractSpellDraw {
 
 	@Override
 	public Object[] getRecipe() {
-		// TODO Auto-generated method stub
 		return null;
 	}
-
 }

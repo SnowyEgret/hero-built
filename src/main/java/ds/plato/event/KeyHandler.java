@@ -21,10 +21,10 @@ import ds.plato.api.IPlayer;
 import ds.plato.api.ISelect;
 import ds.plato.api.IUndo;
 import ds.plato.api.IWorld;
-import ds.plato.core.Player;
 import ds.plato.item.spell.matrix.SpellCopy;
 import ds.plato.item.spell.transform.SpellDelete;
 import ds.plato.item.staff.Staff;
+import ds.plato.player.Player;
 
 public class KeyHandler {
 

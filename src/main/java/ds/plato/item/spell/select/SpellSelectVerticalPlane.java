@@ -6,8 +6,8 @@ import ds.plato.api.IPick;
 import ds.plato.api.ISelect;
 import ds.plato.api.IUndo;
 import ds.plato.api.IWorld;
-import ds.plato.core.HotbarSlot;
 import ds.plato.item.spell.Modifier;
+import ds.plato.player.HotbarSlot;
 
 public class SpellSelectVerticalPlane extends AbstractSpellSelect {
 

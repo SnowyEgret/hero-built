@@ -9,9 +9,9 @@ import ds.plato.api.IPick;
 import ds.plato.api.ISelect;
 import ds.plato.api.IUndo;
 import ds.plato.api.IWorld;
-import ds.plato.core.HotbarSlot;
 import ds.plato.item.spell.Modifier;
 import ds.plato.item.spell.Spell;
+import ds.plato.player.HotbarSlot;
 import ds.plato.select.Selection;
 import ds.plato.undo.UndoableSetBlock;
 import ds.plato.undo.Transaction;
@@ -30,16 +30,12 @@ public class SpellDrop extends Spell {
 		boolean deleteOriginal = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL);
 		Transaction transaction = undoManager.newTransaction();
 		for (Selection s : selectionManager.getSelections()) {
-			//Block b = world.getBlock(s.x, s.y - 1, s.z);
 			Block b = world.getBlock(s.getPos().add(0,-1,0));
 			int drop = 0;
 			while (b == Blocks.air) {
 				drop++;
-				//Block nextBlockDown = world.getBlock(s.x, s.y - drop - 1, s.z);
 				Block nextBlockDown = world.getBlock(s.getPos().add(0,-drop-1,0));
 				if (fill || nextBlockDown != Blocks.air) {
-//					transaction.add(new SetBlock(world, selectionManager, s.x, s.y - drop, s.z, s.block, s.metadata)
-//					.set());
 					transaction.add(new UndoableSetBlock(world, selectionManager, s.getPos().add(0, -drop, 0), s.getBlock()).set());
 				}
 				b = nextBlockDown;

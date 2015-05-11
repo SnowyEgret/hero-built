@@ -18,9 +18,9 @@ import ds.plato.api.IPlayer;
 import ds.plato.api.ISelect;
 import ds.plato.api.IUndo;
 import ds.plato.api.IWorld;
-import ds.plato.core.HotbarSlot;
-import ds.plato.core.Player;
 import ds.plato.item.spell.transform.SpellFill;
+import ds.plato.player.HotbarSlot;
+import ds.plato.player.Player;
 
 public class MouseHandler {
 
@@ -81,7 +81,7 @@ public class MouseHandler {
 		// Select on mouse click left when player is holding a staff or spell
 		// Picking is handled by onItemUse. Do not cancel event on mouse click right.
 		if (item instanceof IItem) {
-			System.out.println(item);
+			//System.out.println(item);
 			if (e.button == 0) {
 				//TODO temporary fix for getting two events
 				if (e.nanoseconds - lastTime  > 999999999) {

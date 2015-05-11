@@ -1,11 +1,13 @@
 package ds.plato.event;
 
+import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.Vec3;
 import net.minecraft.util.Vec3i;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
+import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -15,10 +17,12 @@ import ds.plato.api.IPick;
 import ds.plato.api.IPlayer;
 import ds.plato.api.ISelect;
 import ds.plato.api.ISpell;
-import ds.plato.core.Player;
+import ds.plato.block.BlockSelected;
+import ds.plato.block.BlockSelectedModel;
 import ds.plato.gui.Overlay;
 import ds.plato.item.staff.Staff;
 import ds.plato.pick.Pick;
+import ds.plato.player.Player;
 import ds.plato.select.Selection;
 
 public class ForgeEventHandler {
@@ -34,12 +38,12 @@ public class ForgeEventHandler {
 		this.overlay = overlay;
 	}
 
-	//When the cursor falls on a new block update the overlay so that when it is rendered
-	//in onRenderGameOverlayEvent below it will show the distance from the first pick or selection.
+	// When the cursor falls on a new block update the overlay so that when it is rendered
+	// in onRenderGameOverlayEvent below it will show the distance from the first pick or selection.
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void onDrawBlockHightlight(DrawBlockHighlightEvent e) {
-		//Seems we are only getting this on client side		
+		// Seems we are only getting this on client side
 		if (spell != null) {
 			BlockPos p = null;
 			Pick pick = pickManager.lastPick();
@@ -59,8 +63,8 @@ public class ForgeEventHandler {
 		}
 	}
 
-	//On this event the player may have changed spells on a staff. Reset picking on the spell and update field spell.
-	@SideOnly(Side.CLIENT)	
+	// On this event the player may have changed spells on a staff. Reset picking on the spell and update field spell.
+	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void onLivingUpdate(LivingUpdateEvent e) {
 		World w = e.entity.worldObj;
@@ -72,7 +76,7 @@ public class ForgeEventHandler {
 			if (s == null) {
 				spell = null;
 			} else {
-				//If the spell has changed reset it.
+				// If the spell has changed reset it.
 				if (s != spell) {
 					spell = s;
 					s.reset();
@@ -96,4 +100,20 @@ public class ForgeEventHandler {
 			}
 		}
 	}
+
+	@SubscribeEvent
+	public void onModelBakeEvent(ModelBakeEvent event) {
+		// Find the existing mapping for CamouflageISmartBlockModelFactory - it will have been added automatically
+		// because we registered a custom BlockStateMapper for it (using ModelLoader.setCustomStateMapper) in
+		// Plato.preInit(). Replace the mapping with our ISmartBlockModel.
+		Object defaultModel = event.modelRegistry.getObject(BlockSelectedModel.modelResourceLocation);
+		System.out.println("Found model in model registry. defaultModel=" + defaultModel);
+		if (defaultModel instanceof IBakedModel) {
+			BlockSelectedModel smartModel = new BlockSelectedModel((IBakedModel) defaultModel,
+					BlockSelected.prevBlockProperty);
+			System.out.println("Replacing model in model registry with ISmartBlockModel. smartModel=" + smartModel);
+			event.modelRegistry.putObject(BlockSelectedModel.modelResourceLocation, smartModel);
+		}
+	}
+
 }

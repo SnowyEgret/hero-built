@@ -21,10 +21,10 @@ import ds.plato.api.ISelect;
 import ds.plato.api.ISpell;
 import ds.plato.api.IUndo;
 import ds.plato.api.IWorld;
-import ds.plato.core.HotbarSlot;
-import ds.plato.core.Player;
 import ds.plato.core.WorldWrapper;
 import ds.plato.item.ItemBase;
+import ds.plato.player.HotbarSlot;
+import ds.plato.player.Player;
 import ds.plato.select.Selection;
 
 public abstract class Spell extends ItemBase implements ISpell {

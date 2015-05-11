@@ -56,7 +56,7 @@ public class SpellLoader {
 
 	//For now, duplicate method loadStaff()
 	public Staff loadStaff(Class<? extends Staff> staffClass) throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		System.out.print("[SpellLoader.loadStaff] Loading staff " + staffClass.getSimpleName() + "...");
+		System.out.println("Loading staff " + staffClass.getSimpleName());
 		String name = StringUtils.toCamelCase(staffClass);
 		Constructor c = staffClass.getConstructor(IPick.class);
 		Staff s = (Staff) c.newInstance(pickManager);
@@ -68,12 +68,11 @@ public class SpellLoader {
 		if (s.hasRecipe()) {
 			GameRegistry.addRecipe(new ItemStack(s), s.getRecipe());
 		}
-		System.out.println("...done.");
 		return s;
 	}
 
 	public StaffPreset loadStaffPreset(Class<? extends StaffPreset> staffClass, List<Spell> spells) throws NoSuchMethodException, SecurityException, MalformedURLException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ClassNotFoundException, IOException {
-		System.out.print("[SpellLoader.loadStaffPreset] Loading staff " + staffClass.getSimpleName() + "...");
+		System.out.println("Loading staff " + staffClass.getSimpleName());
 		String name = StringUtils.toCamelCase(staffClass);
 		Constructor c = staffClass.getConstructor(IPick.class, List.class);
 		StaffPreset s = (StaffPreset) c.newInstance(pickManager, spells);
@@ -85,7 +84,6 @@ public class SpellLoader {
 		if (s.hasRecipe()) {
 			GameRegistry.addRecipe(new ItemStack(s), s.getRecipe());
 		}
-		System.out.println("...done.");
 		return s;
 	}
 
@@ -104,7 +102,7 @@ public class SpellLoader {
 	
 	private Spell loadSpell(Class<? extends Spell> spellClass) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, ClassNotFoundException {
 	
-		System.out.print("[SpellLoader.loadSpell] Loading spell=" + spellClass.getSimpleName() + "...");
+		System.out.println("Loading spell " + spellClass.getSimpleName());
 		String name = StringUtils.toCamelCase(spellClass);
 		Constructor<? extends Spell> c = spellClass.getConstructor(IUndo.class, ISelect.class, IPick.class);
 		Spell s = (Spell) c.newInstance(undoManager, selectionManager, pickManager);
@@ -119,7 +117,6 @@ public class SpellLoader {
 			//System.out.println("[SpellLoader.loadSpell] s.getRecipe()=" + s.getRecipe());
 			GameRegistry.addRecipe(new ItemStack(s), s.getRecipe());
 		}
-		System.out.println("...done.");
 		return s;
 	}
 }

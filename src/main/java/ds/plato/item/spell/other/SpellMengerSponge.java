@@ -14,8 +14,8 @@ import ds.plato.api.IPick;
 import ds.plato.api.ISelect;
 import ds.plato.api.IUndo;
 import ds.plato.api.IWorld;
-import ds.plato.core.HotbarSlot;
 import ds.plato.item.spell.Spell;
+import ds.plato.player.HotbarSlot;
 import ds.plato.undo.UndoableSetBlock;
 import ds.plato.undo.Transaction;
 
@@ -63,7 +63,6 @@ public class SpellMengerSponge extends Spell {
 				i++;
 			}
 			if (domainsToDelete.contains(domain.count)) {
-				//pointsToDelete.add(p);
 				pointsToDelete.add(new BlockPos(p.x, p.y, p.z));
 			}
 		}

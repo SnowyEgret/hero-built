@@ -6,11 +6,11 @@ import ds.plato.api.IPick;
 import ds.plato.api.ISelect;
 import ds.plato.api.IUndo;
 import ds.plato.api.IWorld;
-import ds.plato.core.HotbarSlot;
 import ds.geom.IDrawable;
 import ds.geom.surface.Cone;
 import ds.plato.item.spell.Modifier;
 import ds.plato.pick.Pick;
+import ds.plato.player.HotbarSlot;
 
 public class SpellCone extends AbstractSpellDraw {
 
@@ -22,11 +22,8 @@ public class SpellCone extends AbstractSpellDraw {
 	@Override
 	public void invoke(IWorld world, HotbarSlot... slotEntries) {
 		selectionManager.clearSelections(world);
-//		boolean isHollow = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
-//		boolean onSurface = Keyboard.isKeyDown(Keyboard.KEY_LMENU);
 		Pick[] picks = pickManager.getPicks();
 		IDrawable d = new Cone(picks[0].point3d(), picks[1].point3d(), picks[2].point3d());
-		//draw(d, world, slotEntries[0].block, isHollow, onSurface);
 		draw(d, world, slotEntries[0].block);
 		pickManager.clearPicks();
 	}

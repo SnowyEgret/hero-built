@@ -20,10 +20,10 @@ import ds.plato.api.IPick;
 import ds.plato.api.ISelect;
 import ds.plato.api.IUndo;
 import ds.plato.api.IWorld;
-import ds.plato.core.HotbarSlot;
 import ds.plato.gui.ITextSetable;
 import ds.plato.item.spell.Spell;
 import ds.plato.pick.Pick;
+import ds.plato.player.HotbarSlot;
 import ds.plato.undo.UndoableSetBlock;
 import ds.plato.undo.Transaction;
 

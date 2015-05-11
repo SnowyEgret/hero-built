@@ -4,15 +4,15 @@ import javax.vecmath.Point3d;
 
 import org.lwjgl.input.Keyboard;
 
+import ds.geom.IDrawable;
+import ds.geom.solid.Box;
 import ds.plato.api.IPick;
 import ds.plato.api.ISelect;
 import ds.plato.api.IUndo;
 import ds.plato.api.IWorld;
-import ds.plato.core.HotbarSlot;
-import ds.geom.IDrawable;
-import ds.geom.solid.Box;
 import ds.plato.item.spell.Modifier;
 import ds.plato.pick.Pick;
+import ds.plato.player.HotbarSlot;
 
 public class SpellBox extends AbstractSpellDraw {
 
@@ -25,13 +25,10 @@ public class SpellBox extends AbstractSpellDraw {
 	public void invoke(IWorld world, HotbarSlot... slots) {
 		selectionManager.clearSelections(world);
 		boolean isCube = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL);
-//		boolean onSurface = Keyboard.isKeyDown(Keyboard.KEY_LMENU);
-//		boolean isHollow = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
 		Pick[] picks = pickManager.getPicks();
 		Point3d p0 = picks[0].point3d();
 		Point3d p1 = picks[1].point3d();
 		IDrawable d = new Box(p0, p1, isCube);
-		//draw(d, world, slots[0].block, isHollow, onSurface);
 		draw(d, world, slots[0].block);
 		pickManager.clearPicks();
 	}

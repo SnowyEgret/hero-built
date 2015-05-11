@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.statemap.StateMapperBase;
+import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -27,7 +31,7 @@ import ds.plato.api.ISelect;
 import ds.plato.api.IUndo;
 import ds.plato.block.BlockPicked;
 import ds.plato.block.BlockSelected;
-import ds.plato.core.Player;
+import ds.plato.block.BlockSelectedModel;
 import ds.plato.gui.GuiHandler;
 import ds.plato.item.spell.Spell;
 import ds.plato.item.spell.SpellLoader;
@@ -41,6 +45,7 @@ import ds.plato.item.staff.StaffTransform;
 import ds.plato.network.SetBlockMessage;
 import ds.plato.network.SetBlockMessageHandler;
 import ds.plato.pick.PickManager;
+import ds.plato.player.Player;
 import ds.plato.proxy.CommonProxy;
 import ds.plato.select.SelectionManager;
 import ds.plato.undo.UndoManager;
@@ -52,8 +57,10 @@ public class Plato {
 	public static final String NAME = "Plato";
 	public static final String VERSION = "0.5";
 
-	@Instance(ID) public static Plato instance;
-	@SidedProxy(clientSide = "ds.plato.proxy.ClientProxy", serverSide = "ds.plato.proxy.CommonProxy") public static CommonProxy proxy;
+	@Instance(ID)
+	public static Plato instance;
+	@SidedProxy(clientSide = "ds.plato.proxy.ClientProxy", serverSide = "ds.plato.proxy.CommonProxy")
+	public static CommonProxy proxy;
 
 	private static IUndo undoManager;
 	private static ISelect selectionManager;
@@ -62,26 +69,26 @@ public class Plato {
 	private List<Spell> spells;
 	private List<Staff> staffs;
 	public static SimpleNetworkWrapper network;
-	public static Logger log;
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 
-		log = LogManager.getLogger(NAME);
-
-		log.info("[Plato.preInit]Initializing blocks...");
-		Block blockSelected = initBlock(new BlockSelected());
-		Block blockPicked = initBlock(new BlockPicked());
+		System.out.println("Initializing blocks...");
+		BlockSelected blockSelected = (BlockSelected) initBlock(new BlockSelected());
+		BlockPicked blockPicked = (BlockPicked) initBlock(new BlockPicked());
 
 		undoManager = new UndoManager();
 		selectionManager = new SelectionManager(blockSelected);
 		pickManager = new PickManager(blockPicked, selectionManager);
 
-		log.info("[Plato.preInit] Initializing spells and staffs");
+		blockSelected.setSelectionManager(selectionManager);
+		blockPicked.setSelectionManager(selectionManager);
+
+		System.out.println("Initializing spells and staffs");
 		configuration = new Configuration(event.getSuggestedConfigurationFile());
 		SpellLoader loader = new SpellLoader(configuration, undoManager, selectionManager, pickManager, ID);
 		try {
-			
+
 			spells = new ArrayList<>();
 			List<Spell> drawSpells = loader.loadSpellsFromPackage("ds.plato.item.spell.draw");
 			List<Spell> selectSpells = loader.loadSpellsFromPackage("ds.plato.item.spell.select");
@@ -114,6 +121,18 @@ public class Plato {
 		network = NetworkRegistry.INSTANCE.newSimpleChannel("plato");
 		network.registerMessage(SetBlockMessageHandler.class, SetBlockMessage.class, 0, Side.SERVER);
 
+		// We need to tell Forge how to map our BlockCamouflage's IBlockState to a ModelResourceLocation.
+		// For example, the BlockStone granite variant has a BlockStateMap entry that looks like
+		// "stone[variant=granite]" (iBlockState) -> "minecraft:granite#normal" (ModelResourceLocation)
+		// For the camouflage block, we ignore the iBlockState completely and always return the same
+		// ModelResourceLocation, which is done using the anonymous class below
+		System.out.println("Creating custom state mapper.");
+		ModelLoader.setCustomStateMapper(blockSelected, new StateMapperBase() {
+			@Override
+			protected ModelResourceLocation getModelResourceLocation(IBlockState iBlockState) {
+				return BlockSelectedModel.modelResourceLocation;
+			}
+		});
 	}
 
 	@EventHandler
@@ -123,27 +142,27 @@ public class Plato {
 	}
 
 	@EventHandler
-	public void postInit(FMLPostInitializationEvent event) {
-		log.info(NAME + " " + VERSION + " loaded.");
-	}
-
-	@EventHandler
 	public void serverStarted(FMLServerStartedEvent event) {
-		log.info("[Plato.serverStarted]");
+		System.out.println("Server started");
 	}
 
 	@EventHandler
 	public void serverStopping(FMLServerStoppingEvent event) {
-		log.info("[Plato.serverStopping]");
+		System.out.println("Server stopping");
 		selectionManager.clearSelections(Player.getPlayer().getWorld());
+		// TODO change IPick to pass world like ISelect
 		pickManager.clearPicks();
 	}
+	
+	//Private----------------------------------------------------------------------
 
 	private Block initBlock(Block block) {
 		String classname = block.getClass().getSimpleName();
 		String name = classname.substring(0, 1).toLowerCase() + classname.substring(1);
 		block.setUnlocalizedName(name);
-		GameRegistry.registerBlock(block, ID + name);
+		// Fixed plato:platoBlockSelected
+		// GameRegistry.registerBlock(block, ID + name);
+		GameRegistry.registerBlock(block, name);
 		return block;
 	}
 }

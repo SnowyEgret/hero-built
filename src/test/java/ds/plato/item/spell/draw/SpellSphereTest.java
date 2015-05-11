@@ -9,9 +9,9 @@ import org.junit.Test;
 import org.mockito.Mock;
 
 import ds.plato.api.ISpell;
-import ds.plato.core.HotbarSlot;
 import ds.plato.item.spell.draw.SpellSphere;
 import ds.plato.pick.Pick;
+import ds.plato.player.HotbarSlot;
 import ds.plato.test.PlatoTest;
 import ds.plato.undo.Transaction;
 

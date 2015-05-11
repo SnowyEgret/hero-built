@@ -5,6 +5,8 @@ import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
 
+import ds.plato.player.HotbarDistribution;
+import ds.plato.player.HotbarSlot;
 import ds.plato.test.PlatoTest;
 
 public class SlotDistributionTest extends PlatoTest {

@@ -23,28 +23,15 @@ public class WorldWrapper implements IWorld {
 	}
 
 	@Override
-	//public Block getBlock(int x, int y, int z) {
 	public Block getBlock(BlockPos pos) {
 		IBlockState b = world.getBlockState(pos);
-		//return world.getBlock(x, y, z);
 		return b.getBlock();
 	}
 
-//	@Override
-	//public int getMetadata(int x, int y, int z) {
-//	public int getMetadata(BlockPos pos) {
-//		//return world.getBlockMetadata(x, y, z);
-//		//getBlock(pos).getgetStateFromMeta(pos);
-//		//TODO return metadata
-//		return 0;
-//	}
-
 	@Override
-	//public void setBlock(int x, int y, int z, Block block, int metadata) {
 	public void setBlock(BlockPos pos, Block block) {
 		// TODO try this for preventing dropping
 		// world.removeTileEntity(x, y, z);
-		//world.setBlock(x, y, z, block, metadata, 3);
 		IBlockState state = block.getBlockState().getBaseState();
 		world.setBlockState(pos, state, 3);
 		if (sendPackets) {

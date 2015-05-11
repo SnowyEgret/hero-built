@@ -10,9 +10,9 @@ import ds.plato.api.IPick;
 import ds.plato.api.ISelect;
 import ds.plato.api.IUndo;
 import ds.plato.api.IWorld;
-import ds.plato.core.HotbarSlot;
 import ds.plato.item.spell.Modifier;
 import ds.plato.pick.Pick;
+import ds.plato.player.HotbarSlot;
 
 public class SpellMirror extends AbstractSpellMatrix {
 
@@ -33,7 +33,6 @@ public class SpellMirror extends AbstractSpellMatrix {
 
 	@Override
 	public Object[] getRecipe() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }

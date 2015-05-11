@@ -8,7 +8,7 @@ import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
 
-import ds.plato.core.Player;
+import ds.plato.player.Player;
 
 //Started with GuiChest
 //http://www.minecraftforge.net/wiki/Containers_and_GUIs

@@ -3,11 +3,11 @@ package ds.plato.api;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import ds.plato.core.HotbarDistribution;
-import ds.plato.core.HotbarSlot;
-import ds.plato.core.Player;
-import ds.plato.core.Player.Direction;
 import ds.plato.item.staff.Staff;
+import ds.plato.player.HotbarDistribution;
+import ds.plato.player.HotbarSlot;
+import ds.plato.player.Player;
+import ds.plato.player.Player.Direction;
 
 public interface IPlayer {
 

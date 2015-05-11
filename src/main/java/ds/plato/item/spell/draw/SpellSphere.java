@@ -4,15 +4,15 @@ import net.minecraft.init.Items;
 
 import org.lwjgl.input.Keyboard;
 
+import ds.geom.IDrawable;
+import ds.geom.surface.Sphere;
 import ds.plato.api.IPick;
 import ds.plato.api.ISelect;
 import ds.plato.api.IUndo;
 import ds.plato.api.IWorld;
-import ds.plato.core.HotbarSlot;
-import ds.geom.IDrawable;
-import ds.geom.surface.Sphere;
 import ds.plato.item.spell.Modifier;
 import ds.plato.pick.Pick;
+import ds.plato.player.HotbarSlot;
 
 public class SpellSphere extends AbstractSpellDraw {
 

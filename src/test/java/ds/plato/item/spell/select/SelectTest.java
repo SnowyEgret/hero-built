@@ -24,7 +24,7 @@ public class SelectTest extends PlatoTest {
 		BlockPos[] a = new BlockPos[]{p0, p0};
 		BlockPos[] b = new BlockPos[]{p1, p1};
 		BlockPos[] c = new BlockPos[]{p2, p2};
-		BlockPos[] array = Select.concatArray(a, b, c);
+		BlockPos[] array = Select.concat(a, b, c);
 		System.out.println(Arrays.toString(array));
 	}
 

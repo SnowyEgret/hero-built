@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.vecmath.Point3d;
-import javax.vecmath.Point3i;
 
 import net.minecraft.util.BlockPos;
 
@@ -17,13 +16,13 @@ import ds.plato.api.IPick;
 import ds.plato.api.ISelect;
 import ds.plato.api.IUndo;
 import ds.plato.api.IWorld;
-import ds.plato.core.HotbarSlot;
 import ds.plato.item.spell.Modifier;
 import ds.plato.item.spell.select.Shell;
 import ds.plato.item.spell.transform.AbstractSpellTransform;
+import ds.plato.player.HotbarSlot;
 import ds.plato.select.Selection;
-import ds.plato.undo.UndoableSetBlock;
 import ds.plato.undo.Transaction;
+import ds.plato.undo.UndoableSetBlock;
 
 public class SpellThicken extends AbstractSpellTransform {
 
