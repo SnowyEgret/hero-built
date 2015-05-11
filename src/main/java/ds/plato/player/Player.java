@@ -17,9 +17,9 @@ import net.minecraft.world.World;
 import ds.plato.api.IPlayer;
 import ds.plato.api.ISpell;
 import ds.plato.api.IWorld;
-import ds.plato.core.WorldWrapper;
 import ds.plato.item.spell.Spell;
 import ds.plato.item.staff.Staff;
+import ds.plato.world.WorldWrapper;
 
 public class Player implements IPlayer {
 
