@@ -1,7 +1,7 @@
 package ds.plato.block;
 
+import java.awt.Color;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import net.minecraft.block.state.IBlockState;
@@ -12,7 +12,6 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.util.EnumFacing;
-import net.minecraftforge.client.model.IFlexibleBakedModel;
 import net.minecraftforge.client.model.ISmartBlockModel;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
@@ -20,90 +19,79 @@ import net.minecraftforge.common.property.IUnlistedProperty;
 public class BlockSelectedModel implements ISmartBlockModel {
 
 	public static ModelResourceLocation modelResourceLocation = new ModelResourceLocation("plato:blockSelected");
-	private IBakedModel defaultModel;
-	private IUnlistedProperty prevBlockProperty;
+	private IBakedModel defaultModel, model;
+	private IUnlistedProperty selectedBlockProperty;
+	//private final int tint = Color.RED.getRed();
+	private final int tint = new Color(255, 200, 200).getRGB();
 
-	public BlockSelectedModel(IBakedModel defaultModel, PropertyPreviousBlock prevBlockProperty) {
-		super();
+	public BlockSelectedModel(IBakedModel defaultModel, PropertySelectedBlock selectedBlockProperty) {
 		this.defaultModel = defaultModel;
-		this.prevBlockProperty = prevBlockProperty;
+		this.selectedBlockProperty = selectedBlockProperty;
 	}
 
 	@Override
 	public IBakedModel handleBlockState(IBlockState state) {
 		assert IExtendedBlockState.class.isAssignableFrom(state.getClass());
-		IBlockState s = ((IExtendedBlockState) state).getValue(prevBlockProperty);
-		IBakedModel model = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes()
-				.getModelForState(s);
-		
-		IFlexibleBakedModel m = (IFlexibleBakedModel)model;
-
-		TextureAtlasSprite t = m.getTexture();
-		int[][] td = t.getFrameTextureData(0);
-		System.out.println(Arrays.deepToString(td));
-		
-		td = modifyTextureData(td);
-		List l = new ArrayList();
-		l.add(td);
-		t.setFramesTextureData(l);
-
-		t = m.getTexture();
-		td = t.getFrameTextureData(0);
-		System.out.println(Arrays.deepToString(td));
-
-		return m;
+		IBlockState s = ((IExtendedBlockState) state).getValue(selectedBlockProperty);
+		model = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelForState(s);
+		return this;
 	}
 
 	@Override
-	public List getFaceQuads(EnumFacing p_177551_1_) {
-		// TODO Auto-generated method stub
-		return null;
+	public List getFaceQuads(EnumFacing face) {
+		List<BakedQuad> quads = new ArrayList<>();
+		List<BakedQuad> faceQuads = model.getFaceQuads(face);
+		for (BakedQuad q : faceQuads) {
+			quads.add(new BakedQuad(tint(q.getVertexData()), 0, face));
+		}
+		return quads;
 	}
 
 	@Override
 	public List getGeneralQuads() {
-		// TODO Auto-generated method stub
-		return null;
+		List<BakedQuad> quads = new ArrayList<>();
+		List<BakedQuad> generalQuads = model.getGeneralQuads();
+		for (BakedQuad q : generalQuads) {
+			quads.add( new BakedQuad(tint(q.getVertexData()), 0, q.getFace()));
+		}
+		return quads;
 	}
 
 	@Override
 	public boolean isAmbientOcclusion() {
-		// TODO Auto-generated method stub
-		return false;
+		return model.isAmbientOcclusion();
 	}
 
 	@Override
 	public boolean isGui3d() {
-		// TODO Auto-generated method stub
-		return false;
+		return model.isGui3d();
 	}
 
 	@Override
 	public boolean isBuiltInRenderer() {
-		// TODO Auto-generated method stub
-		return false;
+		return model.isBuiltInRenderer();
 	}
 
 	@Override
 	public TextureAtlasSprite getTexture() {
-		return defaultModel.getTexture();
+		return model.getTexture();
 	}
 
 	@Override
 	public ItemCameraTransforms getItemCameraTransforms() {
-		// TODO Auto-generated method stub
-		return null;
+		return model.getItemCameraTransforms();
 	}
 
-	// Private-------------------------------------------------------------
+	// Private-----------------------------------------------------
 
-	private int[][] modifyTextureData(int[][] data) {
-		for (int i = 0; i < data.length; i++) {
-			for (int j = 0; j < data[i].length; j++) {
-				data[i][j] = 0;
-			}
-		}
-		return data;
+	private int[] tint(int[] vertexData) {
+		int[] vd = new int[vertexData.length];
+		System.arraycopy(vertexData, 0, vd, 0, vertexData.length);
+		vd[3] = tint;
+		vd[10] = tint;
+		vd[17] = tint;
+		vd[24] = tint;
+		return vd;
 	}
 
 }

@@ -3,7 +3,7 @@ package ds.plato.block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
 
-public class PropertyPreviousBlock implements IUnlistedProperty<IBlockState> {
+public class PropertySelectedBlock implements IUnlistedProperty<IBlockState> {
 
 	@Override
 	public String getName() {

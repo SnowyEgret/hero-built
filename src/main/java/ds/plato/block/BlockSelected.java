@@ -19,7 +19,7 @@ import ds.plato.select.SelectionManager;
 
 public class BlockSelected extends Block {
 
-	public static final PropertyPreviousBlock prevBlockProperty = new PropertyPreviousBlock();
+	public static final PropertySelectedBlock prevBlockProperty = new PropertySelectedBlock();
 	private ISelect selectionManager;
 
 	public BlockSelected() {
