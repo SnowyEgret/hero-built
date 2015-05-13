@@ -11,39 +11,77 @@ import org.junit.Test;
 
 import ds.plato.item.spell.select.Select;
 import ds.plato.test.PlatoTest;
+import static org.hamcrest.CoreMatchers.equalTo;
 
 public class SelectTest extends PlatoTest {
 
-	@Before
-	public void setUp() {
-		super.setUp();
-	}
-
-	//@Test
+	@Test
 	public void concat() {
 		BlockPos[] a = new BlockPos[]{p0, p0};
 		BlockPos[] b = new BlockPos[]{p1, p1};
 		BlockPos[] c = new BlockPos[]{p2, p2};
 		BlockPos[] array = Select.concat(a, b, c);
-		System.out.println(Arrays.toString(array));
+		assertThat(array.length, equalTo(3));
 	}
 
-	//@Test
+	@Test
 	public void all() {
-		BlockPos[] positions = Select.all();
-		System.out.println(Arrays.toString(positions));
+		BlockPos[] positions = Select.all;
+		assertThat(positions.length, equalTo(27));
+	}
+
+	@Test
+	public void allNoCorners() {
+		BlockPos[] positions = Select.allNoCorners;
+		assertThat(positions.length, equalTo(19));
 	}
 
 	@Test
 	public void EW() {
 		BlockPos[] positions = Select.EW;
-		System.out.println(Arrays.toString(positions));
+		assertThat(positions.length, equalTo(9));
 	}
 
 	@Test
 	public void NS() {
 		BlockPos[] positions = Select.NS;
-		System.out.println(Arrays.toString(positions));
+		assertThat(positions.length, equalTo(9));
+	}
+
+	@Test
+	public void horizontal() {
+		BlockPos[] positions = Select.horizontal;
+		assertThat(positions.length, equalTo(9));
+	}
+
+	@Test
+	public void horizontalNoCorners() {
+		BlockPos[] positions = Select.horizontalNoCorners;
+		assertThat(positions.length, equalTo(5));
+	}
+
+	@Test
+	public void above() {
+		BlockPos[] positions = Select.above;
+		assertThat(positions.length, equalTo(9));
+	}
+
+	@Test
+	public void aboveInclusive() {
+		BlockPos[] positions = Select.aboveInclusive;
+		assertThat(positions.length, equalTo(18));
+	}
+
+	@Test
+	public void below() {
+		BlockPos[] positions = Select.below;
+		assertThat(positions.length, equalTo(9));
+	}
+
+	@Test
+	public void belowInclusive() {
+		BlockPos[] positions = Select.belowInclusive;
+		assertThat(positions.length, equalTo(18));
 	}
 
 }

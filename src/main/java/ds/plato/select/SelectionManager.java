@@ -16,7 +16,6 @@ import com.google.common.collect.Lists;
 import ds.geom.VoxelSet;
 import ds.plato.api.ISelect;
 import ds.plato.api.IWorld;
-import ds.plato.block.BlockPicked;
 
 public class SelectionManager implements ISelect {
 
