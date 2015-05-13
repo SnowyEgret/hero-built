@@ -19,7 +19,7 @@ public class SelectTest extends PlatoTest {
 		super.setUp();
 	}
 
-	@Test
+	//@Test
 	public void concat() {
 		BlockPos[] a = new BlockPos[]{p0, p0};
 		BlockPos[] b = new BlockPos[]{p1, p1};
@@ -28,9 +28,21 @@ public class SelectTest extends PlatoTest {
 		System.out.println(Arrays.toString(array));
 	}
 
-	@Test
+	//@Test
 	public void all() {
 		BlockPos[] positions = Select.all();
+		System.out.println(Arrays.toString(positions));
+	}
+
+	@Test
+	public void EW() {
+		BlockPos[] positions = Select.EW;
+		System.out.println(Arrays.toString(positions));
+	}
+
+	@Test
+	public void NS() {
+		BlockPos[] positions = Select.NS;
 		System.out.println(Arrays.toString(positions));
 	}
 

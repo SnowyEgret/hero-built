@@ -27,7 +27,7 @@ public abstract class AbstractSpellSelect extends Spell {
 	protected Shell.Type shellType;
 	protected Item ingredientA = Items.feather;
 	protected Item ingredientB = Items.coal;
-	private BlockPos[] positions;
+	protected BlockPos[] positions;
 
 	public AbstractSpellSelect(BlockPos[] positions, IUndo undo, ISelect select, IPick pick) {
 		super(1, undo, select, pick);

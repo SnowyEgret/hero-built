@@ -1,6 +1,11 @@
 package ds.plato.item.spell.select;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.util.BlockPos;
+
+import org.apache.commons.lang3.Range;
 
 public class Select {
 
@@ -15,29 +20,8 @@ public class Select {
 		}
 	}
 
-	public static BlockPos[] all() {
-		return concat(topALL(), middleALL(), bottomALL());
-	}
-	
-	public static BlockPos[] allCross() {
-		return concat(topCross(), middleALL(), bottomCross());
-	}
-	
-	//Private------------------------------------------------
-	
-	static BlockPos[] concat(BlockPos[] a, BlockPos[] b, BlockPos[] c) {
-	   int aLen = a.length;
-	   int bLen = b.length;
-	   int cLen = c.length;
-	   BlockPos[] d= new BlockPos[aLen+bLen+cLen];
-	   System.arraycopy(a, 0, d, 0, aLen);
-	   System.arraycopy(b, 0, d, aLen, bLen);
-	   System.arraycopy(c, 0, d, aLen+bLen, cLen);
-	   return d;
-	}
-	
-	private static BlockPos[] topALL() {
-		return new BlockPos[] {
+	private static BlockPos[] top = 
+		new BlockPos[] {
 				p[0][2][0],
 				p[0][2][1],
 				p[0][2][2],
@@ -48,10 +32,9 @@ public class Select {
 				p[2][2][1],
 				p[2][2][2],
 		};
-	}
 	
-	private static BlockPos[] middleALL() {
-		return new BlockPos[] {
+	private static BlockPos[] middle =
+		new BlockPos[] {
 				p[0][1][0],
 				p[0][1][1],
 				p[0][1][2],
@@ -62,10 +45,9 @@ public class Select {
 				p[2][1][1],
 				p[2][1][2],
 		};
-	}
 	
-	private static BlockPos[] bottomALL() {
-		return new BlockPos[] {
+	private static BlockPos[] bottom =
+		new BlockPos[] {
 				p[0][0][0],
 				p[0][0][1],
 				p[0][0][2],
@@ -76,10 +58,12 @@ public class Select {
 				p[2][0][1],
 				p[2][0][2],
 		};
-	}
 	
-	private static BlockPos[] topCross() {
-		return new BlockPos[] {
+	public static BlockPos[] EW = positions(Range.between(-1, 1), Range.between(-1, 1), Range.between(0, 0));
+	public static BlockPos[] NS = positions(Range.between(0, 0), Range.between(-1, 1), Range.between(-1, 1));
+		
+	private static BlockPos[] topCross = 
+		new BlockPos[] {
 				//p[0][2][0],
 				p[0][2][1],
 				//p[0][2][2],
@@ -90,10 +74,9 @@ public class Select {
 				p[2][2][1],
 				//p[2][2][2],
 		};
-	}
 	
-	private static BlockPos[] middleCross() {
-		return new BlockPos[] {
+	private static BlockPos[] middleCross = 
+		new BlockPos[] {
 				//p[0][1][0],
 				p[0][1][1],
 				//p[0][1][2],
@@ -104,10 +87,9 @@ public class Select {
 				p[2][1][1],
 				//p[2][1][2],
 		};
-	}
 	
-	private static BlockPos[] bottomCross() {
-		return new BlockPos[] {
+	private static BlockPos[] bottomCross = 
+		new BlockPos[] {
 				//p[0][0][0],
 				p[0][0][1],
 				p[0][0][2],
@@ -117,7 +99,40 @@ public class Select {
 				//p[2][0][0],
 				p[2][0][1],
 				//p[2][0][2],
-		};
+		};	
+
+	public static BlockPos[] all() {
+		return concat(top, middle, bottom);
+	}
+	
+	public static BlockPos[] allCross() {
+		return concat(topCross, middle, bottomCross);
+	}
+	
+	//Private------------------------------------------------
+	
+	private static BlockPos[] positions(Range<Integer> rx, Range<Integer> ry, Range<Integer> rz) {
+		List<BlockPos> p = new ArrayList<>();
+		for(int x = rx.getMinimum(); x<= rx.getMaximum(); x++) {
+			for(int y = ry.getMinimum(); y<= ry.getMaximum(); y++) {
+				for(int z = rz.getMinimum(); z<= rz.getMaximum(); z++) {
+					p.add(new BlockPos(x, y, z));
+				}
+			}
+		}
+		BlockPos[] array = new BlockPos[p.size()];
+		return p.toArray(array);
+	}
+
+	static BlockPos[] concat(BlockPos[] a, BlockPos[] b, BlockPos[] c) {
+	   int aLen = a.length;
+	   int bLen = b.length;
+	   int cLen = c.length;
+	   BlockPos[] d= new BlockPos[aLen+bLen+cLen];
+	   System.arraycopy(a, 0, d, 0, aLen);
+	   System.arraycopy(b, 0, d, aLen, bLen);
+	   System.arraycopy(c, 0, d, aLen+bLen, cLen);
+	   return d;
 	}
 	
 }

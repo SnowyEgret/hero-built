@@ -12,13 +12,13 @@ import ds.plato.player.HotbarSlot;
 public class SpellSelectVerticalPlane extends AbstractSpellSelect {
 
 	public SpellSelectVerticalPlane(IUndo undo, ISelect select, IPick pick) {
-		super(Shell.Type.XY, undo, select, pick);
+		super(Select.EW, undo, select, pick);
 		info.addModifiers(Modifier.SHIFT);
 	}
 
 	@Override
 	public void invoke(IWorld world, HotbarSlot... slotEntries) {
-		shellType = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ? Shell.Type.YZ : Shell.Type.XY;
+		positions = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ? Select.NS : Select.EW;
 		super.invoke(world, slotEntries);
 	}
 
