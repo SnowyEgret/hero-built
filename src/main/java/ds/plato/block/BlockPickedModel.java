@@ -14,15 +14,15 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.client.model.ISmartBlockModel;
 import net.minecraftforge.common.property.IExtendedBlockState;
 
-public class BlockSelectedModel implements ISmartBlockModel {
+public class BlockPickedModel implements ISmartBlockModel {
 
 	private IBakedModel model;
-	private final int COLOR = new Color(200, 200, 255).getRGB();
+	private final int COLOR = new Color(255, 200, 200).getRGB();
 
 	@Override
 	public IBakedModel handleBlockState(IBlockState state) {
 		assert IExtendedBlockState.class.isAssignableFrom(state.getClass());
-		IBlockState s = ((IExtendedBlockState) state).getValue(BlockSelected.selectedBlockProperty);
+		IBlockState s = ((IExtendedBlockState) state).getValue(BlockPicked.pickedBlockProperty);
 		model = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelForState(s);
 		return this;
 	}

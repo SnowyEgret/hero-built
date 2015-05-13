@@ -22,16 +22,11 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import ds.plato.api.IPick;
 import ds.plato.api.ISelect;
 import ds.plato.api.IUndo;
 import ds.plato.block.BlockPicked;
 import ds.plato.block.BlockSelected;
-import ds.plato.block.BlockSelectedModel;
 import ds.plato.gui.GuiHandler;
 import ds.plato.item.spell.Spell;
 import ds.plato.item.spell.SpellLoader;
@@ -82,7 +77,7 @@ public class Plato {
 		pickManager = new PickManager(blockPicked, selectionManager);
 
 		blockSelected.setSelectionManager(selectionManager);
-		blockPicked.setSelectionManager(selectionManager);
+		blockPicked.setPickManager(pickManager);
 
 		System.out.println("Initializing spells and staffs");
 		configuration = new Configuration(event.getSuggestedConfigurationFile());
@@ -121,16 +116,17 @@ public class Plato {
 		network = NetworkRegistry.INSTANCE.newSimpleChannel("plato");
 		network.registerMessage(SetBlockMessageHandler.class, SetBlockMessage.class, 0, Side.SERVER);
 
-		// We need to tell Forge how to map our BlockCamouflage's IBlockState to a ModelResourceLocation.
-		// For example, the BlockStone granite variant has a BlockStateMap entry that looks like
-		// "stone[variant=granite]" (iBlockState) -> "minecraft:granite#normal" (ModelResourceLocation)
-		// For the camouflage block, we ignore the iBlockState completely and always return the same
-		// ModelResourceLocation, which is done using the anonymous class below
-		System.out.println("Creating custom state mapper.");
+		//Create custom state mappers for BlockSelected and BlockPicked models
 		ModelLoader.setCustomStateMapper(blockSelected, new StateMapperBase() {
 			@Override
 			protected ModelResourceLocation getModelResourceLocation(IBlockState iBlockState) {
-				return BlockSelectedModel.modelResourceLocation;
+				return BlockSelected.modelResourceLocation;
+			}
+		});
+		ModelLoader.setCustomStateMapper(blockPicked, new StateMapperBase() {
+			@Override
+			protected ModelResourceLocation getModelResourceLocation(IBlockState iBlockState) {
+				return BlockPicked.modelResourceLocation;
 			}
 		});
 	}
@@ -142,8 +138,13 @@ public class Plato {
 	}
 
 	@EventHandler
+	public void postInit(FMLPostInitializationEvent event) {
+		System.out.println();
+	}
+	
+	@EventHandler
 	public void serverStarted(FMLServerStartedEvent event) {
-		System.out.println("Server started");
+		System.out.println();
 	}
 
 	@EventHandler

@@ -10,7 +10,7 @@ public interface IPick {
 
 	public Pick[] getPicks();
 
-	public Pick getPickAt(BlockPos pos); 
+	public Pick getPick(BlockPos pos); 
 	
 	public void clearPicks();
 

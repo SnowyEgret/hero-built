@@ -5,6 +5,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
@@ -19,7 +20,8 @@ import ds.plato.select.SelectionManager;
 
 public class BlockSelected extends Block {
 
-	public static final PropertySelectedBlock prevBlockProperty = new PropertySelectedBlock();
+	public static final BlockSelectedProperty selectedBlockProperty = new BlockSelectedProperty();
+	public static ModelResourceLocation modelResourceLocation = new ModelResourceLocation("plato:blockSelected");
 	private ISelect selectionManager;
 
 	public BlockSelected() {
@@ -41,7 +43,7 @@ public class BlockSelected extends Block {
 	@Override
 	protected BlockState createBlockState() {
 		ExtendedBlockState state = new ExtendedBlockState(this, new IProperty[0],
-				new IUnlistedProperty[] { prevBlockProperty });
+				new IUnlistedProperty[] { selectedBlockProperty });
 		System.out.println(state);
 		return state;
 	}
@@ -56,13 +58,14 @@ public class BlockSelected extends Block {
 		if (s != null) {
 			Block selectedBlock = s.getBlock();
 			System.out.println("selectedBlock="+selectedBlock);
+			//TODO TGG's example did this
 			//IBlockState selectedBlockState = selectedBlock.getActualState(extendedState, world, pos);
 			IBlockState selectedBlockState = selectedBlock.getDefaultState();
 			System.out.println("selectedBlockState="+selectedBlockState);
-			extendedState = extendedState.withProperty(prevBlockProperty, selectedBlockState);
+			extendedState = extendedState.withProperty(selectedBlockProperty, selectedBlockState);
 		} else {
 			System.out.println("Block not selected at pos="+pos);
-			extendedState = extendedState.withProperty(prevBlockProperty, null);
+			extendedState = extendedState.withProperty(selectedBlockProperty, null);
 		}
 		System.out.println(extendedState.getUnlistedProperties());
 		return extendedState;

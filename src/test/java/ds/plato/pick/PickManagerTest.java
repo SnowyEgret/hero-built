@@ -46,7 +46,7 @@ public class PickManagerTest extends PlatoTest {
 	@Test
 	public void getPickAt() {
 		Pick p = m.pick(world, p1, EnumFacing.DOWN);
-		assertThat(m.getPickAt(p1), is(p));
+		assertThat(m.getPick(p1), is(p));
 	}
 
 	@Test

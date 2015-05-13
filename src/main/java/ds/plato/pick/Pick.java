@@ -10,7 +10,7 @@ import net.minecraft.util.EnumFacing;
 public class Pick {
 
 	BlockPos pos;
-	public Block block;
+	private Block block;
 	public EnumFacing side;
 
 	public Pick(BlockPos pos, Block block, EnumFacing side) {
@@ -19,10 +19,17 @@ public class Pick {
 		this.side = side;
 	}
 
+	public Block getBlock() {
+		return block;
+	}
+
+	public void setBlock(Block block) {
+		this.block = block;
+	}
+
 	public Point3d point3d() {
 		return new Point3d(pos.getX(),pos.getY(), pos.getZ());
 	}
-
 
 	@Override
 	public int hashCode() {

@@ -47,7 +47,7 @@ public class PickManager implements IPick {
 	}
 
 	@Override
-	public Pick getPickAt(BlockPos pos) {
+	public Pick getPick(BlockPos pos) {
 		for (Pick p : picks) {
 			if (p.equals(new Pick(pos, null, null))) {
 				return p;
@@ -61,7 +61,7 @@ public class PickManager implements IPick {
 		for (Pick p : getPicks()) {
 			Block block = world.getBlock(p.getPos());
 			if (block instanceof BlockPicked) {
-				world.setBlock(p.getPos(), p.block);
+				world.setBlock(p.getPos(), p.getBlock());
 			}
 		}
 		picks.clear();

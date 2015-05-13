@@ -1,8 +1,8 @@
 package ds.plato.event;
 
-import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.IRegistry;
 import net.minecraft.util.Vec3;
 import net.minecraft.util.Vec3i;
 import net.minecraft.world.World;
@@ -17,6 +17,8 @@ import ds.plato.api.IPick;
 import ds.plato.api.IPlayer;
 import ds.plato.api.ISelect;
 import ds.plato.api.ISpell;
+import ds.plato.block.BlockPicked;
+import ds.plato.block.BlockPickedModel;
 import ds.plato.block.BlockSelected;
 import ds.plato.block.BlockSelectedModel;
 import ds.plato.gui.Overlay;
@@ -103,17 +105,13 @@ public class ForgeEventHandler {
 
 	@SubscribeEvent
 	public void onModelBakeEvent(ModelBakeEvent event) {
-		// Find the existing mapping for CamouflageISmartBlockModelFactory - it will have been added automatically
-		// because we registered a custom BlockStateMapper for it (using ModelLoader.setCustomStateMapper) in
-		// Plato.preInit(). Replace the mapping with our ISmartBlockModel.
-		Object defaultModel = event.modelRegistry.getObject(BlockSelectedModel.modelResourceLocation);
-		System.out.println("Found model in model registry. defaultModel=" + defaultModel);
-		if (defaultModel instanceof IBakedModel) {
-			BlockSelectedModel smartModel = new BlockSelectedModel((IBakedModel) defaultModel,
-					BlockSelected.prevBlockProperty);
-			System.out.println("Replacing model in model registry with ISmartBlockModel. smartModel=" + smartModel);
-			event.modelRegistry.putObject(BlockSelectedModel.modelResourceLocation, smartModel);
-		}
+		IRegistry r = event.modelRegistry;
+		// if (r.getObject(BlockSelected.modelResourceLocation) != null
+		// && r.getObject(BlockPicked.modelResourceLocation) != null) {
+		// System.out.println("Got both models");
+		r.putObject(BlockSelected.modelResourceLocation, new BlockSelectedModel());
+		r.putObject(BlockPicked.modelResourceLocation, new BlockPickedModel());
+		// }
 	}
 
 }
