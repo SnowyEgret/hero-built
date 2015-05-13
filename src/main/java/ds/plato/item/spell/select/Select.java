@@ -5,9 +5,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
 
 import org.apache.commons.lang3.Range;
+
+import ds.plato.api.IWorld;
+import ds.plato.item.spell.select.Shell.Type;
 
 public class Select {
 
@@ -99,6 +104,27 @@ public class Select {
 
 	public static BlockPos[] all = concat(above, horizontal, below);
 	public static BlockPos[] allNoCorners = concat(NS, EW, horizontal);
+	public static BlockPos[] up = positions(Range.between(0, 0), Range.between(1, 1), Range.between(0, 0), false);
+	public static BlockPos[] down = positions(Range.between(0, 0), Range.between(-1, -1), Range.between(0, 0), false);
+	
+//	public static BlockPos[] edge(IWorld w, BlockPos p0) {
+//		for (BlockPos p : all) {
+//			if (p.getY() == p0.getY()) {
+//				if (w.getBlock(p.up()) == Blocks.air) {
+//					// for (BlockPos pointAbove : new Shell(Type.TOP_CROSS, p, w)) {
+//					for (BlockPos pointAbove : new Shell(Type.TOP_ALL, p, w)) {
+//						Block b = w.getBlock(pointAbove);
+//						if (b != Blocks.air) {
+//							//positions.add(p);
+//							break;
+//						}
+//					}
+//				}
+//			}
+//		}
+//	}
+	
+
 	
 	//Private------------------------------------------------
 	
@@ -142,5 +168,5 @@ public class Select {
 //	   System.arraycopy(c, 0, d, aLen+bLen, cLen);
 //	   return d;
 	}
-	
+
 }

@@ -10,7 +10,8 @@ import ds.plato.player.HotbarSlot;
 public class SpellSelectFloor extends AbstractSpellSelect {
 
 	public SpellSelectFloor(IUndo undo, ISelect select, IPick pick) {
-		super(Shell.Type.FLOOR, undo, select, pick);
+		//super(Shell.Type.FLOOR, undo, select, pick);
+		super(Select.horizontal, undo, select, pick);
 	}
 
 	@Override
@@ -22,11 +23,10 @@ public class SpellSelectFloor extends AbstractSpellSelect {
 	@Override
 	public void invoke(IWorld world, HotbarSlot...slotEntries) {
 		EnumFacing side = pickManager.getPicks()[0].side;
-		System.out.println("[SpellGrowFloor.invoke] side=" + side);
 		if (side == EnumFacing.DOWN) {
-				shellType = Shell.Type.CEILING;
+				//shellType = Select.CEILING;
 		} else if (side == EnumFacing.UP) {
-				shellType = Shell.Type.FLOOR;
+				//shellType = Select.FLOOR;
 		} else {
 			System.out.println("[SpellGrowFloor.invoke] Got unexpected side=" + side);
 		}

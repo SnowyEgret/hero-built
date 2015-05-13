@@ -11,7 +11,8 @@ public class SpellSelectEdge extends AbstractSpellSelect {
 
 	public SpellSelectEdge(IUndo undo, ISelect select, IPick pick) {
 		//super(null, undo, select, pick);
-		super(Shell.Type.ALL, undo, select, pick);
+		//super(Shell.Type.ALL, undo, select, pick);
+		super(Select.all, undo, select, pick);
 	}
 
 	@Override
@@ -22,11 +23,10 @@ public class SpellSelectEdge extends AbstractSpellSelect {
 	@Override
 	public void invoke(IWorld world, HotbarSlot...slotEntries) {
 		EnumFacing side = pickManager.getPicks()[0].side;
-		System.out.println(side);
 		if (side == EnumFacing.UP) {
-			shellType = Shell.Type.EDGE;
+			//positions = Select.edge();
 		} else if (side == EnumFacing.DOWN) {
-			shellType = Shell.Type.EDGE_UNDER;
+			//positions = Select.edgeUnder();
 		} else {
 			System.out.println("Got unexpected side=" + side);
 		}

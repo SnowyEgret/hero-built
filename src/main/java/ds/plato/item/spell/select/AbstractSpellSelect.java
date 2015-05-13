@@ -37,13 +37,13 @@ public abstract class AbstractSpellSelect extends Spell {
 		info.addModifiers(Modifier.CTRL, Modifier.ALT);
 	}
 
-	public AbstractSpellSelect(Shell.Type type, IUndo undo, ISelect select, IPick pick) {
-		super(1, undo, select, pick);
-		this.shellType = type;
-		//CTRL shrinks selection instead of grows
-		//ALT (MENU) ignores pattern block
-		info.addModifiers(Modifier.CTRL, Modifier.ALT);
-	}
+//	public AbstractSpellSelect(Shell.Type type, IUndo undo, ISelect select, IPick pick) {
+//		super(1, undo, select, pick);
+//		this.shellType = type;
+//		//CTRL shrinks selection instead of grows
+//		//ALT (MENU) ignores pattern block
+//		info.addModifiers(Modifier.CTRL, Modifier.ALT);
+//	}
 
 	@Override
 	public void invoke(IWorld world, final HotbarSlot...hotbarSlots) {

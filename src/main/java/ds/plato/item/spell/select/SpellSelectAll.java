@@ -8,7 +8,7 @@ public class SpellSelectAll extends AbstractSpellSelect {
 
 	public SpellSelectAll(IUndo undoManager, ISelect selectionManager, IPick pickManager) {
 		//super(Shell.Type.XYZ, undoManager, selectionManager, pickManager);
-		super(Select.all(), undoManager, selectionManager, pickManager);
+		super(Select.all, undoManager, selectionManager, pickManager);
 	}
 
 	@Override

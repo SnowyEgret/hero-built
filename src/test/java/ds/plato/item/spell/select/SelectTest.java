@@ -1,17 +1,12 @@
 package ds.plato.item.spell.select;
 
-import static org.junit.Assert.*;
-
-import java.util.Arrays;
-
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertThat;
 import net.minecraft.util.BlockPos;
 
-import org.junit.Before;
 import org.junit.Test;
 
-import ds.plato.item.spell.select.Select;
 import ds.plato.test.PlatoTest;
-import static org.hamcrest.CoreMatchers.equalTo;
 
 public class SelectTest extends PlatoTest {
 
@@ -82,6 +77,18 @@ public class SelectTest extends PlatoTest {
 	public void belowInclusive() {
 		BlockPos[] positions = Select.belowInclusive;
 		assertThat(positions.length, equalTo(18));
+	}
+
+	@Test
+	public void up() {
+		BlockPos[] positions = Select.up;
+		assertThat(positions.length, equalTo(1));
+	}
+
+	@Test
+	public void down() {
+		BlockPos[] positions = Select.down;
+		assertThat(positions.length, equalTo(1));
 	}
 
 }

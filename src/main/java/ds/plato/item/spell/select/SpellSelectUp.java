@@ -7,7 +7,7 @@ import ds.plato.api.IUndo;
 public class SpellSelectUp extends AbstractSpellSelect {
 
 	public SpellSelectUp(IUndo undo, ISelect select, IPick pick) {
-		super(Shell.Type.UP, undo, select, pick);
+		super(Select.up, undo, select, pick);
 	}
 
 	@Override
