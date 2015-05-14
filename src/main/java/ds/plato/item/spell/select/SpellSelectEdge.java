@@ -10,9 +10,7 @@ import ds.plato.player.HotbarSlot;
 public class SpellSelectEdge extends AbstractSpellSelect {
 
 	public SpellSelectEdge(IUndo undo, ISelect select, IPick pick) {
-		//super(null, undo, select, pick);
-		//super(Shell.Type.ALL, undo, select, pick);
-		super(Select.all, undo, select, pick);
+		super(Select.horizontalNoCorners, undo, select, pick);
 	}
 
 	@Override
@@ -21,15 +19,15 @@ public class SpellSelectEdge extends AbstractSpellSelect {
 	}
 
 	@Override
-	public void invoke(IWorld world, HotbarSlot...slotEntries) {
+	public void invoke(IWorld world, HotbarSlot...hotbarSlots) {
 		EnumFacing side = pickManager.getPicks()[0].side;
 		if (side == EnumFacing.UP) {
-			//positions = Select.edge();
+			setConditions(new IsOnEdgeOnGround());
 		} else if (side == EnumFacing.DOWN) {
-			//positions = Select.edgeUnder();
+			setConditions(new IsOnEdgeOnCeiling());
 		} else {
 			System.out.println("Got unexpected side=" + side);
 		}
-		super.invoke(world, slotEntries);
+		super.invoke(world, hotbarSlots);
 	}
 }

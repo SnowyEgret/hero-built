@@ -24,38 +24,37 @@ import ds.plato.select.Selection;
 
 public abstract class AbstractSpellSelect extends Spell {
 
-	protected Shell.Type shellType;
 	protected Item ingredientA = Items.feather;
 	protected Item ingredientB = Items.coal;
 	protected BlockPos[] positions;
+	private List<ICondition> conditions = new ArrayList<>();
 
 	public AbstractSpellSelect(BlockPos[] positions, IUndo undo, ISelect select, IPick pick) {
 		super(1, undo, select, pick);
 		this.positions = positions;
-		//CTRL shrinks selection instead of grows
-		//ALT (MENU) ignores pattern block
+		// CTRL shrinks selection instead of grows
+		// ALT (MENU) ignores pattern block
 		info.addModifiers(Modifier.CTRL, Modifier.ALT);
 	}
 
-//	public AbstractSpellSelect(Shell.Type type, IUndo undo, ISelect select, IPick pick) {
-//		super(1, undo, select, pick);
-//		this.shellType = type;
-//		//CTRL shrinks selection instead of grows
-//		//ALT (MENU) ignores pattern block
-//		info.addModifiers(Modifier.CTRL, Modifier.ALT);
-//	}
+	public void setConditions(ICondition... conditions) {
+		this.conditions.clear();
+		for (ICondition c : conditions) {
+			this.conditions.add(c);
+		};
+	}
 
 	@Override
-	public void invoke(IWorld world, final HotbarSlot...hotbarSlots) {
-		
-		//Select the pick if there are no selections.
-		//Either way the pickManager must be cleared.
+	public void invoke(IWorld world, final HotbarSlot... hotbarSlots) {
+
+		// Select the pick if there are no selections.
+		// Either way the pickManager must be cleared.
 		Pick p = pickManager.getPicks()[0];
 		pickManager.clearPicks();
 		if (selectionManager.size() == 0) {
 			selectionManager.select(world, p.getPos());
 		}
-		
+
 		// Shrink or grow selections
 		if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
 			shrinkSelections(world);
@@ -64,17 +63,17 @@ public abstract class AbstractSpellSelect extends Spell {
 			growSelections(world, patternBlock);
 		}
 	}
-	
-	//Private-------------------------------------------------------------------------------
+
+	// Private-------------------------------------------------------------------------------
 
 	private void growSelections(IWorld world, Block patternBlock) {
 		List<BlockPos> newGrownSelections = new ArrayList();
 		for (BlockPos center : selectionManager.getGrownSelections()) {
-			//Shell shell = new Shell(shellType, center, world);
-			//for (BlockPos p : shell) {
 			for (BlockPos p : positions) {
-				//Block block = world.getBlock(p);
 				p = p.add(center);
+				if (!test(world, p)) {
+					continue;
+				}
 				Block block = world.getBlock(p);
 				if (!(block instanceof BlockAir) && !(block instanceof BlockSelected)) {
 					if (Keyboard.isKeyDown(Keyboard.KEY_LMENU)) {
@@ -95,8 +94,6 @@ public abstract class AbstractSpellSelect extends Spell {
 	private void shrinkSelections(IWorld world) {
 		List<Selection> shrunkSelections = new ArrayList<>();
 		for (Selection s : selectionManager.getSelections()) {
-			//Shell shell = new Shell(shellType, s.getPos(), world);
-			//for (BlockPos p : shell) {
 			for (BlockPos p : positions) {
 				Block b = world.getBlock(p);
 				if (!(b instanceof BlockSelected)) {
@@ -111,4 +108,12 @@ public abstract class AbstractSpellSelect extends Spell {
 		}
 		selectionManager.clearGrownSelections();
 	}
+	
+	private boolean test(IWorld world, BlockPos pos) {
+		for(ICondition c : conditions) {
+			if(!c.test(world, pos)) return false;
+		}
+		return true;
+	}
+
 }
