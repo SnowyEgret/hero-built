@@ -19,15 +19,18 @@ public class SpellSelectEdge extends AbstractSpellSelect {
 	}
 
 	@Override
-	public void invoke(IWorld world, HotbarSlot...hotbarSlots) {
+	public void invoke(IWorld world, HotbarSlot... slots) {
 		EnumFacing side = pickManager.getPicks()[0].side;
-		if (side == EnumFacing.UP) {
+		switch (side) {
+		case UP:
 			setConditions(new IsOnEdgeOnGround());
-		} else if (side == EnumFacing.DOWN) {
+			break;
+		case DOWN:
 			setConditions(new IsOnEdgeOnCeiling());
-		} else {
-			System.out.println("Got unexpected side=" + side);
+			break;
+		default:
+			return;
 		}
-		super.invoke(world, hotbarSlots);
+		super.invoke(world, slots);
 	}
 }

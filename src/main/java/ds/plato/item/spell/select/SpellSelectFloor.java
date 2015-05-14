@@ -10,26 +10,27 @@ import ds.plato.player.HotbarSlot;
 public class SpellSelectFloor extends AbstractSpellSelect {
 
 	public SpellSelectFloor(IUndo undo, ISelect select, IPick pick) {
-		//super(Shell.Type.FLOOR, undo, select, pick);
 		super(Select.horizontal, undo, select, pick);
 	}
 
 	@Override
 	public Object[] getRecipe() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void invoke(IWorld world, HotbarSlot...slotEntries) {
+	public void invoke(IWorld world, HotbarSlot...slots) {
 		EnumFacing side = pickManager.getPicks()[0].side;
-		if (side == EnumFacing.DOWN) {
-				//shellType = Select.CEILING;
-		} else if (side == EnumFacing.UP) {
-				//shellType = Select.FLOOR;
-		} else {
-			System.out.println("[SpellGrowFloor.invoke] Got unexpected side=" + side);
+		switch (side) {
+		case UP:
+			setConditions(new IsOnGround());
+			break;
+		case DOWN:
+			setConditions(new IsOnCeiling());
+			break;
+		default:
+			return;
 		}
-		super.invoke(world, slotEntries);
+		super.invoke(world, slots);
 	}
 }
