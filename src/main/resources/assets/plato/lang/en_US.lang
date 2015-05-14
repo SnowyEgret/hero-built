@@ -129,6 +129,9 @@ item.spellSelectHorizontal.description=grows or shrinks selection horizontally
 item.spellSelectHorizontal.modifier.ctrl=shrink
 item.spellSelectHorizontal.modifier.alt=select any block
 
+item.spellSelectSurface.name=Select Surface Spell
+item.spellSelectSurface.description=selects blocks on surface
+
 item.spellSelectUp.name=Select Up Spell
 item.spellSelectUp.description=grows or shrinks selection upwards
 item.spellSelectUp.modifier.ctrl=shrink
