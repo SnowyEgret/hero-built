@@ -137,11 +137,11 @@ item.spellSelectUp.description=grows selection upwards
 item.spellSelectUp.modifier.ctrl=shrink
 item.spellSelectUp.modifier.alt=select any block
 
-item.spellSelectVerticalPlane.name=Select Vertical Plane Spell
-item.spellSelectVerticalPlane.description=grows selection in the vertical EW (default) or NS plane
-item.spellSelectVerticalPlane.modifier.ctrl=shrink
-item.spellSelectVerticalPlane.modifier.alt=select any block
-item.spellSelectVerticalPlane.modifier.shift=NS plane
+item.spellSelectVertical.name=Select Vertical Plane Spell
+item.spellSelectVertical.description=grows selection in the vertical EW (default) or NS plane
+item.spellSelectVertical.modifier.ctrl=shrink
+item.spellSelectVertical.modifier.alt=select any block
+item.spellSelectVertical.modifier.shift=NS plane
 
 # Transform spells ##########
 
@@ -181,15 +181,6 @@ item.spellHoleFill.modifier.shift=use first block in inventory
 item.spellMengerSponge.name=Menger Sponge Spell
 item.spellMengerSponge.description=creates Menger Sponge cavities in selection
 item.spellMengerSponge.pick.0=anywhere
-
-item.spellRestore.name=Restore Spell
-item.spellRestore.description=restores a selection from Store Spell
-item.spellRestore.pick.0=insertion point
-
-item.spellSave.name=Store Spell
-item.spellSave.description=stores a selection for Restore Spell
-item.spellSave.pick.0=origin
-item.spellSave.modifier.ctrl=deletes original selection
 
 item.spellText.name=Text Spell
 item.spellText.description=draws text

@@ -41,7 +41,6 @@ public class SpellText extends Spell implements ITextSetable {
 		String fontName = "Arial";
 		int fontStyle = Font.PLAIN;
 		font = new Font(fontName, fontStyle, fontSize);
-		// BufferedImage image = new BufferedImage(10, 10, BufferedImage.TYPE_INT_RGB);
 		graphics = new BufferedImage(10, 10, BufferedImage.TYPE_INT_RGB).getGraphics();
 		// font = font.deriveFont(32);
 	}
@@ -87,24 +86,23 @@ public class SpellText extends Spell implements ITextSetable {
 		// AffineTransform transform = new AffineTransform();
 		// transform.rotate(angleFromXAxis);
 		// font = font.deriveFont(transform);
-		System.out.println("[SpellText.setText] angle=" + angle);
+		System.out.println("angle=" + angle);
 
 		graphics.setFont(font);
 		FontMetrics fm = graphics.getFontMetrics();
 		Rectangle2D r = fm.getStringBounds(text, graphics);
-		System.out.println("[SpellText.setText] rectangle=" + r);
+		System.out.println("rectangle=" + r);
 
 		double hyp = Math.sqrt(Math.pow(r.getWidth(), 2) + Math.pow(r.getHeight(), 2));
 		int width = (int) hyp * 2;
 		int height = (int) width;
 
-		// BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		Graphics g = image.getGraphics();
 		g.setFont(font);
 		Graphics2D g2 = (Graphics2D) g;
 		// graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-		g2.drawRect(0, 0, width - 1, height - 1);
+		//g2.drawRect(0, 0, width - 1, height - 1);
 		g.translate(width / 2, height / 2);
 		g2.rotate(angle);
 		g2.drawString(text, 0, 0);
@@ -116,14 +114,13 @@ public class SpellText extends Spell implements ITextSetable {
 				// if (pixel == -16777216) {
 				if (pixel == -1) {
 					BlockPos p = new BlockPos(w - (width / 2), 0, h - (height / 2));
-					//Point3i p = new Point3i(w - (width / 2), h - (height / 2), 0);
-					p.add(picks[0].getPos());
+					p = p.add(picks[0].getPos());
 					points.add(p);
 				}
 			}
 		}
 
-		System.out.println("[SpellText.invoke] points.size()=" + points.size());
+		System.out.println("[points.size()=" + points.size());
 		selectionManager.clearSelections(world);
 		Transaction t = undoManager.newTransaction();
 		for (BlockPos p : points) {
