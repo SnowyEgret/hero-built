@@ -95,12 +95,12 @@ public abstract class AbstractSpellSelect extends Spell {
 		List<Selection> shrunkSelections = new ArrayList<>();
 		for (Selection s : selectionManager.getSelections()) {
 			for (BlockPos p : positions) {
+				p = p.add(s.getPos());
 				Block b = world.getBlock(p);
 				if (!(b instanceof BlockSelected)) {
 					shrunkSelections.add(s);
 					break;
 				}
-
 			}
 		}
 		for (Selection s : shrunkSelections) {

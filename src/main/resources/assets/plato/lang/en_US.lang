@@ -95,22 +95,22 @@ item.spellRotate90.modifier.z=z axis
 # Select spells ##########
 
 item.spellSelectAbove.name=Select Above Spell
-item.spellSelectAbove.description=grows or shrinks selection above selected blocks
+item.spellSelectAbove.description=grows selection above selected blocks
 item.spellSelectAbove.modifier.ctrl=shrink
 item.spellSelectAbove.modifier.alt=select any block
 
 item.spellSelectAll.name=Select All spell
-item.spellSelectAll.description=grows or shrinks selection in all directions
+item.spellSelectAll.description=grows selection in all directions
 item.spellSelectAll.modifier.ctrl=shrink
 item.spellSelectAll.modifier.alt=select any block
 
 item.spellSelectBellow.name=Select Bellow Spell
-item.spellSelectBellow.description=grows or shrinks selection bellow selected blocks
+item.spellSelectBellow.description=grows selection bellow selected blocks
 item.spellSelectBellow.modifier.ctrl=shrink
 item.spellSelectBellow.modifier.alt=select any block
 
 item.spellSelectDown.name=Select Down Spell
-item.spellSelectDown.description=grows or shrinks selection downwards
+item.spellSelectDown.description=grows selection downwards
 item.spellSelectDown.modifier.ctrl=shrink
 item.spellSelectDown.modifier.alt=select any block
 
@@ -125,7 +125,7 @@ item.spellSelectFloor.modifier.ctrl=shrink
 item.spellSelectFloor.modifier.alt=select any block
 
 item.spellSelectHorizontal.name=Select Horizontal Spell
-item.spellSelectHorizontal.description=grows or shrinks selection horizontally
+item.spellSelectHorizontal.description=grows selection horizontally
 item.spellSelectHorizontal.modifier.ctrl=shrink
 item.spellSelectHorizontal.modifier.alt=select any block
 
@@ -133,12 +133,12 @@ item.spellSelectSurface.name=Select Surface Spell
 item.spellSelectSurface.description=selects blocks on surface
 
 item.spellSelectUp.name=Select Up Spell
-item.spellSelectUp.description=grows or shrinks selection upwards
+item.spellSelectUp.description=grows selection upwards
 item.spellSelectUp.modifier.ctrl=shrink
 item.spellSelectUp.modifier.alt=select any block
 
 item.spellSelectVerticalPlane.name=Select Vertical Plane Spell
-item.spellSelectVerticalPlane.description=grows or shrinks selection in the vertical EW (default) or NS plane
+item.spellSelectVerticalPlane.description=grows selection in the vertical EW (default) or NS plane
 item.spellSelectVerticalPlane.modifier.ctrl=shrink
 item.spellSelectVerticalPlane.modifier.alt=select any block
 item.spellSelectVerticalPlane.modifier.shift=NS plane

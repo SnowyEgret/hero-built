@@ -33,13 +33,13 @@ public class SelectTest extends PlatoTest {
 
 	@Test
 	public void EW() {
-		BlockPos[] positions = Select.EW;
+		BlockPos[] positions = Select.eastWest;
 		assertThat(positions.length, equalTo(9));
 	}
 
 	@Test
 	public void NS() {
-		BlockPos[] positions = Select.NS;
+		BlockPos[] positions = Select.northSouth;
 		assertThat(positions.length, equalTo(9));
 	}
 

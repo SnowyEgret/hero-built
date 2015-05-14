@@ -1,5 +1,7 @@
 package ds.plato.item.spell.select;
 
+import org.lwjgl.input.Keyboard;
+
 import net.minecraft.util.EnumFacing;
 import ds.plato.api.IPick;
 import ds.plato.api.ISelect;
@@ -20,7 +22,15 @@ public class SpellSelectSurface extends AbstractSpellSelect {
 
 	@Override
 	public void invoke(IWorld world, HotbarSlot...slots) {
-		setConditions(new IsOnSurface());
+		EnumFacing side = pickManager.getPicks()[0].side;
+		boolean ignoreSide = false;
+		if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+			positions = Select.all;
+			ignoreSide = true;
+		} else {
+			positions = Select.planeForSide(side);
+		}
+		setConditions(new IsOnSurface(side, ignoreSide));	
 		super.invoke(world, slots);
 	}
 }

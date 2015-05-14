@@ -119,8 +119,7 @@ public class SelectionManager implements ISelect {
 		if (selections.isEmpty()) {
 			return null;
 		}
-		//FIXME getSelectionList does not return an ordered list
-		return getSelectionList().get(0);
+		return selections.values().iterator().next();
 	}
 
 	@Override

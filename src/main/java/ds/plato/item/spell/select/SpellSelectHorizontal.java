@@ -7,7 +7,7 @@ import ds.plato.api.IUndo;
 public class SpellSelectHorizontal extends AbstractSpellSelect {
 
 	public SpellSelectHorizontal(IUndo undo, ISelect select, IPick pick) {
-		super(Select.horizontalNoCorners, undo, select, pick);
+		super(Select.horizontal, undo, select, pick);
 	}
 
 	@Override
