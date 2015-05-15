@@ -23,7 +23,8 @@ public class SetBlockMessage implements IMessage {
 		this.z = pos.getZ();
 		this.pos = pos;
 		//1.8
-		this.metadata = block.getMetaFromState((IBlockState) block.getBlockState());
+		//TODO commented out for now - runtime exception on cast
+		//this.metadata = block.getMetaFromState((IBlockState) block.getBlockState());
 		this.block = block;
 	}
 

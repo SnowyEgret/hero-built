@@ -56,15 +56,16 @@ public abstract class Staff extends ItemBase implements IStaff {
 	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side,
 			float sx, float sy, float sz) {
 		
-		if(world.isRemote) {
-			return false;
-		}
-		//Open staff gui if space in down
+		//Only on server side
+//		if(world.isRemote) {
+//			return false;
+//		}
+		//Open staff gui if space is down
 		if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
 			player.openGui(Plato.instance, 3, world, 0, 0, 0);
 			return true;
 		}
-		//Get the current spell and call use it
+		//Get the current spell and use it
 		if (!isEmpty(stack)) {
 			Spell s = getSpell(stack);
 			s.onItemUse(stack, player, world, pos, side, sx, sy, sz);
@@ -80,8 +81,8 @@ public abstract class Staff extends ItemBase implements IStaff {
 		if (isEmpty(stack)) {
 			return null;
 		}
-		Spell s = getSpellAtIndex(stack, getOrdinal(stack));
-		//System.out.println(s);
+		//System.out.println("ordinal="+getOrdinal(stack));
+		Spell s = getSpellAtIndex(stack, getIndex(stack));
 		if (s == null) {
 			s = nextSpell(stack);
 		}
@@ -92,12 +93,12 @@ public abstract class Staff extends ItemBase implements IStaff {
 	public Spell nextSpell(ItemStack stack) {
 		Spell s = null;
 		for (int i = 0; i < size; i++) {
-			if (getOrdinal(stack) == size - 1) {
-				setOrdinal(stack, 0);
+			if (getIndex(stack) == size - 1) {
+				setIndex(stack, 0);
 			} else {
-				incrementOrdinal(stack, 1);
+				incrementIndex(stack, 1);
 			}
-			s = getSpellAtIndex(stack, getOrdinal(stack));
+			s = getSpellAtIndex(stack, getIndex(stack));
 			if (s == null) {
 				continue;
 			} else {
@@ -112,12 +113,12 @@ public abstract class Staff extends ItemBase implements IStaff {
 	public ISpell previousSpell(ItemStack stack) {
 		ISpell s = null;
 		for (int i = 0; i < size; i++) {
-			if (getOrdinal(stack) == 0) {
-				setOrdinal(stack, size - 1);
+			if (getIndex(stack) == 0) {
+				setIndex(stack, size - 1);
 			} else {
-				incrementOrdinal(stack, -1);
+				incrementIndex(stack, -1);
 			}
-			s = getSpellAtIndex(stack, getOrdinal(stack));
+			s = getSpellAtIndex(stack, getIndex(stack));
 			if (s == null) {
 				continue;
 			} else {
@@ -165,22 +166,26 @@ public abstract class Staff extends ItemBase implements IStaff {
 		return null;
 	}
 
-	private int getOrdinal(ItemStack stack) {
+	private int getIndex(ItemStack stack) {
 		NBTTagCompound t = getTag(stack);
-		int ordinal = t.getInteger("o");
+		int ordinal = t.getInteger("index");
 		return ordinal;
 	}
 
-	private void setOrdinal(ItemStack stack, int i) {
+	private void setIndex(ItemStack stack, int i) {
+//		if (i == 0) {
+//			System.out.println();
+//			new Throwable().printStackTrace();
+//		}
 		NBTTagCompound t = getTag(stack);
-		t.setInteger("o", i);
+		t.setInteger("index", i);
 	}
 
-	private void incrementOrdinal(ItemStack stack, int increment) {
+	private void incrementIndex(ItemStack stack, int increment) {
 		NBTTagCompound t = getTag(stack);
-		int i = t.getInteger("o");
+		int i = t.getInteger("index");
 		i = i + increment;
-		t.setInteger("o", i);
+		t.setInteger("index", i);
 	}
 
 	private NBTTagCompound getTag(ItemStack stack) {

@@ -7,6 +7,7 @@ import javax.vecmath.Point3d;
 import javax.vecmath.Point3i;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
@@ -83,17 +84,27 @@ public abstract class Spell extends ItemBase implements ISpell {
 		selectionManager.select(w, pos);
 	}
 	
+	//FIXME Has no effect
+	@Override
+	public EnumAction getItemUseAction(ItemStack stack) {
+		return EnumAction.NONE;
+	}
+
 	@Override
 	public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World world, 
 			BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ) {
 
+		System.out.println("tag="+stack.getTagCompound());
+		//Only on server side.
+		//FIXME the server side stack tag is out of sink. Index is still 0
 		if (world.isRemote) {
 			return false;
 		}
 		IWorld w = new WorldWrapper(world);
 		pickManager.pick(w, pos, side);
 		if (pickManager.isFinishedPicking()) {
-			invoke(w, Player.getPlayer().getHotbar());
+			//invoke(w, Player.getPlayer().getHotbar());
+			invoke(w, new Player(playerIn).getHotbar());
 		}
 		return true;
 	}

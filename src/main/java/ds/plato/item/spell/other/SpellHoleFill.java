@@ -13,11 +13,12 @@ import ds.plato.api.IUndo;
 import ds.plato.api.IWorld;
 import ds.plato.item.spell.Modifier;
 import ds.plato.item.spell.Spell;
+import ds.plato.item.spell.select.Select;
 import ds.plato.item.spell.select.Shell;
 import ds.plato.player.HotbarSlot;
 import ds.plato.select.Selection;
-import ds.plato.undo.UndoableSetBlock;
 import ds.plato.undo.Transaction;
+import ds.plato.undo.UndoableSetBlock;
 
 public class SpellHoleFill extends Spell {
 
@@ -32,17 +33,18 @@ public class SpellHoleFill extends Spell {
 	}
 
 	@Override
-	public void invoke(IWorld world, HotbarSlot... slotEntries) {
+	public void invoke(IWorld world, HotbarSlot... slots) {
 		Transaction t = undoManager.newTransaction();
 		for (Selection s : selectionManager.getSelections()) {
-			Shell.Type type = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) ? Shell.Type.HORIZONTAL : Shell.Type.BELLOW;
-			Shell shell = new Shell(type, s.getPos(), world);
-			for (BlockPos p : shell) {
-				Block b = world.getBlock(p);
+			// Shell.Type type = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) ? Shell.Type.HORIZONTAL : Shell.Type.BELLOW;
+			BlockPos[] pos = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) ? Select.horizontal : Select.below;
+			// Shell shell = new Shell(type, s.getPos(), world);
+			// for (BlockPos p : shell) {
+			for (BlockPos p : pos) {
+				Block b = world.getBlock(p.add(s.getPos()));
 				if (b == Blocks.air || b == Blocks.water) {
 					if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-						HotbarSlot e = slotEntries[0];
-						t.add(new UndoableSetBlock(world, selectionManager, p, e.block).set());
+						t.add(new UndoableSetBlock(world, selectionManager, p, slots[0].block).set());
 					} else {
 						t.add(new UndoableSetBlock(world, selectionManager, p, s.getBlock()).set());
 					}

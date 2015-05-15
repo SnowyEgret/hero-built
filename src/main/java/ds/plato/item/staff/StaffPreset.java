@@ -44,7 +44,8 @@ public abstract class StaffPreset extends Staff {
 				System.out.println("[StaffPreset.setTag] No room on staff for spell " + s);
 			}
 		}
-		stack.getTagCompound().setInteger("o=", 0);
+		//stack.getTagCompound().setInteger("o=", 0);
+		stack.getTagCompound().setInteger("index", 0);
 	}
 	
 	

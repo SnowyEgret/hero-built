@@ -3,6 +3,8 @@ package ds.plato.event;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -52,7 +54,7 @@ public class KeyHandler {
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void onKeyInput(KeyInputEvent event) {
-		
+	
 		IPlayer player = Player.getPlayer();
 		IWorld w = player.getWorld();
 
@@ -83,7 +85,10 @@ public class KeyHandler {
 		}
 
 		if (keyBindings.get("toggle").isPressed()) {
-			ItemStack stack = player.getHeldItemStack();
+			//FIXME Is the stack tag only being updated on client side?
+			//ItemStack stack = player.getHeldItemStack();
+			EntityPlayerSP p = Minecraft.getMinecraft().thePlayer;
+			ItemStack stack = p.inventory.getCurrentItem();
 			if (stack != null) {
 				Item i = stack.getItem();
 				if (i instanceof Staff) {
