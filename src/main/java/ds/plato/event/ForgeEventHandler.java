@@ -45,7 +45,7 @@ public class ForgeEventHandler {
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void onDrawBlockHightlight(DrawBlockHighlightEvent e) {
-		// Seems we are only getting this on client side
+		//We are only getting this event on client side
 		if (spell != null) {
 			BlockPos p = null;
 			Pick pick = pickManager.lastPick();
@@ -65,7 +65,7 @@ public class ForgeEventHandler {
 		}
 	}
 
-	// On this event the player may have changed spells on a staff. Reset picking on the spell and update field spell.
+	//The player may have changed spells on a staff. Reset picking on the spell and update field spell.
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void onLivingUpdate(LivingUpdateEvent e) {
@@ -74,7 +74,9 @@ public class ForgeEventHandler {
 			return;
 		}
 		if (e.entity instanceof EntityPlayer) {
-			ISpell s = Player.getPlayer().getSpell();
+			//ISpell s = Player.getPlayer().getSpell();
+			//Same
+			ISpell s = new Player((EntityPlayer)e.entity).getSpell();
 			if (s == null) {
 				spell = null;
 			} else {
@@ -106,12 +108,8 @@ public class ForgeEventHandler {
 	@SubscribeEvent
 	public void onModelBakeEvent(ModelBakeEvent event) {
 		IRegistry r = event.modelRegistry;
-		// if (r.getObject(BlockSelected.modelResourceLocation) != null
-		// && r.getObject(BlockPicked.modelResourceLocation) != null) {
-		// System.out.println("Got both models");
 		r.putObject(BlockSelected.modelResourceLocation, new BlockSelectedModel());
 		r.putObject(BlockPicked.modelResourceLocation, new BlockPickedModel());
-		// }
 	}
 
 }

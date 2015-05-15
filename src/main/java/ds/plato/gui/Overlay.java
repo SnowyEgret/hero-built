@@ -28,7 +28,6 @@ public class Overlay {
 		this.selectionManager = selectionManager;
 	}
 
-	//public void setDisplacement(Vector3d displacement) {
 	public void setDisplacement(Vec3i displacement) {
 		this.displacement = displacement;
 	}
@@ -41,7 +40,7 @@ public class Overlay {
 		int rowHeight = r.FONT_HEIGHT + 5;
 		
 		SpellInfo info = spell.getInfo();
-		r.drawStringWithShadow(info.getName().toUpperCase() + " spell", x, y, white);
+		r.drawStringWithShadow(info.getName().toUpperCase(), x, y, white);
 		r.drawStringWithShadow(info.getDescription(), x, y += rowHeight, white);
 		r.drawStringWithShadow(info.getPicks(), x, y += rowHeight, green);
 		r.drawStringWithShadow(info.getModifiers(), x, y += rowHeight, blue);

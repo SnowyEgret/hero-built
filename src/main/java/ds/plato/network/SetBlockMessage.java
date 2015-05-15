@@ -12,7 +12,7 @@ public class SetBlockMessage implements IMessage {
 	public int x;
 	public int y;
 	public int z;
-	public BlockPos pos;
+	//public BlockPos pos;
 	public Block block;
 	public int metadata;
 	int size = 5;
@@ -21,7 +21,7 @@ public class SetBlockMessage implements IMessage {
 		this.x = pos.getX();
 		this.y = pos.getY();
 		this.z = pos.getZ();
-		this.pos = pos;
+		//this.pos = pos;
 		//1.8
 		//TODO commented out for now - runtime exception on cast
 		//this.metadata = block.getMetaFromState((IBlockState) block.getBlockState());
@@ -34,9 +34,9 @@ public class SetBlockMessage implements IMessage {
 		y = ByteBufUtils.readVarInt(buf, size);
 		z = ByteBufUtils.readVarInt(buf, size);
 		int blockId = ByteBufUtils.readVarInt(buf, size);
-		System.out.println("[SetBlockMessage.fromBytes] blockId=" + blockId);
+		System.out.println("blockId=" + blockId);
 		block = Block.getBlockById(blockId);
-		System.out.println("[SetBlockMessage.fromBytes] block=" + block);
+		System.out.println("block=" + block);
 		metadata = ByteBufUtils.readVarInt(buf, 1);
 	}
 
@@ -67,8 +67,8 @@ public class SetBlockMessage implements IMessage {
 	}
 
 	//TODO 
-	public BlockPos getPos() {
-		return pos;
-	}
+//	public BlockPos getPos() {
+//		return pos;
+//	}
 
 }

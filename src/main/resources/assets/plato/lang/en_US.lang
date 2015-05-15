@@ -9,13 +9,13 @@ item.staffTransform.name=Edit Staff
 item.staffOak.name=Oak Staff
 item.staffBirch.name=Birch Staff
 
-# Spells ##########
+#s ##########
 
 pick.anywhere=anywhere
 
 # Draw spells ##########
 
-item.spellBox.name=Box Spell
+item.spellBox.name=Box
 item.spellBox.description=creates a solid box
 item.spellBox.pick.0=origin
 item.spellBox.pick.1=diagonal corner
@@ -23,26 +23,26 @@ item.spellBox.modifier.ctrl=cube
 item.spellBox.modifier.shift=hollow
 item.spellBox.modifier.alt=on surface
 
-item.spellCircle.name=Circle Spell
+item.spellCircle.name=Circle
 item.spellCircle.description=creates a circle
 item.spellCircle.pick.0=center
 item.spellCircle.pick.1=radius
 item.spellCircle.modifier.alt=on surface
 
-item.spellCone.name=Cone Spell
+item.spellCone.name=Cone
 item.spellCone.description=creates a cone
 item.spellCone.pick.0=center
 item.spellCone.pick.1=radius
 item.spellCone.pick.2=height
 item.spellCone.modifier.shift=hollow
 
-item.spellLine.name=Line Spell
+item.spellLine.name=Line
 item.spellLine.description=creates a line
 item.spellLine.pick.0=from
 item.spellLine.pick.1=to
 item.spellLine.modifier.ctrl=polyline
 
-item.spellMeasure.name=Measure Spell
+item.spellMeasure.name=Measure
 item.spellMeasure.description=measures distance between picks
 item.spellMeasure.pick.0=from
 item.spellMeasure.pick.1=to
@@ -50,20 +50,20 @@ item.spellMeasure.modifier.ctrl=place markers at picks
 item.spellMeasure.modifier.shift=divides by 2
 item.spellMeasure.modifier.alt=divides by 3
 
-item.spellPyramid.name=Pyramid Spell
+item.spellPyramid.name=Pyramid
 item.spellPyramid.description=creates a solid pyramid
 item.spellPyramid.pick.0=from
 item.spellPyramid.pick.1=diagonal corner
 item.spellPyramid.modifier.ctrl=square
 item.spellPyramid.modifier.shift=hollow
 
-item.spellRectangle.name=Rectangle Spell
+item.spellRectangle.name=Rectangle
 item.spellRectangle.description=creates a rectangle
 item.spellRectangle.pick.0=from
 item.spellRectangle.pick.1=diagonal corner
 item.spellRectangle.modifier.ctrl=square
 
-item.spellSphere.name=Sphere Spell
+item.spellSphere.name=Sphere
 item.spellSphere.description=creates a sphere
 item.spellSphere.pick.0=center
 item.spellSphere.pick.1=radius
@@ -71,20 +71,20 @@ item.spellSphere.modifier.shift=hemisphere
 
 # Transform spells ##########
 
-item.spellCopy.name=Copy Spell
+item.spellCopy.name=Copy
 item.spellCopy.description=copies selection
 item.spellCopy.pick.0=from
 item.spellCopy.pick.1=to
 item.spellCopy.modifier.ctrl=delete original
 
-item.spellMirror.name=Mirror Spell
+item.spellMirror.name=Mirror
 item.spellMirror.description=mirrors selection about plane
 item.spellMirror.pick.0=point on plane
 item.spellMirror.pick.1=point on plane
 item.spellMirror.pick.2=point on plane
 item.spellMirror.modifier.ctrl=delete original
 
-item.spellRotate90.name=Rotate Spell
+item.spellRotate90.name=Rotate
 item.spellRotate90.description=rotates selection 90 degrees around specified axis
 item.spellRotate90.pick.0=center of rotation
 item.spellRotate90.modifier.alt=rotate around centroid
@@ -94,7 +94,7 @@ item.spellRotate90.modifier.z=z axis
 
 # Select spells ##########
 
-item.spellSelectAbove.name=Select Above Spell
+item.spellSelectAbove.name=Select Above
 item.spellSelectAbove.description=grows selection above selected blocks
 item.spellSelectAbove.modifier.ctrl=shrink
 item.spellSelectAbove.modifier.alt=select any block
@@ -104,40 +104,40 @@ item.spellSelectAll.description=grows selection in all directions
 item.spellSelectAll.modifier.ctrl=shrink
 item.spellSelectAll.modifier.alt=select any block
 
-item.spellSelectBellow.name=Select Bellow Spell
+item.spellSelectBellow.name=Select Bellow
 item.spellSelectBellow.description=grows selection bellow selected blocks
 item.spellSelectBellow.modifier.ctrl=shrink
 item.spellSelectBellow.modifier.alt=select any block
 
-item.spellSelectDown.name=Select Down Spell
+item.spellSelectDown.name=Select Down
 item.spellSelectDown.description=grows selection downwards
 item.spellSelectDown.modifier.ctrl=shrink
 item.spellSelectDown.modifier.alt=select any block
 
-item.spellSelectEdge.name=Select Edge Spell
+item.spellSelectEdge.name=Select Edge
 item.spellSelectEdge.description=selects an edge
 item.spellSelectEdge.modifier.ctrl=shrink
 item.spellSelectEdge.modifier.alt=select any block
 
-item.spellSelectFloor.name=Select Floor Spell
+item.spellSelectFloor.name=Select Floor
 item.spellSelectFloor.description=selects floor or ceiling
 item.spellSelectFloor.modifier.ctrl=shrink
 item.spellSelectFloor.modifier.alt=select any block
 
-item.spellSelectHorizontal.name=Select Horizontal Spell
+item.spellSelectHorizontal.name=Select Horizontal
 item.spellSelectHorizontal.description=grows selection horizontally
 item.spellSelectHorizontal.modifier.ctrl=shrink
 item.spellSelectHorizontal.modifier.alt=select any block
 
-item.spellSelectSurface.name=Select Surface Spell
+item.spellSelectSurface.name=Select Surface
 item.spellSelectSurface.description=selects blocks on surface
 
-item.spellSelectUp.name=Select Up Spell
+item.spellSelectUp.name=Select Up
 item.spellSelectUp.description=grows selection upwards
 item.spellSelectUp.modifier.ctrl=shrink
 item.spellSelectUp.modifier.alt=select any block
 
-item.spellSelectVertical.name=Select Vertical Plane Spell
+item.spellSelectVertical.name=Select Vertical Plane
 item.spellSelectVertical.description=grows selection in the vertical EW (default) or NS plane
 item.spellSelectVertical.modifier.ctrl=shrink
 item.spellSelectVertical.modifier.alt=select any block
@@ -145,49 +145,49 @@ item.spellSelectVertical.modifier.shift=NS plane
 
 # Transform spells ##########
 
-item.spellDelete.name=Delete Spell
+item.spellDelete.name=Delete
 item.spellDelete.description=deletes selections
 
-item.spellFill.name=Fill Spell
+item.spellFill.name=Fill
 item.spellFill.description=fills selections with first block in inventory
 
-item.spellFillChecker.name=Checker Spell
+item.spellFillChecker.name=Checker
 item.spellFill.description=fills selections with checker pattern using first two blocks in inventory
 
-item.spellFillRandom.name=Random Fill Spell
+item.spellFillRandom.name=Random Fill
 item.spellFillRandom.description=fills selections with random pattern using blocks in inventory
 
-item.spellHollow.name=Hollow Spell
+item.spellHollow.name=Hollow
 item.spellHollow.description=hollows selection
 
 # Other spells ##########
 
-item.spellDrop.name=Drop Spell
+item.spellDrop.name=Drop
 item.spellDrop.description=drops selections to ground
 item.spellDrop.pick.0=anywhere
 item.spellDrop.modifier.ctrl=delete original
 item.spellDrop.modifier.alt=fill on the way down
 
-item.spellHoleDrain.name=Drain Hole Spell
+item.spellHoleDrain.name=Drain Hole
 item.spellHoleDrain.description=drains a body of water
 item.spellHoleDrain.pick.0=any block under water
 
-item.spellHoleFill.name=Fill Hole Spell
+item.spellHoleFill.name=Fill Hole
 item.spellHoleFill.description=fills a hole or body of water with level with selected block
 item.spellHoleFill.pick.0=anywhere
 item.spellHoleFill.modifier.ctrl=top surface only
 item.spellHoleFill.modifier.shift=use first block in inventory
 
-item.spellMengerSponge.name=Menger Sponge Spell
+item.spellMengerSponge.name=Menger Sponge
 item.spellMengerSponge.description=creates Menger Sponge cavities in selection
 item.spellMengerSponge.pick.0=anywhere
 
-item.spellText.name=Text Spell
+item.spellText.name=Text
 item.spellText.description=draws text
 item.spellText.pick.0=location
 item.spellText.pick.1=direction
 
-item.spellThicken.name=Thicken Spell
+item.spellThicken.name=Thicken
 item.spellThicken.description=thickens selections
 item.spellThicken.pick.0=anywhere
 item.spellThicken.modifier.ctrl=inwards only

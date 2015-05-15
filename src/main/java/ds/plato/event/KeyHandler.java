@@ -26,6 +26,7 @@ import ds.plato.api.IWorld;
 import ds.plato.item.spell.matrix.SpellCopy;
 import ds.plato.item.spell.transform.SpellDelete;
 import ds.plato.item.staff.Staff;
+import ds.plato.network.NextSpellMessage;
 import ds.plato.player.Player;
 
 public class KeyHandler {
@@ -42,7 +43,7 @@ public class KeyHandler {
 		// TODO internationalize these strings
 		keyBindings.put("undo", registerKeyBinding("Undo", Keyboard.KEY_Z));
 		keyBindings.put("redo", registerKeyBinding("Redo", Keyboard.KEY_Y));
-		keyBindings.put("toggle", registerKeyBinding("Toggle", Keyboard.KEY_TAB));
+		keyBindings.put("nextSpell", registerKeyBinding("Next spell", Keyboard.KEY_TAB));
 		keyBindings.put("delete", registerKeyBinding("Delete", Keyboard.KEY_DELETE));
 		keyBindings.put("lastSelection", registerKeyBinding("Last selection", Keyboard.KEY_L));
 		keyBindings.put("left", registerKeyBinding("Move left", Keyboard.KEY_LEFT));
@@ -84,11 +85,11 @@ public class KeyHandler {
 			}
 		}
 
-		if (keyBindings.get("toggle").isPressed()) {
+		if (keyBindings.get("nextSpell").isPressed()) {
 			//FIXME Is the stack tag only being updated on client side?
 			//ItemStack stack = player.getHeldItemStack();
 			EntityPlayerSP p = Minecraft.getMinecraft().thePlayer;
-			ItemStack stack = p.inventory.getCurrentItem();
+			ItemStack stack = p.getCurrentEquippedItem();
 			if (stack != null) {
 				Item i = stack.getItem();
 				if (i instanceof Staff) {
@@ -99,6 +100,7 @@ public class KeyHandler {
 					}
 				}
 			}
+			Plato.network.sendToServer(new NextSpellMessage());
 		}
 
 		if (keyBindings.get("delete").isPressed()) {

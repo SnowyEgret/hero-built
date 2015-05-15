@@ -37,6 +37,8 @@ import ds.plato.item.staff.StaffDraw;
 import ds.plato.item.staff.StaffOak;
 import ds.plato.item.staff.StaffSelect;
 import ds.plato.item.staff.StaffTransform;
+import ds.plato.network.NextSpellMessage;
+import ds.plato.network.NextSpellMessageHandler;
 import ds.plato.network.SetBlockMessage;
 import ds.plato.network.SetBlockMessageHandler;
 import ds.plato.pick.PickManager;
@@ -88,9 +90,11 @@ public class Plato {
 			List<Spell> drawSpells = loader.loadSpellsFromPackage("ds.plato.item.spell.draw");
 			List<Spell> selectSpells = loader.loadSpellsFromPackage("ds.plato.item.spell.select");
 			List<Spell> transformSpells = loader.loadSpellsFromPackage("ds.plato.item.spell.transform");
+			List<Spell> matrixSpells = loader.loadSpellsFromPackage("ds.plato.item.spell.matrix");
 			List<Spell> otherSpells = loader.loadSpellsFromPackage("ds.plato.item.spell.other");
 			spells.addAll(drawSpells);
 			spells.addAll(selectSpells);
+			spells.addAll(matrixSpells);
 			spells.addAll(transformSpells);
 			spells.addAll(otherSpells);
 
@@ -115,6 +119,7 @@ public class Plato {
 		// http://www.minecraftforge.net/forum/index.php?topic=20135.0
 		network = NetworkRegistry.INSTANCE.newSimpleChannel("plato");
 		network.registerMessage(SetBlockMessageHandler.class, SetBlockMessage.class, 0, Side.SERVER);
+		network.registerMessage(NextSpellMessageHandler.class, NextSpellMessage.class, 0, Side.SERVER);
 
 		//Create custom state mappers for BlockSelected and BlockPicked models
 		ModelLoader.setCustomStateMapper(blockSelected, new StateMapperBase() {

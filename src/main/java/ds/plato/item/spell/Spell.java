@@ -98,7 +98,7 @@ public abstract class Spell extends ItemBase implements ISpell {
 		//Only on server side.
 		//FIXME the server side stack tag is out of sink. Index is still 0
 		if (world.isRemote) {
-			return false;
+			return true;
 		}
 		IWorld w = new WorldWrapper(world);
 		pickManager.pick(w, pos, side);

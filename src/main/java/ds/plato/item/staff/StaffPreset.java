@@ -36,12 +36,12 @@ public abstract class StaffPreset extends Staff {
 		stack.setTagCompound(new NBTTagCompound());
 		int i = 0;
 		for (Spell s : spells) {
-			if (i < 9) {
+			if (i < size) {
 				String n = s.getClass().getSimpleName();
 				stack.getTagCompound().setString(String.valueOf(i), n);
 				i++;
 			} else {
-				System.out.println("[StaffPreset.setTag] No room on staff for spell " + s);
+				System.out.println("No room on staff for spell " + s);
 			}
 		}
 		//stack.getTagCompound().setInteger("o=", 0);
