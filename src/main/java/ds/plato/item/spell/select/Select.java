@@ -39,26 +39,6 @@ public class Select {
 	public static final BlockPos[] allNoCorners = concat(northSouth, eastWest, horizontal);
 	public static final BlockPos[] upDownNorhEastSouthWest = concat(up, down, north, east, south, west);
 
-	// If all of the horizontal blocks do not have air above then center
-	// public static BlockPos[] edge(IWorld w, BlockPos center) {
-	// Set<BlockPos> positions = new HashSet<>();
-	// for (BlockPos p : horizontal) {
-	// p = center.add(p);
-	// if (w.getBlock(p.up()) == Blocks.air) {
-	// // for (BlockPos pointAbove : new Shell(Type.TOP_CROSS, p, w)) {
-	// for (BlockPos pointAbove : new Shell(Type.TOP_ALL, p, w)) {
-	// Block b = w.getBlock(pointAbove);
-	// if (b != Blocks.air) {
-	// positions.add(p);
-	// break;
-	// }
-	// }
-	// }
-	// }
-	// BlockPos[] array = new BlockPos[positions.size()];
-	// return positions.toArray(array);
-	// }
-
 	public static boolean isEdgeOnGround(IWorld w, BlockPos position) {
 		for (BlockPos p : above) {
 			p = p.add(position);
@@ -67,6 +47,47 @@ public class Select {
 			}
 		}
 		return false;
+	}
+
+	public static BlockPos[] toSideOfPlane(EnumFacing side) {
+		switch (side) {
+		case UP:
+			return above;
+		case DOWN:
+			return below;
+		case EAST:
+			return east;
+		case NORTH:
+			return north;
+		case SOUTH:
+			return south;
+		case WEST:
+			return west;
+		default:
+			break;
+		}
+		return null;
+	}
+
+	public static BlockPos[] planeForSide(EnumFacing side) {
+		switch (side) {
+		case UP:
+			return horizontal;
+		case DOWN:
+			return horizontal;
+		case EAST:
+			return northSouth;
+		case WEST:
+			return northSouth;
+		case NORTH:
+			return eastWest;
+		case SOUTH:
+			return eastWest;
+		default:
+			break;
+		}
+		;
+		return null;
 	}
 
 	// Private------------------------------------------------
@@ -100,60 +121,9 @@ public class Select {
 				positions.add(p);
 			}
 		}
-		// for (BlockPos p : a) {
-		// positions.add(p);
-		// }
-		// for (BlockPos p : b) {
-		// positions.add(p);
-		// }
-		// for (BlockPos p : c) {
-		// positions.add(p);
-		// }
 		BlockPos[] array = new BlockPos[positions.size()];
 		positions.toArray(array);
 		return array;
-	}
-
-	public static BlockPos[] toSideOfPlane(EnumFacing side) {
-		switch (side) {
-		case UP:
-			return above;
-		case DOWN:
-			return below;
-		case EAST:
-			return east;
-		case NORTH:
-			return north;
-		case SOUTH:
-			return south;
-		case WEST:
-			return west;
-		default:
-			break;
-		}
-		;
-		return null;
-	}
-
-	public static BlockPos[] planeForSide(EnumFacing side) {
-		switch (side) {
-		case UP:
-			return horizontal;
-		case DOWN:
-			return horizontal;
-		case EAST:
-			return northSouth;
-		case WEST:
-			return northSouth;
-		case NORTH:
-			return eastWest;
-		case SOUTH:
-			return eastWest;
-		default:
-			break;
-		}
-		;
-		return null;
 	}
 
 }

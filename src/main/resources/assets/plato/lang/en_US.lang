@@ -75,7 +75,7 @@ item.spellCopy.name=Copy
 item.spellCopy.description=copies selection
 item.spellCopy.pick.0=from
 item.spellCopy.pick.1=to
-item.spellCopy.modifier.ctrl=delete original
+item.spellCopy.modifier.shift=delete original
 
 item.spellMirror.name=Mirror
 item.spellMirror.description=mirrors selection about plane

@@ -14,8 +14,8 @@ import ds.plato.api.IUndo;
 import ds.plato.api.IWorld;
 import ds.plato.item.spell.Spell;
 import ds.plato.select.Selection;
-import ds.plato.undo.UndoableSetBlock;
 import ds.plato.undo.Transaction;
+import ds.plato.undo.UndoableSetBlock;
 
 public abstract class AbstractSpellMatrix extends Spell {
 
@@ -24,24 +24,35 @@ public abstract class AbstractSpellMatrix extends Spell {
 	}
 
 	protected void transformSelections(Matrix4d matrix, IWorld world, boolean deleteInitialBlocks) {
-		List<Point3d> newBlockLocations = new ArrayList<>();
-		Transaction t = undoManager.newTransaction();
+
+		List<UndoableSetBlock> deletes = new ArrayList<>();
+		List<UndoableSetBlock> adds = new ArrayList<>();
+		List<BlockPos> addedPos = new ArrayList<>();
+
 		Iterable<Selection> selections = selectionManager.getSelections();
 		for (Selection s : selections) {
 			Point3d p = s.point3d();
-			matrix.transform(p);
 			if (deleteInitialBlocks) {
-				t.add(new UndoableSetBlock(world, selectionManager, s.getPos(), Blocks.air).set());
+				deletes.add(new UndoableSetBlock(world, selectionManager, s.getPos(), Blocks.air));
 			}
-			newBlockLocations.add(p);
-			t.add(new UndoableSetBlock(world, selectionManager, new BlockPos(p.x, p.y, p.z), s.getBlock()).set());
+			matrix.transform(p);
+			BlockPos pos = new BlockPos(p.x, p.y, p.z);
+			adds.add(new UndoableSetBlock(world, selectionManager, pos, s.getBlock()));
+			addedPos.add(pos);
+		}
+
+		Transaction t = undoManager.newTransaction();
+		for (UndoableSetBlock u : deletes) {
+			t.add(u.set());
+		}
+		for (UndoableSetBlock u : adds) {
+			t.add(u.set());
 		}
 		t.commit();
-		
-		for (Selection s : selections) {
-			if (!newBlockLocations.contains(s.point3d())) {
-				selectionManager.deselect(world, s);
-			}
+
+		selectionManager.clearSelections(world);
+		for (BlockPos pos : addedPos) {
+			selectionManager.select(world, pos);
 		}
 	}
 

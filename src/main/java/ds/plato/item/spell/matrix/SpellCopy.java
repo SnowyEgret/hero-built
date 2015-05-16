@@ -19,7 +19,7 @@ public class SpellCopy extends AbstractSpellMatrix {
 
 	public SpellCopy(IUndo undoManager, ISelect selectionManager, IPick pickManager) {
 		super(2, undoManager, selectionManager, pickManager);
-		info.addModifiers(Modifier.CTRL);
+		info.addModifiers(Modifier.SHIFT);
 	}
 
 	@Override
@@ -30,7 +30,7 @@ public class SpellCopy extends AbstractSpellMatrix {
 		Vector3d v = new Vector3d();
 		v.sub(to, from);
 		Matrix4d matrix = new TranslationMatrix(v);
-		boolean deleteOriginal = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL);
+		boolean deleteOriginal = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
 		transformSelections(matrix, world, deleteOriginal);
 	}
 
