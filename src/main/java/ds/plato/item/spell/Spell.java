@@ -94,9 +94,6 @@ public abstract class Spell extends ItemBase implements ISpell {
 	public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World world, 
 			BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ) {
 
-		System.out.println("tag="+stack.getTagCompound());
-		//Only on server side.
-		//FIXME the server side stack tag is out of sink. Index is still 0
 		if (world.isRemote) {
 			return true;
 		}
