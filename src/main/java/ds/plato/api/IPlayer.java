@@ -3,6 +3,7 @@ package ds.plato.api;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
 import ds.plato.item.staff.Staff;
 import ds.plato.player.HotbarDistribution;
 import ds.plato.player.HotbarSlot;
@@ -26,4 +27,8 @@ public interface IPlayer {
 	public abstract ISpell getSpell();
 
 	public abstract Staff getStaff();
+
+	public abstract void incrementJumpHeight(BlockPos pos);
+
+	public abstract void jump();
 }

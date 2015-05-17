@@ -1,11 +1,8 @@
 package ds.plato.item.spell;
 
-import java.util.Iterator;
 import java.util.List;
 
-import javax.vecmath.Point3d;
-import javax.vecmath.Point3i;
-
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
@@ -15,7 +12,6 @@ import net.minecraft.world.World;
 
 import org.lwjgl.input.Keyboard;
 
-import ds.geom.solid.Box;
 import ds.plato.api.IPick;
 import ds.plato.api.IPlayer;
 import ds.plato.api.ISelect;
@@ -25,7 +21,6 @@ import ds.plato.api.IWorld;
 import ds.plato.item.ItemBase;
 import ds.plato.player.HotbarSlot;
 import ds.plato.player.Player;
-import ds.plato.select.Selection;
 import ds.plato.world.WorldWrapper;
 
 public abstract class Spell extends ItemBase implements ISpell {
@@ -58,17 +53,25 @@ public abstract class Spell extends ItemBase implements ISpell {
 		IPlayer player = Player.getPlayer();
 		IWorld w = player.getWorld();
 
-		//Shift replaces the current selections with a region.
+		// Shift replaces the current selections with a region.
 		if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) && selectionManager.size() != 0) {
 			BlockPos lastPos = selectionManager.lastSelection().getPos();
+			Block b = selectionManager.firstSelection().getBlock();
 			selectionManager.clearSelections(w);
+			// TODO modifier for block type
 			for (Object o : BlockPos.getAllInBox(lastPos, pos)) {
-				selectionManager.select(w, (BlockPos)o);
+				if (Keyboard.isKeyDown(Keyboard.KEY_LMENU)) {
+					if (w.getBlock((BlockPos) o) == b) {
+						selectionManager.select(w, (BlockPos) o);
+					}
+				} else {
+					selectionManager.select(w, (BlockPos) o);
+				}
 			}
 			return;
 		}
-		
-		//Control adds or subtracts a selection to the current selections
+
+		// Control adds or subtracts a selection to the current selections
 		if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
 			System.out.println("pos=" + pos);
 			if (selectionManager.isSelected(pos)) {
@@ -78,21 +81,20 @@ public abstract class Spell extends ItemBase implements ISpell {
 			}
 			return;
 		}
-		
-		//No modifier replaces the current selections with a new selection
+
+		// No modifier replaces the current selections with a new selection
 		selectionManager.clearSelections(w);
 		selectionManager.select(w, pos);
 	}
-	
-	//FIXME Has no effect
+
+	// FIXME Has no effect
 	@Override
 	public EnumAction getItemUseAction(ItemStack stack) {
 		return EnumAction.NONE;
 	}
 
 	@Override
-	public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World world, 
-			BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ) {
+	public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ) {
 
 		if (world.isRemote) {
 			return true;
@@ -100,7 +102,7 @@ public abstract class Spell extends ItemBase implements ISpell {
 		IWorld w = new WorldWrapper(world);
 		pickManager.pick(w, pos, side);
 		if (pickManager.isFinishedPicking()) {
-			//invoke(w, Player.getPlayer().getHotbar());
+			// invoke(w, Player.getPlayer().getHotbar());
 			invoke(w, new Player(playerIn).getHotbar());
 		}
 		return true;

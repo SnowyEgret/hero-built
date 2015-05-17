@@ -13,6 +13,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.integrated.IntegratedServer;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import ds.plato.api.IPlayer;
 import ds.plato.api.ISpell;
@@ -24,6 +25,7 @@ import ds.plato.world.WorldWrapper;
 public class Player implements IPlayer {
 
 	private EntityPlayer player;
+	private int jumpHeight = 0;
 
 	public enum Direction {
 		NORTH,
@@ -61,7 +63,7 @@ public class Player implements IPlayer {
 			ItemStack stack = inventory.getStackInSlot(i);
 			if (stack != null) {
 				Item item = stack.getItem();
-				//int metadata = stack.getItemDamage();
+				// int metadata = stack.getItemDamage();
 
 				Block b = null;
 				if (item instanceof ItemBlock) {
@@ -94,7 +96,7 @@ public class Player implements IPlayer {
 		if (slots.isEmpty()) {
 			slots.add(new HotbarSlot(Blocks.dirt));
 		}
-		//Prepare an array of appropriate size to be returned
+		// Prepare an array of appropriate size to be returned
 		HotbarSlot[] array = new HotbarSlot[slots.size()];
 		return slots.toArray(array);
 	}
@@ -104,9 +106,7 @@ public class Player implements IPlayer {
 		int yaw = (int) (player.rotationYawHead);
 		yaw += (yaw >= 0) ? 45 : -45;
 		yaw /= 90;
-		// System.out.println("[Player.getDirection] yaw=" + yaw);
 		int modulus = yaw % 4;
-		// System.out.println("[Player.getDirection] modulus=" + modulus);
 		Direction direction = null;
 		switch (modulus) {
 		case 0:
@@ -133,7 +133,6 @@ public class Player implements IPlayer {
 		default:
 			throw new RuntimeException("Unexpected modulus. Got " + modulus);
 		}
-		// System.out.println("[Player.getDirection] direction=" + direction);
 		return direction;
 	}
 
@@ -178,6 +177,29 @@ public class Player implements IPlayer {
 			}
 		}
 		return staff;
+	}
+
+	//FIXME not working for moving blocks upward when underneath player
+	@Override
+	public void incrementJumpHeight(BlockPos pos) {
+		BlockPos p = player.getPosition();
+		int dx = pos.getX() - p.getX();
+		int dy = pos.getY() - p.getY();
+		int dz = pos.getZ() - p.getZ();
+		if (dx == 0 && dz == 0 && dy > 0 && dy < 3) {
+			if (dy > jumpHeight) {
+				jumpHeight = dy;
+			}
+		}
+	}
+
+	@Override
+	public void jump() {
+		System.out.println("jumpHeigtht="+jumpHeight);
+		if (jumpHeight != 0) {
+			player.moveEntity(0, jumpHeight+3, 0);
+			jumpHeight = 0;
+		}
 	}
 
 }

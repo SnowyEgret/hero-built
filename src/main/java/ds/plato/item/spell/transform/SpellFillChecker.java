@@ -15,23 +15,21 @@ public class SpellFillChecker extends AbstractSpellTransform {
 	}
 
 	@Override
-	public void invoke(IWorld world, final HotbarSlot...slotEntries) {
+	public void invoke(IWorld world, final HotbarSlot...slots) {
 		transformSelections(world, new ITransform() {
 			@Override
 			public Selection transform(Selection s) {
-				int index = 0;
+				int i = 0;
 				BlockPos pos = s.getPos();
 				int x = pos.getX();
 				int y = pos.getY();
 				int z = pos.getZ();
 				if (((x & 1) == 0 && (z & 1) == 0) || ((x & 1) == 1 && (z & 1) == 1)) {
-					index = ((y & 1) == 0) ? 0 : 1;
+					i = ((y & 1) == 0) ? 0 : 1;
 				} else {
-					index = ((y & 1) == 0) ? 1 : 0;
+					i = ((y & 1) == 0) ? 1 : 0;
 				}
-				HotbarSlot entry = slotEntries[index];
-				s.setBlock(entry.block);
-				//s.metadata = entry.metadata;
+				s.setBlock(slots[i].block);
 				return s;
 			}
 		});
