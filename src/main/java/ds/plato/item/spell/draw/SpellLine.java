@@ -29,9 +29,6 @@ public class SpellLine extends AbstractSpellDraw {
 			pickManager.reset(2);
 			pickManager.pick(world, picks[1].getPos(), null);
 		} else {
-			selectionManager.clearSelections(world);
-			// Best in this order
-			pickManager.clearPicks();
 			draw(d, world, slotEntries[0].block);
 		}
 	}

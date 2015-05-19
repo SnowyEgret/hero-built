@@ -44,12 +44,12 @@ public class SpellThicken extends AbstractSpellTransform {
 		}
 
 		selectionManager.clearSelections(world);
+		pickManager.clearPicks();
 		Transaction t = undoManager.newTransaction();
 		for (BlockPos p : points) {
 			t.add(new UndoableSetBlock(world, selectionManager, p, first.getBlock()).set());
 		}
 		t.commit();
-		pickManager.clearPicks();
 	}
 
 	private void thicken(Set<BlockPos> points, VoxelSet voxels, IWorld world) {

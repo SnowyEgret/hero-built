@@ -23,12 +23,10 @@ public class SpellSphere extends AbstractSpellDraw {
 
 	@Override
 	public void invoke(IWorld world, final HotbarSlot... slots) {
-		selectionManager.clearSelections(world);
 		Pick[] picks = pickManager.getPicks();
 		boolean isHemisphere = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
 		IDrawable d = new Sphere(picks[0].point3d(), picks[1].point3d(), isHemisphere);
 		draw(d, world, slots[0].block);
-		pickManager.clearPicks();
 	}
 
 	@Override

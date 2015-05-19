@@ -31,7 +31,7 @@ public class SelectionManager implements ISelect {
 	@Override
 	public Selection select(IWorld world, BlockPos pos) {
 		Block prevBlock = world.getBlock(pos);
-		//Policy is not to select air
+		// Policy is not to select air
 		if (prevBlock instanceof BlockAir) {
 			return null;
 		}
@@ -43,18 +43,21 @@ public class SelectionManager implements ISelect {
 
 	@Override
 	public void deselect(IWorld world, Selection selection) {
-//		Block b = selection.getBlock();
-//		if (b instanceof BlockPicked) {
-//			//Look up pick from pickManager
-//			//b = ((BlockPicked)b).getPos())
-//		}
+		// Block b = selection.getBlock();
+		// if (b instanceof BlockPicked) {
+		// //Look up pick from pickManager
+		// //b = ((BlockPicked)b).getPos())
+		// }
 		world.setBlock(selection.getPos(), selection.getBlock());
 		selections.remove(selection.getPos());
 	}
 
 	@Override
 	public void deselect(IWorld world, BlockPos pos) {
-		deselect(world, getSelection(pos));
+		Selection s = getSelection(pos);
+		if (s != null) {
+			deselect(world, s);
+		}
 	}
 
 	// Returns a copy to avoid concurrent modification
@@ -72,6 +75,7 @@ public class SelectionManager implements ISelect {
 
 	@Override
 	public void reselect(IWorld world) {
+		clearSelections(world);
 		if (lastSelections != null) {
 			for (BlockPos pos : lastSelections) {
 				select(world, pos);
@@ -83,7 +87,7 @@ public class SelectionManager implements ISelect {
 	public void clearSelections(IWorld world) {
 		if (!selections.isEmpty()) {
 			lastSelections = Lists.newArrayList(selections.keySet());
-			//getSelections returns a copy so that it is not modified by deselect
+			// getSelections returns a copy so that it is not modified by deselect
 			for (Selection s : getSelections()) {
 				deselect(world, s);
 			}
@@ -91,7 +95,7 @@ public class SelectionManager implements ISelect {
 		grownSelections.clear();
 	}
 
-	//TODO Does not set a block so doesn't need world. Only called by SetBlock.set(). Is there another way?
+	// TODO Does not set a block so doesn't need world. Only called by SetBlock.set(). Is there another way?
 	@Override
 	public Selection removeSelection(BlockPos pos) {
 		return selections.remove(pos);
@@ -137,9 +141,9 @@ public class SelectionManager implements ISelect {
 			set.add(new Point3i(pos.getX(), pos.getY(), pos.getZ()));
 		}
 		return set;
-		///return new VoxelSet(selections.keySet());
+		// /return new VoxelSet(selections.keySet());
 	}
-	
+
 	@Override
 	public List<BlockPos> getGrownSelections() {
 		if (grownSelections.isEmpty()) {
@@ -160,11 +164,11 @@ public class SelectionManager implements ISelect {
 
 	@Override
 	public String toString() {
-		//return "SelectionManager [world=" + idOf(world) + ", selections=" + selections.size() + "]";
+		// return "SelectionManager [world=" + idOf(world) + ", selections=" + selections.size() + "]";
 		return "SelectionManager [selections=" + selections.size() + "]";
 	}
 
-//	private String idOf(Object o) {
-//		return o.getClass().getSimpleName() + "@" + Integer.toHexString(o.hashCode());
-//	}
+	// private String idOf(Object o) {
+	// return o.getClass().getSimpleName() + "@" + Integer.toHexString(o.hashCode());
+	// }
 }

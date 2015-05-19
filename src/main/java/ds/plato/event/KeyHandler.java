@@ -2,6 +2,7 @@ package ds.plato.event;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -68,7 +69,12 @@ public class KeyHandler {
 						undoManager.undo();
 					}
 				}
-			} catch (Exception e) {
+				//When undoing a copy/move it is helpful to reselect.
+				//If we had a last spell, we could do this conditionally
+				//Last spell is not necessarily what is in hand
+				//Comment out for now
+				//selectionManager.reselect(w)
+			} catch (NoSuchElementException e) {
 				// TODO Log to overlay. Create info line in overlay
 				System.out.println(e.getMessage());
 			}
@@ -79,7 +85,7 @@ public class KeyHandler {
 				if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
 					undoManager.redo();
 				}
-			} catch (Exception e) {
+			} catch (NoSuchElementException e) {
 				// TODO Log to overlay. Create info line in overlay
 				System.out.println(e.getMessage());
 			}

@@ -36,7 +36,7 @@ public class UndoManager implements IUndo {
 
 	// Interface IUndoable -------------------------------------
 
-	public void undo() {
+	public void undo() throws NoSuchElementException {
 		if (currentNode.left == null) {
 			throw new NoSuchElementException("Nothing left to undo.");
 		}
@@ -44,7 +44,7 @@ public class UndoManager implements IUndo {
 		currentNode = currentNode.left;
 	}
 
-	public void redo() {
+	public void redo() throws NoSuchElementException {
 		if (currentNode.right == null)
 			throw new NoSuchElementException("Nothing left to redo.");
 		currentNode = currentNode.right;

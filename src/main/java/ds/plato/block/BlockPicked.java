@@ -15,13 +15,19 @@ import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ds.plato.api.IPick;
+import ds.plato.api.ISelect;
 import ds.plato.pick.Pick;
 
 public class BlockPicked extends Block {
-	
+
 	public static final BlockPickedProperty pickedBlockProperty = new BlockPickedProperty();
 	public static ModelResourceLocation modelResourceLocation = new ModelResourceLocation("plato:blockPicked");
 	private IPick pickManager;
+	private ISelect selectionManager;
+
+	public IPick getPickManager() {
+		return pickManager;
+	}
 
 	public BlockPicked() {
 		super(Material.clay);
@@ -33,6 +39,10 @@ public class BlockPicked extends Block {
 		this.pickManager = pickManager;
 	}
 
+	public void setSelectionManager(ISelect selectionManager) {
+		this.selectionManager = selectionManager;
+	}
+
 	// Is this the default layer?
 	@SideOnly(Side.CLIENT)
 	public EnumWorldBlockLayer getBlockLayer() {
@@ -41,32 +51,26 @@ public class BlockPicked extends Block {
 
 	@Override
 	protected BlockState createBlockState() {
-		ExtendedBlockState state = new ExtendedBlockState(this, new IProperty[0],
-				new IUnlistedProperty[] { pickedBlockProperty });
-		System.out.println(state);
-		return state;
+		return new ExtendedBlockState(this, new IProperty[0], new IUnlistedProperty[] { pickedBlockProperty });
 	}
 
 	@Override
 	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-		assert IExtendedBlockState.class.isAssignableFrom(state.getClass());
 		IExtendedBlockState extendedState = (IExtendedBlockState) state;
-		//System.out.println(state);
 		Pick pick = pickManager.getPick(pos);
-		//System.out.println("s=" + pick);
 		if (pick != null) {
 			Block pickedBlock = pick.getBlock();
-			//System.out.println("selectedBlock="+pickedBlock);
-			//TODO TGG's example did this
-			//IBlockState selectedBlockState = selectedBlock.getActualState(extendedState, world, pos);
+			// Commented out because could not reproduce bug it was trying to fix (infinite loop at
+			// isAmbientOcclusion())
+			// Handle case where pick is already selected
+			//if (pickedBlock instanceof BlockSelected) {
+			//	pickedBlock = selectionManager.getSelection(pos).getBlock();
+			//}
 			IBlockState pickedBlockState = pickedBlock.getDefaultState();
-			//System.out.println("selectedBlockState="+pickedBlockState);
 			extendedState = extendedState.withProperty(pickedBlockProperty, pickedBlockState);
 		} else {
-			//System.out.println("Block not selected at pos="+pos);
 			extendedState = extendedState.withProperty(pickedBlockProperty, null);
 		}
-		//System.out.println(extendedState.getUnlistedProperties());
 		return extendedState;
 	}
 

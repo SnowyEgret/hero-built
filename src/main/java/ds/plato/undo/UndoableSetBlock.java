@@ -45,11 +45,7 @@ public class UndoableSetBlock implements IUndoable {
 
 	@Override
 	public void undo() {
-		//We can reselect the last selection one time.
-		selectionManager.reselect(world);
 		selectionManager.deselect(world, pos);
-		//TODO Pass pickManager to constructor
-		//pickManager.clearPicks(world);
 		world.setBlock(pos, prevBlock);
 	}
 

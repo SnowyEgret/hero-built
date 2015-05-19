@@ -80,6 +80,7 @@ public class Plato {
 
 		blockSelected.setSelectionManager(selectionManager);
 		blockPicked.setPickManager(pickManager);
+		blockPicked.setSelectionManager(selectionManager);
 
 		System.out.println("Initializing spells and staffs");
 		configuration = new Configuration(event.getSuggestedConfigurationFile());

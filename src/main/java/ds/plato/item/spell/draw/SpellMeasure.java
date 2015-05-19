@@ -21,7 +21,7 @@ public class SpellMeasure extends AbstractSpellDraw {
 	}
 
 	@Override
-	public void invoke(IWorld world, HotbarSlot... slotEntries) {
+	public void invoke(IWorld world, HotbarSlot... slots) {
 		Pick[] picks = pickManager.getPicks();
 		Point3d p0 = picks[0].point3d();
 		Point3d p1 = picks[1].point3d();
@@ -42,10 +42,10 @@ public class SpellMeasure extends AbstractSpellDraw {
 			points.addPoints(p0, p1);
 		}
 		if (!points.isEmpty()) {
-			draw(points, world, slotEntries[0].block);
-			selectionManager.clearSelections(world);
+			draw(points, world, slots[0].block);
+			//selectionManager.clearSelections(world);
 		}
-		pickManager.clearPicks();
+		//pickManager.clearPicks();
 	}
 
 	private Point3d interpolate(Point3d p0, Point3d p1, double d) {

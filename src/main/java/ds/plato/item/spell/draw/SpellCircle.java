@@ -27,7 +27,6 @@ public class SpellCircle extends AbstractSpellDraw {
 
 	@Override
 	public void invoke(IWorld world, HotbarSlot... slotEntries) {
-		selectionManager.clearSelections(world);
 		Pick[] picks = pickManager.getPicks();
 		boolean onSurface = Keyboard.isKeyDown(Keyboard.KEY_LMENU);
 		Point3d p0 = picks[0].point3d();
@@ -38,7 +37,6 @@ public class SpellCircle extends AbstractSpellDraw {
 		}
 		IDrawable d = new CircleXZ(p0, p1);
 		draw(d, world, slotEntries[0].block);
-		pickManager.clearPicks();
 	}
 
 	@Override

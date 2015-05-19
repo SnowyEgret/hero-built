@@ -34,6 +34,8 @@ public abstract class AbstractSpellDraw extends Spell {
 
 	//protected void draw(IDrawable drawable, IWorld world, Block block, boolean isHollow, boolean onSurface) {
 	protected void draw(IDrawable drawable, IWorld world, Block block) {
+		selectionManager.clearSelections(world);
+		pickManager.clearPicks();
 		boolean isHollow = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
 		boolean onSurface = Keyboard.isKeyDown(Keyboard.KEY_LMENU);
 		Transaction t = undoManager.newTransaction();
