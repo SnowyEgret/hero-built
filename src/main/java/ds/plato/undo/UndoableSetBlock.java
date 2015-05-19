@@ -37,15 +37,7 @@ public class UndoableSetBlock implements IUndoable {
 		}
 		world.setBlock(pos, block);
 
-		//FIXME Unit test fails.
-		//Select the newly set blocks
 		if (!(block instanceof BlockAir)) {
-			//We do not want a selection pointing to a newly set air block.
-			//This is the only place removeSelection is called
-			//Moved removeSelection up a few lines
-			//selectionManager.removeSelection(pos);
-			//System.out.println("Should we have selected block air?");
-		//} else {
 			selectionManager.select(world, pos);
 		}
 		return this;
@@ -53,9 +45,11 @@ public class UndoableSetBlock implements IUndoable {
 
 	@Override
 	public void undo() {
-		selectionManager.clearSelections(world);
-		//TODO commented out for now
-		//pickManager.clearPicks();
+		//We can reselect the last selection one time.
+		selectionManager.reselect(world);
+		selectionManager.deselect(world, pos);
+		//TODO Pass pickManager to constructor
+		//pickManager.clearPicks(world);
 		world.setBlock(pos, prevBlock);
 	}
 
