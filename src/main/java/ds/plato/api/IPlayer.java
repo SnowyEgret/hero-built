@@ -1,5 +1,7 @@
 package ds.plato.api;
 
+import javax.vecmath.Point3i;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -31,4 +33,6 @@ public interface IPlayer {
 	public abstract void incrementJumpHeight(BlockPos pos);
 
 	public abstract void jump();
+
+	public abstract void orbitAround(Point3i centroid);
 }

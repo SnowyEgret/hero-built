@@ -74,9 +74,9 @@ public class ForgeEventHandler {
 			return;
 		}
 		if (e.entity instanceof EntityPlayer) {
-			//ISpell s = Player.getPlayer().getSpell();
+			ISpell s = Player.getPlayer().getSpell();
 			//Same
-			ISpell s = new Player((EntityPlayer)e.entity).getSpell();
+			//ISpell s = new Player((EntityPlayer)e.entity).getSpell();
 			if (s == null) {
 				spell = null;
 			} else {

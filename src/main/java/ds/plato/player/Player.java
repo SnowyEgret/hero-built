@@ -3,6 +3,8 @@ package ds.plato.player;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.vecmath.Point3i;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,6 +16,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import ds.plato.api.IPlayer;
 import ds.plato.api.ISpell;
@@ -24,8 +27,10 @@ import ds.plato.world.WorldWrapper;
 
 public class Player implements IPlayer {
 
+	private static Player instance = null;
 	private EntityPlayer player;
 	private int jumpHeight = 0;
+	private float prevYaw = 0;
 
 	public enum Direction {
 		NORTH,
@@ -34,12 +39,20 @@ public class Player implements IPlayer {
 		WEST;
 	}
 
-	public Player(EntityPlayer player) {
-		this.player = player;
+//	public Player(EntityPlayer player) {
+//		this.player = player;
+//	}
+
+	protected Player() {
+		player = Minecraft.getMinecraft().thePlayer;
 	}
 
+	//Singleton necessary for fields jumpHeight and prevYaw
 	public static IPlayer getPlayer() {
-		return new Player(Minecraft.getMinecraft().thePlayer);
+		if (instance == null) {
+			instance = new Player();
+		}
+		return instance;
 	}
 
 	@Override
@@ -179,7 +192,7 @@ public class Player implements IPlayer {
 		return staff;
 	}
 
-	//FIXME not working for moving blocks upward when underneath player
+	// FIXME not working for moving blocks upward when underneath player
 	@Override
 	public void incrementJumpHeight(BlockPos pos) {
 		BlockPos p = player.getPosition();
@@ -195,11 +208,36 @@ public class Player implements IPlayer {
 
 	@Override
 	public void jump() {
-		System.out.println("jumpHeigtht="+jumpHeight);
+		System.out.println("jumpHeigtht=" + jumpHeight);
 		if (jumpHeight != 0) {
-			player.moveEntity(0, jumpHeight+3, 0);
+			player.moveEntity(0, jumpHeight + 3, 0);
 			jumpHeight = 0;
 		}
+	}
+
+	@Override
+	public void orbitAround(Point3i centroid) {
+		System.out.println();
+		float yaw = player.rotationYaw;
+		System.out.println("yaw=" + yaw);
+		float dYaw = yaw - prevYaw;
+		System.out.println("dYaw=" + dYaw);
+		if (dYaw - 0 > .000001) {
+			return;
+		}
+		prevYaw = yaw;
+		Vec3 c = new Vec3(centroid.x, centroid.y, centroid.z);
+		System.out.println("c=" + c);
+		Vec3 pv = player.getPositionVector();
+		System.out.println("pv=" + pv);
+		pv = pv.subtract(c);
+		System.out.println("pv=" + pv);
+		pv = pv.rotateYaw(-dYaw);
+		System.out.println("pv=" + pv);
+		pv = pv.add(c);
+		System.out.println("pv=" + pv);
+		player.setLocationAndAngles(pv.xCoord, pv.yCoord, pv.zCoord, prevYaw, player.rotationPitch);
+		// player.moveEntityWithHeading(p_70612_1_, p_70612_2_);;
 	}
 
 }

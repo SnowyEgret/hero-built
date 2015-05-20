@@ -1,7 +1,10 @@
 package ds.plato.event;
 
+import javax.vecmath.Point3i;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -27,7 +30,10 @@ public class MouseHandler {
 	private IUndo undoManager;
 	private ISelect selectionManager;
 	private IPick pickManager;
-	private long lastTime = 0;
+	private boolean orbiting;
+	private Point3i centroid;
+
+	// private long lastTime = 0;
 
 	public MouseHandler(IUndo undoManager, ISelect selectionManager, IPick pickManager) {
 		this.undoManager = undoManager;
@@ -38,25 +44,31 @@ public class MouseHandler {
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void onMouseEvent(MouseEvent e) {
-		
-		//Do nothing on mouse move
-		if (e.button == -1) {
-			return;
-		}
-		
-		//Do nothing if returning from a gui
+
+		// Do nothing if returning from a gui
 		// TODO Seems not to work in multiplayer
 		if (Minecraft.getMinecraft().isGamePaused()) {
 			return;
 		}
 
 		IPlayer player = Player.getPlayer();
-		IWorld w = player.getWorld();
-		MovingObjectPosition objectPosition = Minecraft.getMinecraft().objectMouseOver;
 
-		//Clear selections or picks if player clicks on sky
-		//Do not cancel event. Fix for Left click stuck in loop when block is broken against sky #60
-		if (objectPosition.typeOfHit == MovingObjectType.MISS) {
+		// EntityPlayerSP pl = Minecraft.getMinecraft().thePlayer;
+		IWorld w = player.getWorld();
+		MovingObjectPosition cursor = Minecraft.getMinecraft().objectMouseOver;
+
+		// Do nothing on mouse move
+		if (e.button == -1) {
+			if (orbiting) {
+				player.orbitAround(centroid);
+			}
+			e.setCanceled(true);
+			return;
+		}
+
+		// Clear selections or picks if player clicks on sky
+		// Do not cancel event. Fix for Left click stuck in loop when block is broken against sky #60
+		if (cursor.typeOfHit == MovingObjectType.MISS) {
 			if (e.button == 0) {
 				selectionManager.clearSelections(w);
 			}
@@ -65,40 +77,67 @@ public class MouseHandler {
 			}
 			return;
 		}
-		
-		//Do nothing if player clicks on a mob
-		if (objectPosition.typeOfHit == MovingObjectType.ENTITY) {
+
+		// Do nothing if player clicks on a mob
+		if (cursor.typeOfHit == MovingObjectType.ENTITY) {
 			return;
 		}
 
-		//Do nothing if player is holding nothing.
+		// Do nothing if player is holding nothing.
 		ItemStack stack = player.getHeldItemStack();
 		if (stack == null) {
 			return;
 		}
-		Item item = stack.getItem();
-		
+		Item heldItem = stack.getItem();
+
 		// Select on mouse click left when player is holding a staff or spell
 		// Picking is handled by onItemUse. Do not cancel event on mouse click right.
-		if (item instanceof IItem) {
-			//System.out.println(item);
+		if (heldItem instanceof IItem) {
+			// System.out.println(item);
 			if (e.button == 0) {
-				//TODO temporary fix for getting two events
-				if (e.nanoseconds - lastTime  > 999999999) {
-					lastTime = e.nanoseconds;
-					((IItem) item).onMouseClickLeft(stack, objectPosition.getBlockPos(), objectPosition.sideHit);
+				// TODO temporary fix for getting two events
+				// if (e.nanoseconds - lastTime > 999999999) {
+				// lastTime = e.nanoseconds;
+				if (e.buttonstate) {
+					((IItem) heldItem).onMouseClickLeft(stack, cursor.getBlockPos(), cursor.sideHit);
 				}
 				e.setCanceled(true);
-			} 
-			return;
+				return;
+			}
+			if (heldItem instanceof IItem) {
+				// System.out.println(item);
+				if (e.button == 0) {
+					// TODO temporary fix for getting two events
+					// if (e.nanoseconds - lastTime > 999999999) {
+					// lastTime = e.nanoseconds;
+					if (e.buttonstate) {
+						((IItem) heldItem).onMouseClickLeft(stack, cursor.getBlockPos(), cursor.sideHit);
+					}
+					e.setCanceled(true);
+					return;
+				}
+				// Orbit around selection
+				if (e.button == 2) {
+					if (e.buttonstate) {
+						if (selectionManager.size() != 0) {
+							orbiting = true;
+							centroid = selectionManager.voxelSet().centroid();
+						}
+					} else {
+						orbiting = false;
+					}
+					e.setCanceled(true);
+					return;
+				}
+			}
 		}
-		
+
 		// Fill the selections on mouse click right on a selected block and player is holding a block
-		if (item instanceof ItemBlock) {
+		if (heldItem instanceof ItemBlock) {
 			if (e.button == 1) {
-				BlockPos pos = objectPosition.getBlockPos();
+				BlockPos pos = cursor.getBlockPos();
 				if (selectionManager.isSelected(pos)) {
-					Block b = ((ItemBlock) item).getBlock();
+					Block b = ((ItemBlock) heldItem).getBlock();
 					new SpellFill(undoManager, selectionManager, pickManager).invoke(w, new HotbarSlot(b, 0));
 					e.setCanceled(true);
 				}
