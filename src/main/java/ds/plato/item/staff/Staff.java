@@ -15,11 +15,10 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import org.lwjgl.input.Keyboard;
 
 import ds.plato.Plato;
-import ds.plato.api.IPick;
-import ds.plato.api.ISpell;
-import ds.plato.api.IStaff;
 import ds.plato.item.ItemBase;
+import ds.plato.item.spell.ISpell;
 import ds.plato.item.spell.Spell;
+import ds.plato.pick.IPick;
 import ds.plato.util.StringUtils;
 
 public abstract class Staff extends ItemBase implements IStaff {

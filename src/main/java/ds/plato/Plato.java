@@ -22,9 +22,6 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
-import ds.plato.api.IPick;
-import ds.plato.api.ISelect;
-import ds.plato.api.IUndo;
 import ds.plato.block.BlockPicked;
 import ds.plato.block.BlockSelected;
 import ds.plato.gui.GuiHandler;
@@ -41,10 +38,13 @@ import ds.plato.network.NextSpellMessage;
 import ds.plato.network.NextSpellMessageHandler;
 import ds.plato.network.SetBlockMessage;
 import ds.plato.network.SetBlockMessageHandler;
+import ds.plato.pick.IPick;
 import ds.plato.pick.PickManager;
 import ds.plato.player.Player;
 import ds.plato.proxy.CommonProxy;
+import ds.plato.select.ISelect;
 import ds.plato.select.SelectionManager;
+import ds.plato.undo.IUndo;
 import ds.plato.undo.UndoManager;
 
 @Mod(modid = Plato.ID, name = Plato.NAME, version = Plato.VERSION)

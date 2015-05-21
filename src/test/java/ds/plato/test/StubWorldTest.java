@@ -12,7 +12,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import ds.plato.api.IWorld;
+import ds.plato.world.IWorld;
 
 public class StubWorldTest extends PlatoTest {
 

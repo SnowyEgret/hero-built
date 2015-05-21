@@ -10,7 +10,7 @@ import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
 
-import ds.plato.api.IItem;
+import ds.plato.item.IItem;
 import ds.plato.item.spell.Spell;
 
 //Based on http://greyminecraftcoder.blogspot.com.au/2013/09/custom-item-rendering-using.html

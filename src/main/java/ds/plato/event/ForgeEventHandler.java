@@ -13,18 +13,18 @@ import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import ds.plato.api.IPick;
-import ds.plato.api.IPlayer;
-import ds.plato.api.ISelect;
-import ds.plato.api.ISpell;
 import ds.plato.block.BlockPicked;
 import ds.plato.block.BlockPickedModel;
 import ds.plato.block.BlockSelected;
 import ds.plato.block.BlockSelectedModel;
 import ds.plato.gui.Overlay;
+import ds.plato.item.spell.ISpell;
 import ds.plato.item.staff.Staff;
+import ds.plato.pick.IPick;
 import ds.plato.pick.Pick;
+import ds.plato.player.IPlayer;
 import ds.plato.player.Player;
+import ds.plato.select.ISelect;
 import ds.plato.select.Selection;
 
 public class ForgeEventHandler {

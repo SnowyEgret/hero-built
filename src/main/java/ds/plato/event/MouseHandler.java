@@ -13,15 +13,15 @@ import net.minecraftforge.client.event.MouseEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import ds.plato.api.IItem;
-import ds.plato.api.IPick;
-import ds.plato.api.IPlayer;
-import ds.plato.api.ISelect;
-import ds.plato.api.IUndo;
-import ds.plato.api.IWorld;
+import ds.plato.item.IItem;
 import ds.plato.item.spell.transform.SpellFill;
+import ds.plato.pick.IPick;
 import ds.plato.player.HotbarSlot;
+import ds.plato.player.IPlayer;
 import ds.plato.player.Player;
+import ds.plato.select.ISelect;
+import ds.plato.undo.IUndo;
+import ds.plato.world.IWorld;
 
 public class MouseHandler {
 

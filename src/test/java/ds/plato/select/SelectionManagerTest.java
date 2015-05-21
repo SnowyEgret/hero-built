@@ -13,9 +13,8 @@ import net.minecraft.util.BlockPos;
 import org.junit.Before;
 import org.junit.Test;
 
-import ds.plato.api.ISelect;
-import ds.plato.api.IWorld;
 import ds.plato.test.PlatoTest;
+import ds.plato.world.IWorld;
 
 public class SelectionManagerTest extends PlatoTest {
 	

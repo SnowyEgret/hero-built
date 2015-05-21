@@ -1,7 +1,7 @@
-package ds.plato.api;
+package ds.plato.item.spell;
 
-import ds.plato.item.spell.SpellInfo;
 import ds.plato.player.HotbarSlot;
+import ds.plato.world.IWorld;
 
 public interface ISpell {
 

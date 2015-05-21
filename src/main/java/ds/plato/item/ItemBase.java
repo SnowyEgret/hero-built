@@ -6,7 +6,6 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import ds.plato.Plato;
-import ds.plato.api.IItem;
 import ds.plato.util.StringUtils;
 
 public abstract class ItemBase extends Item implements IItem {

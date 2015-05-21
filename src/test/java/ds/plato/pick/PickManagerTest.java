@@ -9,7 +9,6 @@ import net.minecraft.util.EnumFacing;
 import org.junit.Before;
 import org.junit.Test;
 
-import ds.plato.api.IPick;
 import ds.plato.test.PlatoTest;
 
 public class PickManagerTest extends PlatoTest {

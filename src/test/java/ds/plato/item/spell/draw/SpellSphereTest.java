@@ -8,7 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
-import ds.plato.api.ISpell;
+import ds.plato.item.spell.ISpell;
 import ds.plato.item.spell.draw.SpellSphere;
 import ds.plato.pick.Pick;
 import ds.plato.player.HotbarSlot;

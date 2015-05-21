@@ -2,9 +2,6 @@ package ds.plato.undo;
 
 import java.util.NoSuchElementException;
 
-import ds.plato.api.IUndo;
-import ds.plato.api.IUndoable;
-
 public class UndoManager implements IUndo {
 
 	private Node currentNode;

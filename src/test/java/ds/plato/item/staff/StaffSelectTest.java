@@ -16,7 +16,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import ds.plato.api.ISpell;
+import ds.plato.item.spell.ISpell;
 import ds.plato.item.spell.matrix.SpellCopy;
 import ds.plato.item.spell.transform.SpellDelete;
 import ds.plato.item.staff.StaffSelect;

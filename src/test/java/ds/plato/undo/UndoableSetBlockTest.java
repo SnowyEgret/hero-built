@@ -12,11 +12,11 @@ import net.minecraft.util.BlockPos;
 import org.junit.Before;
 import org.junit.Test;
 
-import ds.plato.api.ISelect;
-import ds.plato.api.IWorld;
+import ds.plato.select.ISelect;
 import ds.plato.select.Selection;
 import ds.plato.select.SelectionManager;
 import ds.plato.test.PlatoTest;
+import ds.plato.world.IWorld;
 
 public class UndoableSetBlockTest extends PlatoTest {
 	

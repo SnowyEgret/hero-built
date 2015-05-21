@@ -10,16 +10,16 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
-import ds.plato.api.IPick;
-import ds.plato.api.IPlayer;
-import ds.plato.api.ISelect;
-import ds.plato.api.IUndo;
-import ds.plato.api.IWorld;
 import ds.plato.item.spell.Spell;
+import ds.plato.pick.IPick;
+import ds.plato.player.IPlayer;
 import ds.plato.player.Player;
+import ds.plato.select.ISelect;
 import ds.plato.select.Selection;
+import ds.plato.undo.IUndo;
 import ds.plato.undo.Transaction;
 import ds.plato.undo.UndoableSetBlock;
+import ds.plato.world.IWorld;
 
 public abstract class AbstractSpellMatrix extends Spell {
 

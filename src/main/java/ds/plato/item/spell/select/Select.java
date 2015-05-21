@@ -12,8 +12,8 @@ import net.minecraft.util.EnumFacing;
 
 import org.apache.commons.lang3.Range;
 
-import ds.plato.api.IWorld;
 import ds.plato.item.spell.select.Shell.Type;
+import ds.plato.world.IWorld;
 
 public class Select {
 

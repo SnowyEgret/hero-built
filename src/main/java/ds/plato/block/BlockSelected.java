@@ -14,7 +14,7 @@ import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import ds.plato.api.ISelect;
+import ds.plato.select.ISelect;
 import ds.plato.select.Selection;
 import ds.plato.select.SelectionManager;
 

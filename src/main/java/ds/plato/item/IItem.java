@@ -1,4 +1,4 @@
-package ds.plato.api;
+package ds.plato.item;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;

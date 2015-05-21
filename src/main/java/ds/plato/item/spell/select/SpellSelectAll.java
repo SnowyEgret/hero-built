@@ -1,8 +1,8 @@
 package ds.plato.item.spell.select;
 
-import ds.plato.api.IPick;
-import ds.plato.api.ISelect;
-import ds.plato.api.IUndo;
+import ds.plato.pick.IPick;
+import ds.plato.select.ISelect;
+import ds.plato.undo.IUndo;
 
 public class SpellSelectAll extends AbstractSpellSelect {
 

@@ -6,7 +6,7 @@ import java.util.Map;
 import net.minecraft.block.Block;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
-import ds.plato.api.IWorld;
+import ds.plato.world.IWorld;
 
 public class StubWorld implements IWorld {
 

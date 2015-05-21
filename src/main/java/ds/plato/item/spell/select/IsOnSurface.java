@@ -3,7 +3,7 @@ package ds.plato.item.spell.select;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
-import ds.plato.api.IWorld;
+import ds.plato.world.IWorld;
 
 public class IsOnSurface implements ICondition {
 

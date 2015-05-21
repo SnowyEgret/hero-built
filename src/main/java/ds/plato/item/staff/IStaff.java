@@ -1,5 +1,6 @@
-package ds.plato.api;
+package ds.plato.item.staff;
 
+import ds.plato.item.spell.ISpell;
 import net.minecraft.item.ItemStack;
 
 public interface IStaff {

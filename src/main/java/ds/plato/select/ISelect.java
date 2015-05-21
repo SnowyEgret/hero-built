@@ -1,11 +1,11 @@
-package ds.plato.api;
+package ds.plato.select;
 
 import java.util.List;
 
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.Vec3;
 import ds.geom.VoxelSet;
-import ds.plato.select.Selection;
+import ds.plato.world.IWorld;
 
 public interface ISelect {
 

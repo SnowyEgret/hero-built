@@ -1,11 +1,11 @@
 package ds.plato.item.spell.select;
 
 import net.minecraft.util.EnumFacing;
-import ds.plato.api.IPick;
-import ds.plato.api.ISelect;
-import ds.plato.api.IUndo;
-import ds.plato.api.IWorld;
+import ds.plato.pick.IPick;
 import ds.plato.player.HotbarSlot;
+import ds.plato.select.ISelect;
+import ds.plato.undo.IUndo;
+import ds.plato.world.IWorld;
 
 public class SpellSelectEdge extends AbstractSpellSelect {
 

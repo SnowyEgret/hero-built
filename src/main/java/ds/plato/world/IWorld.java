@@ -1,4 +1,4 @@
-package ds.plato.api;
+package ds.plato.world;
 
 import net.minecraft.block.Block;
 import net.minecraft.util.BlockPos;

@@ -4,9 +4,6 @@ import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import ds.plato.Plato;
-import ds.plato.api.IPick;
-import ds.plato.api.ISelect;
-import ds.plato.api.IUndo;
 import ds.plato.event.ForgeEventHandler;
 import ds.plato.event.KeyHandler;
 import ds.plato.event.MouseHandler;
@@ -15,6 +12,9 @@ import ds.plato.item.spell.Spell;
 import ds.plato.item.spell.SpellRenderer;
 import ds.plato.item.staff.Staff;
 import ds.plato.item.staff.StaffRenderer;
+import ds.plato.pick.IPick;
+import ds.plato.select.ISelect;
+import ds.plato.undo.IUndo;
 
 public class ClientProxy extends CommonProxy {
 

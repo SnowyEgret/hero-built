@@ -12,17 +12,17 @@ import org.lwjgl.input.Keyboard;
 import ds.geom.GeomUtil;
 import ds.geom.IntegerDomain;
 import ds.geom.VoxelSet;
-import ds.plato.api.IPick;
-import ds.plato.api.ISelect;
-import ds.plato.api.IUndo;
-import ds.plato.api.IWorld;
 import ds.plato.item.spell.Modifier;
 import ds.plato.item.spell.select.Shell;
 import ds.plato.item.spell.transform.AbstractSpellTransform;
+import ds.plato.pick.IPick;
 import ds.plato.player.HotbarSlot;
+import ds.plato.select.ISelect;
 import ds.plato.select.Selection;
+import ds.plato.undo.IUndo;
 import ds.plato.undo.Transaction;
 import ds.plato.undo.UndoableSetBlock;
+import ds.plato.world.IWorld;
 
 public class SpellThicken extends AbstractSpellTransform {
 

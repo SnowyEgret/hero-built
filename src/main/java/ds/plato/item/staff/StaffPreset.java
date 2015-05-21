@@ -8,8 +8,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import ds.plato.api.IPick;
 import ds.plato.item.spell.Spell;
+import ds.plato.pick.IPick;
 
 public abstract class StaffPreset extends Staff {
 

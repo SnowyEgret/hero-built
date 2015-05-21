@@ -1,13 +1,13 @@
-package ds.plato.api;
+package ds.plato.player;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.Vec3;
+import ds.plato.item.spell.ISpell;
 import ds.plato.item.staff.Staff;
-import ds.plato.player.HotbarDistribution;
-import ds.plato.player.HotbarSlot;
 import ds.plato.player.Player.Direction;
+import ds.plato.world.IWorld;
 
 public interface IPlayer {
 

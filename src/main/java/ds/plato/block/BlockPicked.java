@@ -14,9 +14,9 @@ import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import ds.plato.api.IPick;
-import ds.plato.api.ISelect;
+import ds.plato.pick.IPick;
 import ds.plato.pick.Pick;
+import ds.plato.select.ISelect;
 
 public class BlockPicked extends Block {
 

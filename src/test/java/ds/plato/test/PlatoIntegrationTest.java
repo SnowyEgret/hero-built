@@ -7,15 +7,15 @@ import org.junit.Before;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import ds.plato.api.IPick;
-import ds.plato.api.ISelect;
-import ds.plato.api.IUndo;
-import ds.plato.api.IWorld;
 import ds.plato.block.BlockPicked;
 import ds.plato.block.BlockSelected;
+import ds.plato.pick.IPick;
 import ds.plato.pick.PickManager;
+import ds.plato.select.ISelect;
 import ds.plato.select.SelectionManager;
+import ds.plato.undo.IUndo;
 import ds.plato.undo.UndoManager;
+import ds.plato.world.IWorld;
 
 public class PlatoIntegrationTest {
 	

@@ -1,8 +1,8 @@
-package ds.plato.api;
+package ds.plato.pick;
 
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
-import ds.plato.pick.Pick;
+import ds.plato.world.IWorld;
 
 public interface IPick {
 

@@ -11,16 +11,16 @@ import net.minecraft.util.BlockPos;
 
 import org.lwjgl.input.Keyboard;
 
-import ds.plato.api.IPick;
-import ds.plato.api.ISelect;
-import ds.plato.api.IUndo;
-import ds.plato.api.IWorld;
 import ds.plato.block.BlockSelected;
 import ds.plato.item.spell.Modifier;
 import ds.plato.item.spell.Spell;
+import ds.plato.pick.IPick;
 import ds.plato.pick.Pick;
 import ds.plato.player.HotbarSlot;
+import ds.plato.select.ISelect;
 import ds.plato.select.Selection;
+import ds.plato.undo.IUndo;
+import ds.plato.world.IWorld;
 
 public abstract class AbstractSpellSelect extends Spell {
 

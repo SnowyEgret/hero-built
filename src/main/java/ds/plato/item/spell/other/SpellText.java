@@ -16,16 +16,16 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.init.Items;
 import net.minecraft.util.BlockPos;
 import ds.plato.Plato;
-import ds.plato.api.IPick;
-import ds.plato.api.ISelect;
-import ds.plato.api.IUndo;
-import ds.plato.api.IWorld;
 import ds.plato.gui.ITextSetable;
 import ds.plato.item.spell.Spell;
+import ds.plato.pick.IPick;
 import ds.plato.pick.Pick;
 import ds.plato.player.HotbarSlot;
+import ds.plato.select.ISelect;
+import ds.plato.undo.IUndo;
 import ds.plato.undo.UndoableSetBlock;
 import ds.plato.undo.Transaction;
+import ds.plato.world.IWorld;
 
 public class SpellText extends Spell implements ITextSetable {
 

@@ -2,7 +2,7 @@ package ds.plato.item.spell.select;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
-import ds.plato.api.IWorld;
+import ds.plato.world.IWorld;
 
 public class IsOnEdgeOnCeiling implements ICondition {
 

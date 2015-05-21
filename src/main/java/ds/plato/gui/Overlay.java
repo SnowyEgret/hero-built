@@ -7,13 +7,13 @@ import net.minecraft.util.Vec3i;
 
 import org.lwjgl.input.Keyboard;
 
-import ds.plato.api.ISelect;
-import ds.plato.api.ISpell;
+import ds.plato.item.spell.ISpell;
 import ds.plato.item.spell.SpellInfo;
 import ds.plato.item.spell.transform.SpellFillRandom;
 import ds.plato.item.staff.Staff;
 import ds.plato.player.HotbarDistribution;
 import ds.plato.player.Player;
+import ds.plato.select.ISelect;
 
 public class Overlay {
 

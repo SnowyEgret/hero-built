@@ -20,11 +20,10 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import ds.geom.GeomUtil;
-import ds.plato.api.IPlayer;
-import ds.plato.api.ISpell;
-import ds.plato.api.IWorld;
+import ds.plato.item.spell.ISpell;
 import ds.plato.item.spell.Spell;
 import ds.plato.item.staff.Staff;
+import ds.plato.world.IWorld;
 import ds.plato.world.WorldWrapper;
 
 public class Player implements IPlayer {
