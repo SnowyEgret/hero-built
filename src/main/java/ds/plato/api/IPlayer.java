@@ -1,15 +1,12 @@
 package ds.plato.api;
 
-import javax.vecmath.Point3i;
-
-import net.minecraft.client.Minecraft;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.Vec3;
 import ds.plato.item.staff.Staff;
 import ds.plato.player.HotbarDistribution;
 import ds.plato.player.HotbarSlot;
-import ds.plato.player.Player;
 import ds.plato.player.Player.Direction;
 
 public interface IPlayer {
@@ -34,5 +31,5 @@ public interface IPlayer {
 
 	public abstract void jump();
 
-	public abstract void orbitAround(Point3i centroid);
+	public abstract void orbitAround(Vec3 center, int dx, int dy);
 }

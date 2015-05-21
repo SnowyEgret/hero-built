@@ -10,6 +10,7 @@ import javax.vecmath.Point3i;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.Vec3;
 
 import com.google.common.collect.Lists;
 
@@ -166,6 +167,12 @@ public class SelectionManager implements ISelect {
 	public String toString() {
 		// return "SelectionManager [world=" + idOf(world) + ", selections=" + selections.size() + "]";
 		return "SelectionManager [selections=" + selections.size() + "]";
+	}
+
+	@Override
+	public Vec3 getCentroid() {
+		Point3i c = voxelSet().centroid();
+		return new Vec3(c.x, c.y, c.z);
 	}
 
 	// private String idOf(Object o) {

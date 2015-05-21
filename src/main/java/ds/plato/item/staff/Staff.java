@@ -40,6 +40,8 @@ public abstract class Staff extends ItemBase implements IStaff {
 	public void onMouseClickLeft(ItemStack stack, BlockPos pos, EnumFacing sideHit) {
 		if (!isEmpty(stack)) {
 			getSpell(stack).onMouseClickLeft(stack, pos, sideHit);
+		} else {
+			System.out.println("Cannot select with an empty staff.");
 		}
 	}
 

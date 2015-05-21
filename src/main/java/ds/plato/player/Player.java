@@ -3,6 +3,7 @@ package ds.plato.player;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.vecmath.Point3d;
 import javax.vecmath.Point3i;
 
 import net.minecraft.block.Block;
@@ -18,6 +19,7 @@ import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import ds.geom.GeomUtil;
 import ds.plato.api.IPlayer;
 import ds.plato.api.ISpell;
 import ds.plato.api.IWorld;
@@ -39,15 +41,15 @@ public class Player implements IPlayer {
 		WEST;
 	}
 
-//	public Player(EntityPlayer player) {
-//		this.player = player;
-//	}
+	// public Player(EntityPlayer player) {
+	// this.player = player;
+	// }
 
 	protected Player() {
 		player = Minecraft.getMinecraft().thePlayer;
 	}
 
-	//Singleton necessary for fields jumpHeight and prevYaw
+	// Singleton necessary for fields jumpHeight and prevYaw
 	public static IPlayer getPlayer() {
 		if (instance == null) {
 			instance = new Player();
@@ -216,28 +218,15 @@ public class Player implements IPlayer {
 	}
 
 	@Override
-	public void orbitAround(Point3i centroid) {
-		System.out.println();
-		float yaw = player.rotationYaw;
-		System.out.println("yaw=" + yaw);
-		float dYaw = yaw - prevYaw;
-		System.out.println("dYaw=" + dYaw);
-		if (dYaw - 0 > .000001) {
-			return;
-		}
-		prevYaw = yaw;
-		Vec3 c = new Vec3(centroid.x, centroid.y, centroid.z);
-		System.out.println("c=" + c);
-		Vec3 pv = player.getPositionVector();
-		System.out.println("pv=" + pv);
-		pv = pv.subtract(c);
-		System.out.println("pv=" + pv);
-		pv = pv.rotateYaw(-dYaw);
-		System.out.println("pv=" + pv);
-		pv = pv.add(c);
-		System.out.println("pv=" + pv);
-		player.setLocationAndAngles(pv.xCoord, pv.yCoord, pv.zCoord, prevYaw, player.rotationPitch);
-		// player.moveEntityWithHeading(p_70612_1_, p_70612_2_);;
+	public void orbitAround(Vec3 pos, int dx, int dy) {
+		pos = pos.add(new Vec3(.5, .5, .5));
+		Vec3 v = player.getPositionVector();
+		v = v.subtract(pos);
+		v = v.rotateYaw((float) (-dx * Math.PI / 180));
+		//v = v.rotatePitch((float) (-dy * Math.PI / 180));
+		double yaw = 180 / Math.PI * Math.atan2(v.zCoord, v.xCoord) + 90;
+		//double pitch = 180 / Math.PI * Math.atan2(v.yCoord, Math.sqrt(v.xCoord*v.xCoord+v.zCoord*v.zCoord));
+		v = v.add(pos);
+		player.setLocationAndAngles(v.xCoord, v.yCoord, v.zCoord, (float) yaw, player.rotationPitch);
 	}
-
 }

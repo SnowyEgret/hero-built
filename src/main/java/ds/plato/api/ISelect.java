@@ -1,11 +1,9 @@
 package ds.plato.api;
 
-import java.util.Collection;
 import java.util.List;
 
-import javax.vecmath.Point3i;
-
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.Vec3;
 import ds.geom.VoxelSet;
 import ds.plato.select.Selection;
 
@@ -37,6 +35,8 @@ public interface ISelect {
 
 	public Selection lastSelection();
 	
+	public Vec3 getCentroid();
+
 	//TODO this is messy.
 	public VoxelSet voxelSet();
 
