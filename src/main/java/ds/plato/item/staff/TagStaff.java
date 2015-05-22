@@ -94,4 +94,13 @@ public class TagStaff {
 		i = i + increment;
 		tag.setInteger(INDEX, i);
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("TagStaff [tag=");
+		builder.append(tag);
+		builder.append("]");
+		return builder.toString();
+	}
 }

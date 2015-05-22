@@ -9,7 +9,7 @@ import net.minecraft.util.IChatComponent;
 public class InventoryStaff implements IInventory {
 
 	private TagStaff tag;
-	private int size = Staff.maxNumSpells;
+	//private int size = Staff.maxNumSpells;
 	//These three fields to be used in method setInventorySlotContents
 	private IInventory inventory;
 	private ItemStack stack;
@@ -27,6 +27,8 @@ public class InventoryStaff implements IInventory {
 //		}
 //		tag = new TagStaff(t, size);
 	}
+	
+	//IInventory--------------------------------------------------------
 
 	@Override
 	public ItemStack getStackInSlot(int i) {
@@ -60,7 +62,7 @@ public class InventoryStaff implements IInventory {
 
 	@Override
 	public int getSizeInventory() {
-		return size;
+		return Staff.maxNumSpells;
 	}
 
 	@Override

@@ -122,8 +122,8 @@ public class Plato {
 		// http://www.minecraftforge.net/forum/index.php?topic=20135.0
 		network = NetworkRegistry.INSTANCE.newSimpleChannel("plato");
 		network.registerMessage(SetBlockMessageHandler.class, SetBlockMessage.class, 0, Side.SERVER);
-		network.registerMessage(NextSpellMessageHandler.class, NextSpellMessage.class, 0, Side.SERVER);
-		network.registerMessage(PrevSpellMessageHandler.class, PrevSpellMessage.class, 0, Side.SERVER);
+		network.registerMessage(PrevSpellMessageHandler.class, PrevSpellMessage.class, 1, Side.SERVER);
+		network.registerMessage(NextSpellMessageHandler.class, NextSpellMessage.class, 2, Side.SERVER);
 
 		//Create custom state mappers for BlockSelected and BlockPicked models
 		ModelLoader.setCustomStateMapper(blockSelected, new StateMapperBase() {

@@ -8,8 +8,6 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.relauncher.Side;
 
 import org.lwjgl.input.Keyboard;
 
@@ -17,14 +15,12 @@ import ds.plato.Plato;
 import ds.plato.item.ItemBase;
 import ds.plato.item.spell.ISpell;
 import ds.plato.item.spell.Spell;
-import ds.plato.network.NextSpellMessage;
-import ds.plato.network.PrevSpellMessage;
 import ds.plato.pick.IPick;
 
 public abstract class Staff extends ItemBase implements IStaff {
 
 	static int maxNumSpells = 9;
-	IPick pickManager;
+	private IPick pickManager;
 
 	// private final String modelPath = "models/" + StringUtils.toCamelCase(getClass());
 	// private final ResourceLocation modelLocation = new ResourceLocation("plato", modelPath + ".obj");
@@ -97,6 +93,7 @@ public abstract class Staff extends ItemBase implements IStaff {
 	@Override
 	public Spell nextSpell(ItemStack stack) {
 		TagStaff t = new TagStaff(stack);
+		System.out.println(t);
 		Spell s = null;
 		for (int i = 0; i < maxNumSpells; i++) {
 			// if (getIndex(stack) == maxNumSpells - 1) {
@@ -128,6 +125,7 @@ public abstract class Staff extends ItemBase implements IStaff {
 	@Override
 	public ISpell prevSpell(ItemStack stack) {
 		TagStaff t = new TagStaff(stack);
+		System.out.println(t);
 		ISpell s = null;
 		for (int i = 0; i < maxNumSpells; i++) {
 			// if (getIndex(stack) == 0) {

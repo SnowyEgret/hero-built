@@ -15,6 +15,7 @@ public class NextSpellMessageHandler implements IMessageHandler<NextSpellMessage
 
 	@Override
 	public IMessage onMessage(final NextSpellMessage message, MessageContext ctx) {
+		System.out.println(message);
 		final EntityPlayerMP player = ctx.getServerHandler().playerEntity;
 		WorldServer server = player.getServerForPlayer();
 		server.addScheduledTask(new Runnable() {
@@ -28,6 +29,7 @@ public class NextSpellMessageHandler implements IMessageHandler<NextSpellMessage
 	//Private------------------------------------------------------------
 
 	private void processMessage(NextSpellMessage message, EntityPlayerMP player) {
+		System.out.println(message);
 		ItemStack stack = player.getCurrentEquippedItem();
 		if (stack != null) {
 			Item i = stack.getItem();

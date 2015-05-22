@@ -13,6 +13,7 @@ public class PrevSpellMessageHandler implements IMessageHandler<PrevSpellMessage
 
 	@Override
 	public IMessage onMessage(final PrevSpellMessage message, MessageContext ctx) {
+		System.out.println(message);
 		final EntityPlayerMP player = ctx.getServerHandler().playerEntity;
 		WorldServer server = player.getServerForPlayer();
 		server.addScheduledTask(new Runnable() {
@@ -24,6 +25,7 @@ public class PrevSpellMessageHandler implements IMessageHandler<PrevSpellMessage
 	}
 
 	private void processMessage(PrevSpellMessage message, EntityPlayerMP player) {
+		System.out.println(message);
 		ItemStack stack = player.getCurrentEquippedItem();
 		if (stack != null) {
 			Item i = stack.getItem();
