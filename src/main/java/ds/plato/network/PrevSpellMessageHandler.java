@@ -1,8 +1,5 @@
 package ds.plato.network;
 
-import org.lwjgl.input.Keyboard;
-
-import ds.plato.item.staff.Staff;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -10,11 +7,12 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import ds.plato.item.staff.Staff;
 
-public class NextSpellMessageHandler implements IMessageHandler<NextSpellMessage, IMessage> {
+public class PrevSpellMessageHandler implements IMessageHandler<PrevSpellMessage, IMessage> {
 
 	@Override
-	public IMessage onMessage(final NextSpellMessage message, MessageContext ctx) {
+	public IMessage onMessage(final PrevSpellMessage message, MessageContext ctx) {
 		final EntityPlayerMP player = ctx.getServerHandler().playerEntity;
 		WorldServer server = player.getServerForPlayer();
 		server.addScheduledTask(new Runnable() {
@@ -24,15 +22,13 @@ public class NextSpellMessageHandler implements IMessageHandler<NextSpellMessage
 		});
 		return null;
 	}
-	
-	//Private------------------------------------------------------------
 
-	private void processMessage(NextSpellMessage message, EntityPlayerMP player) {
+	private void processMessage(PrevSpellMessage message, EntityPlayerMP player) {
 		ItemStack stack = player.getCurrentEquippedItem();
 		if (stack != null) {
 			Item i = stack.getItem();
 			if (i instanceof Staff) {
-				((Staff) i).nextSpell(stack);
+				((Staff) i).prevSpell(stack);
 			}
 		}
 	}

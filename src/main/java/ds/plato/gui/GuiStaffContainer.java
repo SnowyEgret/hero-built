@@ -16,8 +16,8 @@ public class GuiStaffContainer extends Container {
 		this.inventoryStaff = inventoryStaff;
 
 		for (int i = 0; i < inventoryStaff.getSizeInventory(); i++) {
-			//SpellSlot overides isItemValid to permit only spells in these slots
-			addSlotToContainer(new GuiStaffSlotSpell(inventoryStaff, i, 8 + i * 18, 18));
+			//Overides isItemValid to permit only spells in these slots
+			addSlotToContainer(new GuiStaffSlot(inventoryStaff, i, 8 + i * 18, 18));
 		}
 
 		for (int i = 0; i < 3; i++) {
@@ -34,7 +34,7 @@ public class GuiStaffContainer extends Container {
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
 		boolean isUsable = inventoryStaff.isUseableByPlayer(player);
-		//System.out.println("[GuiStaffContainer.canInteractWith] isUsable=" + isUsable);
+		//System.out.println("isUsable=" + isUsable);
 		return isUsable;
 	}
 

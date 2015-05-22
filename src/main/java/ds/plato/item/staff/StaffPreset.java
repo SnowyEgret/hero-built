@@ -36,7 +36,7 @@ public abstract class StaffPreset extends Staff {
 		stack.setTagCompound(new NBTTagCompound());
 		int i = 0;
 		for (Spell s : spells) {
-			if (i < size) {
+			if (i < maxNumSpells) {
 				String n = s.getClass().getSimpleName();
 				stack.getTagCompound().setString(String.valueOf(i), n);
 				i++;

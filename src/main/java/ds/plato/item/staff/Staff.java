@@ -4,13 +4,12 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
 
 import org.lwjgl.input.Keyboard;
 
@@ -18,12 +17,13 @@ import ds.plato.Plato;
 import ds.plato.item.ItemBase;
 import ds.plato.item.spell.ISpell;
 import ds.plato.item.spell.Spell;
+import ds.plato.network.NextSpellMessage;
+import ds.plato.network.PrevSpellMessage;
 import ds.plato.pick.IPick;
-import ds.plato.util.StringUtils;
 
 public abstract class Staff extends ItemBase implements IStaff {
 
-	final int size = 9;
+	static int maxNumSpells = 9;
 	IPick pickManager;
 
 	// private final String modelPath = "models/" + StringUtils.toCamelCase(getClass());
@@ -34,7 +34,7 @@ public abstract class Staff extends ItemBase implements IStaff {
 		this.pickManager = pickManager;
 	}
 
-	// Passes call on to current spell
+	//Passes call on to current spell
 	@Override
 	public void onMouseClickLeft(ItemStack stack, BlockPos pos, EnumFacing sideHit) {
 		if (!isEmpty(stack)) {
@@ -57,10 +57,13 @@ public abstract class Staff extends ItemBase implements IStaff {
 	@Override
 	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float sx, float sy, float sz) {
 
-		//Let Spell.onItemUse do this.
-		// if(world.isRemote) {
-		// return true;
-		// }
+		//To compare item stacks on both sides
+		System.out.println("tag=" + stack.getTagCompound());
+
+		if (world.isRemote) {
+			return true;
+		}
+
 		// Open staff gui if space is down
 		if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
 			player.openGui(Plato.instance, 3, world, 0, 0, 0);
@@ -82,8 +85,9 @@ public abstract class Staff extends ItemBase implements IStaff {
 		if (isEmpty(stack)) {
 			return null;
 		}
-		// System.out.println("ordinal="+getOrdinal(stack));
-		Spell s = getSpellAtIndex(stack, getIndex(stack));
+		TagStaff t = new TagStaff(stack);
+		Spell s = t.getSpell();
+		// Spell s = getSpellAtIndex(stack, getIndex(stack));
 		if (s == null) {
 			s = nextSpell(stack);
 		}
@@ -92,14 +96,19 @@ public abstract class Staff extends ItemBase implements IStaff {
 
 	@Override
 	public Spell nextSpell(ItemStack stack) {
+		TagStaff t = new TagStaff(stack);
 		Spell s = null;
-		for (int i = 0; i < size; i++) {
-			if (getIndex(stack) == size - 1) {
-				setIndex(stack, 0);
+		for (int i = 0; i < maxNumSpells; i++) {
+			// if (getIndex(stack) == maxNumSpells - 1) {
+			if (t.getIndex() == maxNumSpells - 1) {
+				t.setIndex(0);
+				// setIndex(stack, 0);
 			} else {
-				incrementIndex(stack, 1);
+				t.incrementIndex(1);
+				// incrementIndex(stack, 1);
 			}
-			s = getSpellAtIndex(stack, getIndex(stack));
+			// s = getSpellAtIndex(stack, getIndex(stack));
+			s = t.getSpell();
 			if (s == null) {
 				continue;
 			} else {
@@ -107,19 +116,30 @@ public abstract class Staff extends ItemBase implements IStaff {
 				break;
 			}
 		}
+		
+		// KeyHandler runs on client side and calls next spell when key tab is pressed
+//		if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) {
+//			System.out.println("Sending NextSpellMessage to server.");
+//			Plato.network.sendToServer(new NextSpellMessage());
+//		}
 		return s;
 	}
 
 	@Override
-	public ISpell previousSpell(ItemStack stack) {
+	public ISpell prevSpell(ItemStack stack) {
+		TagStaff t = new TagStaff(stack);
 		ISpell s = null;
-		for (int i = 0; i < size; i++) {
-			if (getIndex(stack) == 0) {
-				setIndex(stack, size - 1);
+		for (int i = 0; i < maxNumSpells; i++) {
+			// if (getIndex(stack) == 0) {
+			if (t.getIndex() == 0) {
+				//setIndex(stack, maxNumSpells - 1);
+				t.setIndex(maxNumSpells - 1);
 			} else {
-				incrementIndex(stack, -1);
+				//incrementIndex(stack, -1);
+				t.incrementIndex(-1);
 			}
-			s = getSpellAtIndex(stack, getIndex(stack));
+			//s = getSpellAtIndex(stack, getIndex(stack));
+			s = t.getSpell();
 			if (s == null) {
 				continue;
 			} else {
@@ -127,14 +147,22 @@ public abstract class Staff extends ItemBase implements IStaff {
 				break;
 			}
 		}
+		
+		// KeyHandler runs on client side and calls previous spell when key ctrl-tab is pressed
+//		if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) {
+//			System.out.println("Sending PrevSpellMessage to server.");
+//			Plato.network.sendToServer(new PrevSpellMessage());
+//		}
 		return s;
 	}
 
 	@Override
 	public int numSpells(ItemStack stack) {
+		TagStaff t = new TagStaff(stack);
 		int numSpells = 0;
-		for (int i = 0; i < size; i++) {
-			ISpell s = getSpellAtIndex(stack, i);
+		for (int i = 0; i < maxNumSpells; i++) {
+			//ISpell s = getSpellAtIndex(stack, i);
+			ISpell s = t.getSpell(i);
 			if (s != null)
 				numSpells++;
 		}
@@ -143,8 +171,10 @@ public abstract class Staff extends ItemBase implements IStaff {
 
 	@Override
 	public boolean isEmpty(ItemStack stack) {
-		for (int i = 0; i < size; i++) {
-			ISpell s = getSpellAtIndex(stack, i);
+		TagStaff t = new TagStaff(stack);
+		for (int i = 0; i < maxNumSpells; i++) {
+			//ISpell s = getSpellAtIndex(stack, i);
+			ISpell s = t.getSpell(i);
 			if (s != null) {
 				return false;
 			}
@@ -154,48 +184,54 @@ public abstract class Staff extends ItemBase implements IStaff {
 
 	// Private ---------------------------------------------------
 
-	private Spell getSpellAtIndex(ItemStack stack, int i) {
-		NBTTagCompound t = getTag(stack);
-		String name = t.getString(String.valueOf(i));
-		if (name != null && !name.equals("")) {
-			Spell spell = (Spell) GameRegistry.findItem(Plato.ID, name);
-			if (spell == null) {
-				throw new RuntimeException("Game registry could not find item.  itemSimpleClassName=" + name);
-			}
-			return spell;
-		}
-		return null;
-	}
+//	private Spell getSpellAtIndex(ItemStack stack, int i) {
+//		// TagStaff tag = new TagStaff(getTag(stack), maxNumSpells);
+//		TagStaff tag = new TagStaff(stack);
+//		return tag.getSpell(i);
+//		// String name = t.getString(String.valueOf(i));
+//		// if (name != null && !name.equals("")) {
+//		// Spell spell = (Spell) GameRegistry.findItem(Plato.ID, name);
+//		// if (spell == null) {
+//		// throw new RuntimeException("Game registry could not find item.  name=" + name);
+//		// }
+//		// return spell;
+//		// }
+//		// return null;
+//	}
 
-	private int getIndex(ItemStack stack) {
-		NBTTagCompound t = getTag(stack);
-		int ordinal = t.getInteger("index");
-		return ordinal;
-	}
+//	private int getIndex(ItemStack stack) {
+//		// NBTTagCompound t = getTag(stack);
+//		// return t.getInteger("index");
+//		// TagStaff tag = new TagStaff(getTag(stack), maxNumSpells);
+//		TagStaff tag = new TagStaff(stack);
+//		return tag.getIndex();
+//	}
 
-	private void setIndex(ItemStack stack, int i) {
-		// if (i == 0) {
-		// System.out.println();
-		// new Throwable().printStackTrace();
-		// }
-		NBTTagCompound t = getTag(stack);
-		t.setInteger("index", i);
-	}
+//	private void setIndex(ItemStack stack, int i) {
+//		// NBTTagCompound t = getTag(stack);
+//		// t.setInteger("index", i);
+//		// TagStaff tag = new TagStaff(getTag(stack), maxNumSpells);
+//		TagStaff tag = new TagStaff(stack);
+//		tag.setIndex(i);
+//	}
 
-	private void incrementIndex(ItemStack stack, int increment) {
-		NBTTagCompound t = getTag(stack);
-		int i = t.getInteger("index");
-		i = i + increment;
-		t.setInteger("index", i);
-	}
+//	private void incrementIndex(ItemStack stack, int increment) {
+//		// NBTTagCompound t = getTag(stack);
+//		// int i = t.getInteger("index");
+//		// i = i + increment;
+//		// t.setInteger("index", i);
+//		// TagStaff tag = new TagStaff(getTag(stack), maxNumSpells);
+//		TagStaff tag = new TagStaff(stack);
+//		tag.incrementIndex(increment);
+//	}
 
-	private NBTTagCompound getTag(ItemStack stack) {
-		NBTTagCompound t = stack.getTagCompound();
-		if (t == null) {
-			System.out.println("Tag null - created a new one");
-			t = new NBTTagCompound();
-			stack.setTagCompound(t);
-		}
-		return t;
-	}
+	// private NBTTagCompound getTag(ItemStack stack) {
+	// NBTTagCompound t = stack.getTagCompound();
+	// if (t == null) {
+	// System.out.println("Tag null - created a new one");
+	// t = new NBTTagCompound();
+	// stack.setTagCompound(t);
+	// }
+	// return t;
+	// }
 }

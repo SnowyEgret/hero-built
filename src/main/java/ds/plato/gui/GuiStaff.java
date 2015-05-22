@@ -1,8 +1,7 @@
 package ds.plato.gui;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
@@ -16,18 +15,21 @@ public class GuiStaff extends GuiContainer {
 
 	private static final ResourceLocation texture = new ResourceLocation("textures/gui/container/generic_54.png");
 	private int rowHeight = 35;
-	//private IInventory staff;
 
 	public GuiStaff(GuiStaffContainer container) {
 		super(container);
-		//this.staff = inventoryStaff;
 	}
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int p1, int p2) {
-		String staffName = Player.getPlayer().getHeldItemStack().getDisplayName();
+		ItemStack stack = Player.getPlayer().getHeldItemStack();
+		if (stack == null) {
+			return;
+		}
+		String staffName = stack.getDisplayName();
 		fontRendererObj.drawString(staffName, 8, 6, 4210752);
 		fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, rowHeight + 2, 4210752);
+		
 	}
 
 	@Override

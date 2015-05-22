@@ -36,6 +36,8 @@ import ds.plato.item.staff.StaffSelect;
 import ds.plato.item.staff.StaffTransform;
 import ds.plato.network.NextSpellMessage;
 import ds.plato.network.NextSpellMessageHandler;
+import ds.plato.network.PrevSpellMessage;
+import ds.plato.network.PrevSpellMessageHandler;
 import ds.plato.network.SetBlockMessage;
 import ds.plato.network.SetBlockMessageHandler;
 import ds.plato.pick.IPick;
@@ -58,6 +60,7 @@ public class Plato {
 	public static Plato instance;
 	@SidedProxy(clientSide = "ds.plato.proxy.ClientProxy", serverSide = "ds.plato.proxy.CommonProxy")
 	public static CommonProxy proxy;
+	public static SimpleNetworkWrapper network;
 
 	private static IUndo undoManager;
 	private static ISelect selectionManager;
@@ -65,7 +68,6 @@ public class Plato {
 	private Configuration configuration;
 	private List<Spell> spells;
 	private List<Staff> staffs;
-	public static SimpleNetworkWrapper network;
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
@@ -121,6 +123,7 @@ public class Plato {
 		network = NetworkRegistry.INSTANCE.newSimpleChannel("plato");
 		network.registerMessage(SetBlockMessageHandler.class, SetBlockMessage.class, 0, Side.SERVER);
 		network.registerMessage(NextSpellMessageHandler.class, NextSpellMessage.class, 0, Side.SERVER);
+		network.registerMessage(PrevSpellMessageHandler.class, PrevSpellMessage.class, 0, Side.SERVER);
 
 		//Create custom state mappers for BlockSelected and BlockPicked models
 		ModelLoader.setCustomStateMapper(blockSelected, new StateMapperBase() {

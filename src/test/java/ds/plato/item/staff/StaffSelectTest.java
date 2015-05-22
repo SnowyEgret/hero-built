@@ -70,9 +70,9 @@ public class StaffSelectTest extends PlatoTest {
 
 	@Test
 	public void previousSpell_startsAtEndWhenReachesBeginning() {
-		assertEquals(mockMove, staff.previousSpell(stack));
-		assertEquals(mockDelete, staff.previousSpell(stack));
-		assertEquals(mockMove, staff.previousSpell(stack));
+		assertEquals(mockMove, staff.prevSpell(stack));
+		assertEquals(mockDelete, staff.prevSpell(stack));
+		assertEquals(mockMove, staff.prevSpell(stack));
 	}
 
 	@Test
@@ -85,9 +85,9 @@ public class StaffSelectTest extends PlatoTest {
 
 	@Test
 	public void previousSpell() {
-		staff.previousSpell(stack);
+		staff.prevSpell(stack);
 		assertEquals(mockMove, staff.getSpell(stack));
-		staff.previousSpell(stack);
+		staff.prevSpell(stack);
 		assertEquals(mockDelete, staff.getSpell(stack));
 		staff.nextSpell(stack);
 		assertEquals(mockMove, staff.getSpell(stack));

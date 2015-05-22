@@ -100,7 +100,7 @@ public class MouseHandler {
 				e.setCanceled(true);
 				return;
 			}
-			if (heldItem instanceof IItem) {
+			if (heldItem instanceof IItem) { 
 				if (e.button == 0) {
 					if (e.buttonstate) {
 						((IItem) heldItem).onMouseClickLeft(stack, cursor.getBlockPos(), cursor.sideHit);

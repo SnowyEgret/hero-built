@@ -23,6 +23,7 @@ import ds.plato.item.spell.matrix.SpellCopy;
 import ds.plato.item.spell.transform.SpellDelete;
 import ds.plato.item.staff.Staff;
 import ds.plato.network.NextSpellMessage;
+import ds.plato.network.PrevSpellMessage;
 import ds.plato.pick.IPick;
 import ds.plato.player.IPlayer;
 import ds.plato.player.Player;
@@ -70,7 +71,7 @@ public class KeyHandler {
 					}
 				}
 				//When undoing a copy/move it is helpful to reselect.
-				//If we had a last spell, we could do this conditionally
+				//If we had a reference to the last spell, we could do this conditionally
 				//Last spell is not necessarily what is in hand
 				//Comment out for now
 				//selectionManager.reselect(w)
@@ -92,21 +93,27 @@ public class KeyHandler {
 		}
 
 		if (keyBindings.get("nextSpell").isPressed()) {
-			//FIXME Is the stack tag only being updated on client side?
-			//ItemStack stack = player.getHeldItemStack();
-			EntityPlayerSP p = Minecraft.getMinecraft().thePlayer;
-			ItemStack stack = p.getCurrentEquippedItem();
-			if (stack != null) {
-				Item i = stack.getItem();
-				if (i instanceof Staff) {
-					if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
-						((Staff) i).previousSpell(stack);
-					} else {
-						((Staff) i).nextSpell(stack);
-					}
+			Staff staff = player.getStaff();
+			if (staff != null) {
+				if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
+					Plato.network.sendToServer(new PrevSpellMessage());
+				} else {
+					Plato.network.sendToServer(new NextSpellMessage());
 				}
 			}
-			Plato.network.sendToServer(new NextSpellMessage());
+			
+//			EntityPlayerSP p = Minecraft.getMinecraft().thePlayer;
+//			ItemStack stack = p.getCurrentEquippedItem();
+//			if (stack != null) {
+//				Item i = stack.getItem();
+//				if (i instanceof Staff) {
+//					if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
+//						((Staff) i).prevSpell(stack);
+//					} else {
+//						((Staff) i).nextSpell(stack);
+//					}
+//				}
+//			}
 		}
 
 		if (keyBindings.get("delete").isPressed()) {

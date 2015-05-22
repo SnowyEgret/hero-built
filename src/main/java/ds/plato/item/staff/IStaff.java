@@ -9,7 +9,7 @@ public interface IStaff {
 
 	public ISpell nextSpell(ItemStack stack);
 
-	public ISpell previousSpell(ItemStack stack);
+	public ISpell prevSpell(ItemStack stack);
 
 	public int numSpells(ItemStack stack);
 
