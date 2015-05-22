@@ -15,6 +15,7 @@ import net.minecraft.util.Vec3;
 import com.google.common.collect.Lists;
 
 import ds.geom.VoxelSet;
+import ds.plato.block.BlockSelected;
 import ds.plato.world.IWorld;
 
 public class SelectionManager implements ISelect {
@@ -30,13 +31,17 @@ public class SelectionManager implements ISelect {
 
 	@Override
 	public Selection select(IWorld world, BlockPos pos) {
-		Block prevBlock = world.getBlock(pos);
+		Block b = world.getBlock(pos);
 		// Policy is not to select air
-		if (prevBlock instanceof BlockAir) {
+		if (b instanceof BlockAir) {
 			return null;
 		}
+		//Added when created SpellTrail
+		if (b instanceof BlockSelected) {
+			return getSelection(pos);
+		}
 		world.setBlock(pos, blockSelected);
-		Selection s = new Selection(pos, prevBlock);
+		Selection s = new Selection(pos, b);
 		selections.put(s.getPos(), s);
 		return s;
 	}

@@ -32,4 +32,6 @@ public interface IPlayer {
 	public abstract void jump();
 
 	public abstract void orbitAround(Vec3 center, int dx, int dy);
+
+	public abstract BlockPos getPosition();
 }

@@ -228,4 +228,9 @@ public class Player implements IPlayer {
 		v = v.add(pos);
 		player.setLocationAndAngles(v.xCoord, v.yCoord, v.zCoord, (float) yaw, player.rotationPitch);
 	}
+
+	@Override
+	public BlockPos getPosition() {
+		return player.getPosition();
+	}
 }

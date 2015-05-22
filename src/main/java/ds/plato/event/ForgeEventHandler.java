@@ -19,6 +19,7 @@ import ds.plato.block.BlockSelected;
 import ds.plato.block.BlockSelectedModel;
 import ds.plato.gui.Overlay;
 import ds.plato.item.spell.ISpell;
+import ds.plato.item.spell.other.SpellTrail;
 import ds.plato.item.staff.Staff;
 import ds.plato.pick.IPick;
 import ds.plato.pick.Pick;
@@ -45,7 +46,7 @@ public class ForgeEventHandler {
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void onDrawBlockHightlight(DrawBlockHighlightEvent e) {
-		//We are only getting this event on client side
+		// We are only getting this event on client side
 		if (spell != null) {
 			BlockPos p = null;
 			Pick pick = pickManager.lastPick();
@@ -65,7 +66,7 @@ public class ForgeEventHandler {
 		}
 	}
 
-	//The player may have changed spells on a staff. Reset picking on the spell and update field spell.
+	// The player may have changed spells on a staff. Reset picking on the spell and update field spell.
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void onLivingUpdate(LivingUpdateEvent e) {
@@ -74,16 +75,25 @@ public class ForgeEventHandler {
 			return;
 		}
 		if (e.entity instanceof EntityPlayer) {
-			ISpell s = Player.getPlayer().getSpell();
-			//Same
-			//ISpell s = new Player((EntityPlayer)e.entity).getSpell();
+			IPlayer player = Player.getPlayer();
+
+			ISpell s = player.getSpell();
 			if (s == null) {
 				spell = null;
+				return;
 			} else {
 				// If the spell has changed reset it.
 				if (s != spell) {
 					spell = s;
 					s.reset();
+				}
+			}
+
+			// Select blocks under foot
+			if (s instanceof SpellTrail) {
+				if (s.isPicking()) {
+					BlockPos pos = player.getPosition();
+					Selection sel = selectionManager.select(player.getWorld(), pos.down());
 				}
 			}
 		}

@@ -50,6 +50,7 @@ public class BlockSelectedModel implements ISmartBlockModel {
 	@Override
 	public boolean isAmbientOcclusion() {
 		return model.isAmbientOcclusion();
+		//return false;
 	}
 
 	@Override
