@@ -9,7 +9,6 @@ import net.minecraft.util.IChatComponent;
 public class InventoryStaff implements IInventory {
 
 	private TagStaff tag;
-	//private int size = Staff.maxNumSpells;
 	//These three fields to be used in method setInventorySlotContents
 	private IInventory inventory;
 	private ItemStack stack;
@@ -18,14 +17,8 @@ public class InventoryStaff implements IInventory {
 	public InventoryStaff(IInventory inventoryContainingStaff, int slotInInventoryContainingStaff) {
 		this.inventory = inventoryContainingStaff;
 		this.slot = slotInInventoryContainingStaff;
-		stack = inventoryContainingStaff.getStackInSlot(slotInInventoryContainingStaff);
+		stack = inventoryContainingStaff.getStackInSlot(slot);
 		tag = new TagStaff(stack);
-//		NBTTagCompound t = stack.getTagCompound();
-//		if (t == null) {
-//			t = new NBTTagCompound();
-//			stack.setTagCompound(t);
-//		}
-//		tag = new TagStaff(t, size);
 	}
 	
 	//IInventory--------------------------------------------------------
@@ -129,7 +122,6 @@ public class InventoryStaff implements IInventory {
 
 	@Override
 	public void clear() {
-		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 		for (int i = 0; i < inventory.getSizeInventory(); ++i) {
 			setInventorySlotContents(i, null);
 		}

@@ -12,11 +12,6 @@ public class TagStaff {
 	private int size = Staff.maxNumSpells;
 	private final String INDEX = "index";
 
-//	public TagStaff(NBTTagCompound tag, int size) {
-//		this.tag = tag;
-//		this.size = size;
-//	}
-
 	public TagStaff(ItemStack stack) {
 		tag = stack.getTagCompound();
 		if (tag == null) {
@@ -46,18 +41,6 @@ public class TagStaff {
 	}
 
 	public ItemStack getItemStack(int i) {
-		// if (i < 0 || i > size - 1) {
-		// throw new IllegalArgumentException("Index not in tag range: " + i);
-		// }
-		// String name = tag.getString(String.valueOf(i));
-		// if (name != null && !name.equals("")) {
-		// Spell spell = (Spell) GameRegistry.findItem(Plato.ID, name);
-		// if (spell == null) {
-		// throw new RuntimeException("Game registry could not find item. name=" + name);
-		// }
-		// return new ItemStack(spell);
-		// }
-		// return null;
 		Spell s = getSpell(i);
 		if (s != null) {
 			return new ItemStack(s);
@@ -65,19 +48,31 @@ public class TagStaff {
 		return null;
 	}
 
-	public void setItemStack(int i, ItemStack stack) {
-		System.out.println("i=" + i);
-		System.out.println("stack=" + stack);
+
+	public void setSpell(int i, Spell s) {
 		if (i < 0 || i > size - 1) {
 			throw new IllegalArgumentException("Index not in tag range: " + i);
 		}
+		String n = s.getClass().getSimpleName();
+		tag.setString(String.valueOf(i), n);
+	}
+	
+	public void setItemStack(int i, ItemStack stack) {
+		//System.out.println("i=" + i);
+		//System.out.println("stack=" + stack);
+		if (i < 0 || i > size - 1) {
+			throw new IllegalArgumentException("Index not in tag range: " + i);
+		}
+		
 		if (stack == null) {
 			tag.removeTag(String.valueOf(i));
 		} else {
-			String n = stack.getItem().getClass().getSimpleName();
-			tag.setString(String.valueOf(i), n);
+			Spell s = (Spell) stack.getItem();
+			setSpell(i, s);
+			//String n = stack.getItem().getClass().getSimpleName();
+			//tag.setString(String.valueOf(i), n);
 		}
-		System.out.println("tag=@" + System.identityHashCode(tag) + tag);
+		//System.out.println("tag=@" + System.identityHashCode(tag) + tag);
 		// new Throwable().printStackTrace();
 	}
 
@@ -102,5 +97,9 @@ public class TagStaff {
 		builder.append(tag);
 		builder.append("]");
 		return builder.toString();
+	}
+
+	public NBTTagCompound getTag() {
+		return tag;
 	}
 }
