@@ -25,12 +25,13 @@ public class SpellRotate90 extends AbstractSpellMatrix {
 	}
 
 	@Override
-	public void invoke(IWorld world, HotbarSlot... slotEntries) {
+	public void invoke(IWorld world, HotbarSlot... slots) {
 
+		boolean deleteOriginal = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL);
+		boolean rotateAboutCentroid = Keyboard.isKeyDown(Keyboard.KEY_LMENU);
 		Pick[] picks = pickManager.getPicks();
-		Point3d center;
-		if (Keyboard.isKeyDown(Keyboard.KEY_LMETA)) {
-			//Point3i c = selectionManager.voxelSet().centroid();
+		Point3d center = null;
+		if (rotateAboutCentroid) {
 			Vec3 c = selectionManager.getCentroid();
 			center = new Point3d(c.xCoord, c.yCoord, c.zCoord);
 		} else {
@@ -50,7 +51,6 @@ public class SpellRotate90 extends AbstractSpellMatrix {
 			matrix = GeomUtil.newRotY90Matrix(center);
 		}
 
-		boolean deleteOriginal = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL);
 		transformSelections(matrix, world, deleteOriginal);
 	}
 

@@ -33,9 +33,10 @@ public abstract class AbstractSpellMatrix extends Spell {
 		List<UndoableSetBlock> adds = new ArrayList<>();
 		List<BlockPos> addedPos = new ArrayList<>();
 
-		//EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
 		IPlayer player = Player.getPlayer();
 		Iterable<Selection> selections = selectionManager.getSelections();
+		selectionManager.clearSelections(world);
+		pickManager.clearPicks();
 		for (Selection s : selections) {
 			Point3d p = s.point3d();
 			if (deleteInitialBlocks) {
@@ -43,6 +44,7 @@ public abstract class AbstractSpellMatrix extends Spell {
 			}
 			matrix.transform(p);
 			BlockPos pos = new BlockPos(p.x, p.y, p.z);
+			//TODO Move management of jump height from IPlayer to AbstractSpellMatrix.
 			player.incrementJumpHeight(pos);
 			adds.add(new UndoableSetBlock(world, selectionManager, pos, s.getBlock()));
 			addedPos.add(pos);
@@ -58,7 +60,7 @@ public abstract class AbstractSpellMatrix extends Spell {
 		t.commit();
 		player.jump();
 
-		selectionManager.clearSelections(world);
+		//Select all transformed blocks
 		for (BlockPos pos : addedPos) {
 			selectionManager.select(world, pos);
 		}
