@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.vecmath.Point3d;
 import javax.vecmath.Point3i;
 
 import net.minecraft.block.Block;
@@ -14,6 +15,7 @@ import net.minecraft.util.Vec3;
 
 import com.google.common.collect.Lists;
 
+import ds.geom.IntegerDomain;
 import ds.geom.VoxelSet;
 import ds.plato.block.BlockSelected;
 import ds.plato.world.IWorld;
@@ -140,6 +142,11 @@ public class SelectionManager implements ISelect {
 	}
 
 	@Override
+	public IntegerDomain getDomain() {
+		return voxelSet().getDomain();
+	}
+
+	@Override
 	public VoxelSet voxelSet() {
 		VoxelSet set = new VoxelSet();
 		for (BlockPos pos : selections.keySet()) {
@@ -175,7 +182,7 @@ public class SelectionManager implements ISelect {
 
 	@Override
 	public Vec3 getCentroid() {
-		Point3i c = voxelSet().centroid();
+		Point3d c = voxelSet().centroid();
 		return new Vec3(c.x, c.y, c.z);
 	}
 

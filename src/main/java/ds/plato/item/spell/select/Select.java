@@ -38,6 +38,13 @@ public class Select {
 	public static final BlockPos[] all = concat(above, horizontal, below);
 	public static final BlockPos[] allNoCorners = concat(northSouth, eastWest, horizontal);
 	public static final BlockPos[] upDownNorhEastSouthWest = concat(up, down, north, east, south, west);
+	
+	public static final BlockPos[] XY = pos(Range.between(-1, 1), Range.between(-1, 1), Range.between(0, 0));
+	public static final BlockPos[] Z = pos(Range.between(0, 0), Range.between(0, 0), Range.between(-1, 1));
+	public static final BlockPos[] XZ = pos(Range.between(-1, 1), Range.between(0, 0), Range.between(-1, 1));
+	public static final BlockPos[] Y = pos(Range.between(0, 0), Range.between(-1, 1), Range.between(0, 0));
+	public static final BlockPos[] YZ = pos(Range.between(0, 0), Range.between(-1, 1), Range.between(-1, 1));
+	public static final BlockPos[] X = pos(Range.between(-1, 1), Range.between(0, 0), Range.between(0, 0));
 
 	public static boolean isEdgeOnGround(IWorld w, BlockPos position) {
 		for (BlockPos p : above) {

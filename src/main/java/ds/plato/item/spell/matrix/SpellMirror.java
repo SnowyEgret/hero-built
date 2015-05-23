@@ -3,6 +3,8 @@ package ds.plato.item.spell.matrix;
 import javax.vecmath.Matrix4d;
 import javax.vecmath.Point3i;
 
+import net.minecraft.util.Vec3;
+
 import org.lwjgl.input.Keyboard;
 
 import ds.geom.matrix.ReflectionMatrix;
@@ -24,7 +26,9 @@ public class SpellMirror extends AbstractSpellMatrix {
 	@Override
 	public void invoke(IWorld world, HotbarSlot...slotEntries) {
 		Pick[] picks = pickManager.getPicks();
-		Point3i c = selectionManager.voxelSet().centroid();
+		//Point3i c = selectionManager.voxelSet().centroid();
+		Vec3 c = selectionManager.getCentroid();
+		
 		// FIXME
 		Matrix4d matrix = new ReflectionMatrix(picks[0].point3d(), picks[1].point3d(), picks[2].point3d());
 		boolean deleteInitialBlocks = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL);

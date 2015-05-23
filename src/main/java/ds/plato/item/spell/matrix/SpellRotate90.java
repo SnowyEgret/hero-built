@@ -4,6 +4,8 @@ import javax.vecmath.Matrix4d;
 import javax.vecmath.Point3d;
 import javax.vecmath.Point3i;
 
+import net.minecraft.util.Vec3;
+
 import org.lwjgl.input.Keyboard;
 
 import ds.geom.GeomUtil;
@@ -28,8 +30,9 @@ public class SpellRotate90 extends AbstractSpellMatrix {
 		Pick[] picks = pickManager.getPicks();
 		Point3d center;
 		if (Keyboard.isKeyDown(Keyboard.KEY_LMETA)) {
-			Point3i c = selectionManager.voxelSet().centroid();
-			center = new Point3d(c.x, c.y, c.z);
+			//Point3i c = selectionManager.voxelSet().centroid();
+			Vec3 c = selectionManager.getCentroid();
+			center = new Point3d(c.xCoord, c.yCoord, c.zCoord);
 		} else {
 			center = picks[0].point3d();
 		}

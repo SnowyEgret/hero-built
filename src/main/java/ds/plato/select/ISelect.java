@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.Vec3;
+import ds.geom.IntegerDomain;
 import ds.geom.VoxelSet;
 import ds.plato.world.IWorld;
 
@@ -37,7 +38,9 @@ public interface ISelect {
 	
 	public Vec3 getCentroid();
 
-	//TODO this is messy.
+	public IntegerDomain getDomain();
+
+	//TODO Encapsulate this in selectionManager
 	public VoxelSet voxelSet();
 
 	//Below used only by AbstractSpellSelect -----------------------------

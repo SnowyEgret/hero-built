@@ -3,17 +3,14 @@ package ds.plato.item.spell.other;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.vecmath.Point3d;
-
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.Vec3;
 
 import org.lwjgl.input.Keyboard;
 
-import ds.geom.GeomUtil;
 import ds.geom.IntegerDomain;
-import ds.geom.VoxelSet;
 import ds.plato.item.spell.Modifier;
-import ds.plato.item.spell.select.Shell;
+import ds.plato.item.spell.select.Select;
 import ds.plato.item.spell.transform.AbstractSpellTransform;
 import ds.plato.pick.IPick;
 import ds.plato.player.HotbarSlot;
@@ -28,45 +25,43 @@ public class SpellThicken extends AbstractSpellTransform {
 
 	public SpellThicken(IUndo undo, ISelect select, IPick pick) {
 		super(undo, select, pick);
+		// ctrl-inward, shift-outward, alt-within plane
 		info.addModifiers(Modifier.CTRL, Modifier.SHIFT, Modifier.ALT);
 	}
 
 	@Override
-	public void invoke(final IWorld world, HotbarSlot... slotEntries) {
-		Set<BlockPos> points = new HashSet<>();
-		Selection first = selectionManager.getSelections().iterator().next();
-		VoxelSet voxels = selectionManager.voxelSet();
-		IntegerDomain domain = selectionManager.voxelSet().getDomain();
+	public void invoke(final IWorld world, HotbarSlot... slots) {
+		Set<BlockPos> positions = new HashSet<>();
+		Selection first = selectionManager.firstSelection();
+		IntegerDomain domain = selectionManager.getDomain();
 		if (domain.isPlanar()) {
-			thickenPlane(points, domain, world);
+			thickenPlane(positions, domain, world);
 		} else {
-			thicken(points, voxels, world);
+			thicken(positions, world);
 		}
 
 		selectionManager.clearSelections(world);
 		pickManager.clearPicks();
+
 		Transaction t = undoManager.newTransaction();
-		for (BlockPos p : points) {
+		for (BlockPos p : positions) {
 			t.add(new UndoableSetBlock(world, selectionManager, p, first.getBlock()).set());
 		}
 		t.commit();
 	}
 
-	private void thicken(Set<BlockPos> points, VoxelSet voxels, IWorld world) {
-		final Point3d centroid = GeomUtil.toPoint3d(voxels.centroid());
+	private void thicken(Set<BlockPos> positions, IWorld world) {
+		boolean in = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL);
+		boolean out = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
+		final Vec3 c = selectionManager.getCentroid();
 		for (Selection s : selectionManager.getSelections()) {
-			double d = s.point3d().distance(centroid);
-			//double d = s.getPos().distanceSq(centroid);
-			Shell shell = new Shell(Shell.Type.XYZ, s.getPos(), world);
-			for (BlockPos p : shell) {
-				//double dd = GeomUtil.toPoint3d(p).distance(centroid);
-				double dd = new Point3d(p.getX(), p.getY(), p.getZ()).distance(centroid);
-				boolean in = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL);
-				boolean out = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
+			double d = s.getPos().distanceSqToCenter(c.xCoord, c.yCoord, c.zCoord);
+			for (BlockPos p : Select.all) {
+				p = p.add(s.getPos());
+				double dd = p.distanceSqToCenter(c.xCoord, c.yCoord, c.zCoord);
 				if ((in && dd < d) || (out && dd > d) || (!in && !out)) {
-					//if (!selectionManager.isSelected(p.x, p.y, p.z)) {
 					if (!selectionManager.isSelected(p)) {
-						points.add(p);
+						positions.add(p);
 					}
 				}
 			}
@@ -75,24 +70,21 @@ public class SpellThicken extends AbstractSpellTransform {
 
 	private void thickenPlane(Set<BlockPos> points, IntegerDomain domain, IWorld world) {
 		boolean withinPlane = Keyboard.isKeyDown(Keyboard.KEY_LMENU);
-		Shell.Type shellType = null;
-		System.out.println("[SpellThicken.thickenPlane] domain.getPlane()=" + domain.getPlane());
+		BlockPos[] select = null;
 		switch (domain.getPlane()) {
 		case XY:
-			shellType = withinPlane ? Shell.Type.XY : Shell.Type.Z;
+			select = withinPlane ? Select.XY : Select.Z;
 			break;
 		case XZ:
-			System.out.println("[SpellThicken.thickenPlane] shellType=" + shellType);
-			shellType = withinPlane ? Shell.Type.XZ : Shell.Type.Y;
+			select = withinPlane ? Select.XZ : Select.Y;
 			break;
 		case YZ:
-			shellType = withinPlane ? Shell.Type.YZ : Shell.Type.X;
+			select = withinPlane ? Select.YZ : Select.X;
 			break;
 		}
-		System.out.println("[SpellThicken.thickenPlane] shellType=" + shellType);
 		for (Selection s : selectionManager.getSelections()) {
-			Shell shell = new Shell(shellType, s.getPos(), world);
-			for (BlockPos p : shell) {
+			for (BlockPos p : select) {
+				p = p.add(s.getPos());
 				if (!selectionManager.isSelected(p)) {
 					points.add(p);
 				}
