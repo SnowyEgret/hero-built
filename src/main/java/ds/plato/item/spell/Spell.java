@@ -52,6 +52,8 @@ public abstract class Spell extends ItemBase implements ISpell {
 		int dx = pos.getX() - p.getX();
 		int dy = pos.getY() - p.getY();
 		int dz = pos.getZ() - p.getZ();
+		System.out.println(dx);
+		System.out.println(dy);
 		if (dx == 0 && dz == 0 && dy > 0) {
 			if (dy > jumpHeight) {
 				jumpHeight = dy;

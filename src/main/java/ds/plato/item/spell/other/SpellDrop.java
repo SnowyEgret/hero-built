@@ -1,7 +1,12 @@
 package ds.plato.item.spell.other;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.BlockPos;
 
 import org.lwjgl.input.Keyboard;
 
@@ -12,12 +17,11 @@ import ds.plato.player.HotbarSlot;
 import ds.plato.select.ISelect;
 import ds.plato.select.Selection;
 import ds.plato.undo.IUndo;
-import ds.plato.undo.UndoableSetBlock;
 import ds.plato.undo.Transaction;
+import ds.plato.undo.UndoableSetBlock;
 import ds.plato.world.IWorld;
 
 public class SpellDrop extends Spell {
-
 
 	public SpellDrop(IUndo undoManager, ISelect selectionManager, IPick pickManager) {
 		super(1, undoManager, selectionManager, pickManager);
@@ -25,38 +29,72 @@ public class SpellDrop extends Spell {
 	}
 
 	@Override
-	public void invoke(IWorld world, HotbarSlot... slotEntries) {
-		boolean fill = Keyboard.isKeyDown(Keyboard.KEY_LMENU);
+	public void invoke(IWorld world, HotbarSlot... slots) {
+
 		boolean deleteOriginal = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL);
-		Transaction transaction = undoManager.newTransaction();
-		for (Selection s : selectionManager.getSelections()) {
-			Block b = world.getBlock(s.getPos().add(0,-1,0));
-			int drop = 0;
-			while (b == Blocks.air) {
-				drop++;
-				Block nextBlockDown = world.getBlock(s.getPos().add(0,-drop-1,0));
-				if (fill || nextBlockDown != Blocks.air) {
-					transaction.add(new UndoableSetBlock(world, selectionManager, s.getPos().add(0, -drop, 0), s.getBlock()).set());
-				}
-				b = nextBlockDown;
+		boolean fill = Keyboard.isKeyDown(Keyboard.KEY_LMENU);
+		// TODO check for all air or all non-air around block
+		boolean raise = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
+		if (raise) {
+			deleteOriginal = true;
+		}
+
+		List<UndoableSetBlock> setBlocks = new ArrayList();
+		Iterable<Selection> selections = selectionManager.getSelections();
+		selectionManager.clearSelections(world);
+		pickManager.clearPicks();
+		for (Selection s : selections) {
+			if (raise) {
+				setBlocks.addAll(raiseBurriedBlocks(world, s, fill));
+			} else {
+				setBlocks.addAll(drop(world, s, fill));
 			}
-			selectionManager.deselect(world, s);
 			if (deleteOriginal) {
-				transaction.add(new UndoableSetBlock(world, selectionManager, s.getPos(), Blocks.air).set());
+				setBlocks.add(new UndoableSetBlock(world, selectionManager, s.getPos(), Blocks.air));
 			}
 		}
-		transaction.commit();
-		pickManager.clearPicks();
+
+		Transaction t = undoManager.newTransaction();
+		for (UndoableSetBlock u : setBlocks) {
+			t.add(u.set());
+		}
+		t.commit();
+	}
+
+	private List<UndoableSetBlock> drop(IWorld world, Selection s, boolean fill) {
+		List<UndoableSetBlock> setBlocks = new ArrayList();
+		BlockPos pos = s.getPos();
+		for (int distance = 1;; distance++) {
+			Block b = world.getBlock(pos.down(distance));
+			if (b == Blocks.air) {
+				if (world.getBlock(pos.down(distance + 1)) != Blocks.air) {
+					setBlocks.add(new UndoableSetBlock(world, selectionManager, pos.down(distance), s.getBlock()));
+					break;
+				} else {
+					if (fill) {
+						setBlocks.add(new UndoableSetBlock(world, selectionManager, pos.down(distance), s.getBlock()));
+					}
+				}
+			}
+		}
+		return setBlocks;
+	}
+
+	private List<UndoableSetBlock> raiseBurriedBlocks(IWorld world, Selection s, boolean fill) {
+		List<UndoableSetBlock> setBlocks = new ArrayList();
+		BlockPos pos = s.getPos();
+		for (int distance = 1;; distance++) {
+			Block b = world.getBlock(pos.up(distance));
+			if (b == Blocks.air) {
+				setBlocks.add(new UndoableSetBlock(world, selectionManager, pos.up(distance), s.getBlock()));
+				break;
+			}
+		}
+		return setBlocks;
 	}
 
 	@Override
 	public Object[] getRecipe() {
 		return null;
 	}
-
-//	@Override
-//	public IModelCustom getModel() {
-//		return model;
-//	}
-
 }

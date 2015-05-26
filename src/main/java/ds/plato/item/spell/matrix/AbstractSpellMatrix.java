@@ -50,7 +50,9 @@ public abstract class AbstractSpellMatrix extends Spell {
 		}
 
 		// Move player above highest new block
-		player.jump(jumpHeight + 1);
+		if (jumpHeight != 0) {
+			player.jump(jumpHeight + 1);
+		}
 		jumpHeight = 0;
 
 		Transaction t = undoManager.newTransaction();

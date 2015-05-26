@@ -29,49 +29,50 @@ public abstract class AbstractSpellDraw extends Spell {
 
 	public AbstractSpellDraw(int numPicks, IUndo undoManager, ISelect selectionManager, IPick pickManager) {
 		super(numPicks, undoManager, selectionManager, pickManager);
-		//TODO
+		// TODO
 		info.addModifiers(Modifier.SHIFT, Modifier.ALT);
 	}
 
 	protected void draw(IDrawable drawable, IWorld world, Block block) {
-		
+
 		selectionManager.clearSelections(world);
 		pickManager.clearPicks();
 		boolean isHollow = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
 		boolean onSurface = Keyboard.isKeyDown(Keyboard.KEY_LMENU);
-		
-		//Voxelize and hollow if a solid
+
+		// Voxelize and hollow if a solid
 		VoxelSet voxels = drawable.voxelize();
 		if (drawable instanceof Solid && isHollow) {
 			voxels = voxels.shell();
 		}
-		
+
 		IPlayer player = Player.getPlayer();
 		List<UndoableSetBlock> setBlocks = new ArrayList<>();
 		for (Point3i p : voxels) {
 			BlockPos pos = new BlockPos(p.x, p.y, p.z);
-			if(onSurface) {
+			if (onSurface) {
 				pos = pos.up();
 			}
 			incrementJumpHeight(pos, player);
 			setBlocks.add(new UndoableSetBlock(world, selectionManager, pos, block));
 		}
-		
-		//Move the player above the highest block to be set above the player
-		System.out.println("jumpHeight=" + jumpHeight);
-		Player.getPlayer().jump(jumpHeight+1);
+
+		// Move the player above the highest block to be set above the player
+		if (jumpHeight != 0) {
+			Player.getPlayer().jump(jumpHeight + 1);
+		}
 		jumpHeight = 0;
-		
-		//Set the blocks inside an undoManager transaction
+
+		// Set the blocks inside an undoManager transaction
 		Transaction t = undoManager.newTransaction();
 		for (UndoableSetBlock u : setBlocks) {
 			t.add(u.set());
-		}		
+		}
 		t.commit();
-		
-		//Try playing a sound
-		String sound = "plato:"+StringUtils.toCamelCase(getClass());
-		world.getWorld().playSoundAtEntity(Minecraft.getMinecraft().thePlayer,sound , 1f, 1f);
+
+		// Try playing a sound
+		String sound = "plato:" + StringUtils.toCamelCase(getClass());
+		world.getWorld().playSoundAtEntity(Minecraft.getMinecraft().thePlayer, sound, 1f, 1f);
 	}
 
 }
