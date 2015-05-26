@@ -9,7 +9,6 @@ import java.awt.image.BufferedImage;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.vecmath.Point3i;
 import javax.vecmath.Vector3d;
 
 import net.minecraft.client.Minecraft;
@@ -23,15 +22,15 @@ import ds.plato.pick.Pick;
 import ds.plato.player.HotbarSlot;
 import ds.plato.select.ISelect;
 import ds.plato.undo.IUndo;
-import ds.plato.undo.UndoableSetBlock;
 import ds.plato.undo.Transaction;
+import ds.plato.undo.UndoableSetBlock;
 import ds.plato.world.IWorld;
 
 public class SpellText extends Spell implements ITextSetable {
 
 	private Font font;
 	private IWorld world;
-	private HotbarSlot[] slotEntries;
+	private HotbarSlot[] slots;
 	private Pick[] picks;
 	private Graphics graphics;
 
@@ -51,9 +50,9 @@ public class SpellText extends Spell implements ITextSetable {
 	}
 
 	@Override
-	public void invoke(IWorld world, HotbarSlot...slotEntries) {
+	public void invoke(IWorld world, HotbarSlot...slots) {
 		this.world = world;
-		this.slotEntries = slotEntries;
+		this.slots = slots;
 		Minecraft.getMinecraft().thePlayer.openGui(Plato.instance, 2, world.getWorld(), 0, 0, 0);
 		picks = pickManager.getPicks();
 		// Clear the picks because player may have cancelled
@@ -107,7 +106,7 @@ public class SpellText extends Spell implements ITextSetable {
 		g2.rotate(angle);
 		g2.drawString(text, 0, 0);
 
-		Set<BlockPos> points = new HashSet<>();
+		Set<BlockPos> positions = new HashSet<>();
 		for (int h = 0; h < height; h++) {
 			for (int w = 0; w < width; w++) {
 				int pixel = image.getRGB(w, h);
@@ -115,20 +114,20 @@ public class SpellText extends Spell implements ITextSetable {
 				if (pixel == -1) {
 					BlockPos p = new BlockPos(w - (width / 2), 0, h - (height / 2));
 					p = p.add(picks[0].getPos());
-					points.add(p);
+					positions.add(p);
 				}
 			}
 		}
 
-		System.out.println("[points.size()=" + points.size());
-		selectionManager.clearSelections(world);
-		Transaction t = undoManager.newTransaction();
-		for (BlockPos p : points) {
-			t.add(new UndoableSetBlock(world, selectionManager, p, slotEntries[0].block).set());
-		}
-		t.commit();
+		System.out.println("size=" + positions.size());
 		selectionManager.clearSelections(world);
 		pickManager.clearPicks();
+		Transaction t = undoManager.newTransaction();
+		for (BlockPos p : positions) {
+			t.add(new UndoableSetBlock(world, selectionManager, p, slots[0].block).set());
+		}
+		t.commit();
+		//selectionManager.clearSelections(world);
 	}
 
 	public void setFont(Font font) {

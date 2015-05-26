@@ -27,9 +27,7 @@ public interface IPlayer {
 
 	public abstract Staff getStaff();
 
-	public abstract void incrementJumpHeight(BlockPos pos);
-
-	public abstract void jump();
+	public abstract void jump(int jumpHeight);
 
 	public abstract void orbitAround(Vec3 center, int dx, int dy);
 

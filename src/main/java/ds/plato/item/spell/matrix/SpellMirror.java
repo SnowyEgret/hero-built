@@ -24,15 +24,15 @@ public class SpellMirror extends AbstractSpellMatrix {
 	}
 
 	@Override
-	public void invoke(IWorld world, HotbarSlot...slotEntries) {
+	public void invoke(IWorld world, HotbarSlot... slots) {
+
+		boolean deleteOriginal = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL);
+		// boolean mirrorAboutCentroid = Keyboard.isKeyDown(Keyboard.KEY_LMENU);
 		Pick[] picks = pickManager.getPicks();
-		//Point3i c = selectionManager.voxelSet().centroid();
 		Vec3 c = selectionManager.getCentroid();
-		
-		// FIXME
 		Matrix4d matrix = new ReflectionMatrix(picks[0].point3d(), picks[1].point3d(), picks[2].point3d());
-		boolean deleteInitialBlocks = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL);
-		transformSelections(matrix, world, deleteInitialBlocks);
+		transformSelections(matrix, world, deleteOriginal);
+		//pickManager.repick();
 	}
 
 	@Override

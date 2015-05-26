@@ -31,6 +31,7 @@ public abstract class Spell extends ItemBase implements ISpell {
 	private int numPicks;
 	protected SpellInfo info;
 
+	protected int jumpHeight = 0;
 	protected String CTRL = "ctrl,";
 	protected String ALT = "alt,";
 	protected String SHIFT = "shift,";
@@ -44,6 +45,18 @@ public abstract class Spell extends ItemBase implements ISpell {
 		this.selectionManager = selectionManager;
 		this.pickManager = pickManager;
 		info = new SpellInfo(this);
+	}
+
+	protected void incrementJumpHeight(BlockPos pos, IPlayer player) {
+		BlockPos p = player.getPosition();
+		int dx = pos.getX() - p.getX();
+		int dy = pos.getY() - p.getY();
+		int dz = pos.getZ() - p.getZ();
+		if (dx == 0 && dz == 0 && dy > 0) {
+			if (dy > jumpHeight) {
+				jumpHeight = dy;
+			}
+		}
 	}
 
 	@Override

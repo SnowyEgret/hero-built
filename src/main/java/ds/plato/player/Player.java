@@ -30,8 +30,8 @@ public class Player implements IPlayer {
 
 	private static Player instance = null;
 	private EntityPlayer player;
-	private int jumpHeight = 0;
 	private float prevYaw = 0;
+	
 
 	public enum Direction {
 		NORTH,
@@ -193,26 +193,11 @@ public class Player implements IPlayer {
 		return staff;
 	}
 
-	// FIXME not working for moving blocks upward when underneath player
 	@Override
-	public void incrementJumpHeight(BlockPos pos) {
-		BlockPos p = player.getPosition();
-		int dx = pos.getX() - p.getX();
-		int dy = pos.getY() - p.getY();
-		int dz = pos.getZ() - p.getZ();
-		if (dx == 0 && dz == 0 && dy > 0 && dy < 3) {
-			if (dy > jumpHeight) {
-				jumpHeight = dy;
-			}
-		}
-	}
-
-	@Override
-	public void jump() {
-		System.out.println("jumpHeigtht=" + jumpHeight);
-		if (jumpHeight != 0) {
-			player.moveEntity(0, jumpHeight + 3, 0);
-			jumpHeight = 0;
+	public void jump(int height) {
+		System.out.println("height=" + height);
+		if (height != 0) {
+			player.moveEntity(0, height, 0);
 		}
 	}
 
@@ -222,9 +207,9 @@ public class Player implements IPlayer {
 		Vec3 v = player.getPositionVector();
 		v = v.subtract(pos);
 		v = v.rotateYaw((float) (-dx * Math.PI / 180));
-		//v = v.rotatePitch((float) (-dy * Math.PI / 180));
+		// v = v.rotatePitch((float) (-dy * Math.PI / 180));
 		double yaw = 180 / Math.PI * Math.atan2(v.zCoord, v.xCoord) + 90;
-		//double pitch = 180 / Math.PI * Math.atan2(v.yCoord, Math.sqrt(v.xCoord*v.xCoord+v.zCoord*v.zCoord));
+		// double pitch = 180 / Math.PI * Math.atan2(v.yCoord, Math.sqrt(v.xCoord*v.xCoord+v.zCoord*v.zCoord));
 		v = v.add(pos);
 		player.setLocationAndAngles(v.xCoord, v.yCoord, v.zCoord, (float) yaw, player.rotationPitch);
 	}

@@ -21,4 +21,6 @@ public interface IPick {
 	public void reset(int numPicks);
 
 	public Pick lastPick();
+	
+	public void repick();
 }

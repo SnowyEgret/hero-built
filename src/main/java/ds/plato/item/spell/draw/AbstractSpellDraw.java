@@ -1,5 +1,8 @@
 package ds.plato.item.spell.draw;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.vecmath.Point3i;
 
 import org.lwjgl.input.Keyboard;
@@ -13,6 +16,8 @@ import ds.geom.solid.Solid;
 import ds.plato.item.spell.Modifier;
 import ds.plato.item.spell.Spell;
 import ds.plato.pick.IPick;
+import ds.plato.player.IPlayer;
+import ds.plato.player.Player;
 import ds.plato.select.ISelect;
 import ds.plato.undo.IUndo;
 import ds.plato.undo.UndoableSetBlock;
@@ -34,22 +39,39 @@ public abstract class AbstractSpellDraw extends Spell {
 
 	//protected void draw(IDrawable drawable, IWorld world, Block block, boolean isHollow, boolean onSurface) {
 	protected void draw(IDrawable drawable, IWorld world, Block block) {
+		
 		selectionManager.clearSelections(world);
 		pickManager.clearPicks();
 		boolean isHollow = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
 		boolean onSurface = Keyboard.isKeyDown(Keyboard.KEY_LMENU);
-		Transaction t = undoManager.newTransaction();
+		
+		//Voxelize and hollow if a solid
 		VoxelSet voxels = drawable.voxelize();
 		if (drawable instanceof Solid && isHollow) {
 			voxels = voxels.shell();
 		}
+		
+		IPlayer player = Player.getPlayer();
+		List<UndoableSetBlock> setBlocks = new ArrayList<>();
 		for (Point3i p : voxels) {
 			BlockPos pos = new BlockPos(p.x, p.y, p.z);
 			if(onSurface) {
 				pos = pos.up();
 			}
-			t.add(new UndoableSetBlock(world, selectionManager, pos, block).set());
+			incrementJumpHeight(pos, player);
+			setBlocks.add(new UndoableSetBlock(world, selectionManager, pos, block));
 		}
+		
+		//Move the player above the highest block to be set above the player
+		System.out.println("jumpHeight=" + jumpHeight);
+		Player.getPlayer().jump(jumpHeight+1);
+		jumpHeight = 0;
+		
+		//Set the blocks inside an undoManager transaction
+		Transaction t = undoManager.newTransaction();
+		for (UndoableSetBlock u : setBlocks) {
+			t.add(u.set());
+		}		
 		t.commit();
 		
 		//Try playing a sound

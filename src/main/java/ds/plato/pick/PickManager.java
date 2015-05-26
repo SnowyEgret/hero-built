@@ -1,20 +1,20 @@
 package ds.plato.pick;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import net.minecraft.block.Block;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import ds.plato.block.BlockPicked;
-import ds.plato.block.BlockSelected;
 import ds.plato.select.ISelect;
-import ds.plato.select.Selection;
 import ds.plato.world.IWorld;
 
 public class PickManager implements IPick {
 
 	private final LinkedList<Pick> picks = new LinkedList<>();
+	private LinkedList<Pick> lastPicks;
 	private int maxPicks = 0;
 	private IWorld world;
 	private Block blockPicked;
@@ -29,12 +29,14 @@ public class PickManager implements IPick {
 	public Pick pick(IWorld world, BlockPos pos, EnumFacing side) {
 		this.world = world;
 		Block block = world.getBlock(pos);
-//		if (block instanceof BlockSelected) {
-//			Selection s = selectionManager.getSelection(pos);
-//			if (s != null) {
-//				block = s.getBlock();
-//			}
-//		}
+		// TODO Handle case where picked block is already selected
+		// SpellCopy works ok without this
+		// if (block instanceof BlockSelected) {
+		// Selection s = selectionManager.getSelection(pos);
+		// if (s != null) {
+		// block = s.getBlock();
+		// }
+		// }
 		world.setBlock(pos, blockPicked);
 		return addPick(pos, block, side);
 	}
@@ -63,6 +65,8 @@ public class PickManager implements IPick {
 				world.setBlock(p.getPos(), p.getBlock());
 			}
 		}
+		lastPicks = new LinkedList();
+		lastPicks.addAll(picks);
 		picks.clear();
 	}
 
@@ -82,6 +86,17 @@ public class PickManager implements IPick {
 		picks.clear();
 	}
 
+
+	@Override
+	public void repick() {
+		//clearPicks();
+		if (lastPicks != null) {
+			for (Pick p : lastPicks) {
+				pick(world, p.getPos(), p.side);
+			}
+		}
+	}
+	
 	@Override
 	public Pick lastPick() {
 		try {
@@ -102,8 +117,8 @@ public class PickManager implements IPick {
 		return builder.toString();
 	}
 
-	//Default - also used by test class---------------------------------------------------------------
-	
+	// Default - also used by test class---------------------------------------------------------------
+
 	private Pick getPick(int i) {
 		return picks.get(i);
 	}
