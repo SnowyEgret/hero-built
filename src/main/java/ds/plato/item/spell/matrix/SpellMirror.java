@@ -1,9 +1,11 @@
 package ds.plato.item.spell.matrix;
 
 import javax.vecmath.Matrix4d;
-import javax.vecmath.Point3i;
+import javax.vecmath.Point3d;
+import javax.vecmath.Vector3d;
 
-import net.minecraft.util.Vec3;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Vec3i;
 
 import org.lwjgl.input.Keyboard;
 
@@ -19,7 +21,7 @@ import ds.plato.world.IWorld;
 public class SpellMirror extends AbstractSpellMatrix {
 
 	public SpellMirror(IUndo undoManager, ISelect selectionManager, IPick pickManager) {
-		super(3, undoManager, selectionManager, pickManager);
+		super(1, undoManager, selectionManager, pickManager);
 		info.addModifiers(Modifier.CTRL);
 	}
 
@@ -28,11 +30,37 @@ public class SpellMirror extends AbstractSpellMatrix {
 
 		boolean deleteOriginal = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL);
 		// boolean mirrorAboutCentroid = Keyboard.isKeyDown(Keyboard.KEY_LMENU);
+		// Vec3 c = selectionManager.getCentroid();
+
 		Pick[] picks = pickManager.getPicks();
-		Vec3 c = selectionManager.getCentroid();
-		Matrix4d matrix = new ReflectionMatrix(picks[0].point3d(), picks[1].point3d(), picks[2].point3d());
+		EnumFacing side = picks[0].getSide();
+		Vec3i d = side.getDirectionVec();
+		Point3d p = picks[0].point3d();
+		Point3d offset = new Point3d(.49, .49, .49);
+		switch (side){
+		case DOWN:
+			p.sub(offset); //ok
+			break;
+		case EAST:
+			p.add(offset); //ok
+			break;
+		case NORTH:
+			p.sub(offset); //ok
+			break;
+		case SOUTH:
+			p.add(offset); //ok
+			break;
+		case UP:
+			p.add(offset); //ok
+			break;
+		case WEST:
+			p.sub(offset); //ok
+			break;
+		default:
+			break;
+		}
+		Matrix4d matrix = new ReflectionMatrix(p, new Vector3d(d.getX(), d.getY(), d.getZ()));
 		transformSelections(matrix, world, deleteOriginal);
-		//pickManager.repick();
 	}
 
 	@Override

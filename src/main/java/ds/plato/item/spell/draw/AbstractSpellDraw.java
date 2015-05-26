@@ -33,11 +33,6 @@ public abstract class AbstractSpellDraw extends Spell {
 		info.addModifiers(Modifier.SHIFT, Modifier.ALT);
 	}
 
-//	protected void draw(IDrawable drawable, IWorld world, Block block) {
-//		draw(drawable, world, block, false, false);
-//	}
-
-	//protected void draw(IDrawable drawable, IWorld world, Block block, boolean isHollow, boolean onSurface) {
 	protected void draw(IDrawable drawable, IWorld world, Block block) {
 		
 		selectionManager.clearSelections(world);

@@ -46,15 +46,15 @@ public class Select {
 	public static final BlockPos[] YZ = pos(Range.between(0, 0), Range.between(-1, 1), Range.between(-1, 1));
 	public static final BlockPos[] X = pos(Range.between(-1, 1), Range.between(0, 0), Range.between(0, 0));
 
-	public static boolean isEdgeOnGround(IWorld w, BlockPos position) {
-		for (BlockPos p : above) {
-			p = p.add(position);
-			if (w.getBlock(p) != Blocks.air) {
-				return false;
-			}
-		}
-		return false;
-	}
+	// public static boolean isEdgeOnGround(IWorld w, BlockPos position) {
+	// for (BlockPos p : above) {
+	// p = p.add(position);
+	// if (w.getBlock(p) != Blocks.air) {
+	// return false;
+	// }
+	// }
+	// return false;
+	// }
 
 	public static BlockPos[] toSideOfPlane(EnumFacing side) {
 		switch (side) {
@@ -93,7 +93,6 @@ public class Select {
 		default:
 			break;
 		}
-		;
 		return null;
 	}
 

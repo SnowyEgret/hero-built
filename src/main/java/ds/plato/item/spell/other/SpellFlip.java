@@ -70,7 +70,7 @@ public class SpellFlip extends Spell {
 			GeomUtil.reflect(p, p1, p2, p3, true);
 			BlockPos pos = new BlockPos(p.x, p.y, p.z);
 			// TODO Move management of jump height from IPlayer to AbstractSpellMatrix.
-			player.incrementJumpHeight(pos);
+//			player.incrementJumpHeight(pos);
 			adds.add(new UndoableSetBlock(world, selectionManager, pos, s.getBlock()));
 			addedPos.add(pos);
 		}
@@ -83,7 +83,7 @@ public class SpellFlip extends Spell {
 			t.add(u.set());
 		}
 		t.commit();
-		player.jump();
+//		player.jump();
 
 		// Select all transformed blocks
 		for (BlockPos pos : addedPos) {

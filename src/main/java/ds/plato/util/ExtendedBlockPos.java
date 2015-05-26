@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import net.minecraft.util.BlockPos;
 
+@Deprecated
 public class ExtendedBlockPos {
 	
 	private BlockPos pos;

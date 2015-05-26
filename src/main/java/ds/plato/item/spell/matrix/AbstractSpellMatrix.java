@@ -44,15 +44,15 @@ public abstract class AbstractSpellMatrix extends Spell {
 			}
 			matrix.transform(p);
 			BlockPos pos = new BlockPos(p.x, p.y, p.z);
-			// TODO Move management of jump height from IPlayer to AbstractSpellMatrix.
 			incrementJumpHeight(pos, player);
 			adds.add(new UndoableSetBlock(world, selectionManager, pos, s.getBlock()));
 			addedPos.add(pos);
 		}
 
-		System.out.println("jumpHeight=" + jumpHeight);
-		player.jump(jumpHeight);
+		// Move player above highest new block
+		player.jump(jumpHeight + 1);
 		jumpHeight = 0;
+
 		Transaction t = undoManager.newTransaction();
 		for (UndoableSetBlock u : deletes) {
 			t.add(u.set());

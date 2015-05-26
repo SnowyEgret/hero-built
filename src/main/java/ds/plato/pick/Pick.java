@@ -76,4 +76,8 @@ public class Pick {
 	public BlockPos getPos() {
 		return pos;
 	}
+	
+	public EnumFacing getSide() {
+		return side;
+	}
 }
