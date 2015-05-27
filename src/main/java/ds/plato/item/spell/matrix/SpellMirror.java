@@ -38,6 +38,7 @@ public class SpellMirror extends AbstractSpellMatrix {
 		Vec3i d = side.getDirectionVec();
 		Point3d p = picks[0].point3d();
 		Point3d offset = null;
+		//TODO Simplify this. Just trial and error. 
 		if (mirrorAboutCentroid) {
 			offset = new Point3d(-.01, -01, -.01);
 		} else {

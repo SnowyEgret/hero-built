@@ -78,11 +78,10 @@ item.spellCopy.pick.1=to
 item.spellCopy.modifier.shift=delete original
 
 item.spellMirror.name=Mirror
-item.spellMirror.description=mirrors selection about plane
-item.spellMirror.pick.0=point on plane
-item.spellMirror.pick.1=point on plane
-item.spellMirror.pick.2=point on plane
+item.spellMirror.description=mirrors selection about picked face
+item.spellMirror.pick.0=a face
 item.spellMirror.modifier.ctrl=delete original
+item.spellMirror.modifier.alt=mirror about center of picked block
 
 item.spellRotate90.name=Rotate
 item.spellRotate90.description=rotates selection 90 degrees around specified axis

@@ -48,17 +48,37 @@ public class MouseHandler {
 		}
 
 		IPlayer player = Player.getPlayer();
-
-		// EntityPlayerSP pl = Minecraft.getMinecraft().thePlayer;
 		IWorld w = player.getWorld();
 		MovingObjectPosition cursor = Minecraft.getMinecraft().objectMouseOver;
+		
+		// Return if player is holding nothing
+		ItemStack stack = player.getHeldItemStack();
+		if (stack == null) {
+			return;
+		}
+		
+		// Fill the selections on mouse click right on a selected block and player is holding a block
+		Item heldItem = stack.getItem();
+		if (!(heldItem instanceof IItem)) {
+			if (heldItem instanceof ItemBlock) {
+				if (e.button == 1) {
+					BlockPos pos = cursor.getBlockPos();
+					if (selectionManager.isSelected(pos)) {
+						Block b = ((ItemBlock) heldItem).getBlock();
+						new SpellFill(undoManager, selectionManager, pickManager).invoke(w, new HotbarSlot(b, 0));
+						e.setCanceled(true);
+					}
+				}
+				return;
+			}
+		}
 
 		// Orbit if middle mouse button is down
 		if (e.button == -1) {
 			if (orbiting) {
 				player.orbitAround(centroid, e.dx, e.dy);
 			}
-			//Do not cancel
+			// Do not cancel
 			return;
 		}
 
@@ -82,58 +102,27 @@ public class MouseHandler {
 			return;
 		}
 
-		// Do nothing if player is holding nothing.
-		ItemStack stack = player.getHeldItemStack();
-		if (stack == null) {
-			return;
-		}
-		Item heldItem = stack.getItem();
-
 		// Select on mouse click left when player is holding a staff or spell
 		// Picking is handled by onItemUse. Do not cancel event on mouse click right.
-		if (heldItem instanceof IItem) {
-			// System.out.println(item);
-			if (e.button == 0) {
-				if (e.buttonstate) {
-					((IItem) heldItem).onMouseClickLeft(stack, cursor.getBlockPos(), cursor.sideHit);
-				}
-				e.setCanceled(true);
-				return;
+		if (e.button == 0) {
+			if (e.buttonstate) {
+				((IItem) heldItem).onMouseClickLeft(stack, cursor.getBlockPos(), cursor.sideHit);
 			}
-			if (heldItem instanceof IItem) { 
-				if (e.button == 0) {
-					if (e.buttonstate) {
-						((IItem) heldItem).onMouseClickLeft(stack, cursor.getBlockPos(), cursor.sideHit);
-					}
-					e.setCanceled(true);
-					return;
-				}
-				// Orbit around selection centroid
-				if (e.button == 2) {
-					if (e.buttonstate) {
-						if (selectionManager.size() != 0) {
-							orbiting = true;
-							centroid = selectionManager.getCentroid();						
-						}
-					} else {
-						orbiting = false;
-					}
-					e.setCanceled(true);
-					return;
-				}
-			}
+			e.setCanceled(true);
+			return;
 		}
 
-		// Fill the selections on mouse click right on a selected block and player is holding a block
-		if (heldItem instanceof ItemBlock) {
-			if (e.button == 1) {
-				BlockPos pos = cursor.getBlockPos();
-				if (selectionManager.isSelected(pos)) {
-					Block b = ((ItemBlock) heldItem).getBlock();
-					new SpellFill(undoManager, selectionManager, pickManager).invoke(w, new HotbarSlot(b, 0));
-					e.setCanceled(true);
+		//Set orbiting and orbit centroid
+		if (e.button == 2) {
+			if (e.buttonstate) {
+				if (selectionManager.size() != 0) {
+					orbiting = true;
+					centroid = selectionManager.getCentroid();
 				}
+			} else {
+				orbiting = false;
 			}
+			e.setCanceled(true);
 			return;
 		}
 	}
