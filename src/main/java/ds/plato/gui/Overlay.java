@@ -7,12 +7,14 @@ import net.minecraft.util.Vec3i;
 
 import org.lwjgl.input.Keyboard;
 
+import ds.plato.event.MouseHandler;
 import ds.plato.item.spell.ISpell;
 import ds.plato.item.spell.SpellInfo;
 import ds.plato.item.spell.transform.SpellFillRandom;
 import ds.plato.item.staff.Staff;
 import ds.plato.player.HotbarDistribution;
 import ds.plato.player.Player;
+import ds.plato.player.Player.Direction;
 import ds.plato.select.ISelect;
 
 public class Overlay {
@@ -66,6 +68,11 @@ public class Overlay {
 		if (spell instanceof SpellFillRandom) {
 			HotbarDistribution d = Player.getPlayer().getHotbarDistribution();
 			r.drawStringWithShadow(d.toString(), x, y += rowHeight, blue);
+		}
+		
+		if (MouseHandler.isOrbiting) {
+			Direction direction = Player.getPlayer().getDirection();
+			r.drawStringWithShadow(direction.toString().toLowerCase(), x, y += rowHeight, blue);
 		}
 
 		String message = spell.getMessage();

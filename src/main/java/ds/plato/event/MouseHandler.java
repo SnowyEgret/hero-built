@@ -25,10 +25,11 @@ import ds.plato.world.IWorld;
 
 public class MouseHandler {
 
+	public static boolean isOrbiting;
+
 	private IUndo undoManager;
 	private ISelect selectionManager;
 	private IPick pickManager;
-	private boolean orbiting;
 	private Vec3 centroid;
 
 	public MouseHandler(IUndo undoManager, ISelect selectionManager, IPick pickManager) {
@@ -75,7 +76,7 @@ public class MouseHandler {
 
 		// Orbit if middle mouse button is down
 		if (e.button == -1) {
-			if (orbiting) {
+			if (isOrbiting) {
 				player.orbitAround(centroid, e.dx, e.dy);
 			}
 			// Do not cancel
@@ -116,11 +117,11 @@ public class MouseHandler {
 		if (e.button == 2) {
 			if (e.buttonstate) {
 				if (selectionManager.size() != 0) {
-					orbiting = true;
+					isOrbiting = true;
 					centroid = selectionManager.getCentroid();
 				}
 			} else {
-				orbiting = false;
+				isOrbiting = false;
 			}
 			e.setCanceled(true);
 			return;
