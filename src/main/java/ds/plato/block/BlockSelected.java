@@ -52,22 +52,15 @@ public class BlockSelected extends Block {
 	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
 		assert IExtendedBlockState.class.isAssignableFrom(state.getClass());
 		IExtendedBlockState extendedState = (IExtendedBlockState) state;
-		//System.out.println(state);
 		Selection s = selectionManager.getSelection(pos);
-		//System.out.println("s=" + s);
 		if (s != null) {
 			Block selectedBlock = s.getBlock();
-			//System.out.println("selectedBlock="+selectedBlock);
-			//TODO TGG's example did this
-			//IBlockState selectedBlockState = selectedBlock.getActualState(extendedState, world, pos);
-			IBlockState selectedBlockState = selectedBlock.getDefaultState();
-			//System.out.println("selectedBlockState="+selectedBlockState);
+			//IBlockState selectedBlockState = selectedBlock.getDefaultState();
+			IBlockState selectedBlockState = s.getState();
 			extendedState = extendedState.withProperty(selectedBlockProperty, selectedBlockState);
 		} else {
-			//System.out.println("Block not selected at pos="+pos);
 			extendedState = extendedState.withProperty(selectedBlockProperty, null);
 		}
-		//System.out.println(extendedState.getUnlistedProperties());
 		return extendedState;
 	}
 

@@ -10,6 +10,7 @@ import javax.vecmath.Point3i;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.Vec3;
 
@@ -38,12 +39,18 @@ public class SelectionManager implements ISelect {
 		if (b instanceof BlockAir) {
 			return null;
 		}
-		//Added when created SpellTrail
+		// Added when created SpellTrail
 		if (b instanceof BlockSelected) {
 			return getSelection(pos);
 		}
+		//Get the state before setting the block
+		IBlockState state = world.getBlockState(pos);
+		//Check if the block has overridden getActualState
+		state = b.getActualState(state, world.getWorld(), pos);
 		world.setBlock(pos, blockSelected);
+
 		Selection s = new Selection(pos, b);
+		s.setState(state);
 		selections.put(s.getPos(), s);
 		return s;
 	}

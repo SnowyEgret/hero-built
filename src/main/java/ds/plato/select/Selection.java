@@ -3,12 +3,14 @@ package ds.plato.select;
 import javax.vecmath.Point3d;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.BlockPos;
 
 public class Selection {
 
 	private BlockPos pos;
 	private Block block;
+	private IBlockState state;
 
 	public Selection(BlockPos pos, Block block) {
 		this.pos = pos;
@@ -73,4 +75,11 @@ public class Selection {
 		return true;
 	}
 
+	public void setState(IBlockState state) {
+		this.state = state;
+	}
+
+	public IBlockState getState() {
+		return state;
+	}
 }
