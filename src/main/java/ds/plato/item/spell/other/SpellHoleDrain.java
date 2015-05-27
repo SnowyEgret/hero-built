@@ -1,36 +1,34 @@
 package ds.plato.item.spell.other;
 
-import java.util.HashSet;
+import java.util.Collections;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.util.BlockPos;
-
-import com.google.common.collect.Lists;
-
 import ds.plato.item.spell.Spell;
-import ds.plato.item.spell.select.Shell;
+import ds.plato.item.spell.select.Select;
 import ds.plato.pick.IPick;
-import ds.plato.pick.Pick;
 import ds.plato.player.HotbarSlot;
 import ds.plato.select.ISelect;
 import ds.plato.undo.IUndo;
-import ds.plato.undo.UndoableSetBlock;
 import ds.plato.undo.Transaction;
+import ds.plato.undo.UndoableSetBlock;
 import ds.plato.world.IWorld;
 
 public class SpellHoleDrain extends Spell {
 
-	private Set<BlockPos> points = new HashSet<>();
+	//private Set<BlockPos> positions = new ConcurrentHashSet<>();
+	private Set<BlockPos> positions = Collections.newSetFromMap(new ConcurrentHashMap<BlockPos, Boolean>());
 	private int numBlocksDrained = 0;
 	private int maxBlocksDrained = 9999;
-	private int lastPointsSize = 0;
+	private int positionsSize = 0;
 
 	public SpellHoleDrain(IUndo undoManager, ISelect selectionManager, IPick pickManager) {
 		super(1, undoManager, selectionManager, pickManager);
-	} 
+	}
 
 	@Override
 	public Object[] getRecipe() {
@@ -38,51 +36,80 @@ public class SpellHoleDrain extends Spell {
 	}
 
 	@Override
-	public void invoke(IWorld world, HotbarSlot...slotEntries) {
-		points.clear();
+	public void invoke(IWorld world, HotbarSlot... slotEntries) {
+		positions.clear();
 		numBlocksDrained = 0;
-		lastPointsSize = 0;
-		Pick pick = pickManager.getPicks()[0];
-		// Pick is some block under water. Find the top water block
-		int y = pick.getPos().getY();
+		positionsSize = 0;
+		BlockPos pos = pickManager.getPicks()[0].getPos();
+		pickManager.clearPicks();
+
+		// Pick is some block under water. Find the position of the top water block
+		// int y = pos.getY();
+		// while (true) {
+		// y++;
+		// Block b = world.getBlock(new BlockPos(pos.getX(), y, pos.getZ()));
+		// if (b == Blocks.air) {
+		// y--;
+		// break;
+		// }
+		// }
+
 		while (true) {
-			y++;
-			//Block b = world.getBlock(pick.x, y, pick.z);
-			Block b = world.getBlock(new BlockPos(pick.getPos().getX(), y, pick.getPos().getZ()));
+			Block b = world.getBlock(pos);
 			if (b == Blocks.air) {
-				y--;
 				break;
 			}
+			pos = pos.up();
 		}
 
-		points.add(new BlockPos(pick.getPos().getX(), y, pick.getPos().getZ()));
+		// positions.add(new BlockPos(pos.getX(), y, pos.getZ()));
+		positions.add(pos);
 		recursivelyDrainWater(world);
+
 		Transaction t = undoManager.newTransaction();
-		for (BlockPos p : points) {
+		for (BlockPos p : positions) {
 			t.add(new UndoableSetBlock(world, selectionManager, p, Blocks.air).set());
 		}
 		t.commit();
-		pickManager.clearPicks();
-		points.clear();
+
+		positions.clear();
 
 	}
 
 	private void recursivelyDrainWater(IWorld world) {
-		// To avoid concurrent modification
-		for (BlockPos center : Lists.newArrayList(points)) {
-			Shell shell = new Shell(Shell.Type.HORIZONTAL, center, world);
-			for (BlockPos p : shell) {
+
+		if (positions.size() == positionsSize || numBlocksDrained > maxBlocksDrained) {
+			return;
+		}
+		
+		for (BlockPos pos : positions) {
+			for (BlockPos p : Select.horizontal) {
+				p = p.add(pos);
 				Block b = world.getBlock(p);
 				if (b == Blocks.water) {
 					numBlocksDrained++;
-					points.add(p);
+					positions.add(p);
 				}
 			}
 		}
-		if (points.size() > lastPointsSize && numBlocksDrained < maxBlocksDrained) {
-			lastPointsSize = points.size();
-			recursivelyDrainWater(world);
-		}
+		positionsSize = positions.size();
+
+		// // To avoid concurrent modification
+		// for (BlockPos center : Lists.newArrayList(positions)) {
+		// Shell shell = new Shell(Shell.Type.HORIZONTAL, center, world);
+		// for (BlockPos p : shell) {
+		// Block b = world.getBlock(p);
+		// if (b == Blocks.water) {
+		// numBlocksDrained++;
+		// positions.add(p);
+		// }
+		// }
+		// }
+		//
+		// if (positions.size() > lastPointsSize && numBlocksDrained < maxBlocksDrained) {
+		// lastPointsSize = positions.size();
+		// recursivelyDrainWater(world);
+		// }
 	}
 
 }

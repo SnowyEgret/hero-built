@@ -5,15 +5,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 
 import org.apache.commons.lang3.Range;
-
-import ds.plato.item.spell.select.Shell.Type;
-import ds.plato.world.IWorld;
 
 public class Select {
 
