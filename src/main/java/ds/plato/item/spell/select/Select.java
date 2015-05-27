@@ -112,6 +112,10 @@ public class Select {
 								|| (Math.abs(y) == 1 && Math.abs(z) == 1))
 							continue;
 					}
+					//Exclude center
+					if (x == 0 && y == 0 && z == 0) {
+						continue;
+					}
 					positions.add(new BlockPos(x, y, z));
 				}
 			}
