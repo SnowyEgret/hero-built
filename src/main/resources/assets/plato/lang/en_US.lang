@@ -146,7 +146,7 @@ item.spellSelectVertical.modifier.shift=NS plane
 # Transform spells ##########
 
 item.spellDelete.name=Delete
-item.spellDelete.description=deletes selections
+item.spellDelete.description=
 
 item.spellFill.name=Fill
 item.spellFill.description=fills selections with first block in inventory
@@ -167,6 +167,7 @@ item.spellDrop.description=drops selections to ground
 item.spellDrop.pick.0=anywhere
 item.spellDrop.modifier.ctrl=delete original
 item.spellDrop.modifier.alt=fill on the way down
+item.spellDrop.modifier.shift=raise selections to surface
 
 item.spellHoleDrain.name=Drain Hole
 item.spellHoleDrain.description=drains a body of water

@@ -25,7 +25,7 @@ public class SpellDrop extends Spell {
 
 	public SpellDrop(IUndo undoManager, ISelect selectionManager, IPick pickManager) {
 		super(1, undoManager, selectionManager, pickManager);
-		info.addModifiers(Modifier.CTRL, Modifier.ALT);
+		info.addModifiers(Modifier.CTRL, Modifier.ALT, Modifier.SHIFT);
 	}
 
 	@Override
@@ -45,7 +45,7 @@ public class SpellDrop extends Spell {
 		pickManager.clearPicks();
 		for (Selection s : selections) {
 			if (raise) {
-				setBlocks.addAll(raiseBurriedBlocks(world, s, fill));
+				setBlocks.addAll(raiseBurriedBlocks(world, s));
 			} else {
 				setBlocks.addAll(drop(world, s, fill));
 			}
@@ -80,7 +80,7 @@ public class SpellDrop extends Spell {
 		return setBlocks;
 	}
 
-	private List<UndoableSetBlock> raiseBurriedBlocks(IWorld world, Selection s, boolean fill) {
+	private List<UndoableSetBlock> raiseBurriedBlocks(IWorld world, Selection s) {
 		List<UndoableSetBlock> setBlocks = new ArrayList();
 		BlockPos pos = s.getPos();
 		for (int distance = 1;; distance++) {

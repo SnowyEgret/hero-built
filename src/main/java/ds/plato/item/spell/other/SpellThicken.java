@@ -3,6 +3,8 @@ package ds.plato.item.spell.other;
 import java.util.HashSet;
 import java.util.Set;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockAir;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.Vec3;
 
@@ -53,11 +55,21 @@ public class SpellThicken extends AbstractSpellTransform {
 	private void thicken(Set<BlockPos> positions, IWorld world) {
 		boolean in = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL);
 		boolean out = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
+		//TODO
+		//boolean noAir = Modifier.isPressed(Modifier.RSHIFT);
+		boolean noAir = Keyboard.isKeyDown(Keyboard.KEY_RSHIFT);
 		final Vec3 c = selectionManager.getCentroid();
 		for (Selection s : selectionManager.getSelections()) {
 			double d = s.getPos().distanceSqToCenter(c.xCoord, c.yCoord, c.zCoord);
 			for (BlockPos p : Select.all) {
 				p = p.add(s.getPos());
+				//Throw out this position if we don't want air and it is air
+				if (noAir) {
+					Block b = world.getBlock(p);
+					if (b instanceof BlockAir) {
+						continue;
+					}
+				}
 				double dd = p.distanceSqToCenter(c.xCoord, c.yCoord, c.zCoord);
 				if ((in && dd < d) || (out && dd > d) || (!in && !out)) {
 					if (!selectionManager.isSelected(p)) {
