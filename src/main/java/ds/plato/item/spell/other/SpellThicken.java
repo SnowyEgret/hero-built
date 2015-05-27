@@ -66,7 +66,8 @@ public class SpellThicken extends AbstractSpellTransform {
 				//Throw out this position if we don't want air and it is air
 				if (noAir) {
 					Block b = world.getBlock(p);
-					if (b instanceof BlockAir) {
+					//So as not to select plants when thickening a trail
+					if (b instanceof BlockAir || !b.isNormalCube()) {
 						continue;
 					}
 				}

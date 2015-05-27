@@ -218,4 +218,9 @@ public class Player implements IPlayer {
 	public BlockPos getPosition() {
 		return player.getPosition();
 	}
+
+	@Override
+	public boolean isFlying() {
+		return player.capabilities.isFlying;
+	}
 }

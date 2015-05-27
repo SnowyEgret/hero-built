@@ -1,6 +1,8 @@
 package ds.plato.event;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.IRegistry;
 import net.minecraft.util.Vec3;
@@ -89,10 +91,15 @@ public class ForgeEventHandler {
 				}
 			}
 
-			// Select blocks under foot
-			if (s instanceof SpellTrail) {
+			// Select blocks under foot. 
+			if (s instanceof SpellTrail && !player.isFlying()) {
 				if (s.isPicking()) {
 					BlockPos pos = player.getPosition();
+					Block b = player.getWorld().getBlock(pos.down());
+					//Try second block down when block underneath is air because the player is jumping or stepping on a plant
+					if (b == Blocks.air || !b.isNormalCube()) {
+						pos = pos.down();
+					}
 					Selection sel = selectionManager.select(player.getWorld(), pos.down());
 				}
 			}
