@@ -1,5 +1,8 @@
 package ds.plato.item.spell.other;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -33,23 +36,29 @@ public class SpellHoleFill extends Spell {
 
 	@Override
 	public void invoke(IWorld world, HotbarSlot... slots) {
-		Transaction t = undoManager.newTransaction();
-		for (Selection s : selectionManager.getSelections()) {
-			// Shell.Type type = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) ? Shell.Type.HORIZONTAL : Shell.Type.BELLOW;
-			BlockPos[] pos = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) ? Select.horizontal : Select.below;
-			// Shell shell = new Shell(type, s.getPos(), world);
-			// for (BlockPos p : shell) {
+		boolean isHorizontal = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL);
+		boolean useBlockInHotbar = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
+		Iterable<Selection> selections = selectionManager.getSelections();
+		selectionManager.clearSelections(world);
+		pickManager.clearPicks();
+		Set<UndoableSetBlock> setBlocks = new HashSet();
+		for (Selection s : selections) {
+			BlockPos[] pos = isHorizontal ? Select.horizontal : Select.belowInclusive;
 			for (BlockPos p : pos) {
-				Block b = world.getBlock(p.add(s.getPos()));
+				p = p.add(s.getPos());
+				Block b = world.getBlock(p);
 				if (b == Blocks.air || b == Blocks.water) {
-					if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-						t.add(new UndoableSetBlock(world, selectionManager, p, slots[0].block).set());
+					if (useBlockInHotbar) {
+						setBlocks.add(new UndoableSetBlock(world, selectionManager, p, slots[0].block));
 					} else {
-						t.add(new UndoableSetBlock(world, selectionManager, p, s.getBlock()).set());
+						setBlocks.add(new UndoableSetBlock(world, selectionManager, p, s.getBlock()));
 					}
 				}
 			}
-			selectionManager.deselect(world, s);
+		}
+		Transaction t = undoManager.newTransaction();
+		for (UndoableSetBlock u : setBlocks) {
+			t.add(u.set());
 		}
 		t.commit();
 	}
