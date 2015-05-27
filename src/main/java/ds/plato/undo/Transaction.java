@@ -8,6 +8,7 @@ import ds.plato.select.Selection;
 
 public class Transaction implements IUndoable, Iterable {
 
+	public static final int MAX_SIZE = 9999;
 	protected Set<IUndoable> undoables = new HashSet<>();
 	private final IUndo undoManager;
 
@@ -56,7 +57,7 @@ public class Transaction implements IUndoable, Iterable {
 		builder.append("]");
 		return builder.toString();
 	}
-	
+
 	private String idOf(Object o) {
 		return o.getClass().getSimpleName() + "@" + Integer.toHexString(o.hashCode());
 	}

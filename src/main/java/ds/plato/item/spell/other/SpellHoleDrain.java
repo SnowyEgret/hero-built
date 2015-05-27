@@ -20,10 +20,7 @@ import ds.plato.world.IWorld;
 
 public class SpellHoleDrain extends Spell {
 
-	//private Set<BlockPos> positions = new ConcurrentHashSet<>();
 	private Set<BlockPos> positions = Collections.newSetFromMap(new ConcurrentHashMap<BlockPos, Boolean>());
-	private int numBlocksDrained = 0;
-	private int maxBlocksDrained = 9999;
 	private int positionsSize = 0;
 
 	public SpellHoleDrain(IUndo undoManager, ISelect selectionManager, IPick pickManager) {
@@ -38,33 +35,21 @@ public class SpellHoleDrain extends Spell {
 	@Override
 	public void invoke(IWorld world, HotbarSlot... slotEntries) {
 		positions.clear();
-		numBlocksDrained = 0;
 		positionsSize = 0;
 		BlockPos pos = pickManager.getPicks()[0].getPos();
 		pickManager.clearPicks();
 
-		// Pick is some block under water. Find the position of the top water block
-		// int y = pos.getY();
-		// while (true) {
-		// y++;
-		// Block b = world.getBlock(new BlockPos(pos.getX(), y, pos.getZ()));
-		// if (b == Blocks.air) {
-		// y--;
-		// break;
-		// }
-		// }
-
 		while (true) {
-			Block b = world.getBlock(pos);
+			Block b = world.getBlock(pos.up());
 			if (b == Blocks.air) {
 				break;
+			} else {
+				pos = pos.up();
 			}
-			pos = pos.up();
 		}
 
-		// positions.add(new BlockPos(pos.getX(), y, pos.getZ()));
 		positions.add(pos);
-		recursivelyDrainWater(world);
+		drainWater(world);
 
 		Transaction t = undoManager.newTransaction();
 		for (BlockPos p : positions) {
@@ -73,43 +58,31 @@ public class SpellHoleDrain extends Spell {
 		t.commit();
 
 		positions.clear();
-
 	}
 
-	private void recursivelyDrainWater(IWorld world) {
+	private void drainWater(IWorld world) {
 
-		if (positions.size() == positionsSize || numBlocksDrained > maxBlocksDrained) {
-			return;
-		}
-		
 		for (BlockPos pos : positions) {
 			for (BlockPos p : Select.horizontal) {
 				p = p.add(pos);
 				Block b = world.getBlock(p);
 				if (b == Blocks.water) {
-					numBlocksDrained++;
 					positions.add(p);
 				}
 			}
 		}
-		positionsSize = positions.size();
+		
+		if (!(positions.size() > positionsSize)) {
+			System.out.println("No more new water found. positions.size=" + positions.size());
+			return;
+		}
+		if (positions.size() > Transaction.MAX_SIZE) {
+			System.out.println("Transaction too large");
+			return;
+		}
 
-		// // To avoid concurrent modification
-		// for (BlockPos center : Lists.newArrayList(positions)) {
-		// Shell shell = new Shell(Shell.Type.HORIZONTAL, center, world);
-		// for (BlockPos p : shell) {
-		// Block b = world.getBlock(p);
-		// if (b == Blocks.water) {
-		// numBlocksDrained++;
-		// positions.add(p);
-		// }
-		// }
-		// }
-		//
-		// if (positions.size() > lastPointsSize && numBlocksDrained < maxBlocksDrained) {
-		// lastPointsSize = positions.size();
-		// recursivelyDrainWater(world);
-		// }
+		positionsSize = positions.size();
+		drainWater(world);
 	}
 
 }
