@@ -22,39 +22,55 @@ public class SpellMirror extends AbstractSpellMatrix {
 
 	public SpellMirror(IUndo undoManager, ISelect selectionManager, IPick pickManager) {
 		super(1, undoManager, selectionManager, pickManager);
-		info.addModifiers(Modifier.CTRL);
+		info.addModifiers(Modifier.CTRL, Modifier.ALT);
 	}
 
 	@Override
 	public void invoke(IWorld world, HotbarSlot... slots) {
 
 		boolean deleteOriginal = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL);
-		// boolean mirrorAboutCentroid = Keyboard.isKeyDown(Keyboard.KEY_LMENU);
+		boolean mirrorAboutCentroid = Keyboard.isKeyDown(Keyboard.KEY_LMENU);
+		// boolean mirrorAboutCentroid = Modifiers.isPressed(Modifier.ALT);
 		// Vec3 c = selectionManager.getCentroid();
 
 		Pick[] picks = pickManager.getPicks();
 		EnumFacing side = picks[0].getSide();
 		Vec3i d = side.getDirectionVec();
 		Point3d p = picks[0].point3d();
-		Point3d offset = new Point3d(.49, .49, .49);
-		switch (side){
+		Point3d offset = null;
+		if (mirrorAboutCentroid) {
+			offset = new Point3d(-.01, -01, -.01);
+		} else {
+			offset = new Point3d(.49, .49, .49);
+		}
+		switch (side) {
+		case UP:
+			if (mirrorAboutCentroid) {
+				offset.y += 1;
+			} else {
+				offset.y += .02;
+			}
+			p.add(offset); // okkk
+			break;
 		case DOWN:
-			p.sub(offset); //ok
+			if (mirrorAboutCentroid) {
+				offset.y += .5;
+			}
+			p.sub(offset); // okkk
 			break;
 		case EAST:
-			p.add(offset); //ok
-			break;
-		case NORTH:
-			p.sub(offset); //ok
-			break;
-		case SOUTH:
-			p.add(offset); //ok
-			break;
-		case UP:
-			p.add(offset); //ok
+			offset.x += .02;
+			p.add(offset); // okkk
 			break;
 		case WEST:
-			p.sub(offset); //ok
+			p.sub(offset); // okkk
+			break;
+		case NORTH:
+			p.sub(offset); // okkk
+			break;
+		case SOUTH:
+			offset.z += .02;
+			p.add(offset); // okkk
 			break;
 		default:
 			break;

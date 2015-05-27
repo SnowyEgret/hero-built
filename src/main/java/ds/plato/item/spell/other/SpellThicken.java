@@ -56,7 +56,7 @@ public class SpellThicken extends AbstractSpellTransform {
 		boolean in = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL);
 		boolean out = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
 		//TODO
-		//boolean noAir = Modifier.isPressed(Modifier.RSHIFT);
+		//boolean noAir = Modifiers.isPressed(Modifier.RSHIFT);
 		boolean noAir = Keyboard.isKeyDown(Keyboard.KEY_RSHIFT);
 		final Vec3 c = selectionManager.getCentroid();
 		for (Selection s : selectionManager.getSelections()) {
