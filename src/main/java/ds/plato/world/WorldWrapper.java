@@ -56,4 +56,9 @@ public class WorldWrapper implements IWorld {
 	public IBlockState getBlockState(BlockPos pos) {
 		return world.getBlockState(pos);
 	}
+
+	@Override
+	public void setBlockState(BlockPos pos, IBlockState state) {
+		world.setBlockState(pos, state);
+	}
 }

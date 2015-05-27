@@ -14,4 +14,6 @@ public interface IWorld {
 	public World getWorld();
 
 	public IBlockState getBlockState(BlockPos pos);
+
+	public void setBlockState(BlockPos pos, IBlockState state);
 }

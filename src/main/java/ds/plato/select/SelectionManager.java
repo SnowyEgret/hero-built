@@ -63,6 +63,7 @@ public class SelectionManager implements ISelect {
 		// //b = ((BlockPicked)b).getPos())
 		// }
 		world.setBlock(selection.getPos(), selection.getBlock());
+		world.setBlockState(selection.getPos(), selection.getState());
 		selections.remove(selection.getPos());
 	}
 
