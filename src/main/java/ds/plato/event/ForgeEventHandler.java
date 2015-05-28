@@ -1,8 +1,12 @@
 package ds.plato.event;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.IRegistry;
 import net.minecraft.util.Vec3;
@@ -15,14 +19,18 @@ import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import ds.plato.Plato;
 import ds.plato.block.BlockPicked;
 import ds.plato.block.BlockPickedModel;
 import ds.plato.block.BlockSelected;
 import ds.plato.block.BlockSelectedModel;
 import ds.plato.gui.Overlay;
 import ds.plato.item.spell.ISpell;
+import ds.plato.item.spell.Spell;
 import ds.plato.item.spell.other.SpellTrail;
 import ds.plato.item.staff.Staff;
+import ds.plato.item.staff.TagStaff;
+import ds.plato.network.NextSpellMessage;
 import ds.plato.pick.IPick;
 import ds.plato.pick.Pick;
 import ds.plato.player.IPlayer;
@@ -69,17 +77,18 @@ public class ForgeEventHandler {
 	}
 
 	// The player may have changed spells on a staff. Reset picking on the spell and update field spell.
-	@SideOnly(Side.CLIENT)
+	//@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void onLivingUpdate(LivingUpdateEvent e) {
 		World w = e.entity.worldObj;
-		if (!w.isRemote) {
+		if (w.isRemote) {
 			return;
 		}
 		if (e.entity instanceof EntityPlayer) {
-			IPlayer player = Player.getPlayer();
-
+			//Entity player = e.entity;
+			IPlayer player = new Player((EntityPlayer) e.entity);
 			ISpell s = player.getSpell();
+
 			if (s == null) {
 				spell = null;
 				return;
@@ -91,12 +100,13 @@ public class ForgeEventHandler {
 				}
 			}
 
-			// Select blocks under foot. 
+			// Select blocks under foot.
 			if (s instanceof SpellTrail && !player.isFlying()) {
 				if (s.isPicking()) {
 					BlockPos pos = player.getPosition();
 					Block b = player.getWorld().getBlock(pos.down());
-					//Try second block down when block underneath is air because the player is jumping or stepping on a plant
+					// Try second block down when block underneath is air because the player is jumping or stepping on a
+					// plant
 					if (b == Blocks.air || !b.isNormalCube()) {
 						pos = pos.down();
 					}

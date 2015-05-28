@@ -11,6 +11,7 @@ public class GuiHandler implements IGuiHandler {
 	public Object getServerGuiElement(int id, EntityPlayer player, World w, int x, int y, int z) {
 		switch (id) {
 		case 3:
+			System.out.println("Returning container");
 			return new GuiStaffContainer(player.inventory, new InventoryStaff(player.inventory,
 					player.inventory.currentItem));
 		default:
@@ -36,6 +37,7 @@ public class GuiHandler implements IGuiHandler {
 		case 2:
 			return new GuiSpellText(player);
 		case 3:
+			System.out.println("Returning gui");
 			return new GuiStaff(new GuiStaffContainer(player.inventory, new InventoryStaff(player.inventory,
 					player.inventory.currentItem)));
 		default:

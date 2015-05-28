@@ -3,9 +3,6 @@ package ds.plato.player;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.vecmath.Point3d;
-import javax.vecmath.Point3i;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,7 +16,6 @@ import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
-import ds.geom.GeomUtil;
 import ds.plato.item.spell.ISpell;
 import ds.plato.item.spell.Spell;
 import ds.plato.item.staff.Staff;
@@ -31,7 +27,6 @@ public class Player implements IPlayer {
 	private static Player instance = null;
 	private EntityPlayer player;
 	private float prevYaw = 0;
-	
 
 	public enum Direction {
 		NORTH,
@@ -40,9 +35,10 @@ public class Player implements IPlayer {
 		WEST;
 	}
 
-	// public Player(EntityPlayer player) {
-	// this.player = player;
-	// }
+	//This should not be public for singleton.
+	public Player(EntityPlayer player) {
+		this.player = player;
+	}
 
 	protected Player() {
 		player = Minecraft.getMinecraft().thePlayer;
@@ -174,7 +170,14 @@ public class Player implements IPlayer {
 			if (item instanceof Spell) {
 				spell = (ISpell) item;
 			} else if (item instanceof Staff) {
+				// If call to getSpell is from client side (onLivingUpdate calls player.getSpell -> staff.nextSpell)
+				// send mesessage to server
+				// TODO Check that this is always from client side
+				// if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) {
+				// Plato.network.sendToServer(new GetSpellMessage());
+				// } else {
 				spell = ((Staff) item).getSpell(stack);
+				// }
 			}
 		}
 		return spell;

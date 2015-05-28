@@ -24,7 +24,7 @@ public class TagStaff {
 	public Spell getSpell() {
 		return getSpell(getIndex());
 	}
-	
+
 	public Spell getSpell(int i) {
 		if (i < 0 || i > size - 1) {
 			throw new IllegalArgumentException("Index not in tag range: " + i);
@@ -48,7 +48,6 @@ public class TagStaff {
 		return null;
 	}
 
-
 	public void setSpell(int i, Spell s) {
 		if (i < 0 || i > size - 1) {
 			throw new IllegalArgumentException("Index not in tag range: " + i);
@@ -56,23 +55,24 @@ public class TagStaff {
 		String n = s.getClass().getSimpleName();
 		tag.setString(String.valueOf(i), n);
 	}
-	
+
 	public void setItemStack(int i, ItemStack stack) {
-		//System.out.println("i=" + i);
-		//System.out.println("stack=" + stack);
+		// System.out.println("i=" + i);
+		// System.out.println("stack=" + stack);
 		if (i < 0 || i > size - 1) {
 			throw new IllegalArgumentException("Index not in tag range: " + i);
 		}
-		
+
 		if (stack == null) {
 			tag.removeTag(String.valueOf(i));
 		} else {
 			Spell s = (Spell) stack.getItem();
 			setSpell(i, s);
-			//String n = stack.getItem().getClass().getSimpleName();
-			//tag.setString(String.valueOf(i), n);
+			// String n = stack.getItem().getClass().getSimpleName();
+			// tag.setString(String.valueOf(i), n);
 		}
-		//System.out.println("tag=@" + System.identityHashCode(tag) + tag);
+		// System.out.println("tag=@" + System.identityHashCode(tag) + tag);
+		System.out.println("tag=" + tag);
 		// new Throwable().printStackTrace();
 	}
 
@@ -81,6 +81,7 @@ public class TagStaff {
 	}
 
 	public void setIndex(int i) {
+		System.out.println("i=" + i);
 		tag.setInteger(INDEX, i);
 	}
 

@@ -8,6 +8,8 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
 
 import org.lwjgl.input.Keyboard;
 
@@ -15,6 +17,8 @@ import ds.plato.Plato;
 import ds.plato.item.ItemBase;
 import ds.plato.item.spell.ISpell;
 import ds.plato.item.spell.Spell;
+import ds.plato.network.NextSpellMessage;
+import ds.plato.network.PrevSpellMessage;
 import ds.plato.pick.IPick;
 
 public abstract class Staff extends ItemBase implements IStaff {
@@ -26,7 +30,7 @@ public abstract class Staff extends ItemBase implements IStaff {
 		this.pickManager = pickManager;
 	}
 
-	//Item--------------------------------------------------------
+	// Item--------------------------------------------------------
 
 	// Adds information to rollover in creative tab
 	@Override
@@ -41,7 +45,7 @@ public abstract class Staff extends ItemBase implements IStaff {
 	@Override
 	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float sx, float sy, float sz) {
 
-		//To compare item stacks on both sides
+		// To compare item stacks on both sides
 		System.out.println("tag=" + stack.getTagCompound());
 
 		if (world.isRemote) {
@@ -62,9 +66,9 @@ public abstract class Staff extends ItemBase implements IStaff {
 		return false;
 	}
 
-	//ItemBase----------------------------------------------------------------------
-	
-	//Passes call on to current spell
+	// ItemBase----------------------------------------------------------------------
+
+	// Passes call on to current spell
 	@Override
 	public void onMouseClickLeft(ItemStack stack, BlockPos pos, EnumFacing sideHit) {
 		if (!isEmpty(stack)) {
@@ -107,12 +111,13 @@ public abstract class Staff extends ItemBase implements IStaff {
 				break;
 			}
 		}
-		
+
+		// TODO ForgeEventHandler also runs on client side and onLivingUpdate calls player.getSpell -> staff.nextSpell
 		// KeyHandler runs on client side and calls next spell when key tab is pressed
-//		if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) {
-//			System.out.println("Sending NextSpellMessage to server.");
-//			Plato.network.sendToServer(new NextSpellMessage());
-//		}
+		// if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) {
+		// System.out.println("Sending NextSpellMessage to server.");
+		// Plato.network.sendToServer(new NextSpellMessage());
+		// }
 		return s;
 	}
 
@@ -134,12 +139,12 @@ public abstract class Staff extends ItemBase implements IStaff {
 				break;
 			}
 		}
-		
+
 		// KeyHandler runs on client side and calls previous spell when key ctrl-tab is pressed
-//		if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) {
-//			System.out.println("Sending PrevSpellMessage to server.");
-//			Plato.network.sendToServer(new PrevSpellMessage());
-//		}
+		// if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) {
+		// System.out.println("Sending PrevSpellMessage to server.");
+		// Plato.network.sendToServer(new PrevSpellMessage());
+		// }
 		return s;
 	}
 

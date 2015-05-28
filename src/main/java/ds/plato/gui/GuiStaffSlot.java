@@ -16,7 +16,7 @@ public class GuiStaffSlot extends Slot {
 	@Override
 	public boolean isItemValid(ItemStack stack) {
 		Item item = stack.getItem();
-		System.out.println("[SpellSlot.isItemValid] item=" + item);
+		//System.out.println("item=" + item);
 		return Spell.class.isAssignableFrom(item.getClass()) ? true : false;
 	}
 

@@ -84,7 +84,7 @@ public class Plato {
 		blockPicked.setPickManager(pickManager);
 		blockPicked.setSelectionManager(selectionManager);
 
-		System.out.println("Initializing spells and staffs");
+		System.out.println("Initializing spells and staffs...");
 		configuration = new Configuration(event.getSuggestedConfigurationFile());
 		SpellLoader loader = new SpellLoader(configuration, undoManager, selectionManager, pickManager, ID);
 		try {
@@ -110,6 +110,8 @@ public class Plato {
 			staffs.add(loader.loadStaffPreset(StaffDraw.class, drawSpells));
 			staffs.add(loader.loadStaffPreset(StaffSelect.class, selectSpells));
 			staffs.add(loader.loadStaffPreset(StaffTransform.class, transformSpells));
+			//TODO matrix and otherSpells. Maybe pass array of lists
+			//staffs.add(loader.loadStaffPreset(StaffTransform.class, transformSpells, matrixSpells));
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -143,6 +145,7 @@ public class Plato {
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
 		proxy.setCustomRenderers(selectionManager, pickManager, staffs, spells);
+		//TODO could pass MouseHandler here to avoid static reference to isOrbiting
 		proxy.registerEventHandlers(this, selectionManager, undoManager, pickManager);
 	}
 
@@ -170,8 +173,6 @@ public class Plato {
 		String classname = block.getClass().getSimpleName();
 		String name = classname.substring(0, 1).toLowerCase() + classname.substring(1);
 		block.setUnlocalizedName(name);
-		// Fixed plato:platoBlockSelected
-		// GameRegistry.registerBlock(block, ID + name);
 		GameRegistry.registerBlock(block, name);
 		return block;
 	}

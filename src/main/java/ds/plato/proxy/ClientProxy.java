@@ -20,21 +20,16 @@ public class ClientProxy extends CommonProxy {
 
 	@Override
 	public void setCustomRenderers(ISelect select, IPick pick, Iterable<Staff> staffs, Iterable<Spell> spells) {
-//		RenderingRegistry.registerBlockHandler(new BlockSelectedRenderer(select));
-//		RenderingRegistry.registerBlockHandler(new BlockPickedRenderer(select, pick));
-//		RenderingRegistry.registerBlockHandler(new BlockModelRenderer());
 		for (Staff s : staffs) {
-			//if (s.getModel() == null) {
 			if (s.getModelResourceLocation() == null) {
-				System.out.println("[ClientProxy.setCustomRenderers] Missing model for class=" + s.getClass());
+				System.out.println("Missing model for class=" + s.getClass());
 			} else {
 				MinecraftForgeClient.registerItemRenderer(s, new StaffRenderer(s));
 			}
 		}
 		for (Spell s : spells) {
-			//if (s.getModel() == null) {
-				if (s.getModelResourceLocation() == null) {
-				System.out.println("[ClientProxy.setCustomRenderers] Missing model for class=" + s.getClass());
+			if (s.getModelResourceLocation() == null) {
+				System.out.println("Missing model for class=" + s.getClass());
 			} else {
 				MinecraftForgeClient.registerItemRenderer(s, new SpellRenderer(s));
 			}

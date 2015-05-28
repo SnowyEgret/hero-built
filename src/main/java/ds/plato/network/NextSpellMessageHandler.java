@@ -1,8 +1,5 @@
 package ds.plato.network;
 
-import org.lwjgl.input.Keyboard;
-
-import ds.plato.item.staff.Staff;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -10,6 +7,9 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import ds.plato.item.spell.ISpell;
+import ds.plato.item.spell.Spell;
+import ds.plato.item.staff.Staff;
 
 public class NextSpellMessageHandler implements IMessageHandler<NextSpellMessage, IMessage> {
 
