@@ -71,11 +71,16 @@ public class SpellLoader {
 		return s;
 	}
 
-	public StaffPreset loadStaffPreset(Class<? extends StaffPreset> staffClass, List<Spell> spells) throws NoSuchMethodException, SecurityException, MalformedURLException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ClassNotFoundException, IOException {
+	public StaffPreset loadStaffPreset(Class<? extends StaffPreset> staffClass, List<Spell>... spells) throws NoSuchMethodException, SecurityException, MalformedURLException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ClassNotFoundException, IOException {
+		//Combine varyarg spells into one list
+		List<Spell> allSpells = new ArrayList();
+		for (List<Spell> list : spells) {
+			allSpells.addAll(list);
+		}
 		System.out.println("Loading staff " + staffClass.getSimpleName());
 		String name = StringUtils.toCamelCase(staffClass);
 		Constructor c = staffClass.getConstructor(IPick.class, List.class);
-		StaffPreset s = (StaffPreset) c.newInstance(pickManager, spells);
+		StaffPreset s = (StaffPreset) c.newInstance(pickManager, allSpells);
 		s.setUnlocalizedName(name);
 		s.setMaxStackSize(1);
 		s.setCreativeTab(tabSpells);

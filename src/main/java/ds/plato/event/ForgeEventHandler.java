@@ -77,41 +77,44 @@ public class ForgeEventHandler {
 	}
 
 	// The player may have changed spells on a staff. Reset picking on the spell and update field spell.
-	//@SideOnly(Side.CLIENT)
+	// @SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void onLivingUpdate(LivingUpdateEvent e) {
-		World w = e.entity.worldObj;
-		if (w.isRemote) {
+		
+		//If this is run on the server side the overlay does not update while switching slots in GuiStaff
+		if (e.entity.worldObj.isRemote) {
 			return;
 		}
-		if (e.entity instanceof EntityPlayer) {
-			//Entity player = e.entity;
-			IPlayer player = new Player((EntityPlayer) e.entity);
-			ISpell s = player.getSpell();
+		if (!(e.entity instanceof EntityPlayer)) {
+			return;
+		}
+		//Like this for server side
+		//IPlayer player = new Player((EntityPlayer) e.entity);
+		IPlayer player = Player.getPlayer();
+		ISpell s = player.getSpell();
 
-			if (s == null) {
-				spell = null;
-				return;
-			} else {
-				// If the spell has changed reset it.
-				if (s != spell) {
-					spell = s;
-					s.reset();
-				}
+		if (s == null) {
+			spell = null;
+			return;
+		} else {
+			// If the spell has changed reset it.
+			if (s != spell) {
+				spell = s;
+				s.reset();
 			}
+		}
 
-			// Select blocks under foot.
-			if (s instanceof SpellTrail && !player.isFlying()) {
-				if (s.isPicking()) {
-					BlockPos pos = player.getPosition();
-					Block b = player.getWorld().getBlock(pos.down());
-					// Try second block down when block underneath is air because the player is jumping or stepping on a
-					// plant
-					if (b == Blocks.air || !b.isNormalCube()) {
-						pos = pos.down();
-					}
-					Selection sel = selectionManager.select(player.getWorld(), pos.down());
+		// Select blocks under foot for SpellTrail
+		if (s instanceof SpellTrail && !player.isFlying()) {
+			if (s.isPicking()) {
+				BlockPos pos = player.getPosition();
+				Block b = player.getWorld().getBlock(pos.down());
+				// Try second block down when block underneath is air because the player is jumping or stepping on a
+				// plant
+				if (b == Blocks.air || !b.isNormalCube()) {
+					pos = pos.down();
 				}
+				Selection sel = selectionManager.select(player.getWorld(), pos.down());
 			}
 		}
 	}

@@ -25,6 +25,7 @@ public abstract class StaffPreset extends Staff {
 		initTag(stack);
 	}
 
+	//http://www.minecraftforge.net/forum/index.php/topic,23385.msg118671.html
 	@Override
 	public void getSubItems(Item item, CreativeTabs creativeTabs, List list) {
 		System.out.println("Creating a new stack and tag.");
@@ -48,18 +49,5 @@ public abstract class StaffPreset extends Staff {
 		}
 		tag.setIndex(0);
 		stack.setTagCompound(tag.getTag());
-
-//		stack.setTagCompound(new NBTTagCompound());
-//		int i = 0;
-//		for (Spell s : spells) {
-//			if (i < maxNumSpells) {
-//				String n = s.getClass().getSimpleName();
-//				stack.getTagCompound().setString(String.valueOf(i), n);
-//				i++;
-//			} else {
-//				System.out.println("No room on staff for spell " + s);
-//			}
-//		}
-//		stack.getTagCompound().setInteger("index", 0);
 	}	
 }

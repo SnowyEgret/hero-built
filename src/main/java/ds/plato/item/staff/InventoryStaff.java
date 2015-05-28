@@ -9,16 +9,17 @@ import net.minecraft.util.IChatComponent;
 public class InventoryStaff implements IInventory {
 
 	private TagStaff tag;
+	
 	//These three fields to be used in method setInventorySlotContents
-	private IInventory inventory;
-	private ItemStack stack;
-	private int slot;
+	private IInventory parentInventory;
+	private ItemStack parentStack;
+	private int parentSlot;
 
-	public InventoryStaff(IInventory inventoryContainingStaff, int slotInInventoryContainingStaff) {
-		this.inventory = inventoryContainingStaff;
-		this.slot = slotInInventoryContainingStaff;
-		stack = inventoryContainingStaff.getStackInSlot(slot);
-		tag = new TagStaff(stack);
+	public InventoryStaff(IInventory parentInventory, int parentSlot) {
+		this.parentInventory = parentInventory;
+		this.parentSlot = parentSlot;
+		parentStack = parentInventory.getStackInSlot(parentSlot);
+		tag = new TagStaff(parentStack);
 	}
 	
 	//IInventory--------------------------------------------------------
@@ -37,8 +38,11 @@ public class InventoryStaff implements IInventory {
 
 	@Override
 	public ItemStack getStackInSlotOnClosing(int i) {
+		//Seems like this is not being called
+		System.out.println();
 		if (tag.getItemStack(i) != null) {
 			ItemStack itemstack = tag.getItemStack(i);
+			//Why this?
 			tag.setItemStack(i, null);
 			return itemstack;
 		} else {
@@ -50,7 +54,7 @@ public class InventoryStaff implements IInventory {
 	public void setInventorySlotContents(int i, ItemStack stack) {
 		tag.setItemStack(i, stack);
 		//These three fields were passed to constructor
-		inventory.setInventorySlotContents(slot, this.stack);
+		parentInventory.setInventorySlotContents(parentSlot, this.parentStack);
 	}
 
 	@Override
@@ -96,6 +100,7 @@ public class InventoryStaff implements IInventory {
 
 	@Override
 	public void openInventory(EntityPlayer player) {
+		System.out.println();
 	}
 
 	@Override
@@ -122,7 +127,9 @@ public class InventoryStaff implements IInventory {
 
 	@Override
 	public void clear() {
-		for (int i = 0; i < inventory.getSizeInventory(); ++i) {
+		//Seems this is not being called
+		System.out.println();
+		for (int i = 0; i < parentInventory.getSizeInventory(); ++i) {
 			setInventorySlotContents(i, null);
 		}
 	}
