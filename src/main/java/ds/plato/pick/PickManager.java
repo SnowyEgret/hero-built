@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import ds.plato.block.BlockPicked;
@@ -37,8 +38,14 @@ public class PickManager implements IPick {
 		// block = s.getBlock();
 		// }
 		// }
+		//Get the state before setting the block
+		IBlockState state = world.getBlockState(pos);
+		//Check if the block has overridden getActualState
+		state = block.getActualState(state, world.getWorld(), pos);
 		world.setBlock(pos, blockPicked);
-		return addPick(pos, block, side);
+		Pick pick = addPick(pos, block, side);
+		pick.setState(state);
+		return pick;
 	}
 
 	@Override

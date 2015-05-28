@@ -66,7 +66,8 @@ public class BlockPicked extends Block {
 			//if (pickedBlock instanceof BlockSelected) {
 			//	pickedBlock = selectionManager.getSelection(pos).getBlock();
 			//}
-			IBlockState pickedBlockState = pickedBlock.getDefaultState();
+			//IBlockState pickedBlockState = pickedBlock.getDefaultState();
+			IBlockState pickedBlockState = pick.getState();
 			extendedState = extendedState.withProperty(pickedBlockProperty, pickedBlockState);
 		} else {
 			extendedState = extendedState.withProperty(pickedBlockProperty, null);

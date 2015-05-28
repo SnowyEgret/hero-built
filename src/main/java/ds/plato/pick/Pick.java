@@ -4,6 +4,7 @@ import javax.vecmath.Point3d;
 import javax.vecmath.Point3i;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 
@@ -12,6 +13,7 @@ public class Pick {
 	BlockPos pos;
 	private Block block;
 	public EnumFacing side;
+	private IBlockState state;
 
 	public Pick(BlockPos pos, Block block, EnumFacing side) {
 		this.pos=pos;
@@ -79,5 +81,13 @@ public class Pick {
 	
 	public EnumFacing getSide() {
 		return side;
+	}
+	
+	public void setState(IBlockState state) {
+		this.state = state;
+	}
+
+	public IBlockState getState() {
+		return state;
 	}
 }
