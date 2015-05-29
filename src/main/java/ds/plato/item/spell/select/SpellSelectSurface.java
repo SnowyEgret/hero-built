@@ -3,6 +3,7 @@ package ds.plato.item.spell.select;
 import org.lwjgl.input.Keyboard;
 
 import net.minecraft.util.EnumFacing;
+import ds.plato.item.spell.Modifier;
 import ds.plato.pick.IPick;
 import ds.plato.player.HotbarSlot;
 import ds.plato.select.ISelect;
@@ -13,6 +14,7 @@ public class SpellSelectSurface extends AbstractSpellSelect {
 
 	public SpellSelectSurface(IUndo undo, ISelect select, IPick pick) {
 		super(Select.all, undo, select, pick);
+		info.addModifiers(Modifier.SHIFT);
 	}
 
 	@Override

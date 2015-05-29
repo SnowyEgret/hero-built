@@ -1,5 +1,6 @@
 package ds.plato.item.spell.select;
 
+import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
@@ -25,7 +26,12 @@ public class IsOnSurface implements ICondition {
 				}
 			}
 		} else {
-			if (world.getBlock(pos.offset(side)) == Blocks.air) {
+			Block b = world.getBlock(pos.offset(side));
+			if (b == Blocks.air) {
+				return true;
+			}
+			//For selecting under plants, etc
+			if (!b.isNormalCube()) {
 				return true;
 			}
 		}

@@ -130,6 +130,9 @@ item.spellSelectHorizontal.modifier.alt=select any block
 
 item.spellSelectSurface.name=Select Surface
 item.spellSelectSurface.description=selects blocks on surface
+item.spellSelectSurface.modifier.ctrl=shrink
+item.spellSelectSurface.modifier.alt=select any block
+item.spellSelectSurface.modifier.shift=ignore plane
 
 item.spellSelectUp.name=Select Up
 item.spellSelectUp.description=grows selection upwards

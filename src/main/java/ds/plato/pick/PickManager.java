@@ -30,6 +30,7 @@ public class PickManager implements IPick {
 	public Pick pick(IWorld world, BlockPos pos, EnumFacing side) {
 		this.world = world;
 		Block block = world.getBlock(pos);
+		
 		// TODO Handle case where picked block is already selected
 		// SpellCopy works ok without this
 		// if (block instanceof BlockSelected) {
@@ -38,6 +39,7 @@ public class PickManager implements IPick {
 		// block = s.getBlock();
 		// }
 		// }
+		
 		//Get the state before setting the block
 		IBlockState state = world.getBlockState(pos);
 		//Check if the block has overridden getActualState

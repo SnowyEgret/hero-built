@@ -47,6 +47,10 @@ public class BlockPicked extends Block {
 	@SideOnly(Side.CLIENT)
 	public EnumWorldBlockLayer getBlockLayer() {
 		return EnumWorldBlockLayer.SOLID;
+		//Tried all three of these. No effect on problem with picking stairs
+		//return EnumWorldBlockLayer.CUTOUT;
+		//return EnumWorldBlockLayer.CUTOUT_MIPPED;
+		//return EnumWorldBlockLayer.TRANSLUCENT;
 	}
 
 	@Override
@@ -66,7 +70,6 @@ public class BlockPicked extends Block {
 			//if (pickedBlock instanceof BlockSelected) {
 			//	pickedBlock = selectionManager.getSelection(pos).getBlock();
 			//}
-			//IBlockState pickedBlockState = pickedBlock.getDefaultState();
 			IBlockState pickedBlockState = pick.getState();
 			extendedState = extendedState.withProperty(pickedBlockProperty, pickedBlockState);
 		} else {
