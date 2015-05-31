@@ -15,6 +15,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.init.Items;
 import net.minecraft.util.BlockPos;
 import ds.plato.Plato;
+import ds.plato.gui.GuiHandler;
 import ds.plato.gui.ITextSetable;
 import ds.plato.item.spell.Spell;
 import ds.plato.pick.IPick;
@@ -53,7 +54,7 @@ public class SpellText extends Spell implements ITextSetable {
 	public void invoke(IWorld world, HotbarSlot...slots) {
 		this.world = world;
 		this.slots = slots;
-		Minecraft.getMinecraft().thePlayer.openGui(Plato.instance, 2, world.getWorld(), 0, 0, 0);
+		Minecraft.getMinecraft().thePlayer.openGui(Plato.instance, GuiHandler.GUI_SPELL_TEXT, world.getWorld(), 0, 0, 0);
 		picks = pickManager.getPicks();
 		// Clear the picks because player may have cancelled
 		pickManager.clearPicks();
@@ -61,23 +62,6 @@ public class SpellText extends Spell implements ITextSetable {
 
 	@Override
 	public void setText(String text) {
-
-		// Using slick2k (slick.jar not slick-util.jar)
-		// UnicodeFont uniFont = new UnicodeFont(font);
-		// uniFont.addAsciiGlyphs();
-		// uniFont.addGlyphs(0x3040, 0x30FF); // Setting the unicode Range
-		// //uniFont.addGlyphs(JPN_CHAR_STR); // Setting JPN Font by String
-		// // Setting the Color
-		// uniFont.getEffects().add(new ColorEffect(java.awt.Color.black));
-		// uniFont.getEffects().add(new ColorEffect(java.awt.Color.yellow));
-		// uniFont.getEffects().add(new ColorEffect(java.awt.Color.white));
-		// try {
-		// uniFont.loadGlyphs();
-		// } catch (SlickException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
-		// uniFont.drawString(100, 100, "test");
 
 		Vector3d d = new Vector3d();
 		d.sub(picks[0].point3d(), picks[1].point3d());
@@ -127,7 +111,6 @@ public class SpellText extends Spell implements ITextSetable {
 			t.add(new UndoableSetBlock(world, selectionManager, p, slots[0].block).set());
 		}
 		t.commit();
-		//selectionManager.clearSelections(world);
 	}
 
 	public void setFont(Font font) {

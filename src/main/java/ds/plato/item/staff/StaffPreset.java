@@ -40,7 +40,7 @@ public abstract class StaffPreset extends Staff {
 		TagStaff tag = new TagStaff(stack);
 		int i = 0;
 		for (Spell s : spells) {
-			if (i < maxNumSpells) {
+			if (i < MAX_NUM_SPELLS) {
 				tag.setSpell(i, s);
 				i++;
 			} else {

@@ -116,8 +116,8 @@ public abstract class Spell extends ItemBase implements ISpell {
 		IWorld w = new WorldWrapper(world);
 		pickManager.pick(w, pos, side);
 		if (pickManager.isFinishedPicking()) {
-			 invoke(w, Player.getPlayer().getHotbar());
-			//invoke(w, new Player(playerIn).getHotbar());
+			 //invoke(w, Player.getPlayer().getHotbar());
+			invoke(w, new Player(playerIn).getHotbar());
 		}
 		return true;
 	}

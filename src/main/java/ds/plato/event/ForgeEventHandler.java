@@ -76,23 +76,24 @@ public class ForgeEventHandler {
 		}
 	}
 
-	// The player may have changed spells on a staff. Reset picking on the spell and update field spell.
-	// @SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void onLivingUpdate(LivingUpdateEvent e) {
-		
-		//If this is run on the server side the overlay does not update while switching slots in GuiStaff
+
+		// If this is run on the server side the overlay does not update while switching slots in GuiStaff
 		if (e.entity.worldObj.isRemote) {
 			return;
 		}
 		if (!(e.entity instanceof EntityPlayer)) {
 			return;
 		}
-		//Like this for server side
-		//IPlayer player = new Player((EntityPlayer) e.entity);
+
 		IPlayer player = Player.getPlayer();
+		// This call is updating the index on the staff's tag, but only on client side
+		// TODO synchronize server side tag. This might be causing problems
+		// If I comment out the subscribe to this event, it has no effect on the unsynchronized tags
 		ISpell s = player.getSpell();
 
+		// The player may have changed spells on a staff. Reset picking on the spell.
 		if (s == null) {
 			spell = null;
 			return;
@@ -109,8 +110,7 @@ public class ForgeEventHandler {
 			if (s.isPicking()) {
 				BlockPos pos = player.getPosition();
 				Block b = player.getWorld().getBlock(pos.down());
-				// Try second block down when block underneath is air because the player is jumping or stepping on a
-				// plant
+				// Try second block down when block underneath is air if the player is jumping or stepping on a plant
 				if (b == Blocks.air || !b.isNormalCube()) {
 					pos = pos.down();
 				}
@@ -119,6 +119,7 @@ public class ForgeEventHandler {
 		}
 	}
 
+	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void onRenderGameOverlayEvent(RenderGameOverlayEvent event) {
 		if (event.type == RenderGameOverlayEvent.ElementType.TEXT) {

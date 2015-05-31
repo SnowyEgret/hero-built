@@ -14,6 +14,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.input.Keyboard;
 
 import ds.plato.Plato;
+import ds.plato.gui.GuiHandler;
 import ds.plato.item.ItemBase;
 import ds.plato.item.spell.ISpell;
 import ds.plato.item.spell.Spell;
@@ -23,7 +24,7 @@ import ds.plato.pick.IPick;
 
 public abstract class Staff extends ItemBase implements IStaff {
 
-	static int maxNumSpells = 9;
+	static final int MAX_NUM_SPELLS = 9;
 	private IPick pickManager;
 
 	protected Staff(IPick pickManager) {
@@ -43,26 +44,36 @@ public abstract class Staff extends ItemBase implements IStaff {
 	}
 
 	@Override
+	public int getMaxItemUseDuration(ItemStack stack) {
+		return 1; // return any value greater than zero
+	}
+
+	@Override
 	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float sx, float sy, float sz) {
 
-		// To compare item stacks on both sides
+		// To compare item stacks and their tags on both sides
 		System.out.println("tag=" + stack.getTagCompound());
 
+		// Return if called from the client thread
 		if (world.isRemote) {
 			return true;
 		}
 
-		// Open staff gui if space is down
+		// We are on the server side. Open staff gui if space bar is down
 		if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
-			player.openGui(Plato.instance, 3, world, 0, 0, 0);
+		//if (player.isSneaking()) {
+			player.openGui(Plato.instance, GuiHandler.GUI_STAFF, world, (int) player.posX, (int) player.posY,
+					(int) player.posZ);
 			return true;
 		}
-		// Get the current spell and use it
+
+		// Get the current spell on this staff and use it
 		if (!isEmpty(stack)) {
 			Spell s = getSpell(stack);
 			s.onItemUse(stack, player, world, pos, side, sx, sy, sz);
 			return true;
 		}
+
 		return false;
 	}
 
@@ -82,6 +93,8 @@ public abstract class Staff extends ItemBase implements IStaff {
 
 	@Override
 	public Spell getSpell(ItemStack stack) {
+		// System.out.println("tag=" + stack.getTagCompound());
+		// Throwable().printStackTrace();
 		if (isEmpty(stack)) {
 			return null;
 		}
@@ -97,8 +110,8 @@ public abstract class Staff extends ItemBase implements IStaff {
 	public Spell nextSpell(ItemStack stack) {
 		TagStaff t = new TagStaff(stack);
 		Spell s = null;
-		for (int i = 0; i < maxNumSpells; i++) {
-			if (t.getIndex() == maxNumSpells - 1) {
+		for (int i = 0; i < MAX_NUM_SPELLS; i++) {
+			if (t.getIndex() == MAX_NUM_SPELLS - 1) {
 				t.setIndex(0);
 			} else {
 				t.incrementIndex(1);
@@ -125,9 +138,9 @@ public abstract class Staff extends ItemBase implements IStaff {
 	public ISpell prevSpell(ItemStack stack) {
 		TagStaff t = new TagStaff(stack);
 		ISpell s = null;
-		for (int i = 0; i < maxNumSpells; i++) {
+		for (int i = 0; i < MAX_NUM_SPELLS; i++) {
 			if (t.getIndex() == 0) {
-				t.setIndex(maxNumSpells - 1);
+				t.setIndex(MAX_NUM_SPELLS - 1);
 			} else {
 				t.incrementIndex(-1);
 			}
@@ -152,7 +165,7 @@ public abstract class Staff extends ItemBase implements IStaff {
 	public int numSpells(ItemStack stack) {
 		TagStaff t = new TagStaff(stack);
 		int numSpells = 0;
-		for (int i = 0; i < maxNumSpells; i++) {
+		for (int i = 0; i < MAX_NUM_SPELLS; i++) {
 			ISpell s = t.getSpell(i);
 			if (s != null)
 				numSpells++;
@@ -163,7 +176,7 @@ public abstract class Staff extends ItemBase implements IStaff {
 	@Override
 	public boolean isEmpty(ItemStack stack) {
 		TagStaff t = new TagStaff(stack);
-		for (int i = 0; i < maxNumSpells; i++) {
+		for (int i = 0; i < MAX_NUM_SPELLS; i++) {
 			ISpell s = t.getSpell(i);
 			if (s != null) {
 				return false;

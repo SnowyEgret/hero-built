@@ -26,7 +26,7 @@ public class Player implements IPlayer {
 
 	private static Player instance = null;
 	private EntityPlayer player;
-	private float prevYaw = 0;
+	//private float prevYaw = 0;
 
 	public enum Direction {
 		NORTH,

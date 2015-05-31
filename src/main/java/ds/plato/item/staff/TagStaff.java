@@ -9,15 +9,18 @@ import ds.plato.item.spell.Spell;
 public class TagStaff {
 
 	private NBTTagCompound tag;
-	private int size = Staff.maxNumSpells;
+	private int size = Staff.MAX_NUM_SPELLS;
 	private final String INDEX = "index";
 
 	public TagStaff(ItemStack stack) {
 		tag = stack.getTagCompound();
+		//System.out.println("tag=" + tag);
+		//new Throwable().printStackTrace();
 		if (tag == null) {
 			System.out.println("Tag null - created a new one");
 			tag = new NBTTagCompound();
 			stack.setTagCompound(tag);
+			setIndex(0);
 		}
 	}
 
@@ -37,7 +40,7 @@ public class TagStaff {
 		return spell;
 	}
 
-	public ItemStack getItemStack(int i) {
+	public ItemStack getStack(int i) {
 		Spell s = getSpell(i);
 		if (s != null) {
 			return new ItemStack(s);
@@ -46,22 +49,17 @@ public class TagStaff {
 	}
 
 	public void setSpell(int i, Spell spell) {
-		System.out.println("spell="+spell);
 		String n = spell.getClass().getSimpleName();
 		tag.setString(String.valueOf(i), n);
 	}
 
-	public void setItemStack(int i, ItemStack stack) {
-		//System.out.println("i=" + i);
-		//System.out.println("stack=" + stack);
+	public void setStack(int i, ItemStack stack) {
 		if (stack == null) {
 			tag.removeTag(String.valueOf(i));
 		} else {
 			Spell s = (Spell) stack.getItem();
 			setSpell(i, s);
 		}
-		System.out.println("tag=" + tag);
-		// new Throwable().printStackTrace();
 	}
 
 	public int getIndex() {
