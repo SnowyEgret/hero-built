@@ -27,11 +27,11 @@ public abstract class StaffPreset extends Staff {
 
 	//http://www.minecraftforge.net/forum/index.php/topic,23385.msg118671.html
 	@Override
-	public void getSubItems(Item item, CreativeTabs creativeTabs, List list) {
+	public void getSubItems(Item item, CreativeTabs creativeTabs, List subItems) {
 		System.out.println("Creating a new stack and tag.");
 		ItemStack stack = new ItemStack(this);
 		initTag(stack);
-		list.add(stack);
+		subItems.add(stack);
 	}
 	
 	//Private---------------------------------------------------------------

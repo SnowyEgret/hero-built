@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import ds.plato.item.spell.ICondition;
 import ds.plato.world.IWorld;
 
 public class IsOnSurface implements ICondition {

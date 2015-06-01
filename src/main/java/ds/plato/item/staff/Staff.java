@@ -52,7 +52,7 @@ public abstract class Staff extends ItemBase implements IStaff {
 	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float sx, float sy, float sz) {
 
 		// To compare item stacks and their tags on both sides
-		System.out.println("tag=" + stack.getTagCompound());
+		//System.out.println("tag=" + stack.getTagCompound());
 
 		// Return if called from the client thread
 		if (world.isRemote) {

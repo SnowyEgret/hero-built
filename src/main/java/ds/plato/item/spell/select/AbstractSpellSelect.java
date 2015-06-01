@@ -12,6 +12,7 @@ import net.minecraft.util.BlockPos;
 import org.lwjgl.input.Keyboard;
 
 import ds.plato.block.BlockSelected;
+import ds.plato.item.spell.ICondition;
 import ds.plato.item.spell.Modifier;
 import ds.plato.item.spell.Spell;
 import ds.plato.pick.IPick;
