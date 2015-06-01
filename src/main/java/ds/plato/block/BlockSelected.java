@@ -34,6 +34,11 @@ public class BlockSelected extends Block {
 		this.selectionManager = selectionManager;
 	}
 
+	@Override
+	public boolean isOpaqueCube() {
+		return false;
+	}
+
 	// Is this the default layer?
 	@SideOnly(Side.CLIENT)
 	public EnumWorldBlockLayer getBlockLayer() {

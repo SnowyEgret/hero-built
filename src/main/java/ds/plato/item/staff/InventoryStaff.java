@@ -3,56 +3,52 @@ package ds.plato.item.staff;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IChatComponent;
 
 public class InventoryStaff implements IInventory {
 
 	private TagStaff tag;
-
-	// These three fields to be used in method setInventorySlotContents
-	//private IInventory parentInventory;
 	private ItemStack parentStack;
-	//private int parentSlot;
+	private int parentSlot;
+	private IInventory parentInventory;
 
-	//TODO pass only the ItemStack
+	//We could just pass the stack here, but we need these references for setInventorySlotContents
 	public InventoryStaff(IInventory parentInventory, int parentSlot) {
-		//this.parentInventory = parentInventory;
-		//System.out.println("parentInventory=" + parentInventory);
-		//this.parentSlot = parentSlot;
-		//System.out.println("parentSlot=" + parentSlot);
+	//public InventoryStaff(ItemStack stack) {
+		//this.stack = stack;
+		this.parentInventory = parentInventory;
+		this.parentSlot = parentSlot;
 		parentStack = parentInventory.getStackInSlot(parentSlot);
-		//System.out.println("parentStack=" + parentStack);
 		tag = new TagStaff(parentStack);
 	}
 
 	// IInventory--------------------------------------------------------
 
 	@Override
-	public ItemStack getStackInSlot(int i) {
-		return tag.getStack(i);
+	public ItemStack getStackInSlot(int slot) {
+		return tag.getStack(slot);
 	}
 
 	@Override
-	public ItemStack decrStackSize(int i, int amount) {
-		ItemStack stack = tag.getStack(i);
-		tag.setStack(i, null);
+	public ItemStack decrStackSize(int slot, int amount) {
+		ItemStack stack = tag.getStack(slot);
+		tag.setStack(slot, null);
 		return stack;
 	}
 
 	@Override
-	public ItemStack getStackInSlotOnClosing(int i) {
+	public ItemStack getStackInSlotOnClosing(int slot) {
 		// Seems like this is not being called
-		return tag.getStack(i);
+		return tag.getStack(slot);
 	}
 
 	@Override
-	public void setInventorySlotContents(int i, ItemStack stack) {
-		tag.setStack(i, stack);
-		// These three fields were passed to constructor
-		parentStack.setTagCompound(tag.getTag());		
-		//parentInventory.setInventorySlotContents(parentSlot, this.parentStack);
+	public void setInventorySlotContents(int slot, ItemStack stack) {
+		tag.setStack(slot, stack);
+		//Fix for issue #42: Staff loses spells when used after adding spells
+		parentStack.setTagCompound(tag.getTag());
+		parentInventory.setInventorySlotContents(parentSlot, parentStack);
 	}
 
 	@Override
@@ -67,7 +63,6 @@ public class InventoryStaff implements IInventory {
 
 	@Override
 	public void markDirty() {
-		System.out.println("tag=" + tag);
 	}
 
 	@Override
@@ -76,7 +71,7 @@ public class InventoryStaff implements IInventory {
 	}
 
 	@Override
-	public boolean isItemValidForSlot(int i, ItemStack stack) {
+	public boolean isItemValidForSlot(int slot, ItemStack stack) {
 		return true;
 	}
 
@@ -99,7 +94,6 @@ public class InventoryStaff implements IInventory {
 
 	@Override
 	public void openInventory(EntityPlayer player) {
-		System.out.println();
 	}
 
 	@Override
@@ -108,19 +102,15 @@ public class InventoryStaff implements IInventory {
 
 	@Override
 	public int getField(int id) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public void setField(int id, int value) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public int getFieldCount() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
