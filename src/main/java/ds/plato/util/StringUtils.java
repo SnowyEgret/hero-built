@@ -13,4 +13,7 @@ public class StringUtils {
 		return n.substring(0, 1).toLowerCase() + n.substring(1);
 	}
 
+	private String idOf(Object o) {
+		return o.getClass().getSimpleName() + "@" + Integer.toHexString(o.hashCode());
+	}
 }

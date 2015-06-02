@@ -15,8 +15,8 @@ import ds.plato.pick.IPick;
 import ds.plato.player.HotbarSlot;
 import ds.plato.select.ISelect;
 import ds.plato.undo.IUndo;
-import ds.plato.undo.UndoableSetBlock;
 import ds.plato.undo.Transaction;
+import ds.plato.undo.UndoableSetBlock;
 import ds.plato.world.IWorld;
 
 public class SpellMengerSponge extends Spell {
@@ -29,10 +29,10 @@ public class SpellMengerSponge extends Spell {
 	}
 
 	@Override
-	public void invoke(IWorld world, HotbarSlot...slotEntries) {
+	public void invoke(IWorld world, HotbarSlot...slots) {
 		//TODO use enclosing cube
 		recursivelySubtract(selectionManager.voxelSet());
-		System.out.println("[SpellMengerSponge.invoke] pointsToDelete=" + pointsToDelete);
+		System.out.println("pointsToDelete=" + pointsToDelete);
 		selectionManager.clearSelections(world);
 		pickManager.clearPicks();
 		Transaction t = undoManager.newTransaction();
@@ -47,9 +47,9 @@ public class SpellMengerSponge extends Spell {
 		// Run through this set testing for containment in each sub domain. Depending on which domain it is contained
 		// by, add it to the set of points to be set to air. Recurse on each sub voxel set.
 		level++;
-		System.out.println("[SpellMengerSponge.recursivelySubtract] level=" + level);
+		System.out.println("level=" + level);
 		Iterable<IntegerDomain> domains = voxels.divideDomain(3);
-		System.out.println("[SpellMengerSponge.recursivelySubtract] domains=" + domains);
+		System.out.println("domains=" + domains);
 		List<Integer> domainsToDelete = Arrays.asList(4, 10, 12, 13, 14, 16, 22);
 		for (Point3i p : voxels) {
 			IntegerDomain domain = null;
@@ -74,7 +74,7 @@ public class SpellMengerSponge extends Spell {
 		}
 		
 		level--;
-		System.out.println("[SpellMengerSponge.recursivelySubtract] level=" + level);
+		System.out.println("level=" + level);
 	}
 
 	@Override

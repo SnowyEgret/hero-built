@@ -15,60 +15,31 @@ public class Pick {
 	public EnumFacing side;
 	private IBlockState state;
 
+	@Deprecated
 	public Pick(BlockPos pos, Block block, EnumFacing side) {
 		this.pos=pos;
 		this.block = block;
 		this.side = side;
 	}
 
+	public Pick(BlockPos pos, IBlockState state, EnumFacing side) {
+		this.pos=pos;
+		this.state = state;
+		this.side = side;
+	}
+
+	@Deprecated
 	public Block getBlock() {
 		return block;
 	}
 
+	@Deprecated
 	public void setBlock(Block block) {
 		this.block = block;
 	}
 
 	public Point3d point3d() {
 		return new Point3d(pos.getX(),pos.getY(), pos.getZ());
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((pos == null) ? 0 : pos.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Pick other = (Pick) obj;
-		if (pos == null) {
-			if (other.pos != null)
-				return false;
-		} else if (!pos.equals(other.pos))
-			return false;
-		return true;
-	}
-
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("Pick [pos=");
-		builder.append(pos);
-		builder.append(", block=");
-		builder.append(block);
-		builder.append(", side=");
-		builder.append(side);
-		builder.append("]");
-		return builder.toString();
 	}
 
 	public Point3i point3i() {
@@ -89,5 +60,53 @@ public class Pick {
 
 	public IBlockState getState() {
 		return state;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Pick [pos=");
+		builder.append(pos);
+		builder.append(", side=");
+		builder.append(side);
+		builder.append(", state=");
+		builder.append(state);
+		builder.append("]");
+		return builder.toString();
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((pos == null) ? 0 : pos.hashCode());
+		result = prime * result + ((side == null) ? 0 : side.hashCode());
+		result = prime * result + ((state == null) ? 0 : state.hashCode());
+		return result;
+	}
+
+	//TODO check state.equals (write a test case)
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Pick other = (Pick) obj;
+		if (pos == null) {
+			if (other.pos != null)
+				return false;
+		} else if (!pos.equals(other.pos))
+			return false;
+		if (side != other.side)
+			return false;
+		if (state == null) {
+			if (other.state != null)
+				return false;
+		} else if (!state.equals(other.state))
+			return false;
+		return true;
 	}
 }

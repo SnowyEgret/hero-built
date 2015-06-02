@@ -34,7 +34,8 @@ public class SelectionManager implements ISelect {
 
 	@Override
 	public Selection select(IWorld world, BlockPos pos) {
-		Block b = world.getBlock(pos);
+		IBlockState state = world.getBlockState(pos);
+		Block b = (state.getBlock());
 		// Policy is not to select air
 		if (b instanceof BlockAir) {
 			return null;
@@ -44,16 +45,13 @@ public class SelectionManager implements ISelect {
 			return getSelection(pos);
 		}
 		//Get the state before setting the block
-		IBlockState state = world.getBlockState(pos);
+		IBlockState prevState = world.getBlockState(pos);
 		//Check if the block has overridden getActualState
-		state = b.getActualState(state, world.getWorld(), pos);
-		//world.setBlock(pos, blockSelected);
+		prevState = b.getActualState(state, world.getWorld(), pos);
 		world.setBlockState(pos, blockSelected.getDefaultState());
 
-		//TODO add state to constructor
-		Selection s = new Selection(pos, b);
-		s.setState(state);
-		selections.put(s.getPos(), s);
+		Selection s = new Selection(pos, state);
+		selections.put(pos, s);
 		return s;
 	}
 
@@ -64,7 +62,6 @@ public class SelectionManager implements ISelect {
 		// //Look up pick from pickManager
 		// //b = ((BlockPicked)b).getPos())
 		// }
-		//world.setBlock(selection.getPos(), selection.getBlock());
 		world.setBlockState(selection.getPos(), selection.getState());
 		selections.remove(selection.getPos());
 	}
@@ -112,7 +109,7 @@ public class SelectionManager implements ISelect {
 		grownSelections.clear();
 	}
 
-	// TODO Does not set a block so doesn't need world. Only called by SetBlock.set(). Is there another way?
+	// TODO Does not set a block so doesn't need world. Only called by UndoableSetBlock.set(). Is there another way?
 	@Override
 	public Selection removeSelection(BlockPos pos) {
 		return selections.remove(pos);
@@ -163,7 +160,6 @@ public class SelectionManager implements ISelect {
 			set.add(new Point3i(pos.getX(), pos.getY(), pos.getZ()));
 		}
 		return set;
-		// /return new VoxelSet(selections.keySet());
 	}
 
 	@Override
@@ -186,7 +182,6 @@ public class SelectionManager implements ISelect {
 
 	@Override
 	public String toString() {
-		// return "SelectionManager [world=" + idOf(world) + ", selections=" + selections.size() + "]";
 		return "SelectionManager [selections=" + selections.size() + "]";
 	}
 
@@ -196,7 +191,4 @@ public class SelectionManager implements ISelect {
 		return new Vec3(c.x, c.y, c.z);
 	}
 
-	// private String idOf(Object o) {
-	// return o.getClass().getSimpleName() + "@" + Integer.toHexString(o.hashCode());
-	// }
 }

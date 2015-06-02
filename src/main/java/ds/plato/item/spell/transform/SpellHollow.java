@@ -24,7 +24,7 @@ public class SpellHollow extends AbstractSpellTransform {
 	@Override
 	public void invoke(IWorld world, HotbarSlot...slots) {
 		transformSelections(world, new ITransform() {
-			VoxelSet selections = selectionManager.voxelSet();
+			VoxelSet voxels = selectionManager.voxelSet();
 
 			@Override
 			public Selection transform(Selection s) {
@@ -40,8 +40,8 @@ public class SpellHollow extends AbstractSpellTransform {
 				surroundingPoints.add(new Point3i(x, y - 1, z));
 				surroundingPoints.add(new Point3i(x, y, z + 1));
 				surroundingPoints.add(new Point3i(x, y, z - 1));
-				if (selections.containsAll(surroundingPoints)) {
-					s.setBlock(Blocks.air);
+				if (voxels.containsAll(surroundingPoints)) {
+					s.setState(Blocks.air.getDefaultState());
 				}
 				return s;
 			}

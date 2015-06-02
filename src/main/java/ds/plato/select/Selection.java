@@ -9,12 +9,19 @@ import net.minecraft.util.BlockPos;
 public class Selection {
 
 	private BlockPos pos;
+	@Deprecated
 	private Block block;
 	private IBlockState state;
 
+	@Deprecated
 	public Selection(BlockPos pos, Block block) {
 		this.pos = pos;
 		this.block = block;
+	}
+
+	public Selection(BlockPos pos, IBlockState state) {
+		this.pos = pos;
+		this.state = state;
 	}
 
 	public Point3d point3d() {
@@ -24,55 +31,15 @@ public class Selection {
 	public BlockPos getPos() {
 		return pos;
 	}
-	
+
+	@Deprecated
 	public void setBlock(Block block) {
 		this.block = block;
 	}
-	
+
+	@Deprecated
 	public Block getBlock() {
 		return block;
-	}
-
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("Selection [pos=");
-		builder.append(pos);
-		builder.append(", block=");
-		builder.append(block);
-		builder.append("]");
-		return builder.toString();
-	}
-	
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((block == null) ? 0 : block.hashCode());
-		result = prime * result + ((pos == null) ? 0 : pos.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Selection other = (Selection) obj;
-		if (block == null) {
-			if (other.block != null)
-				return false;
-		} else if (!block.equals(other.block))
-			return false;
-		if (pos == null) {
-			if (other.pos != null)
-				return false;
-		} else if (!pos.equals(other.pos))
-			return false;
-		return true;
 	}
 
 	public void setState(IBlockState state) {
@@ -82,4 +49,48 @@ public class Selection {
 	public IBlockState getState() {
 		return state;
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Selection [pos=");
+		builder.append(pos);
+		builder.append(", state=");
+		builder.append(state);
+		builder.append("]");
+		return builder.toString();
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((pos == null) ? 0 : pos.hashCode());
+		result = prime * result + ((state == null) ? 0 : state.hashCode());
+		return result;
+	}
+
+	//TODO check that state.equals is functional
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Selection other = (Selection) obj;
+		if (pos == null) {
+			if (other.pos != null)
+				return false;
+		} else if (!pos.equals(other.pos))
+			return false;
+		if (state == null) {
+			if (other.state != null)
+				return false;
+		} else if (!state.equals(other.state))
+			return false;
+		return true;
+	}
+
 }

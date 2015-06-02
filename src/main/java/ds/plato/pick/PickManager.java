@@ -14,8 +14,8 @@ import ds.plato.world.IWorld;
 
 public class PickManager implements IPick {
 
-	private final LinkedList<Pick> picks = new LinkedList<>();
-	private LinkedList<Pick> lastPicks;
+	private LinkedList<Pick> picks = new LinkedList<>();
+	private LinkedList<Pick> lastPicks = new LinkedList<>();
 	private int maxPicks = 0;
 	private IWorld world;
 	private Block blockPicked;
@@ -29,8 +29,9 @@ public class PickManager implements IPick {
 	@Override
 	public Pick pick(IWorld world, BlockPos pos, EnumFacing side) {
 		this.world = world;
-		Block block = world.getBlock(pos);
-		
+		IBlockState state = world.getBlockState(pos);
+		Block block = state.getBlock();
+
 		// TODO Handle case where picked block is already selected
 		// SpellCopy works ok without this
 		// if (block instanceof BlockSelected) {
@@ -39,16 +40,13 @@ public class PickManager implements IPick {
 		// block = s.getBlock();
 		// }
 		// }
-		
-		//Get the state before setting the block
-		IBlockState state = world.getBlockState(pos);
-		//Check if the block has overridden getActualState
-		state = block.getActualState(state, world.getWorld(), pos);
-		//world.setBlock(pos, blockPicked);
+
+		// Get the state before setting the block
+		IBlockState prevState = world.getBlockState(pos);
+		// Check if the block has overridden getActualState
+		prevState = block.getActualState(state, world.getWorld(), pos);
 		world.setBlockState(pos, blockPicked.getDefaultState());
-		//TODO change addPick from block to blockState
-		Pick pick = addPick(pos, block, side);
-		pick.setState(state);
+		Pick pick = addPick(pos, state, side);
 		return pick;
 	}
 
@@ -61,7 +59,7 @@ public class PickManager implements IPick {
 	@Override
 	public Pick getPick(BlockPos pos) {
 		for (Pick p : picks) {
-			if (p.equals(new Pick(pos, null, null))) {
+			if (pos.equals(p.getPos())) {
 				return p;
 			}
 		}
@@ -71,13 +69,12 @@ public class PickManager implements IPick {
 	@Override
 	public void clearPicks() {
 		for (Pick p : getPicks()) {
-			Block block = world.getBlock(p.getPos());
-			if (block instanceof BlockPicked) {
-				//world.setBlock(p.getPos(), p.getBlock());
-				world.setBlockState(p.getPos(), blockPicked.getDefaultState());
+			IBlockState state = world.getBlockState(p.getPos());
+			if (state.getBlock() instanceof BlockPicked) {
+				world.setBlockState(p.getPos(), p.getState());
 			}
 		}
-		lastPicks = new LinkedList();
+		lastPicks.clear();
 		lastPicks.addAll(picks);
 		picks.clear();
 	}
@@ -98,17 +95,16 @@ public class PickManager implements IPick {
 		picks.clear();
 	}
 
-
 	@Override
 	public void repick() {
-		//clearPicks();
+		// clearPicks();
 		if (lastPicks != null) {
 			for (Pick p : lastPicks) {
 				pick(world, p.getPos(), p.side);
 			}
 		}
 	}
-	
+
 	@Override
 	public Pick lastPick() {
 		try {
@@ -139,9 +135,20 @@ public class PickManager implements IPick {
 		return picks.size();
 	}
 
+	@Deprecated
 	Pick addPick(BlockPos pos, Block block, EnumFacing side) {
 		if (picks.size() < maxPicks) {
 			Pick p = new Pick(pos, block, side);
+			picks.add(p);
+			return p;
+		} else {
+			return null;
+		}
+	}
+
+	Pick addPick(BlockPos pos, IBlockState state, EnumFacing side) {
+		if (picks.size() < maxPicks) {
+			Pick p = new Pick(pos, state, side);
 			picks.add(p);
 			return p;
 		} else {
