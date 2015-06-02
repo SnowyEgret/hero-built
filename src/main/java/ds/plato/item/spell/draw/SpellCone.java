@@ -23,7 +23,7 @@ public class SpellCone extends AbstractSpellDraw {
 	public void invoke(IWorld world, HotbarSlot... slotEntries) {
 		Pick[] picks = pickManager.getPicks();
 		IDrawable d = new Cone(picks[0].point3d(), picks[1].point3d(), picks[2].point3d());
-		draw(d, world, slotEntries[0].block);
+		draw(d, world, slotEntries[0].state);
 	}
 
 	@Override

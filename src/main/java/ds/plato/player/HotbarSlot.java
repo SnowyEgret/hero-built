@@ -4,16 +4,12 @@ import net.minecraft.block.state.IBlockState;
 
 public class HotbarSlot {
 
-	//public Block block;
-	public IBlockState block;
-	//public int metadata;
+	public IBlockState state;
 	int slotNumber;
 	
-	//public HotbarSlot(Block block, int metadata, int slotNumber) {
-	public HotbarSlot(IBlockState block, int slotNumber) {
+	public HotbarSlot(IBlockState state, int slotNumber) {
 		super();
-		this.block = block;
-		//this.metadata = metadata;
+		this.state = state;
 		this.slotNumber = slotNumber;
 	}
 
@@ -25,7 +21,7 @@ public class HotbarSlot {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((block == null) ? 0 : block.hashCode());
+		result = prime * result + ((state == null) ? 0 : state.hashCode());
 		result = prime * result + slotNumber;
 		return result;
 	}
@@ -39,10 +35,10 @@ public class HotbarSlot {
 		if (getClass() != obj.getClass())
 			return false;
 		HotbarSlot other = (HotbarSlot) obj;
-		if (block == null) {
-			if (other.block != null)
+		if (state == null) {
+			if (other.state != null)
 				return false;
-		} else if (!block.equals(other.block))
+		} else if (!state.equals(other.state))
 			return false;
 		if (slotNumber != other.slotNumber)
 			return false;

@@ -67,7 +67,7 @@ public class SetBlockStateMessage implements IMessage {
 		y = ByteBufUtils.readVarInt(buf, size);
 		z = ByteBufUtils.readVarInt(buf, size);
 		int stateId = ByteBufUtils.readVarInt(buf, size);
-		System.out.println("stateId=" + stateId);
+		//System.out.println("stateId=" + stateId);
 		this.stateId = stateId;
 	}
 
@@ -76,7 +76,7 @@ public class SetBlockStateMessage implements IMessage {
 		ByteBufUtils.writeVarInt(buf, x, size);
 		ByteBufUtils.writeVarInt(buf, y, size);
 		ByteBufUtils.writeVarInt(buf, z, size);
-		System.out.println("stateId=" + stateId);
+		//System.out.println("stateId=" + stateId);
 		ByteBufUtils.writeVarInt(buf, stateId, size);
 	}
 

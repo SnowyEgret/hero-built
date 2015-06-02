@@ -1,6 +1,7 @@
 package ds.plato.event;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -66,8 +67,9 @@ public class MouseHandler {
 					BlockPos pos = cursor.getBlockPos();
 					if (selectionManager.isSelected(pos)) {
 						Block b = ((ItemBlock) heldItem).getBlock();
-						//TODO do we want atual state?
-						new SpellFill(undoManager, selectionManager, pickManager).invoke(w, new HotbarSlot(b.getDefaultState(), 0));
+						int meta = heldItem.getDamage(stack);
+						IBlockState state = b.getStateFromMeta(meta);
+						new SpellFill(undoManager, selectionManager, pickManager).invoke(w, new HotbarSlot(state, 0));
 						e.setCanceled(true);
 					}
 				}

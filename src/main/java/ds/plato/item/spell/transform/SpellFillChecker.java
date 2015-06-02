@@ -30,8 +30,8 @@ public class SpellFillChecker extends AbstractSpellTransform {
 					i = ((y & 1) == 0) ? 1 : 0;
 				}
 				//TODO only state
-				s.setBlock(slots[i].block.getBlock());
-				s.setState(slots[i].block);
+				s.setBlock(slots[i].state.getBlock());
+				s.setState(slots[i].state);
 				return s;
 			}
 		});

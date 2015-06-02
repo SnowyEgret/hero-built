@@ -22,6 +22,6 @@ public class SpellSeaShell extends AbstractSpellDraw {
 	public void invoke(IWorld world, HotbarSlot... slots) {
 		Pick[] picks = pickManager.getPicks();
 		IDrawable d = new SeaShell(picks[0].point3d());
-		draw(d, world, slots[0].block);
+		draw(d, world, slots[0].state);
 	}
 }

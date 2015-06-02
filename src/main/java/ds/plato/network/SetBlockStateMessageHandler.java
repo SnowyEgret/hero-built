@@ -28,6 +28,7 @@ public class SetBlockStateMessageHandler implements IMessageHandler<SetBlockStat
 	}
 
 	private void processMessage(SetBlockStateMessage message, EntityPlayerMP player) {
+		System.out.println("message="+message);
 		World world = player.worldObj;
 		world.setBlockState(new BlockPos(message.getX(), message.getY(), message.getZ()), message.getState());
 	}

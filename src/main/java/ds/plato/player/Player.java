@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -36,7 +37,6 @@ public class Player implements IPlayer {
 		WEST;
 	}
 
-	// This should not be public for singleton.
 	public Player(EntityPlayer player) {
 		this.player = player;
 	}
@@ -47,27 +47,29 @@ public class Player implements IPlayer {
 
 	// Singleton necessary for fields jumpHeight and prevYaw
 	public static IPlayer getPlayer() {
-//		if (instance == null) {
-//			instance = new Player();
-//		}
-//		return instance;
+		// if (instance == null) {
+		// instance = new Player();
+		// }
+		// return instance;
 		return new Player();
 	}
 
 	// Returns the integrated server if in single player
 	@Override
 	public IWorld getWorld() {
-		World w = null;
-		Minecraft mc = Minecraft.getMinecraft();
-		IntegratedServer integratedServer = mc.getIntegratedServer();
-		if (integratedServer != null) {
-			w = integratedServer.worldServerForDimension(player.dimension);
-		} else {
-			w = mc.theWorld;
-		}
-		return new WorldWrapper(w);
+		
+		// World w = null;
+		// Minecraft mc = Minecraft.getMinecraft();
+		// IntegratedServer integratedServer = mc.getIntegratedServer();
+		// if (integratedServer != null) {
+		// w = integratedServer.worldServerForDimension(player.dimension);
+		// } else {
+		// w = mc.theWorld;
+		// }
+		// return new WorldWrapper(w);
+		
 		// Force messaging between client and server
-		// return new WorldWrapper(Minecraft.getMinecraft().theWorld);
+		return new WorldWrapper(Minecraft.getMinecraft().theWorld);
 	}
 
 	@Override
@@ -78,12 +80,12 @@ public class Player implements IPlayer {
 			ItemStack stack = inventory.getStackInSlot(i);
 			if (stack != null) {
 				Item item = stack.getItem();
-				// int metadata = stack.getItemDamage();
-
+				int meta = item.getDamage(stack);
 				Block b = null;
 				if (item instanceof ItemBlock) {
 					ItemBlock itemBlock = (ItemBlock) item;
 					b = itemBlock.getBlock();
+
 					// TODO how to get color name from sub block?
 					// if (b instanceof BlockColored) {
 					// if (stack.getHasSubtypes()) {
@@ -103,15 +105,14 @@ public class Player implements IPlayer {
 				}
 
 				if (b != null) {
-					// HotbarSlot slot = new HotbarSlot(b, i + 1);
-					// TODO maybe get actualState
-					HotbarSlot slot = new HotbarSlot(b.getDefaultState(), i + 1);
+					//IBlockState state = b.getDefaultState();
+					IBlockState state = b.getStateFromMeta(meta);
+					HotbarSlot slot = new HotbarSlot(state, i + 1);
 					slots.add(slot);
 				}
 			}
 		}
 		if (slots.isEmpty()) {
-			// slots.add(new HotbarSlot(Blocks.dirt));
 			slots.add(new HotbarSlot(Blocks.dirt.getDefaultState()));
 		}
 		// Prepare an array of appropriate size to be returned
@@ -206,7 +207,7 @@ public class Player implements IPlayer {
 
 	@Override
 	public void jump(int height) {
-		//System.out.println("height=" + height);
+		// System.out.println("height=" + height);
 		if (height != 0) {
 			player.moveEntity(0, height, 0);
 		}

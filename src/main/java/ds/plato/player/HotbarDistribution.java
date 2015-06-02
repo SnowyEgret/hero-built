@@ -44,7 +44,7 @@ public class HotbarDistribution {
 					int d = 100 - sum;
 					percentage += d;
 				}
-				mapPercentBlock.put(percentage, slots[i].block.getBlock());
+				mapPercentBlock.put(percentage, slots[i].state.getBlock());
 			}
 		}
 	}

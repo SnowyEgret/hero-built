@@ -24,12 +24,12 @@ public class SpellLine extends AbstractSpellDraw {
 		Pick[] picks = pickManager.getPicks();
 		IDrawable d = new Line(picks[0].point3d(), picks[1].point3d());
 		if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
-			draw(d, world, slotEntries[0].block);
+			draw(d, world, slotEntries[0].state);
 			pickManager.clearPicks();
 			pickManager.reset(2);
 			pickManager.pick(world, picks[1].getPos(), null);
 		} else {
-			draw(d, world, slotEntries[0].block);
+			draw(d, world, slotEntries[0].state);
 		}
 	}
 
