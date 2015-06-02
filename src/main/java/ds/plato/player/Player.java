@@ -57,7 +57,7 @@ public class Player implements IPlayer {
 	// Returns the integrated server if in single player
 	@Override
 	public IWorld getWorld() {
-		
+
 		// World w = null;
 		// Minecraft mc = Minecraft.getMinecraft();
 		// IntegratedServer integratedServer = mc.getIntegratedServer();
@@ -67,7 +67,7 @@ public class Player implements IPlayer {
 		// w = mc.theWorld;
 		// }
 		// return new WorldWrapper(w);
-		
+
 		// Force messaging between client and server
 		return new WorldWrapper(Minecraft.getMinecraft().theWorld);
 	}
@@ -85,19 +85,6 @@ public class Player implements IPlayer {
 				if (item instanceof ItemBlock) {
 					ItemBlock itemBlock = (ItemBlock) item;
 					b = itemBlock.getBlock();
-
-					// TODO how to get color name from sub block?
-					// if (b instanceof BlockColored) {
-					// if (stack.getHasSubtypes()) {
-					// List<ItemStack> subBlocks = new ArrayList<>();
-					// ((BlockColored) b).getSubBlocks(item, getCreativeTab(), subBlocks);
-					// ItemStack is = subBlocks.get(metadata);
-					// b = ((ItemBlock) is.getItem()).field_150939_a;
-					// System.out.println("[Spell.getSlotEntriesFromPlayer] is=" + is);
-					// }
-					// MapColor c = ((BlockColored) b).getMapColor(metadata);
-					// System.out.println("[Spell.getSlotEntriesFromPlayer] c=" + c.colorValue);
-					// }
 				} else if (item == Items.water_bucket) {
 					b = Blocks.water;
 				} else if (item == Items.lava_bucket) {
@@ -105,7 +92,6 @@ public class Player implements IPlayer {
 				}
 
 				if (b != null) {
-					//IBlockState state = b.getDefaultState();
 					IBlockState state = b.getStateFromMeta(meta);
 					HotbarSlot slot = new HotbarSlot(state, i + 1);
 					slots.add(slot);

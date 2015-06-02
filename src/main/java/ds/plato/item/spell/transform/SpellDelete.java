@@ -20,10 +20,8 @@ public class SpellDelete extends AbstractSpellTransform {
 			@Override
 			public Selection transform(Selection s) {
 				// Create a copy here because we don't want to modify the selectionManager's selection list.
-				//TODO pass state to constructor
-				Selection sel = new Selection(s.getPos(), Blocks.air);
-				sel.setState(Blocks.air.getDefaultState());
-				return sel;
+				//If we don't create a copy undo doesn't work
+				return new Selection(s.getPos(), Blocks.air.getDefaultState());
 			}
 		});
 	}

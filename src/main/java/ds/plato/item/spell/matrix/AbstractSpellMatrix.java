@@ -68,6 +68,9 @@ public abstract class AbstractSpellMatrix extends Spell {
 
 		// Select all transformed blocks
 		for (BlockPos pos : addedPos) {
+			//FIXME select is rejecting these even though clearSelections
+			//should have removed BlockSelected from world.
+			//Same problem as when first corner of a region was left unselected
 			selectionManager.select(world, pos);
 		}
 	}

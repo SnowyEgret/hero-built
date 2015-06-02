@@ -40,6 +40,7 @@ public class SelectionManager implements ISelect {
 			return null;
 		}
 		if (b instanceof BlockSelected) {
+			//getSelection is already null so we have no way of knowing what the original block was
 			return getSelection(pos);
 		}
 		state = b.getActualState(state, world.getWorld(), pos);

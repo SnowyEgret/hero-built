@@ -16,6 +16,7 @@ public class UndoableSetBlock implements IUndoable {
 	BlockPos pos;
 	IBlockState state, prevState;
 	
+	@Deprecated
 	public UndoableSetBlock(IWorld world, ISelect selectionManager, Selection s) {
 		this(world, selectionManager, s.getPos(), s.getState());
 	}

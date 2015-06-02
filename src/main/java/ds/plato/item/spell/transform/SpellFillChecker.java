@@ -10,12 +10,12 @@ import ds.plato.world.IWorld;
 
 public class SpellFillChecker extends AbstractSpellTransform {
 
-	public SpellFillChecker(IUndo undo,ISelect select, IPick pick) {
+	public SpellFillChecker(IUndo undo, ISelect select, IPick pick) {
 		super(undo, select, pick);
 	}
 
 	@Override
-	public void invoke(IWorld world, final HotbarSlot...slots) {
+	public void invoke(IWorld world, final HotbarSlot... slots) {
 		transformSelections(world, new ITransform() {
 			@Override
 			public Selection transform(Selection s) {
@@ -29,9 +29,7 @@ public class SpellFillChecker extends AbstractSpellTransform {
 				} else {
 					i = ((y & 1) == 0) ? 1 : 0;
 				}
-				//TODO only state
-				s.setBlock(slots[i].state.getBlock());
-				s.setState(slots[i].state);
+				s = new Selection(pos, slots[i].state);
 				return s;
 			}
 		});

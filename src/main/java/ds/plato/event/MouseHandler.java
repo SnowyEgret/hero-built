@@ -69,6 +69,7 @@ public class MouseHandler {
 						Block b = ((ItemBlock) heldItem).getBlock();
 						int meta = heldItem.getDamage(stack);
 						IBlockState state = b.getStateFromMeta(meta);
+						//FIXME not reselecting in MP
 						new SpellFill(undoManager, selectionManager, pickManager).invoke(w, new HotbarSlot(state, 0));
 						e.setCanceled(true);
 					}

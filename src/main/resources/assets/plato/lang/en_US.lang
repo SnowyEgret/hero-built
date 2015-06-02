@@ -151,13 +151,13 @@ item.spellDelete.name=Delete
 item.spellDelete.description=
 
 item.spellFill.name=Fill
-item.spellFill.description=fills selections with first block in inventory
+item.spellFill.description=fills with first block in inventory
 
-item.spellFillChecker.name=Checker
-item.spellFill.description=fills selections with checker pattern using first two blocks in inventory
+item.spellFillChecker.name=Fill Checker
+item.spellFillChecker.description=fills with checker pattern using first two blocks in inventory
 
-item.spellFillRandom.name=Random Fill
-item.spellFillRandom.description=fills selections with random pattern using blocks in inventory
+item.spellFillRandom.name=Fill Random
+item.spellFillRandom.description=fills with random pattern using blocks in inventory
 
 item.spellHollow.name=Hollow
 item.spellHollow.description=hollows selection

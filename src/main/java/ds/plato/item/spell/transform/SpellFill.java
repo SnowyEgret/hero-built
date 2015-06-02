@@ -20,9 +20,7 @@ public class SpellFill extends AbstractSpellTransform {
 			public Selection transform(Selection s) {
 				// Create a copy here because we don't want to modify the selection list.
 				// Use first (left-most) block in inventory
-				Selection sel = new Selection(s.getPos(), slots[0].state.getBlock());
-				sel.setState(slots[0].state);
-				return sel;		
+				return new Selection(s.getPos(), slots[0].state);
 			}
 		});
 	}

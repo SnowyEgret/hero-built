@@ -44,7 +44,6 @@ public class KeyHandler {
 		this.pickManager = pick;
 		// TODO internationalize these strings
 		keyBindings.put("undo", registerKeyBinding("Undo", Keyboard.KEY_Z));
-		keyBindings.put("redo", registerKeyBinding("Redo", Keyboard.KEY_Y));
 		keyBindings.put("nextSpell", registerKeyBinding("Next spell", Keyboard.KEY_TAB));
 		keyBindings.put("delete", registerKeyBinding("Delete", Keyboard.KEY_DELETE));
 		keyBindings.put("lastSelection", registerKeyBinding("Last selection", Keyboard.KEY_L));
@@ -81,17 +80,6 @@ public class KeyHandler {
 			}
 		}
 
-		if (keyBindings.get("redo").isPressed()) {
-			try {
-				if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
-					undoManager.redo();
-				}
-			} catch (NoSuchElementException e) {
-				// TODO Log to overlay. Create info line in overlay
-				System.out.println(e.getMessage());
-			}
-		}
-
 		if (keyBindings.get("nextSpell").isPressed()) {
 			Staff staff = player.getStaff();
 			if (staff != null) {
@@ -100,20 +88,7 @@ public class KeyHandler {
 				} else {
 					Plato.network.sendToServer(new NextSpellMessage());
 				}
-			}
-			
-//			EntityPlayerSP p = Minecraft.getMinecraft().thePlayer;
-//			ItemStack stack = p.getCurrentEquippedItem();
-//			if (stack != null) {
-//				Item i = stack.getItem();
-//				if (i instanceof Staff) {
-//					if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
-//						((Staff) i).prevSpell(stack);
-//					} else {
-//						((Staff) i).nextSpell(stack);
-//					}
-//				}
-//			}
+			}			
 		}
 
 		if (keyBindings.get("delete").isPressed()) {
@@ -174,17 +149,19 @@ public class KeyHandler {
 			break;
 		}
 		if (selectionManager.size() != 0) {
+			//FIXME not reselecting in MP
 			new SpellCopy(undoManager, selectionManager, pickManager).invoke(w, player.getHotbar());
 		}
 		pickManager.clearPicks();
 	}
 
-	private void copyVertical(IPlayer player, IWorld w, int upDown) {
+	private void copyVertical(IPlayer player, IWorld world, int upDown) {
 		pickManager.clearPicks();
 		pickManager.reset(2);
-		pickManager.pick(w, new BlockPos(0,0,0), null);
-		pickManager.pick(w, new BlockPos(0,upDown,0), null);
-		new SpellCopy(undoManager, selectionManager, pickManager).invoke(w, player.getHotbar());
+		pickManager.pick(world, new BlockPos(0,0,0), null);
+		pickManager.pick(world, new BlockPos(0,upDown,0), null);
+		//FIXME not reselecting in MP
+		new SpellCopy(undoManager, selectionManager, pickManager).invoke(world, player.getHotbar());
 		pickManager.clearPicks();
 	}
 

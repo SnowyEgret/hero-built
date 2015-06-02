@@ -41,7 +41,7 @@ public class SpellHollow extends AbstractSpellTransform {
 				surroundingPoints.add(new Point3i(x, y, z + 1));
 				surroundingPoints.add(new Point3i(x, y, z - 1));
 				if (voxels.containsAll(surroundingPoints)) {
-					s.setState(Blocks.air.getDefaultState());
+					s = new Selection(pos, Blocks.air.getDefaultState());
 				}
 				return s;
 			}

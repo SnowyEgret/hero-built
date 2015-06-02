@@ -16,13 +16,16 @@ public abstract class AbstractSpellTransform extends Spell {
 	}
 
 	protected void transformSelections(IWorld world, ITransform transformer) {
-		System.out.println("world="+world);
+		//System.out.println("world="+world);
 		if (selectionManager.getSelectionList().size() != 0) {
 			Transaction t = undoManager.newTransaction();
 			for (Selection s : selectionManager.getSelections()) {
-				t.add(new UndoableSetBlock(world, selectionManager, transformer.transform(s)).set());
+				s = transformer.transform(s);
+				t.add(new UndoableSetBlock(world, selectionManager, s.getPos(), s.getState()).set());
 			}
 			t.commit();
+			//Clear the selections because BlockSelected is still rendering with old state
+			//Player can reselect last
 			selectionManager.clearSelections(world);
 		}
 		pickManager.clearPicks();
