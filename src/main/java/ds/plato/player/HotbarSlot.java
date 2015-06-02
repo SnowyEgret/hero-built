@@ -1,22 +1,23 @@
 package ds.plato.player;
 
-import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 
 public class HotbarSlot {
 
-	public Block block;
+	//public Block block;
+	public IBlockState block;
 	//public int metadata;
 	int slotNumber;
 	
 	//public HotbarSlot(Block block, int metadata, int slotNumber) {
-	public HotbarSlot(Block block, int slotNumber) {
+	public HotbarSlot(IBlockState block, int slotNumber) {
 		super();
 		this.block = block;
 		//this.metadata = metadata;
 		this.slotNumber = slotNumber;
 	}
 
-	public HotbarSlot(Block block) {
+	public HotbarSlot(IBlockState block) {
 		this(block, 0);
 	}
 

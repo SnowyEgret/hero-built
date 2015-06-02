@@ -40,12 +40,14 @@ public abstract class AbstractSpellMatrix extends Spell {
 		for (Selection s : selections) {
 			Point3d p = s.point3d();
 			if (deleteInitialBlocks) {
-				deletes.add(new UndoableSetBlock(world, selectionManager, s.getPos(), Blocks.air));
+				//deletes.add(new UndoableSetBlock(world, selectionManager, s.getPos(), Blocks.air));
+				deletes.add(new UndoableSetBlock(world, selectionManager, s.getPos(), Blocks.air.getDefaultState()));
 			}
 			matrix.transform(p);
 			BlockPos pos = new BlockPos(p.x, p.y, p.z);
 			incrementJumpHeight(pos, player);
-			adds.add(new UndoableSetBlock(world, selectionManager, pos, s.getBlock()));
+			//adds.add(new UndoableSetBlock(world, selectionManager, pos, s.getBlock()));
+			adds.add(new UndoableSetBlock(world, selectionManager, pos, s.getState()));
 			addedPos.add(pos);
 		}
 

@@ -53,7 +53,7 @@ public class SpellHoleDrain extends Spell {
 
 		Transaction t = undoManager.newTransaction();
 		for (BlockPos p : positions) {
-			t.add(new UndoableSetBlock(world, selectionManager, p, Blocks.air).set());
+			t.add(new UndoableSetBlock(world, selectionManager, p, Blocks.air.getDefaultState()).set());
 		}
 		t.commit();
 

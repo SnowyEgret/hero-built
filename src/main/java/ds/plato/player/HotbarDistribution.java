@@ -18,24 +18,24 @@ import net.minecraft.block.Block;
 
 public class HotbarDistribution {
 
-	private final HotbarSlot[] slotEntries;
+	private final HotbarSlot[] slots;
 	private final List<Integer> indices = new ArrayList<>();
 	private final Random random = new Random();
 	private final Map<Integer, Block> mapPercentBlock = new TreeMap<>();
 
-	public HotbarDistribution(HotbarSlot... slotEntries) {
-		this.slotEntries = slotEntries;
+	public HotbarDistribution(HotbarSlot... slots) {
+		this.slots = slots;
 		int j = 0;
-		for (HotbarSlot e : slotEntries) {
-			for (int i = 0; i < e.slotNumber; i++) {
+		for (HotbarSlot s : slots) {
+			for (int i = 0; i < s.slotNumber; i++) {
 				indices.add(j);
 			}
 			j++;
 		}
 		if (!indices.isEmpty()) {
-			for (int i = 0; i < slotEntries.length; i++) {
-				int percentage = 100 * slotEntries[i].slotNumber / indices.size();
-				if (i == slotEntries.length - 1) {
+			for (int i = 0; i < slots.length; i++) {
+				int percentage = 100 * slots[i].slotNumber / indices.size();
+				if (i == slots.length - 1) {
 					int sum = 0;
 					for (Integer p : getPecentages()) {
 						sum += p;
@@ -44,7 +44,7 @@ public class HotbarDistribution {
 					int d = 100 - sum;
 					percentage += d;
 				}
-				mapPercentBlock.put(percentage, slotEntries[i].block);
+				mapPercentBlock.put(percentage, slots[i].block.getBlock());
 			}
 		}
 	}
@@ -53,9 +53,9 @@ public class HotbarDistribution {
 		return mapPercentBlock.keySet();
 	}
 
-	public HotbarSlot randomEntry() {
+	public HotbarSlot randomSlot() {
 		int i = random.nextInt(indices.size() - 1);
-		return slotEntries[indices.get(i)];
+		return slots[indices.get(i)];
 	}
 
 	@Override

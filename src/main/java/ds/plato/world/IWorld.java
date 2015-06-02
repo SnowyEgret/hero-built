@@ -7,8 +7,10 @@ import net.minecraft.world.World;
 
 public interface IWorld {
 
+	@Deprecated
 	public void setBlock(BlockPos pos, Block block);
 
+	@Deprecated
 	public Block getBlock(BlockPos pos);
 
 	public World getWorld();

@@ -10,18 +10,20 @@ import ds.plato.world.IWorld;
 
 public class SpellDelete extends AbstractSpellTransform {
 
-
 	public SpellDelete(IUndo undoManager, ISelect selectionManager, IPick pickManager) {
 		super(undoManager, selectionManager, pickManager);
 	}
 
 	@Override
-	public void invoke(IWorld world, HotbarSlot...slotEntries) {
+	public void invoke(IWorld world, HotbarSlot...slots) {
 		transformSelections(world, new ITransform() {
 			@Override
 			public Selection transform(Selection s) {
 				// Create a copy here because we don't want to modify the selectionManager's selection list.
-				return new Selection(s.getPos(), Blocks.air);
+				//TODO pass state to constructor
+				Selection sel = new Selection(s.getPos(), Blocks.air);
+				sel.setState(Blocks.air.getDefaultState());
+				return sel;
 			}
 		});
 	}

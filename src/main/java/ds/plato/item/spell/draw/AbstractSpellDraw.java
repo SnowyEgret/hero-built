@@ -5,11 +5,12 @@ import java.util.List;
 
 import javax.vecmath.Point3i;
 
-import org.lwjgl.input.Keyboard;
-
-import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.BlockPos;
+
+import org.lwjgl.input.Keyboard;
+
 import ds.geom.IDrawable;
 import ds.geom.VoxelSet;
 import ds.geom.solid.Solid;
@@ -20,8 +21,8 @@ import ds.plato.player.IPlayer;
 import ds.plato.player.Player;
 import ds.plato.select.ISelect;
 import ds.plato.undo.IUndo;
-import ds.plato.undo.UndoableSetBlock;
 import ds.plato.undo.Transaction;
+import ds.plato.undo.UndoableSetBlock;
 import ds.plato.util.StringUtils;
 import ds.plato.world.IWorld;
 
@@ -33,7 +34,8 @@ public abstract class AbstractSpellDraw extends Spell {
 		info.addModifiers(Modifier.SHIFT, Modifier.ALT);
 	}
 
-	protected void draw(IDrawable drawable, IWorld world, Block block) {
+	//protected void draw(IDrawable drawable, IWorld world, Block block) {
+		protected void draw(IDrawable drawable, IWorld world, IBlockState block) {
 
 		selectionManager.clearSelections(world);
 		pickManager.clearPicks();

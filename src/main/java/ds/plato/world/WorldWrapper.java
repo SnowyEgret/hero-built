@@ -1,13 +1,13 @@
 package ds.plato.world;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import ds.plato.Plato;
 import ds.plato.network.SetBlockMessage;
+import ds.plato.network.SetBlockStateMessage;
 
 public class WorldWrapper implements IWorld {
 
@@ -29,12 +29,24 @@ public class WorldWrapper implements IWorld {
 
 	@Override
 	public void setBlock(BlockPos pos, Block block) {
-		// TODO try this for preventing dropping
-		// world.removeTileEntity(x, y, z);
-		IBlockState state = block.getBlockState().getBaseState();
-		world.setBlockState(pos, state, 3);
-		if (sendPackets) {
+		System.out.println("world="+world);
+		if (world.isRemote) {
+			// if (sendPackets) {
 			Plato.network.sendToServer(new SetBlockMessage(pos, block));
+		} else {
+			IBlockState state = block.getBlockState().getBaseState();
+			world.setBlockState(pos, state, 3);
+		}
+	}
+
+	@Override
+	public void setBlockState(BlockPos pos, IBlockState state) {
+		System.out.println("world="+world);
+		// if (sendPackets) {
+		if (world.isRemote) {
+			Plato.network.sendToServer(new SetBlockStateMessage(pos, state));
+		} else {
+			world.setBlockState(pos, state, 3);
 		}
 	}
 
@@ -55,10 +67,5 @@ public class WorldWrapper implements IWorld {
 	@Override
 	public IBlockState getBlockState(BlockPos pos) {
 		return world.getBlockState(pos);
-	}
-
-	@Override
-	public void setBlockState(BlockPos pos, IBlockState state) {
-		world.setBlockState(pos, state);
 	}
 }

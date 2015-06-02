@@ -26,7 +26,8 @@ public class Player implements IPlayer {
 
 	private static Player instance = null;
 	private EntityPlayer player;
-	//private float prevYaw = 0;
+
+	// private float prevYaw = 0;
 
 	public enum Direction {
 		NORTH,
@@ -35,7 +36,7 @@ public class Player implements IPlayer {
 		WEST;
 	}
 
-	//This should not be public for singleton.
+	// This should not be public for singleton.
 	public Player(EntityPlayer player) {
 		this.player = player;
 	}
@@ -46,12 +47,14 @@ public class Player implements IPlayer {
 
 	// Singleton necessary for fields jumpHeight and prevYaw
 	public static IPlayer getPlayer() {
-		if (instance == null) {
-			instance = new Player();
-		}
-		return instance;
+//		if (instance == null) {
+//			instance = new Player();
+//		}
+//		return instance;
+		return new Player();
 	}
 
+	// Returns the integrated server if in single player
 	@Override
 	public IWorld getWorld() {
 		World w = null;
@@ -63,6 +66,8 @@ public class Player implements IPlayer {
 			w = mc.theWorld;
 		}
 		return new WorldWrapper(w);
+		// Force messaging between client and server
+		// return new WorldWrapper(Minecraft.getMinecraft().theWorld);
 	}
 
 	@Override
@@ -98,13 +103,16 @@ public class Player implements IPlayer {
 				}
 
 				if (b != null) {
-					HotbarSlot slot = new HotbarSlot(b, i + 1);
+					// HotbarSlot slot = new HotbarSlot(b, i + 1);
+					// TODO maybe get actualState
+					HotbarSlot slot = new HotbarSlot(b.getDefaultState(), i + 1);
 					slots.add(slot);
 				}
 			}
 		}
 		if (slots.isEmpty()) {
-			slots.add(new HotbarSlot(Blocks.dirt));
+			// slots.add(new HotbarSlot(Blocks.dirt));
+			slots.add(new HotbarSlot(Blocks.dirt.getDefaultState()));
 		}
 		// Prepare an array of appropriate size to be returned
 		HotbarSlot[] array = new HotbarSlot[slots.size()];
@@ -198,7 +206,7 @@ public class Player implements IPlayer {
 
 	@Override
 	public void jump(int height) {
-		System.out.println("height=" + height);
+		//System.out.println("height=" + height);
 		if (height != 0) {
 			player.moveEntity(0, height, 0);
 		}

@@ -5,8 +5,8 @@ import ds.plato.pick.IPick;
 import ds.plato.select.ISelect;
 import ds.plato.select.Selection;
 import ds.plato.undo.IUndo;
-import ds.plato.undo.UndoableSetBlock;
 import ds.plato.undo.Transaction;
+import ds.plato.undo.UndoableSetBlock;
 import ds.plato.world.IWorld;
 
 public abstract class AbstractSpellTransform extends Spell {
@@ -16,6 +16,7 @@ public abstract class AbstractSpellTransform extends Spell {
 	}
 
 	protected void transformSelections(IWorld world, ITransform transformer) {
+		System.out.println("world="+world);
 		if (selectionManager.getSelectionList().size() != 0) {
 			Transaction t = undoManager.newTransaction();
 			for (Selection s : selectionManager.getSelections()) {

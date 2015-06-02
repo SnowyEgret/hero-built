@@ -44,7 +44,9 @@ public class PickManager implements IPick {
 		IBlockState state = world.getBlockState(pos);
 		//Check if the block has overridden getActualState
 		state = block.getActualState(state, world.getWorld(), pos);
-		world.setBlock(pos, blockPicked);
+		//world.setBlock(pos, blockPicked);
+		world.setBlockState(pos, blockPicked.getDefaultState());
+		//TODO change addPick from block to blockState
 		Pick pick = addPick(pos, block, side);
 		pick.setState(state);
 		return pick;
@@ -71,7 +73,8 @@ public class PickManager implements IPick {
 		for (Pick p : getPicks()) {
 			Block block = world.getBlock(p.getPos());
 			if (block instanceof BlockPicked) {
-				world.setBlock(p.getPos(), p.getBlock());
+				//world.setBlock(p.getPos(), p.getBlock());
+				world.setBlockState(p.getPos(), blockPicked.getDefaultState());
 			}
 		}
 		lastPicks = new LinkedList();

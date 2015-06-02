@@ -14,14 +14,15 @@ public class SpellFill extends AbstractSpellTransform {
 	}
 
 	@Override
-	public void invoke(IWorld world, final HotbarSlot...slotEntries) {
+	public void invoke(IWorld world, final HotbarSlot...slots) {
 		transformSelections(world, new ITransform() {
 			@Override
 			public Selection transform(Selection s) {
 				// Create a copy here because we don't want to modify the selection list.
 				// Use first (left-most) block in inventory
-				HotbarSlot e = slotEntries[0];
-				return new Selection(s.getPos(), e.block);
+				Selection sel = new Selection(s.getPos(), slots[0].block.getBlock());
+				sel.setState(slots[0].block);
+				return sel;		
 			}
 		});
 	}

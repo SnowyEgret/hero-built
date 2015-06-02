@@ -50,7 +50,7 @@ public class SpellDrop extends Spell {
 				setBlocks.addAll(drop(world, s, fill));
 			}
 			if (deleteOriginal) {
-				setBlocks.add(new UndoableSetBlock(world, selectionManager, s.getPos(), Blocks.air));
+				setBlocks.add(new UndoableSetBlock(world, selectionManager, s.getPos(), Blocks.air.getDefaultState()));
 			}
 		}
 
@@ -68,11 +68,11 @@ public class SpellDrop extends Spell {
 			Block b = world.getBlock(pos.down(distance));
 			if (b == Blocks.air) {
 				if (world.getBlock(pos.down(distance + 1)) != Blocks.air) {
-					setBlocks.add(new UndoableSetBlock(world, selectionManager, pos.down(distance), s.getBlock()));
+					setBlocks.add(new UndoableSetBlock(world, selectionManager, pos.down(distance), s.getState()));
 					break;
 				} else {
 					if (fill) {
-						setBlocks.add(new UndoableSetBlock(world, selectionManager, pos.down(distance), s.getBlock()));
+						setBlocks.add(new UndoableSetBlock(world, selectionManager, pos.down(distance), s.getState()));
 					}
 				}
 			}
@@ -86,7 +86,7 @@ public class SpellDrop extends Spell {
 		for (int distance = 1;; distance++) {
 			Block b = world.getBlock(pos.up(distance));
 			if (b == Blocks.air) {
-				setBlocks.add(new UndoableSetBlock(world, selectionManager, pos.up(distance), s.getBlock()));
+				setBlocks.add(new UndoableSetBlock(world, selectionManager, pos.up(distance), s.getState()));
 				break;
 			}
 		}

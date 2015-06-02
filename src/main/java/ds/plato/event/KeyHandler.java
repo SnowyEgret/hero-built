@@ -59,7 +59,7 @@ public class KeyHandler {
 	public void onKeyInput(KeyInputEvent event) {
 	
 		IPlayer player = Player.getPlayer();
-		IWorld w = player.getWorld();
+		IWorld world = player.getWorld();
 
 		if (keyBindings.get("undo").isPressed()) {
 			try {
@@ -117,34 +117,35 @@ public class KeyHandler {
 		}
 
 		if (keyBindings.get("delete").isPressed()) {
-			new SpellDelete(undoManager, selectionManager, pickManager).invoke(w, player.getHotbar());
+			new SpellDelete(undoManager, selectionManager, pickManager).invoke(world, player.getHotbar());
 		}
 
 		if (keyBindings.get("lastSelection").isPressed()) {
-			selectionManager.reselect(w);
+			selectionManager.reselect(world);
 		}
 
 		if (keyBindings.get("left").isPressed()) {
-			copy(player, w, -1, 0);
+			copy(player, world, -1, 0);
 		}
 
 		if (keyBindings.get("right").isPressed()) {
-			copy(player, w, 1, 0);
+			copy(player, world, 1, 0);
 		}
 
 		if (keyBindings.get("up").isPressed()) {
+			//This should be alt so that control can be deleteOriginal
 			if (Keyboard.isKeyDown(Keyboard.KEY_RCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
-				copyVertical(player, w, 1);
+				copyVertical(player, world, 1);
 			} else {
-				copy(player, w, 0, -1);
+				copy(player, world, 0, -1);
 			}
 		}
 
 		if (keyBindings.get("down").isPressed()) {
 			if (Keyboard.isKeyDown(Keyboard.KEY_RCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
-				copyVertical(player, w, -1);
+				copyVertical(player, world, -1);
 			} else {
-				copy(player, w, 0, 1);
+				copy(player, world, 0, 1);
 			}
 		}
 

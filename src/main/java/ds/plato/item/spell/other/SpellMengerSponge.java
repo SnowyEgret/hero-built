@@ -37,7 +37,7 @@ public class SpellMengerSponge extends Spell {
 		pickManager.clearPicks();
 		Transaction t = undoManager.newTransaction();
 		for (BlockPos v : pointsToDelete) {
-			t.add(new UndoableSetBlock(world, selectionManager, v, Blocks.air).set());
+			t.add(new UndoableSetBlock(world, selectionManager, v, Blocks.air.getDefaultState()).set());
 		}
 		t.commit();
 	}

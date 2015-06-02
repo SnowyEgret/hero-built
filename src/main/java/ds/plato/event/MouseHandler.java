@@ -66,7 +66,8 @@ public class MouseHandler {
 					BlockPos pos = cursor.getBlockPos();
 					if (selectionManager.isSelected(pos)) {
 						Block b = ((ItemBlock) heldItem).getBlock();
-						new SpellFill(undoManager, selectionManager, pickManager).invoke(w, new HotbarSlot(b, 0));
+						//TODO do we want atual state?
+						new SpellFill(undoManager, selectionManager, pickManager).invoke(w, new HotbarSlot(b.getDefaultState(), 0));
 						e.setCanceled(true);
 					}
 				}

@@ -40,6 +40,8 @@ import ds.plato.network.PrevSpellMessage;
 import ds.plato.network.PrevSpellMessageHandler;
 import ds.plato.network.SetBlockMessage;
 import ds.plato.network.SetBlockMessageHandler;
+import ds.plato.network.SetBlockStateMessage;
+import ds.plato.network.SetBlockStateMessageHandler;
 import ds.plato.pick.IPick;
 import ds.plato.pick.PickManager;
 import ds.plato.player.Player;
@@ -126,6 +128,7 @@ public class Plato {
 		network.registerMessage(SetBlockMessageHandler.class, SetBlockMessage.class, 0, Side.SERVER);
 		network.registerMessage(PrevSpellMessageHandler.class, PrevSpellMessage.class, 1, Side.SERVER);
 		network.registerMessage(NextSpellMessageHandler.class, NextSpellMessage.class, 2, Side.SERVER);
+		network.registerMessage(SetBlockStateMessageHandler.class, SetBlockStateMessage.class, 3, Side.SERVER);
 
 		//Create custom state mappers for BlockSelected and BlockPicked models
 		ModelLoader.setCustomStateMapper(blockSelected, new StateMapperBase() {

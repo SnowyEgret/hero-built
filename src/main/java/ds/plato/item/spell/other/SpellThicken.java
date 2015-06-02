@@ -34,7 +34,7 @@ public class SpellThicken extends AbstractSpellTransform {
 	@Override
 	public void invoke(final IWorld world, HotbarSlot... slots) {
 		Set<BlockPos> positions = new HashSet<>();
-		Selection first = selectionManager.firstSelection();
+		Selection firstSelection = selectionManager.firstSelection();
 		IntegerDomain domain = selectionManager.getDomain();
 		if (domain.isPlanar()) {
 			thickenPlane(positions, domain, world);
@@ -47,7 +47,7 @@ public class SpellThicken extends AbstractSpellTransform {
 
 		Transaction t = undoManager.newTransaction();
 		for (BlockPos p : positions) {
-			t.add(new UndoableSetBlock(world, selectionManager, p, first.getBlock()).set());
+			t.add(new UndoableSetBlock(world, selectionManager, p, firstSelection.getState()).set());
 		}
 		t.commit();
 	}

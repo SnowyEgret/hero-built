@@ -24,7 +24,7 @@ public class SpellSphereTest extends PlatoTest {
 	public void setUp() {
 		super.setUp();
 		slots = new HotbarSlot[] {new HotbarSlot(dirt, 0)};
-		picks = new Pick[] {new Pick(p0, dirt, null), new Pick(new BlockPos(9, 0, 0), dirt, null)};
+		picks = new Pick[] {new Pick(p0, dirt.getBlock(), null), new Pick(new BlockPos(9, 0, 0), dirt.getBlock(), null)};
 		when(pickManager.isFinishedPicking()).thenReturn(true);
 		when(undoManager.newTransaction()).thenReturn(new Transaction(undoManager));
 	}
@@ -38,6 +38,6 @@ public class SpellSphereTest extends PlatoTest {
 		ISpell s = new SpellSphere(undoManager, selectionManager, pickManager);
 		//s.invoke(picks, slotEntries);
 		s.invoke(world, slots);
-		verify(world).setBlock(new BlockPos(9, 0, 0), dirt);
+		verify(world).setBlockState(new BlockPos(9, 0, 0), dirt);
 	}
 }

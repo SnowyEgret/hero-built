@@ -47,8 +47,10 @@ public class SelectionManager implements ISelect {
 		IBlockState state = world.getBlockState(pos);
 		//Check if the block has overridden getActualState
 		state = b.getActualState(state, world.getWorld(), pos);
-		world.setBlock(pos, blockSelected);
+		//world.setBlock(pos, blockSelected);
+		world.setBlockState(pos, blockSelected.getDefaultState());
 
+		//TODO add state to constructor
 		Selection s = new Selection(pos, b);
 		s.setState(state);
 		selections.put(s.getPos(), s);
@@ -62,7 +64,7 @@ public class SelectionManager implements ISelect {
 		// //Look up pick from pickManager
 		// //b = ((BlockPicked)b).getPos())
 		// }
-		world.setBlock(selection.getPos(), selection.getBlock());
+		//world.setBlock(selection.getPos(), selection.getBlock());
 		world.setBlockState(selection.getPos(), selection.getState());
 		selections.remove(selection.getPos());
 	}

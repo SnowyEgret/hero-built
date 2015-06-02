@@ -51,7 +51,7 @@ public class SpellHoleFill extends Spell {
 					if (useBlockInHotbar) {
 						setBlocks.add(new UndoableSetBlock(world, selectionManager, p, slots[0].block));
 					} else {
-						setBlocks.add(new UndoableSetBlock(world, selectionManager, p, s.getBlock()));
+						setBlocks.add(new UndoableSetBlock(world, selectionManager, p, s.getState()));
 					}
 				}
 			}

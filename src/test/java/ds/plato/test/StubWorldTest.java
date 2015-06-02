@@ -5,6 +5,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertEquals;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirt;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.BlockPos;
 
 import org.junit.Before;
@@ -26,8 +27,8 @@ public class StubWorldTest extends PlatoTest {
 
 	@Test
 	public void setBlock_getBlock() {
-		Block blockSet = sand;
-		w.setBlock(p0, blockSet);
+		IBlockState blockSet = sand;
+		w.setBlockState(p0, blockSet);
 		Block blockGot = w.getBlock(p0);
 		assertEquals(blockSet, blockGot);
 	}
@@ -39,8 +40,8 @@ public class StubWorldTest extends PlatoTest {
 
 	@Test
 	public void setBlock_twice() {
-		w.setBlock(p0, sand);
-		w.setBlock(p0, dirt);
+		w.setBlockState(p0, sand);
+		w.setBlockState(p0, dirt);
 		assertEquals(dirt, w.getBlock(p0));
 	}
 

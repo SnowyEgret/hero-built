@@ -2,10 +2,11 @@ package ds.plato.undo;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
+import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.BlockPos;
 import ds.plato.select.ISelect;
 import ds.plato.select.Selection;
-import ds.plato.util.StringUtils;
 import ds.plato.world.IWorld;
 
 public class UndoableSetBlock implements IUndoable {
@@ -13,18 +14,18 @@ public class UndoableSetBlock implements IUndoable {
 	IWorld world;
 	ISelect selectionManager;
 	BlockPos pos;
-	Block block, prevBlock;
-
+	IBlockState state, prevState;
+	
 	public UndoableSetBlock(IWorld world, ISelect selectionManager, Selection s) {
-		this(world, selectionManager, s.getPos(), s.getBlock());
+		this(world, selectionManager, s.getPos(), s.getState());
 	}
 
-	public UndoableSetBlock(IWorld world, ISelect selectionManager, BlockPos pos, Block block) {
+	public UndoableSetBlock(IWorld world, ISelect selectionManager, BlockPos pos, IBlockState state) {
 		this.world = world;
 		this.selectionManager = selectionManager;
 		this.pos = pos;
-		this.block = block;
-		prevBlock = world.getBlock(pos);
+		this.state = state;
+		prevState = world.getBlockState(pos);
 	}
 
 	public UndoableSetBlock set() {
@@ -32,11 +33,13 @@ public class UndoableSetBlock implements IUndoable {
 		Selection s = selectionManager.getSelection(pos);
 		selectionManager.removeSelection(pos);
 		if (s != null) {
-			prevBlock = s.getBlock();
+			//prevBlock = s.getBlock();
+			prevState = s.getState();
 		}
-		world.setBlock(pos, block);
+		//world.setBlock(pos, block);
+		world.setBlockState(pos, state);
 
-		if (!(block instanceof BlockAir)) {
+		if (!(state.getBlock() instanceof BlockAir)) {
 			selectionManager.select(world, pos);
 		}
 		return this;
@@ -45,22 +48,24 @@ public class UndoableSetBlock implements IUndoable {
 	@Override
 	public void undo() {
 		selectionManager.deselect(world, pos);
-		world.setBlock(pos, prevBlock);
+		//world.setBlock(pos, prevBlock);
+		world.setBlockState(pos, prevState);
 	}
 
 	@Override
 	public void redo() {
-		world.setBlock(pos, block);
+		//world.setBlock(pos, block);
+		world.setBlockState(pos, state);
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((block == null) ? 0 : block.hashCode());
+		result = prime * result + ((state == null) ? 0 : state.hashCode());
 		result = prime * result + ((pos == null) ? 0 : pos.hashCode());
 		result = prime * result
-				+ ((prevBlock == null) ? 0 : prevBlock.hashCode());
+				+ ((prevState == null) ? 0 : prevState.hashCode());
 		return result;
 	}
 
@@ -73,20 +78,20 @@ public class UndoableSetBlock implements IUndoable {
 		if (getClass() != obj.getClass())
 			return false;
 		UndoableSetBlock other = (UndoableSetBlock) obj;
-		if (block == null) {
-			if (other.block != null)
+		if (state == null) {
+			if (other.state != null)
 				return false;
-		} else if (!block.equals(other.block))
+		} else if (!state.equals(other.state))
 			return false;
 		if (pos == null) {
 			if (other.pos != null)
 				return false;
 		} else if (!pos.equals(other.pos))
 			return false;
-		if (prevBlock == null) {
-			if (other.prevBlock != null)
+		if (prevState == null) {
+			if (other.prevState != null)
 				return false;
-		} else if (!prevBlock.equals(other.prevBlock))
+		} else if (!prevState.equals(other.prevState))
 			return false;
 		return true;
 	}
@@ -96,10 +101,10 @@ public class UndoableSetBlock implements IUndoable {
 		StringBuilder builder = new StringBuilder();
 		builder.append("SetBlock [pos=");
 		builder.append(pos);
-		builder.append(", block=");
-		builder.append(block);
-		builder.append(", prevBlock=");
-		builder.append(prevBlock);
+		builder.append(", state=");
+		builder.append(state);
+		builder.append(", prevState=");
+		builder.append(prevState);
 		builder.append("]");
 		return builder.toString();
 	}

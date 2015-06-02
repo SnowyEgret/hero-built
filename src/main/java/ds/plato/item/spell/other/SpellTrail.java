@@ -31,7 +31,7 @@ public class SpellTrail extends Spell {
 		selectionManager.clearSelections(world);
 		pickManager.clearPicks();
 		for (Selection s : selections) {
-			world.setBlock(s.getPos(), slots[0].block);
+			world.setBlockState(s.getPos(), slots[0].block);
 		}
 		transaction.commit();
 	}

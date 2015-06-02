@@ -87,7 +87,6 @@ public abstract class Spell extends ItemBase implements ISpell {
 
 		// Control adds or subtracts a selection to the current selections
 		if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
-			System.out.println("pos=" + pos);
 			if (selectionManager.isSelected(pos)) {
 				selectionManager.deselect(w, pos);
 			} else {

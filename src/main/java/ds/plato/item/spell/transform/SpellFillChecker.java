@@ -29,7 +29,9 @@ public class SpellFillChecker extends AbstractSpellTransform {
 				} else {
 					i = ((y & 1) == 0) ? 1 : 0;
 				}
-				s.setBlock(slots[i].block);
+				//TODO only state
+				s.setBlock(slots[i].block.getBlock());
+				s.setState(slots[i].block);
 				return s;
 			}
 		});
