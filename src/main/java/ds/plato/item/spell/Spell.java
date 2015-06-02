@@ -52,8 +52,8 @@ public abstract class Spell extends ItemBase implements ISpell {
 		int dx = pos.getX() - p.getX();
 		int dy = pos.getY() - p.getY();
 		int dz = pos.getZ() - p.getZ();
-		//System.out.println(dx);
-		//System.out.println(dy);
+		// System.out.println(dx);
+		// System.out.println(dy);
 		if (dx == 0 && dz == 0 && dy > 0) {
 			if (dy > jumpHeight) {
 				jumpHeight = dy;
@@ -71,7 +71,14 @@ public abstract class Spell extends ItemBase implements ISpell {
 		if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) && selectionManager.size() != 0) {
 			BlockPos lastPos = selectionManager.lastSelection().getPos();
 			Block b = selectionManager.firstSelection().getBlock();
-			selectionManager.clearSelections(w);
+			//Fix for: MultiPlayer: First selection is not included when shift selecting a region #75
+			//In MP selections block was not set fast enough so position was rejected
+			//in SelectionManager.select in test for block instanceof BlockSelected
+			//resulting in the first selection being left unselected. Only clear if we
+			//need to.
+			if (selectionManager.size() > 1) {
+				selectionManager.clearSelections(w);
+			}
 			// TODO modifier for block type
 			for (Object o : BlockPos.getAllInBox(lastPos, pos)) {
 				if (Keyboard.isKeyDown(Keyboard.KEY_LMENU)) {

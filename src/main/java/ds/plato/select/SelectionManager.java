@@ -36,23 +36,17 @@ public class SelectionManager implements ISelect {
 	public Selection select(IWorld world, BlockPos pos) {
 		IBlockState state = world.getBlockState(pos);
 		Block b = (state.getBlock());
-		// Policy is not to select air
 		if (b instanceof BlockAir) {
 			return null;
 		}
-		// Added when created SpellTrail
 		if (b instanceof BlockSelected) {
 			return getSelection(pos);
 		}
-		//Get the state before setting the block
-		IBlockState prevState = world.getBlockState(pos);
-		//Check if the block has overridden getActualState
-		prevState = b.getActualState(state, world.getWorld(), pos);
+		state = b.getActualState(state, world.getWorld(), pos);
+		Selection selection = new Selection(pos, state);
+		selections.put(pos, selection);
 		world.setBlockState(pos, blockSelected.getDefaultState());
-
-		Selection s = new Selection(pos, state);
-		selections.put(pos, s);
-		return s;
+		return selection;
 	}
 
 	@Override
