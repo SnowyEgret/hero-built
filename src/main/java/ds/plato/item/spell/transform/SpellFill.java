@@ -1,5 +1,8 @@
 package ds.plato.item.spell.transform;
 
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.BlockPos;
+import net.minecraftforge.common.IPlantable;
 import ds.plato.pick.IPick;
 import ds.plato.player.HotbarSlot;
 import ds.plato.select.ISelect;

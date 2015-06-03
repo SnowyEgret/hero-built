@@ -58,15 +58,15 @@ public class Player implements IPlayer {
 	@Override
 	public IWorld getWorld() {
 
-		// World w = null;
-		// Minecraft mc = Minecraft.getMinecraft();
-		// IntegratedServer integratedServer = mc.getIntegratedServer();
-		// if (integratedServer != null) {
-		// w = integratedServer.worldServerForDimension(player.dimension);
-		// } else {
-		// w = mc.theWorld;
-		// }
-		// return new WorldWrapper(w);
+//		 World w = null;
+//		 Minecraft mc = Minecraft.getMinecraft();
+//		 IntegratedServer integratedServer = mc.getIntegratedServer();
+//		 if (integratedServer != null) {
+//		 w = integratedServer.worldServerForDimension(player.dimension);
+//		 } else {
+//		 w = mc.theWorld;
+//		 }
+//		 return new WorldWrapper(w);
 
 		// Force messaging between client and server
 		return new WorldWrapper(Minecraft.getMinecraft().theWorld);

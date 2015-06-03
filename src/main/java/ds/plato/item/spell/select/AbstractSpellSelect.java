@@ -60,7 +60,7 @@ public abstract class AbstractSpellSelect extends Spell {
 		if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
 			shrinkSelections(world);
 		} else {
-			Block patternBlock = selectionManager.firstSelection().getBlock();
+			Block patternBlock = selectionManager.firstSelection().getState().getBlock();
 			growSelections(world, patternBlock);
 		}
 	}
@@ -75,7 +75,8 @@ public abstract class AbstractSpellSelect extends Spell {
 				if (!test(world, p)) {
 					continue;
 				}
-				Block block = world.getBlock(p);
+				//Block block = world.getBlock(p);
+				Block block = world.getBlockState(p).getBlock();
 				if (!(block instanceof BlockAir) && !(block instanceof BlockSelected)) {
 					if (Keyboard.isKeyDown(Keyboard.KEY_LMENU)) {
 						selectionManager.select(world, p);

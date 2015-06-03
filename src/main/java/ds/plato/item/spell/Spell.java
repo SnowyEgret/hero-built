@@ -3,6 +3,7 @@ package ds.plato.item.spell;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
@@ -70,23 +71,27 @@ public abstract class Spell extends ItemBase implements ISpell {
 		// Shift replaces the current selections with a region.
 		if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) && selectionManager.size() != 0) {
 			BlockPos lastPos = selectionManager.lastSelection().getPos();
-			Block b = selectionManager.firstSelection().getBlock();
-			//Fix for: MultiPlayer: First selection is not included when shift selecting a region #75
-			//In MP selections block was not set fast enough so position was rejected
-			//in SelectionManager.select in test for block instanceof BlockSelected
-			//resulting in the first selection being left unselected. Only clear if we
-			//need to.
+			IBlockState firstState = selectionManager.firstSelection().getState();
+			// Fix for: MultiPlayer: First selection is not included when shift selecting a region #75
+			// In MP selections block was not set fast enough so position was rejected
+			// in SelectionManager.select in test for block instanceof BlockSelected
+			// resulting in the first selection being left unselected. Only clear if we
+			// need to.
 			if (selectionManager.size() > 1) {
 				selectionManager.clearSelections(w);
 			}
 			// TODO modifier for block type
 			for (Object o : BlockPos.getAllInBox(lastPos, pos)) {
+				BlockPos p = (BlockPos) o;
 				if (Keyboard.isKeyDown(Keyboard.KEY_LMENU)) {
-					if (w.getBlock((BlockPos) o) == b) {
-						selectionManager.select(w, (BlockPos) o);
+					//TODO create method getActualState() in interface IWorld
+					IBlockState state = w.getBlockState(p);
+					state = state.getBlock().getActualState(state, w.getWorld(), p);
+					if (state == firstState) {
+						selectionManager.select(w, p);
 					}
 				} else {
-					selectionManager.select(w, (BlockPos) o);
+					selectionManager.select(w, p);
 				}
 			}
 			return;

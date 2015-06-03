@@ -19,11 +19,9 @@ public class SpellFillRandom extends AbstractSpellTransform {
 		transformSelections(world, new ITransform() {
 			@Override
 			public Selection transform(Selection s) {
-				HotbarDistribution d = new HotbarDistribution(slots);
-				HotbarSlot slot = d.randomSlot();
-				s.setBlock(slot.state.getBlock());
-				s.setState(slot.state);
-				return s;
+				HotbarDistribution distribution = new HotbarDistribution(slots);
+				HotbarSlot slot = distribution.randomSlot();
+				return new Selection(s.getPos(), slot.state);
 			}
 		});
 	}

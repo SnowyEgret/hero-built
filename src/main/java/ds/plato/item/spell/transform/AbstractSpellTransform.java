@@ -1,5 +1,11 @@
 package ds.plato.item.spell.transform;
 
+import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.IPlantable;
 import ds.plato.item.spell.Spell;
 import ds.plato.pick.IPick;
 import ds.plato.select.ISelect;
@@ -16,17 +22,29 @@ public abstract class AbstractSpellTransform extends Spell {
 	}
 
 	protected void transformSelections(IWorld world, ITransform transformer) {
-		//System.out.println("world="+world);
+		// System.out.println("world="+world);
 		if (selectionManager.getSelectionList().size() != 0) {
 			Transaction t = undoManager.newTransaction();
-			for (Selection s : selectionManager.getSelections()) {
+			Iterable<Selection> selections = selectionManager.getSelections();
+			// Clear the selections because BlockSelected is still rendering with old state
+			// Player can reselect last
+			selectionManager.clearSelections(world);
+			for (Selection s : selections) {
 				s = transformer.transform(s);
-				t.add(new UndoableSetBlock(world, selectionManager, s.getPos(), s.getState()).set());
+				BlockPos pos = s.getPos();
+				IBlockState state = s.getState();
+				if (state.getBlock() instanceof IPlantable) {
+					//TODO only plant if block beneath can sustain a plant
+					//if (world.getBlockState(pos).getBlock()
+					//		.canSustainPlant(world.getWorld(), pos, EnumFacing.UP, (IPlantable) state.getBlock())) {
+						pos = pos.up();
+					//} else {
+					//	continue;
+					//}
+				}
+				t.add(new UndoableSetBlock(world, selectionManager, pos, state).set());
 			}
 			t.commit();
-			//Clear the selections because BlockSelected is still rendering with old state
-			//Player can reselect last
-			selectionManager.clearSelections(world);
 		}
 		pickManager.clearPicks();
 	}
