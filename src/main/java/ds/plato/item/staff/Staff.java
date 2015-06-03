@@ -8,19 +8,16 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.relauncher.Side;
 
 import org.lwjgl.input.Keyboard;
 
-import ds.plato.Plato;
 import ds.plato.gui.GuiHandler;
 import ds.plato.item.ItemBase;
 import ds.plato.item.spell.ISpell;
 import ds.plato.item.spell.Spell;
-import ds.plato.network.NextSpellMessage;
-import ds.plato.network.PrevSpellMessage;
 import ds.plato.pick.IPick;
+import ds.plato.player.Player;
+import ds.plato.world.WorldWrapper;
 
 public abstract class Staff extends ItemBase implements IStaff {
 
@@ -62,8 +59,11 @@ public abstract class Staff extends ItemBase implements IStaff {
 		// We are on the server side. Open staff gui if space bar is down
 		if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
 		//if (player.isSneaking()) {
-			player.openGui(Plato.instance, GuiHandler.GUI_STAFF, world, (int) player.posX, (int) player.posY,
-					(int) player.posZ);
+			//TODO
+			//IPlayer.getPlayer(player).openGui(GuiHandler.GUI_STAFF, IWorld.getWorld(world));
+			new Player(player).openGui(GuiHandler.GUI_STAFF, new WorldWrapper(world));
+			//player.openGui(Plato.instance, GuiHandler.GUI_STAFF, world, (int) player.posX, (int) player.posY,
+			//		(int) player.posZ);
 			return true;
 		}
 

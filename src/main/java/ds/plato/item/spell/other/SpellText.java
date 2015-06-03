@@ -55,9 +55,9 @@ public class SpellText extends Spell implements ITextSetable {
 	public void invoke(IWorld world, IPlayer player) {
 		this.world = world;
 		//this.slots = slots;
-		Minecraft.getMinecraft().thePlayer.openGui(Plato.instance, GuiHandler.GUI_SPELL_TEXT, world.getWorld(), 0, 0, 0);
+		//Minecraft.getMinecraft().thePlayer.openGui(Plato.instance, GuiHandler.GUI_SPELL_TEXT, world.getWorld(), 0, 0, 0);
 		//TODO openGui in Player
-		//player.openGui(Plato.instance, GuiHandler.GUI_SPELL_TEXT, world.getWorld(), 0, 0, 0);
+		player.openGui(GuiHandler.GUI_SPELL_TEXT, world);
 		picks = pickManager.getPicks();
 		// Clear the picks because player may have cancelled
 		pickManager.clearPicks();

@@ -1,5 +1,6 @@
 package ds.plato.player;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
@@ -34,4 +35,11 @@ public interface IPlayer {
 	public abstract BlockPos getPosition();
 
 	public abstract boolean isFlying();
+
+	public abstract void openGui(int id, IWorld world);
+
+	// Thought I saw something like this somewhere
+	// public static IPlayer getPlayer(EntityPlayer player) {
+	// this.player = player;
+	// }
 }

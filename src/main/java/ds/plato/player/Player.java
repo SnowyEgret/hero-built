@@ -13,10 +13,9 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.Vec3;
-import net.minecraft.world.World;
+import ds.plato.Plato;
 import ds.plato.item.spell.ISpell;
 import ds.plato.item.spell.Spell;
 import ds.plato.item.staff.Staff;
@@ -220,5 +219,10 @@ public class Player implements IPlayer {
 	@Override
 	public boolean isFlying() {
 		return player.capabilities.isFlying;
+	}
+
+	@Override
+	public void openGui(int id, IWorld world) {
+		player.openGui(Plato.instance, id, world.getWorld(), (int)player.posX, (int)player.posY, (int)player.posZ);
 	}
 }
