@@ -11,7 +11,7 @@ import net.minecraft.util.BlockPos;
 import ds.plato.item.spell.Spell;
 import ds.plato.item.spell.select.Select;
 import ds.plato.pick.IPick;
-import ds.plato.player.HotbarSlot;
+import ds.plato.player.IPlayer;
 import ds.plato.select.ISelect;
 import ds.plato.undo.IUndo;
 import ds.plato.undo.Transaction;
@@ -33,7 +33,7 @@ public class SpellHoleDrain extends Spell {
 	}
 
 	@Override
-	public void invoke(IWorld world, HotbarSlot... slotEntries) {
+	public void invoke(IWorld world, IPlayer player) {
 		positions.clear();
 		positionsSize = 0;
 		BlockPos pos = pickManager.getPicks()[0].getPos();
@@ -84,5 +84,4 @@ public class SpellHoleDrain extends Spell {
 		positionsSize = positions.size();
 		drainWater(world);
 	}
-
 }

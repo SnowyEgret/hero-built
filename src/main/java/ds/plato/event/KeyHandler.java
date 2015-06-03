@@ -92,7 +92,7 @@ public class KeyHandler {
 		}
 
 		if (keyBindings.get("delete").isPressed()) {
-			new SpellDelete(undoManager, selectionManager, pickManager).invoke(world, player.getHotbar());
+			new SpellDelete(undoManager, selectionManager, pickManager).invoke(world, null);
 		}
 
 		if (keyBindings.get("lastSelection").isPressed()) {
@@ -150,7 +150,7 @@ public class KeyHandler {
 		}
 		if (selectionManager.size() != 0) {
 			//FIXME not reselecting in MP
-			new SpellCopy(undoManager, selectionManager, pickManager).invoke(w, player.getHotbar());
+			new SpellCopy(undoManager, selectionManager, pickManager).invoke(w, null);
 		}
 		pickManager.clearPicks();
 	}
@@ -161,7 +161,7 @@ public class KeyHandler {
 		pickManager.pick(world, new BlockPos(0,0,0), null);
 		pickManager.pick(world, new BlockPos(0,upDown,0), null);
 		//FIXME not reselecting in MP
-		new SpellCopy(undoManager, selectionManager, pickManager).invoke(world, player.getHotbar());
+		new SpellCopy(undoManager, selectionManager, pickManager).invoke(world, null);
 		pickManager.clearPicks();
 	}
 

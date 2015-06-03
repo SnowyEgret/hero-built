@@ -4,7 +4,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.BlockPos;
 import net.minecraftforge.common.IPlantable;
 import ds.plato.pick.IPick;
-import ds.plato.player.HotbarSlot;
+import ds.plato.player.IPlayer;
 import ds.plato.select.ISelect;
 import ds.plato.select.Selection;
 import ds.plato.undo.IUndo;
@@ -17,14 +17,14 @@ public class SpellFill extends AbstractSpellTransform {
 	}
 
 	@Override
-	public void invoke(IWorld world, final HotbarSlot...slots) {
+	public void invoke(IWorld world, final IPlayer player) {
 		transformSelections(world, new ITransform() {
 			@Override
 			public Selection transform(Selection s) {
 				// Create a copy here because we don't want to modify the selection list.
 				// Use first (left-most) block in inventory
-				return new Selection(s.getPos(), slots[0].state);
+				return new Selection(s.getPos(), player.getHotbar()[0].state);
 			}
 		});
-	}
+	}	
 }

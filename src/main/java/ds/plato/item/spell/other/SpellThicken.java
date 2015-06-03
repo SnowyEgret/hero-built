@@ -15,7 +15,7 @@ import ds.plato.item.spell.Modifier;
 import ds.plato.item.spell.select.Select;
 import ds.plato.item.spell.transform.AbstractSpellTransform;
 import ds.plato.pick.IPick;
-import ds.plato.player.HotbarSlot;
+import ds.plato.player.IPlayer;
 import ds.plato.select.ISelect;
 import ds.plato.select.Selection;
 import ds.plato.undo.IUndo;
@@ -32,7 +32,7 @@ public class SpellThicken extends AbstractSpellTransform {
 	}
 
 	@Override
-	public void invoke(final IWorld world, HotbarSlot... slots) {
+	public void invoke(final IWorld world, IPlayer player) {
 		Set<BlockPos> positions = new HashSet<>();
 		Selection firstSelection = selectionManager.firstSelection();
 		IntegerDomain domain = selectionManager.getDomain();
@@ -110,5 +110,4 @@ public class SpellThicken extends AbstractSpellTransform {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 }

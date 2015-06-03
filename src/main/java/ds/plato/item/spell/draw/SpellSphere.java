@@ -9,7 +9,7 @@ import ds.geom.surface.Sphere;
 import ds.plato.item.spell.Modifier;
 import ds.plato.pick.IPick;
 import ds.plato.pick.Pick;
-import ds.plato.player.HotbarSlot;
+import ds.plato.player.IPlayer;
 import ds.plato.select.ISelect;
 import ds.plato.undo.IUndo;
 import ds.plato.world.IWorld;
@@ -22,11 +22,11 @@ public class SpellSphere extends AbstractSpellDraw {
 	}
 
 	@Override
-	public void invoke(IWorld world, final HotbarSlot... slots) {
+	public void invoke(IWorld world, IPlayer player) {
 		Pick[] picks = pickManager.getPicks();
 		boolean isHemisphere = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
 		IDrawable d = new Sphere(picks[0].point3d(), picks[1].point3d(), isHemisphere);
-		draw(d, world, slots[0].state);
+		draw(d, world, player.getHotbar()[0].state);
 	}
 
 	@Override

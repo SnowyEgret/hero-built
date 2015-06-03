@@ -3,6 +3,7 @@ package ds.plato.item.spell.transform;
 import ds.plato.pick.IPick;
 import ds.plato.player.HotbarDistribution;
 import ds.plato.player.HotbarSlot;
+import ds.plato.player.IPlayer;
 import ds.plato.select.ISelect;
 import ds.plato.select.Selection;
 import ds.plato.undo.IUndo;
@@ -15,11 +16,11 @@ public class SpellFillRandom extends AbstractSpellTransform {
 	}
 
 	@Override
-	public void invoke(IWorld world, final HotbarSlot...slots) {
+	public void invoke(IWorld world, final IPlayer player) {
 		transformSelections(world, new ITransform() {
 			@Override
 			public Selection transform(Selection s) {
-				HotbarDistribution distribution = new HotbarDistribution(slots);
+				HotbarDistribution distribution = new HotbarDistribution(player.getHotbar());
 				HotbarSlot slot = distribution.randomSlot();
 				return new Selection(s.getPos(), slot.state);
 			}

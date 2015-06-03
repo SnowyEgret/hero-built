@@ -9,7 +9,7 @@ import ds.geom.solid.RectangularPyramid;
 import ds.plato.item.spell.Modifier;
 import ds.plato.pick.IPick;
 import ds.plato.pick.Pick;
-import ds.plato.player.HotbarSlot;
+import ds.plato.player.IPlayer;
 import ds.plato.select.ISelect;
 import ds.plato.undo.IUndo;
 import ds.plato.world.IWorld;
@@ -22,13 +22,13 @@ public class SpellPyramid extends AbstractSpellDraw {
 	}
 
 	@Override
-	public void invoke(IWorld world, HotbarSlot... slots) {
+	public void invoke(IWorld world, IPlayer player) {
 		boolean isSquare = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL);
 		Pick[] picks = pickManager.getPicks();
 		Point3d p0 = picks[0].point3d();
 		Point3d p1 = picks[1].point3d();
 		IDrawable d = new RectangularPyramid(p0, p1, isSquare);
-		draw(d, world, slots[0].state);
+		draw(d, world, player.getHotbar()[0].state);
 	}
 
 	@Override

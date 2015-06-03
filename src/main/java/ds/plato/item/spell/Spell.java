@@ -15,7 +15,6 @@ import org.lwjgl.input.Keyboard;
 
 import ds.plato.item.ItemBase;
 import ds.plato.pick.IPick;
-import ds.plato.player.HotbarSlot;
 import ds.plato.player.IPlayer;
 import ds.plato.player.Player;
 import ds.plato.select.ISelect;
@@ -126,7 +125,7 @@ public abstract class Spell extends ItemBase implements ISpell {
 		IWorld w = new WorldWrapper(world);
 		pickManager.pick(w, pos, side);
 		if (pickManager.isFinishedPicking()) {
-			invoke(w, new Player(playerIn).getHotbar());
+			invoke(w, new Player(playerIn));
 		}
 		return true;
 	}
@@ -139,7 +138,7 @@ public abstract class Spell extends ItemBase implements ISpell {
 	// ISpell --------------------------------------------
 
 	@Override
-	public abstract void invoke(IWorld world, final HotbarSlot... slots);
+	public abstract void invoke(IWorld world, IPlayer player);
 
 	@Override
 	public String getMessage() {

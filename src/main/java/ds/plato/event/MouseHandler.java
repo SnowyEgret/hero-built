@@ -17,7 +17,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import ds.plato.item.IItem;
 import ds.plato.item.spell.transform.SpellFill;
 import ds.plato.pick.IPick;
-import ds.plato.player.HotbarSlot;
 import ds.plato.player.IPlayer;
 import ds.plato.player.Player;
 import ds.plato.select.ISelect;
@@ -70,7 +69,7 @@ public class MouseHandler {
 						int meta = heldItem.getDamage(stack);
 						IBlockState state = b.getStateFromMeta(meta);
 						//FIXME not reselecting in MP
-						new SpellFill(undoManager, selectionManager, pickManager).invoke(w, new HotbarSlot(state, 0));
+						new SpellFill(undoManager, selectionManager, pickManager).invoke(w, null);
 						e.setCanceled(true);
 					}
 				}

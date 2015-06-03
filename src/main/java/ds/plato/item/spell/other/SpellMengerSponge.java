@@ -12,7 +12,7 @@ import ds.geom.IntegerDomain;
 import ds.geom.VoxelSet;
 import ds.plato.item.spell.Spell;
 import ds.plato.pick.IPick;
-import ds.plato.player.HotbarSlot;
+import ds.plato.player.IPlayer;
 import ds.plato.select.ISelect;
 import ds.plato.undo.IUndo;
 import ds.plato.undo.Transaction;
@@ -29,7 +29,7 @@ public class SpellMengerSponge extends Spell {
 	}
 
 	@Override
-	public void invoke(IWorld world, HotbarSlot...slots) {
+	public void invoke(IWorld world, IPlayer player) {
 		//TODO use enclosing cube
 		recursivelySubtract(selectionManager.voxelSet());
 		System.out.println("pointsToDelete=" + pointsToDelete);
@@ -82,4 +82,5 @@ public class SpellMengerSponge extends Spell {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
 }

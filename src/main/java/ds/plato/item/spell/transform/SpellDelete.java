@@ -2,7 +2,7 @@ package ds.plato.item.spell.transform;
 
 import net.minecraft.init.Blocks;
 import ds.plato.pick.IPick;
-import ds.plato.player.HotbarSlot;
+import ds.plato.player.IPlayer;
 import ds.plato.select.ISelect;
 import ds.plato.select.Selection;
 import ds.plato.undo.IUndo;
@@ -15,7 +15,7 @@ public class SpellDelete extends AbstractSpellTransform {
 	}
 
 	@Override
-	public void invoke(IWorld world, HotbarSlot...slots) {
+	public void invoke(IWorld world, IPlayer player) {
 		transformSelections(world, new ITransform() {
 			@Override
 			public Selection transform(Selection s) {
@@ -25,4 +25,5 @@ public class SpellDelete extends AbstractSpellTransform {
 			}
 		});
 	}
+	
 }

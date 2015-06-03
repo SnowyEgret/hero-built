@@ -13,7 +13,7 @@ import ds.geom.IDrawable;
 import ds.geom.curve.CircleXZ;
 import ds.plato.pick.IPick;
 import ds.plato.pick.Pick;
-import ds.plato.player.HotbarSlot;
+import ds.plato.player.IPlayer;
 import ds.plato.player.Player;
 import ds.plato.select.ISelect;
 import ds.plato.undo.IUndo;
@@ -26,7 +26,7 @@ public class SpellCircle extends AbstractSpellDraw {
 	}
 
 	@Override
-	public void invoke(IWorld world, HotbarSlot... slots) {
+	public void invoke(IWorld world, IPlayer player) {
 		Pick[] picks = pickManager.getPicks();
 		boolean onSurface = Keyboard.isKeyDown(Keyboard.KEY_LMENU);
 		Point3d p0 = picks[0].point3d();
@@ -36,7 +36,7 @@ public class SpellCircle extends AbstractSpellDraw {
 			p1.y += 1;
 		}
 		IDrawable d = new CircleXZ(p0, p1);
-		draw(d, world, slots[0].state);
+		draw(d, world, player.getHotbar()[0].state);
 	}
 
 	@Override

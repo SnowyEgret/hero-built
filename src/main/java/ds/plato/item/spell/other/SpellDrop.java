@@ -13,7 +13,7 @@ import org.lwjgl.input.Keyboard;
 import ds.plato.item.spell.Modifier;
 import ds.plato.item.spell.Spell;
 import ds.plato.pick.IPick;
-import ds.plato.player.HotbarSlot;
+import ds.plato.player.IPlayer;
 import ds.plato.select.ISelect;
 import ds.plato.select.Selection;
 import ds.plato.undo.IUndo;
@@ -29,7 +29,7 @@ public class SpellDrop extends Spell {
 	}
 
 	@Override
-	public void invoke(IWorld world, HotbarSlot... slots) {
+	public void invoke(IWorld world, IPlayer player) {
 
 		boolean deleteOriginal = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL);
 		boolean fill = Keyboard.isKeyDown(Keyboard.KEY_LMENU);
@@ -97,4 +97,5 @@ public class SpellDrop extends Spell {
 	public Object[] getRecipe() {
 		return null;
 	}
+	
 }

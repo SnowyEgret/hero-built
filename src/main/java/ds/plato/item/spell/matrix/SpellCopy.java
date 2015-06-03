@@ -10,7 +10,7 @@ import ds.geom.matrix.TranslationMatrix;
 import ds.plato.item.spell.Modifier;
 import ds.plato.pick.IPick;
 import ds.plato.pick.Pick;
-import ds.plato.player.HotbarSlot;
+import ds.plato.player.IPlayer;
 import ds.plato.select.ISelect;
 import ds.plato.undo.IUndo;
 import ds.plato.world.IWorld;
@@ -23,7 +23,7 @@ public class SpellCopy extends AbstractSpellMatrix {
 	}
 
 	@Override
-	public void invoke(IWorld world, final HotbarSlot... slots) {
+	public void invoke(IWorld world, IPlayer player) {
 		Pick[] picks = pickManager.getPicks();
 		Point3d from = picks[0].point3d();
 		Point3d to = picks[1].point3d();
@@ -40,4 +40,5 @@ public class SpellCopy extends AbstractSpellMatrix {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
 }

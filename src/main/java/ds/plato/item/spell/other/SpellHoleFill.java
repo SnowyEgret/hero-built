@@ -14,7 +14,7 @@ import ds.plato.item.spell.Modifier;
 import ds.plato.item.spell.Spell;
 import ds.plato.item.spell.select.Select;
 import ds.plato.pick.IPick;
-import ds.plato.player.HotbarSlot;
+import ds.plato.player.IPlayer;
 import ds.plato.select.ISelect;
 import ds.plato.select.Selection;
 import ds.plato.undo.IUndo;
@@ -35,7 +35,7 @@ public class SpellHoleFill extends Spell {
 	}
 
 	@Override
-	public void invoke(IWorld world, HotbarSlot... slots) {
+	public void invoke(IWorld world, IPlayer player) {
 		boolean isHorizontal = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL);
 		boolean useBlockInHotbar = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
 		Iterable<Selection> selections = selectionManager.getSelections();
@@ -49,7 +49,7 @@ public class SpellHoleFill extends Spell {
 				Block b = world.getBlock(p);
 				if (b == Blocks.air || b == Blocks.water) {
 					if (useBlockInHotbar) {
-						setBlocks.add(new UndoableSetBlock(world, selectionManager, p, slots[0].state));
+						setBlocks.add(new UndoableSetBlock(world, selectionManager, p, player.getHotbar()[0].state));
 					} else {
 						setBlocks.add(new UndoableSetBlock(world, selectionManager, p, s.getState()));
 					}
@@ -62,4 +62,5 @@ public class SpellHoleFill extends Spell {
 		}
 		t.commit();
 	}
+	
 }

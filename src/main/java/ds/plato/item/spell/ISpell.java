@@ -1,13 +1,11 @@
 package ds.plato.item.spell;
 
-import ds.plato.player.HotbarSlot;
+import ds.plato.player.IPlayer;
 import ds.plato.world.IWorld;
 
 public interface ISpell {
 
-	//Takes one or more slots in the players hotbar. Some spells (SpellFill, SpellFillRandom, SpellFillChecker) use
-	//more than one block and also the position of the block in the hotbar
-	public abstract void invoke(IWorld world, HotbarSlot... slots);
+	public abstract void invoke(IWorld world, IPlayer player);
 
 	public abstract String getMessage();
 

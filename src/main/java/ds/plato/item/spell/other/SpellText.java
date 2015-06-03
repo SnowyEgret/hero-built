@@ -21,6 +21,7 @@ import ds.plato.item.spell.Spell;
 import ds.plato.pick.IPick;
 import ds.plato.pick.Pick;
 import ds.plato.player.HotbarSlot;
+import ds.plato.player.IPlayer;
 import ds.plato.select.ISelect;
 import ds.plato.undo.IUndo;
 import ds.plato.undo.Transaction;
@@ -51,10 +52,12 @@ public class SpellText extends Spell implements ITextSetable {
 	}
 
 	@Override
-	public void invoke(IWorld world, HotbarSlot...slots) {
+	public void invoke(IWorld world, IPlayer player) {
 		this.world = world;
-		this.slots = slots;
+		//this.slots = slots;
 		Minecraft.getMinecraft().thePlayer.openGui(Plato.instance, GuiHandler.GUI_SPELL_TEXT, world.getWorld(), 0, 0, 0);
+		//TODO openGui in Player
+		//player.openGui(Plato.instance, GuiHandler.GUI_SPELL_TEXT, world.getWorld(), 0, 0, 0);
 		picks = pickManager.getPicks();
 		// Clear the picks because player may have cancelled
 		pickManager.clearPicks();
@@ -120,5 +123,4 @@ public class SpellText extends Spell implements ITextSetable {
 	public Font getFont() {
 		return font;
 	}
-
 }

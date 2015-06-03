@@ -37,7 +37,7 @@ public class SpellSphereTest extends PlatoTest {
 	public void invoke() {
 		ISpell s = new SpellSphere(undoManager, selectionManager, pickManager);
 		//s.invoke(picks, slotEntries);
-		s.invoke(world, slots);
+		s.invoke(world, null);
 		verify(world).setState(new BlockPos(9, 0, 0), dirt);
 	}
 }

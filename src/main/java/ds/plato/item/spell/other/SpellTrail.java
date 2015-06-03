@@ -7,7 +7,7 @@ import org.lwjgl.input.Keyboard;
 
 import ds.plato.item.spell.Spell;
 import ds.plato.pick.IPick;
-import ds.plato.player.HotbarSlot;
+import ds.plato.player.IPlayer;
 import ds.plato.select.ISelect;
 import ds.plato.select.Selection;
 import ds.plato.undo.IUndo;
@@ -22,7 +22,7 @@ public class SpellTrail extends Spell {
 	}
 
 	@Override
-	public void invoke(IWorld world, HotbarSlot... slots) {
+	public void invoke(IWorld world, IPlayer player) {
 		//On LivingUpdateEvent selections are added when SpellTrail is in hand
 		//boolean fill = Keyboard.isKeyDown(Keyboard.KEY_LMENU);
 		//boolean deleteOriginal = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL);
@@ -31,7 +31,7 @@ public class SpellTrail extends Spell {
 		selectionManager.clearSelections(world);
 		pickManager.clearPicks();
 		for (Selection s : selections) {
-			world.setState(s.getPos(), slots[0].state);
+			world.setState(s.getPos(), player.getHotbar()[0].state);
 		}
 		transaction.commit();
 	}
