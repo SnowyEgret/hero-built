@@ -85,8 +85,7 @@ public abstract class Spell extends ItemBase implements ISpell {
 				BlockPos p = (BlockPos) o;
 				if (Keyboard.isKeyDown(Keyboard.KEY_LMENU)) {
 					//TODO create method getActualState() in interface IWorld
-					IBlockState state = w.getBlockState(p);
-					state = state.getBlock().getActualState(state, w.getWorld(), p);
+					IBlockState state = w.getActualState(p);
 					if (state == firstState) {
 						selectionManager.select(w, p);
 					}

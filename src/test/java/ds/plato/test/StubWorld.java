@@ -12,7 +12,7 @@ import ds.plato.world.IWorld;
 public class StubWorld implements IWorld {
 
 	// Map<String, Block> blocks = new HashMap<>();
-	Map<String, IBlockState> blocks = new HashMap<>();
+	Map<String, IBlockState> states = new HashMap<>();
 	Block dirt;
 
 	public StubWorld(Block dirt) {
@@ -21,14 +21,14 @@ public class StubWorld implements IWorld {
 
 	@Override
 	// public void setBlock(BlockPos pos, Block block) {
-	public void setBlockState(BlockPos pos, IBlockState block) {
-		blocks.put(encode(pos), block);
+	public void setState(BlockPos pos, IBlockState block) {
+		states.put(encode(pos), block);
 		// this.metadata.put(encode(pos), Integer.valueOf(metadata));
 	}
 
 	@Override
 	public Block getBlock(BlockPos pos) {
-		Block b = blocks.get(encode(pos)).getBlock();
+		Block b = states.get(encode(pos)).getBlock();
 		if (b == null) {
 			return dirt;
 		} else {
@@ -36,19 +36,9 @@ public class StubWorld implements IWorld {
 		}
 	}
 
-	// @Override
-	// public int getMetadata(int x, int y, int z) {
-	// Integer m = metadata.get(encode(x, y, z));
-	// if (m == null) {
-	// return 0;
-	// } else {
-	// return m;
-	// }
-	// }
-
 	@Override
 	public String toString() {
-		return "StubWorld" + Integer.toHexString(hashCode()) + " [blocks=" + blocks + "]";
+		return "StubWorld" + Integer.toHexString(hashCode()) + " [blocks=" + states + "]";
 	}
 
 	// private String encode(int x, int y, int z) {
@@ -67,7 +57,13 @@ public class StubWorld implements IWorld {
 	}
 
 	@Override
-	public IBlockState getBlockState(BlockPos pos) {
+	public IBlockState getState(BlockPos pos) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public IBlockState getActualState(BlockPos p) {
 		// TODO Auto-generated method stub
 		return null;
 	}

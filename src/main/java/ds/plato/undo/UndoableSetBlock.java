@@ -26,7 +26,8 @@ public class UndoableSetBlock implements IUndoable {
 		this.selectionManager = selectionManager;
 		this.pos = pos;
 		this.state = state;
-		prevState = world.getBlockState(pos);
+		//TODO changed this to getActualState from getState. Not tested
+		prevState = world.getActualState(pos);
 	}
 
 	public UndoableSetBlock set() {
@@ -38,7 +39,7 @@ public class UndoableSetBlock implements IUndoable {
 			prevState = s.getState();
 		}
 		//world.setBlock(pos, block);
-		world.setBlockState(pos, state);
+		world.setState(pos, state);
 
 		if (!(state.getBlock() instanceof BlockAir)) {
 			selectionManager.select(world, pos);
@@ -50,13 +51,13 @@ public class UndoableSetBlock implements IUndoable {
 	public void undo() {
 		selectionManager.deselect(world, pos);
 		//world.setBlock(pos, prevBlock);
-		world.setBlockState(pos, prevState);
+		world.setState(pos, prevState);
 	}
 
 	@Override
 	public void redo() {
 		//world.setBlock(pos, block);
-		world.setBlockState(pos, state);
+		world.setState(pos, state);
 	}
 
 	@Override

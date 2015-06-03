@@ -38,6 +38,6 @@ public class SpellSphereTest extends PlatoTest {
 		ISpell s = new SpellSphere(undoManager, selectionManager, pickManager);
 		//s.invoke(picks, slotEntries);
 		s.invoke(world, slots);
-		verify(world).setBlockState(new BlockPos(9, 0, 0), dirt);
+		verify(world).setState(new BlockPos(9, 0, 0), dirt);
 	}
 }

@@ -28,7 +28,7 @@ public class StubWorldTest extends PlatoTest {
 	@Test
 	public void setBlock_getBlock() {
 		IBlockState blockSet = sand;
-		w.setBlockState(p0, blockSet);
+		w.setState(p0, blockSet);
 		Block blockGot = w.getBlock(p0);
 		assertEquals(blockSet, blockGot);
 	}
@@ -40,8 +40,8 @@ public class StubWorldTest extends PlatoTest {
 
 	@Test
 	public void setBlock_twice() {
-		w.setBlockState(p0, sand);
-		w.setBlockState(p0, dirt);
+		w.setState(p0, sand);
+		w.setState(p0, dirt);
 		assertEquals(dirt, w.getBlock(p0));
 	}
 

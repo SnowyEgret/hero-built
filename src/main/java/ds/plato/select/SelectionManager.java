@@ -34,7 +34,7 @@ public class SelectionManager implements ISelect {
 
 	@Override
 	public Selection select(IWorld world, BlockPos pos) {
-		IBlockState state = world.getBlockState(pos);
+		IBlockState state = world.getActualState(pos);
 		Block b = (state.getBlock());
 		if (b instanceof BlockAir) {
 			return null;
@@ -43,10 +43,10 @@ public class SelectionManager implements ISelect {
 			//getSelection is already null so we have no way of knowing what the original block was
 			return getSelection(pos);
 		}
-		state = b.getActualState(state, world.getWorld(), pos);
+		//state = b.getActualState(state, world.getWorld(), pos);
 		Selection selection = new Selection(pos, state);
 		selections.put(pos, selection);
-		world.setBlockState(pos, blockSelected.getDefaultState());
+		world.setState(pos, blockSelected.getDefaultState());
 		return selection;
 	}
 
@@ -57,7 +57,7 @@ public class SelectionManager implements ISelect {
 		// //Look up pick from pickManager
 		// //b = ((BlockPicked)b).getPos())
 		// }
-		world.setBlockState(selection.getPos(), selection.getState());
+		world.setState(selection.getPos(), selection.getState());
 		selections.remove(selection.getPos());
 	}
 

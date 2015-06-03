@@ -76,7 +76,7 @@ public abstract class AbstractSpellSelect extends Spell {
 					continue;
 				}
 				//Block block = world.getBlock(p);
-				Block block = world.getBlockState(p).getBlock();
+				Block block = world.getState(p).getBlock();
 				if (!(block instanceof BlockAir) && !(block instanceof BlockSelected)) {
 					if (Keyboard.isKeyDown(Keyboard.KEY_LMENU)) {
 						selectionManager.select(world, p);

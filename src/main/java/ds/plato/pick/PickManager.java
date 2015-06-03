@@ -29,23 +29,13 @@ public class PickManager implements IPick {
 	@Override
 	public Pick pick(IWorld world, BlockPos pos, EnumFacing side) {
 		this.world = world;
-		IBlockState state = world.getBlockState(pos);
-		Block block = state.getBlock();
-
-		// TODO Handle case where picked block is already selected
-		// SpellCopy works ok without this
-		// if (block instanceof BlockSelected) {
-		// Selection s = selectionManager.getSelection(pos);
-		// if (s != null) {
-		// block = s.getBlock();
-		// }
-		// }
-
+		IBlockState state = world.getState(pos);
+		//Block block = state.getBlock();
 		// Get the state before setting the block
-		IBlockState prevState = world.getBlockState(pos);
+		IBlockState prevState = world.getActualState(pos);
 		// Check if the block has overridden getActualState
-		prevState = block.getActualState(state, world.getWorld(), pos);
-		world.setBlockState(pos, blockPicked.getDefaultState());
+		//prevState = block.getActualState(state, world.getWorld(), pos);
+		world.setState(pos, blockPicked.getDefaultState());
 		Pick pick = addPick(pos, state, side);
 		return pick;
 	}
@@ -69,9 +59,9 @@ public class PickManager implements IPick {
 	@Override
 	public void clearPicks() {
 		for (Pick p : getPicks()) {
-			IBlockState state = world.getBlockState(p.getPos());
+			IBlockState state = world.getState(p.getPos());
 			if (state.getBlock() instanceof BlockPicked) {
-				world.setBlockState(p.getPos(), p.getState());
+				world.setState(p.getPos(), p.getState());
 			}
 		}
 		lastPicks.clear();

@@ -21,6 +21,7 @@ public class WorldWrapper implements IWorld {
 		}
 	}
 
+	@Deprecated
 	@Override
 	public Block getBlock(BlockPos pos) {
 		IBlockState b = world.getBlockState(pos);
@@ -39,12 +40,28 @@ public class WorldWrapper implements IWorld {
 	}
 
 	@Override
-	public void setBlockState(BlockPos pos, IBlockState state) {
+	public void setState(BlockPos pos, IBlockState state) {
 		if (world.isRemote) {
 			Plato.network.sendToServer(new SetBlockStateMessage(pos, state));
 		} else {
 			world.setBlockState(pos, state, 3);
 		}
+	}
+
+	@Override
+	public World getWorld() {
+		return world;
+	}
+
+	@Override
+	public IBlockState getState(BlockPos pos) {
+		return world.getBlockState(pos);
+	}
+
+	@Override
+	public IBlockState getActualState(BlockPos p) {
+		IBlockState state = getState(p);
+		return state.getBlock().getActualState(state, world, p);
 	}
 
 	@Override
@@ -56,13 +73,4 @@ public class WorldWrapper implements IWorld {
 		return builder.toString();
 	}
 
-	@Override
-	public World getWorld() {
-		return world;
-	}
-
-	@Override
-	public IBlockState getBlockState(BlockPos pos) {
-		return world.getBlockState(pos);
-	}
 }
