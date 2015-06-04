@@ -31,7 +31,7 @@ public class SpellCopy extends AbstractSpellMatrix {
 		v.sub(to, from);
 		Matrix4d matrix = new TranslationMatrix(v);
 		boolean deleteOriginal = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
-		transformSelections(matrix, world, deleteOriginal);
+		transformSelections(world, player, matrix, deleteOriginal);
 		pickManager.repick();
 	}
 

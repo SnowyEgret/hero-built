@@ -36,7 +36,7 @@ public class SpellCircle extends AbstractSpellDraw {
 			p1.y += 1;
 		}
 		IDrawable d = new CircleXZ(p0, p1);
-		draw(d, world, player.getHotbar()[0].state);
+		draw(d, world, player);
 	}
 
 	@Override

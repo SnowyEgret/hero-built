@@ -16,14 +16,13 @@ public class SpellCone extends AbstractSpellDraw {
 
 	public SpellCone(IUndo undoManager, ISelect selectionManager, IPick pickManager) {
 		super(3, undoManager, selectionManager, pickManager);
-		//info.addModifiers(Modifier.SHIFT, Modifier.ALT);
 	}
 
 	@Override
 	public void invoke(IWorld world, IPlayer player) {
 		Pick[] picks = pickManager.getPicks();
 		IDrawable d = new Cone(picks[0].point3d(), picks[1].point3d(), picks[2].point3d());
-		draw(d, world, player.getHotbar()[0].state);
+		draw(d, world, player);
 	}
 
 	@Override

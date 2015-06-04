@@ -11,10 +11,8 @@ import java.util.Set;
 
 import javax.vecmath.Vector3d;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.init.Items;
 import net.minecraft.util.BlockPos;
-import ds.plato.Plato;
 import ds.plato.gui.GuiHandler;
 import ds.plato.gui.ITextSetable;
 import ds.plato.item.spell.Spell;
@@ -54,9 +52,7 @@ public class SpellText extends Spell implements ITextSetable {
 	@Override
 	public void invoke(IWorld world, IPlayer player) {
 		this.world = world;
-		//this.slots = slots;
-		//Minecraft.getMinecraft().thePlayer.openGui(Plato.instance, GuiHandler.GUI_SPELL_TEXT, world.getWorld(), 0, 0, 0);
-		//TODO openGui in Player
+		this.slots = player.getHotbar();
 		player.openGui(GuiHandler.GUI_SPELL_TEXT, world);
 		picks = pickManager.getPicks();
 		// Clear the picks because player may have cancelled

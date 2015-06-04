@@ -27,13 +27,13 @@ public abstract class AbstractSpellMatrix extends Spell {
 		super(numPicks, undo, select, pick);
 	}
 
-	protected void transformSelections(Matrix4d matrix, IWorld world, boolean deleteInitialBlocks) {
+	protected void transformSelections(IWorld world, IPlayer player, Matrix4d matrix, boolean deleteInitialBlocks) {
 
 		List<UndoableSetBlock> deletes = new ArrayList<>();
 		List<UndoableSetBlock> adds = new ArrayList<>();
 		List<BlockPos> addedPos = new ArrayList<>();
 
-		IPlayer player = Player.getPlayer();
+		//IPlayer player = Player.getPlayer();
 		Iterable<Selection> selections = selectionManager.getSelections();
 		selectionManager.clearSelections(world);
 		pickManager.clearPicks();
@@ -68,7 +68,7 @@ public abstract class AbstractSpellMatrix extends Spell {
 
 		// Select all transformed blocks
 		for (BlockPos pos : addedPos) {
-			//FIXME select is rejecting these even though clearSelections
+			//FIXME in MP select is rejecting these even though clearSelections
 			//should have removed BlockSelected from world.
 			//Same problem as when first corner of a region was left unselected
 			selectionManager.select(world, pos);

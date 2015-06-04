@@ -7,6 +7,7 @@ import javax.vecmath.Point3i;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.SoundManager;
 import net.minecraft.util.BlockPos;
 
 import org.lwjgl.input.Keyboard;
@@ -17,6 +18,7 @@ import ds.geom.solid.Solid;
 import ds.plato.item.spell.Modifier;
 import ds.plato.item.spell.Spell;
 import ds.plato.pick.IPick;
+import ds.plato.player.HotbarSlot;
 import ds.plato.player.IPlayer;
 import ds.plato.player.Player;
 import ds.plato.select.ISelect;
@@ -34,8 +36,7 @@ public abstract class AbstractSpellDraw extends Spell {
 		info.addModifiers(Modifier.SHIFT, Modifier.ALT);
 	}
 
-	//protected void draw(IDrawable drawable, IWorld world, Block block) {
-		protected void draw(IDrawable drawable, IWorld world, IBlockState block) {
+	protected void draw(IDrawable drawable, IWorld world, IPlayer player) {
 
 		selectionManager.clearSelections(world);
 		pickManager.clearPicks();
@@ -48,7 +49,7 @@ public abstract class AbstractSpellDraw extends Spell {
 			voxels = voxels.shell();
 		}
 
-		IPlayer player = Player.getPlayer();
+		// IPlayer player = Player.getPlayer();
 		List<UndoableSetBlock> setBlocks = new ArrayList<>();
 		for (Point3i p : voxels) {
 			BlockPos pos = new BlockPos(p.x, p.y, p.z);
@@ -56,12 +57,17 @@ public abstract class AbstractSpellDraw extends Spell {
 				pos = pos.up();
 			}
 			incrementJumpHeight(pos, player);
-			setBlocks.add(new UndoableSetBlock(world, selectionManager, pos, block));
+			IBlockState state = player.getHotbar()[0].state;
+			// TODO
+			// IBlockState state = player.firstBlockInHotbar();
+			// IBlockState state = player.getHotbar().firstBlock();
+
+			setBlocks.add(new UndoableSetBlock(world, selectionManager, pos, state));
 		}
 
 		// Move the player above the highest block to be set above the player
 		if (jumpHeight != 0) {
-			Player.getPlayer().jump(jumpHeight + 1);
+			player.jump(jumpHeight + 1);
 		}
 		jumpHeight = 0;
 
@@ -74,7 +80,12 @@ public abstract class AbstractSpellDraw extends Spell {
 
 		// Try playing a sound
 		String sound = "plato:" + StringUtils.toCamelCase(getClass());
-		world.getWorld().playSoundAtEntity(Minecraft.getMinecraft().thePlayer, sound, 1f, 1f);
+		//world.getWorld().playSoundAtEntity(player.getPlayer(), sound, 1f, 1f);
+		//TODO
+		//world.playSound(player, this, setBlocks.size());
+		//new Sound(this, setBlocks.size()).play(world, player);
+		//this.playSound(setBlocks.size(), world, player);
+		//world.playSound(new Sound(this, setBlocks.size()), player);
 	}
 
 }

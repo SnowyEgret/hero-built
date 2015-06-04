@@ -22,12 +22,13 @@ public class SpellBox extends AbstractSpellDraw {
 	}
 
 	@Override
-	public void invoke(IWorld world, IPlayer player) {		boolean isCube = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL);
+	public void invoke(IWorld world, IPlayer player) {
+		boolean isCube = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL);
 		Pick[] picks = pickManager.getPicks();
 		Point3d p0 = picks[0].point3d();
 		Point3d p1 = picks[1].point3d();
 		IDrawable d = new Box(p0, p1, isCube);
-		draw(d, world, player.getHotbar()[0].state);
+		draw(d, world, player);
 	}
 
 	@Override

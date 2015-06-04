@@ -16,7 +16,7 @@ public class SpellFillChecker extends AbstractSpellTransform {
 
 	@Override
 	public void invoke(IWorld world, final IPlayer player) {
-		transformSelections(world, new ITransform() {
+		transformSelections(world, player, new ITransform() {
 			@Override
 			public Selection transform(Selection s) {
 				int i = 0;

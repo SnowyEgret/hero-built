@@ -23,7 +23,7 @@ public class SpellHollow extends AbstractSpellTransform {
 
 	@Override
 	public void invoke(IWorld world, IPlayer player) {
-		transformSelections(world, new ITransform() {
+		transformSelections(world, player, new ITransform() {
 			VoxelSet voxels = selectionManager.voxelSet();
 
 			@Override

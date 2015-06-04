@@ -111,8 +111,6 @@ public class Plato {
 
 			staffs.add(loader.loadStaffPreset(StaffDraw.class, drawSpells));
 			staffs.add(loader.loadStaffPreset(StaffSelect.class, selectSpells));
-			//staffs.add(loader.loadStaffPreset(StaffTransform.class, transformSpells));
-			//TODO matrix and otherSpells. Maybe pass array of lists
 			staffs.add(loader.loadStaffPreset(StaffTransform.class, transformSpells, matrixSpells));
 
 		} catch (Exception e) {

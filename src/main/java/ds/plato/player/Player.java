@@ -13,8 +13,10 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.Vec3;
+import net.minecraft.world.World;
 import ds.plato.Plato;
 import ds.plato.item.spell.ISpell;
 import ds.plato.item.spell.Spell;
@@ -57,18 +59,18 @@ public class Player implements IPlayer {
 	@Override
 	public IWorld getWorld() {
 
-//		 World w = null;
-//		 Minecraft mc = Minecraft.getMinecraft();
-//		 IntegratedServer integratedServer = mc.getIntegratedServer();
-//		 if (integratedServer != null) {
-//		 w = integratedServer.worldServerForDimension(player.dimension);
-//		 } else {
-//		 w = mc.theWorld;
-//		 }
-//		 return new WorldWrapper(w);
+		 World w = null;
+		 Minecraft mc = Minecraft.getMinecraft();
+		 IntegratedServer integratedServer = mc.getIntegratedServer();
+		 if (integratedServer != null) {
+		 w = integratedServer.worldServerForDimension(player.dimension);
+		 } else {
+		 w = mc.theWorld;
+		 }
+		 return new WorldWrapper(w);
 
 		// Force messaging between client and server
-		return new WorldWrapper(Minecraft.getMinecraft().theWorld);
+//		return new WorldWrapper(Minecraft.getMinecraft().theWorld);
 	}
 
 	@Override

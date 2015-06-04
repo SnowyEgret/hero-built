@@ -51,7 +51,7 @@ public class SpellRotate90 extends AbstractSpellMatrix {
 			matrix = GeomUtil.newRotY90Matrix(center);
 		}
 
-		transformSelections(matrix, world, deleteOriginal);
+		transformSelections(world, player, matrix, deleteOriginal);
 	}
 
 	@Override

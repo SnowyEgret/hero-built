@@ -23,13 +23,11 @@ public class SpellLine extends AbstractSpellDraw {
 	public void invoke(IWorld world, IPlayer player) {
 		Pick[] picks = pickManager.getPicks();
 		IDrawable d = new Line(picks[0].point3d(), picks[1].point3d());
+		draw(d, world, player);
 		if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
-			draw(d, world, player.getHotbar()[0].state);
 			pickManager.clearPicks();
 			pickManager.reset(2);
 			pickManager.pick(world, picks[1].getPos(), null);
-		} else {
-			draw(d, world, player.getHotbar()[0].state);
 		}
 	}
 

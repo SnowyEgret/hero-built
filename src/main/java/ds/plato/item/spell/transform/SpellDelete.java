@@ -16,7 +16,7 @@ public class SpellDelete extends AbstractSpellTransform {
 
 	@Override
 	public void invoke(IWorld world, IPlayer player) {
-		transformSelections(world, new ITransform() {
+		transformSelections(world, player, new ITransform() {
 			@Override
 			public Selection transform(Selection s) {
 				// Create a copy here because we don't want to modify the selectionManager's selection list.

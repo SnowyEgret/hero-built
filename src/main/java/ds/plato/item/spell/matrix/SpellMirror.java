@@ -77,7 +77,7 @@ public class SpellMirror extends AbstractSpellMatrix {
 			break;
 		}
 		Matrix4d matrix = new ReflectionMatrix(p, new Vector3d(d.getX(), d.getY(), d.getZ()));
-		transformSelections(matrix, world, deleteOriginal);
+		transformSelections(world, player, matrix, deleteOriginal);
 	}
 
 	@Override

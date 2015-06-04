@@ -8,6 +8,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.IPlantable;
 import ds.plato.item.spell.Spell;
 import ds.plato.pick.IPick;
+import ds.plato.player.IPlayer;
 import ds.plato.select.ISelect;
 import ds.plato.select.Selection;
 import ds.plato.undo.IUndo;
@@ -21,14 +22,12 @@ public abstract class AbstractSpellTransform extends Spell {
 		super(1, undo, select, pick);
 	}
 
-	protected void transformSelections(IWorld world, ITransform transformer) {
+	protected void transformSelections(IWorld world, IPlayer player, ITransform transformer) {
 		// System.out.println("world="+world);
 		if (selectionManager.getSelectionList().size() != 0) {
 			Transaction t = undoManager.newTransaction();
 			Iterable<Selection> selections = selectionManager.getSelections();
-			// Clear the selections because BlockSelected is still rendering with old state
-			// Player can reselect last
-			selectionManager.clearSelections(world);
+			//selectionManager.clearSelections(world);
 			for (Selection s : selections) {
 				s = transformer.transform(s);
 				BlockPos pos = s.getPos();
@@ -47,6 +46,10 @@ public abstract class AbstractSpellTransform extends Spell {
 			t.commit();
 		}
 		pickManager.clearPicks();
+		//TODO why is this happening?
+		// Clear the selections because BlockSelected is still rendering with old state
+		// Player can reselect last
+		selectionManager.clearSelections(world);
 	}
 
 	@Override
