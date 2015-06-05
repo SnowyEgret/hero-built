@@ -2,6 +2,7 @@ package ds.plato.world;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
@@ -12,12 +13,18 @@ import ds.plato.network.SetBlockStateMessage;
 public class WorldWrapper implements IWorld {
 
 	private World world;
-	private boolean sendPackets;
+
+	boolean forceMessaging = false;
 
 	public WorldWrapper(World world) {
 		this.world = world;
-		if (world instanceof WorldClient) {
-			sendPackets = true;
+		
+		String prop = System.getProperties().getProperty("plato.forceMessaging");
+		if (prop != null) {
+			if (prop.equals("true")) {
+				forceMessaging = true;
+				// return new WorldWrapper(Minecraft.getMinecraft().theWorld);
+			}
 		}
 	}
 
@@ -30,7 +37,8 @@ public class WorldWrapper implements IWorld {
 	@Deprecated
 	@Override
 	public void setBlock(BlockPos pos, Block block) {
-		if (world.isRemote) {
+		
+		if (world.isRemote || forceMessaging) {
 			Plato.network.sendToServer(new SetBlockMessage(pos, block));
 		} else {
 			IBlockState state = block.getBlockState().getBaseState();
@@ -40,7 +48,7 @@ public class WorldWrapper implements IWorld {
 
 	@Override
 	public void setState(BlockPos pos, IBlockState state) {
-		if (world.isRemote) {
+		if (world.isRemote || forceMessaging) {
 			Plato.network.sendToServer(new SetBlockStateMessage(pos, state));
 		} else {
 			world.setBlockState(pos, state, 3);

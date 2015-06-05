@@ -53,13 +53,6 @@ public class Player implements IPlayer {
 	@Override
 	public IWorld getWorld() {
 
-		String forceMessaging = System.getProperties().getProperty(Plato.ID + ".forceMessaging");
-		if (forceMessaging != null) {
-			if (forceMessaging.equals("true")) {
-				return new WorldWrapper(Minecraft.getMinecraft().theWorld);
-			}
-		}
-
 		World w = null;
 		Minecraft mc = Minecraft.getMinecraft();
 		IntegratedServer integratedServer = mc.getIntegratedServer();
