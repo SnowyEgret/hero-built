@@ -7,7 +7,8 @@ import javax.vecmath.Point3i;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.SoundManager;
+import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
 
 import org.lwjgl.input.Keyboard;
@@ -18,9 +19,8 @@ import ds.geom.solid.Solid;
 import ds.plato.item.spell.Modifier;
 import ds.plato.item.spell.Spell;
 import ds.plato.pick.IPick;
-import ds.plato.player.HotbarSlot;
 import ds.plato.player.IPlayer;
-import ds.plato.player.Player;
+import ds.plato.player.Jumper;
 import ds.plato.select.ISelect;
 import ds.plato.undo.IUndo;
 import ds.plato.undo.Transaction;
@@ -43,20 +43,22 @@ public abstract class AbstractSpellDraw extends Spell {
 		boolean isHollow = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
 		boolean onSurface = Keyboard.isKeyDown(Keyboard.KEY_LMENU);
 
-		// Voxelize and hollow if a solid
 		VoxelSet voxels = drawable.voxelize();
+
 		if (drawable instanceof Solid && isHollow) {
 			voxels = voxels.shell();
 		}
 
-		// IPlayer player = Player.getPlayer();
+		Jumper jumper = new Jumper(player);
+
 		List<UndoableSetBlock> setBlocks = new ArrayList<>();
 		for (Point3i p : voxels) {
 			BlockPos pos = new BlockPos(p.x, p.y, p.z);
 			if (onSurface) {
 				pos = pos.up();
 			}
-			incrementJumpHeight(pos, player);
+			// incrementJumpHeight(pos, player);
+			jumper.setHeight(pos);
 			IBlockState state = player.getHotbar()[0].state;
 			// TODO
 			// IBlockState state = player.firstBlockInHotbar();
@@ -66,10 +68,11 @@ public abstract class AbstractSpellDraw extends Spell {
 		}
 
 		// Move the player above the highest block to be set above the player
-		if (jumpHeight != 0) {
-			player.jump(jumpHeight + 1);
-		}
-		jumpHeight = 0;
+		// if (jumpHeight != 0) {
+		// player.jump(jumpHeight + 1);
+		// }
+		// jumpHeight = 0;
+		jumper.jump();
 
 		// Set the blocks inside an undoManager transaction
 		Transaction t = undoManager.newTransaction();
@@ -80,12 +83,12 @@ public abstract class AbstractSpellDraw extends Spell {
 
 		// Try playing a sound
 		String sound = "plato:" + StringUtils.toCamelCase(getClass());
-		//world.getWorld().playSoundAtEntity(player.getPlayer(), sound, 1f, 1f);
-		//TODO
-		//world.playSound(player, this, setBlocks.size());
-		//new Sound(this, setBlocks.size()).play(world, player);
-		//this.playSound(setBlocks.size(), world, player);
-		//world.playSound(new Sound(this, setBlocks.size()), player);
+		// world.getWorld().playSoundAtEntity(player.getPlayer(), sound, 1f, 1f);
+		// TODO
+		// world.playSound(player, this, setBlocks.size());
+		// new Sound(this, setBlocks.size()).play(world, player);
+		// this.playSound(setBlocks.size(), world, player);
+		// world.playSound(new Sound(this, setBlocks.size()), player);
 	}
 
 }

@@ -166,14 +166,7 @@ public class Player implements IPlayer {
 			if (item instanceof Spell) {
 				spell = (ISpell) item;
 			} else if (item instanceof Staff) {
-				// If call to getSpell is from client side (onLivingUpdate calls player.getSpell -> staff.nextSpell)
-				// send mesessage to server
-				// TODO Check that this is always from client side
-				// if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) {
-				// Plato.network.sendToServer(new GetSpellMessage());
-				// } else {
 				spell = ((Staff) item).getSpell(stack);
-				// }
 			}
 		}
 		return spell;
@@ -190,14 +183,6 @@ public class Player implements IPlayer {
 			}
 		}
 		return staff;
-	}
-
-	@Override
-	public void jump(int height) {
-		// System.out.println("height=" + height);
-		if (height != 0) {
-			player.moveEntity(0, height, 0);
-		}
 	}
 
 	@Override
@@ -226,5 +211,11 @@ public class Player implements IPlayer {
 	@Override
 	public void openGui(int id, IWorld world) {
 		player.openGui(Plato.instance, id, world.getWorld(), (int)player.posX, (int)player.posY, (int)player.posZ);
+	}
+
+	@Override
+	public void moveTo(BlockPos pos) {
+		player.moveEntity(pos.getX(), pos.getY(), pos.getZ());
+		//player.moveToBlockPosAndAngles(pos, player.rotationYaw, player.rotationPitch);
 	}
 }

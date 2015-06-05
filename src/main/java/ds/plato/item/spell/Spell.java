@@ -47,19 +47,19 @@ public abstract class Spell extends ItemBase implements ISpell {
 		info = new SpellInfo(this);
 	}
 
-	protected void incrementJumpHeight(BlockPos pos, IPlayer player) {
-		BlockPos p = player.getPosition();
-		int dx = pos.getX() - p.getX();
-		int dy = pos.getY() - p.getY();
-		int dz = pos.getZ() - p.getZ();
-		// System.out.println(dx);
-		// System.out.println(dy);
-		if (dx == 0 && dz == 0 && dy > 0) {
-			if (dy > jumpHeight) {
-				jumpHeight = dy;
-			}
-		}
-	}
+//	protected void incrementJumpHeight(BlockPos pos, IPlayer player) {
+//		BlockPos p = player.getPosition();
+//		int dx = pos.getX() - p.getX();
+//		int dy = pos.getY() - p.getY();
+//		int dz = pos.getZ() - p.getZ();
+//		// System.out.println(dx);
+//		// System.out.println(dy);
+//		if (dx == 0 && dz == 0 && dy > 0) {
+//			if (dy > jumpHeight) {
+//				jumpHeight = dy;
+//			}
+//		}
+//	}
 
 	@Override
 	public void onMouseClickLeft(ItemStack stack, BlockPos pos, EnumFacing sideHit) {

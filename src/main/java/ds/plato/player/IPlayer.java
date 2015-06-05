@@ -28,7 +28,7 @@ public interface IPlayer {
 
 	public abstract Staff getStaff();
 
-	public abstract void jump(int jumpHeight);
+	//public abstract void jump(int jumpHeight);
 
 	public abstract void orbitAround(Vec3 center, int dx, int dy);
 
@@ -37,6 +37,8 @@ public interface IPlayer {
 	public abstract boolean isFlying();
 
 	public abstract void openGui(int id, IWorld world);
+
+	public abstract void moveTo(BlockPos pos);
 
 	// Thought I saw something like this somewhere
 	// public static IPlayer getPlayer(EntityPlayer player) {
