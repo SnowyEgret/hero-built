@@ -1,17 +1,8 @@
 package ds.plato.player;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.util.BlockPos;
@@ -28,8 +19,6 @@ public class Player implements IPlayer {
 
 	private static Player instance = null;
 	private EntityPlayer player;
-
-	// private float prevYaw = 0;
 
 	public enum Direction {
 		NORTH,
@@ -54,29 +43,32 @@ public class Player implements IPlayer {
 		// return instance;
 		return new Player();
 	}
-	
 
 	@Override
 	public EntityPlayer getPlayer() {
 		return player;
-	}	
+	}
 
 	// Returns the integrated server if in single player
 	@Override
 	public IWorld getWorld() {
 
-		 World w = null;
-		 Minecraft mc = Minecraft.getMinecraft();
-		 IntegratedServer integratedServer = mc.getIntegratedServer();
-		 if (integratedServer != null) {
-		 w = integratedServer.worldServerForDimension(player.dimension);
-		 } else {
-		 w = mc.theWorld;
-		 }
-		 return new WorldWrapper(w);
+		String forceMessaging = System.getProperties().getProperty(Plato.ID + ".forceMessaging");
+		if (forceMessaging != null) {
+			if (forceMessaging.equals("true")) {
+				return new WorldWrapper(Minecraft.getMinecraft().theWorld);
+			}
+		}
 
-		// Force messaging between client and server
-//		return new WorldWrapper(Minecraft.getMinecraft().theWorld);
+		World w = null;
+		Minecraft mc = Minecraft.getMinecraft();
+		IntegratedServer integratedServer = mc.getIntegratedServer();
+		if (integratedServer != null) {
+			w = integratedServer.worldServerForDimension(player.dimension);
+		} else {
+			w = mc.theWorld;
+		}
+		return new WorldWrapper(w);
 	}
 
 	@Override
@@ -182,12 +174,12 @@ public class Player implements IPlayer {
 
 	@Override
 	public void openGui(int id, IWorld world) {
-		player.openGui(Plato.instance, id, world.getWorld(), (int)player.posX, (int)player.posY, (int)player.posZ);
+		player.openGui(Plato.instance, id, world.getWorld(), (int) player.posX, (int) player.posY, (int) player.posZ);
 	}
 
 	@Override
 	public void moveTo(BlockPos pos) {
 		player.moveEntity(pos.getX(), pos.getY(), pos.getZ());
-		//player.moveToBlockPosAndAngles(pos, player.rotationYaw, player.rotationPitch);
+		// player.moveToBlockPosAndAngles(pos, player.rotationYaw, player.rotationPitch);
 	}
 }
