@@ -12,9 +12,8 @@ import ds.plato.item.spell.ISpell;
 import ds.plato.item.spell.SpellInfo;
 import ds.plato.item.spell.transform.SpellFillRandom;
 import ds.plato.item.staff.Staff;
-import ds.plato.player.HotbarDistribution;
+import ds.plato.player.IPlayer;
 import ds.plato.player.Player;
-import ds.plato.player.Player.Direction;
 import ds.plato.select.ISelect;
 
 public class Overlay {
@@ -36,6 +35,8 @@ public class Overlay {
 
 	
 	public void drawSpell(ISpell spell) {
+		
+		IPlayer player = Player.instance();
 		int x = 10;
 		int y = x;
 		FontRenderer r = Minecraft.getMinecraft().fontRendererObj;
@@ -66,13 +67,11 @@ public class Overlay {
 
 		// TODO SpellFillRandom should set message
 		if (spell instanceof SpellFillRandom) {
-			HotbarDistribution d = Player.getPlayer().getHotbarDistribution();
-			r.drawStringWithShadow(d.toString(), x, y += rowHeight, blue);
+			r.drawStringWithShadow(player.getHotbarDistribution().toString(), x, y += rowHeight, blue);
 		}
 		
 		if (MouseHandler.isOrbiting) {
-			Direction direction = Player.getPlayer().getDirection();
-			r.drawStringWithShadow(direction.toString().toLowerCase(), x, y += rowHeight, blue);
+			r.drawStringWithShadow(player.getDirection().toString().toLowerCase(), x, y += rowHeight, blue);
 		}
 
 		String message = spell.getMessage();

@@ -64,7 +64,7 @@ public abstract class Spell extends ItemBase implements ISpell {
 	@Override
 	public void onMouseClickLeft(ItemStack stack, BlockPos pos, EnumFacing sideHit) {
 
-		IPlayer player = Player.getPlayer();
+		IPlayer player = Player.instance();
 		IWorld w = player.getWorld();
 
 		// Shift replaces the current selections with a region.

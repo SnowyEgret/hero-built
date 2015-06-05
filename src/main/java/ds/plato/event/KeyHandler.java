@@ -57,7 +57,7 @@ public class KeyHandler {
 	@SubscribeEvent
 	public void onKeyInput(KeyInputEvent event) {
 	
-		IPlayer player = Player.getPlayer();
+		IPlayer player = Player.instance();
 		IWorld world = player.getWorld();
 
 		if (keyBindings.get("undo").isPressed()) {

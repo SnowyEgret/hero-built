@@ -47,13 +47,19 @@ public class Player implements IPlayer {
 	}
 
 	// Singleton necessary for fields jumpHeight and prevYaw
-	public static IPlayer getPlayer() {
+	public static IPlayer instance() {
 		// if (instance == null) {
 		// instance = new Player();
 		// }
 		// return instance;
 		return new Player();
 	}
+	
+
+	@Override
+	public EntityPlayer getPlayer() {
+		return player;
+	}	
 
 	// Returns the integrated server if in single player
 	@Override

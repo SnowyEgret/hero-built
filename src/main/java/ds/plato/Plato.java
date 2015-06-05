@@ -163,7 +163,7 @@ public class Plato {
 	@EventHandler
 	public void serverStopping(FMLServerStoppingEvent event) {
 		System.out.println("Server stopping");
-		selectionManager.clearSelections(Player.getPlayer().getWorld());
+		selectionManager.clearSelections(Player.instance().getWorld());
 		// TODO change IPick to pass world like ISelect
 		pickManager.clearPicks();
 	}

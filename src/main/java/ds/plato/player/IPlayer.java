@@ -11,6 +11,8 @@ import ds.plato.player.Player.Direction;
 import ds.plato.world.IWorld;
 
 public interface IPlayer {
+	
+	public abstract EntityPlayer getPlayer();
 
 	public abstract IWorld getWorld();
 
@@ -27,8 +29,6 @@ public interface IPlayer {
 	public abstract ISpell getSpell();
 
 	public abstract Staff getStaff();
-
-	//public abstract void jump(int jumpHeight);
 
 	public abstract void orbitAround(Vec3 center, int dx, int dy);
 

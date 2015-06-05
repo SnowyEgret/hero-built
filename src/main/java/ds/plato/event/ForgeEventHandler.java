@@ -87,10 +87,7 @@ public class ForgeEventHandler {
 			return;
 		}
 
-		IPlayer player = Player.getPlayer();
-		// This call is updating the index on the staff's tag, but only on client side
-		// TODO synchronize server side tag. This might be causing problems
-		// If I comment out the subscribe to this event, it has no effect on the unsynchronized tags
+		IPlayer player = Player.instance();
 		ISpell s = player.getSpell();
 
 		// The player may have changed spells on a staff. Reset picking on the spell.
@@ -126,10 +123,10 @@ public class ForgeEventHandler {
 			if (spell != null) {
 				overlay.drawSpell(spell);
 			} else {
-				IPlayer p = Player.getPlayer();
-				Staff staff = p.getStaff();
+				IPlayer player = Player.instance();
+				Staff staff = player.getStaff();
 				if (staff != null) {
-					overlay.drawStaff(staff, p.getHeldItemStack());
+					overlay.drawStaff(staff, player.getHeldItemStack());
 					return;
 				}
 			}

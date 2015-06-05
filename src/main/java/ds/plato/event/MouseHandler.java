@@ -48,8 +48,8 @@ public class MouseHandler {
 			return;
 		}
 
-		IPlayer player = Player.getPlayer();
-		IWorld w = player.getWorld();
+		IPlayer player = Player.instance();
+		IWorld world = player.getWorld();
 		MovingObjectPosition cursor = Minecraft.getMinecraft().objectMouseOver;
 		
 		// Return if player is holding nothing
@@ -69,7 +69,7 @@ public class MouseHandler {
 						int meta = heldItem.getDamage(stack);
 						IBlockState state = b.getStateFromMeta(meta);
 						//FIXME not reselecting in MP
-						new SpellFill(undoManager, selectionManager, pickManager).invoke(w, null);
+						new SpellFill(undoManager, selectionManager, pickManager).invoke(world, player);
 						e.setCanceled(true);
 					}
 				}
@@ -90,7 +90,7 @@ public class MouseHandler {
 		// Do not cancel event. Fix for Left click stuck in loop when block is broken against sky #60
 		if (cursor.typeOfHit == MovingObjectType.MISS) {
 			if (e.button == 0) {
-				selectionManager.clearSelections(w);
+				selectionManager.clearSelections(world);
 				e.setCanceled(true);
 				return;
 			}
