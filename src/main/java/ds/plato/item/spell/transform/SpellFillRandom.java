@@ -1,8 +1,7 @@
 package ds.plato.item.spell.transform;
 
+import net.minecraft.block.state.IBlockState;
 import ds.plato.pick.IPick;
-import ds.plato.player.HotbarDistribution;
-import ds.plato.player.HotbarSlot;
 import ds.plato.player.IPlayer;
 import ds.plato.select.ISelect;
 import ds.plato.select.Selection;
@@ -20,9 +19,8 @@ public class SpellFillRandom extends AbstractSpellTransform {
 		transformSelections(world, player, new ITransform() {
 			@Override
 			public Selection transform(Selection s) {
-				HotbarDistribution distribution = new HotbarDistribution(player.getHotbar());
-				HotbarSlot slot = distribution.randomSlot();
-				return new Selection(s.getPos(), slot.state);
+				IBlockState state = player.getHotbar().randomBlock();
+				return new Selection(s.getPos(), state);
 			}
 		});
 	}

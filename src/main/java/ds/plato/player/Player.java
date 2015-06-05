@@ -80,37 +80,8 @@ public class Player implements IPlayer {
 	}
 
 	@Override
-	public HotbarSlot[] getHotbar() {
-		List<HotbarSlot> slots = new ArrayList<>();
-		InventoryPlayer inventory = player.inventory;
-		for (int i = 0; i < 9; i++) {
-			ItemStack stack = inventory.getStackInSlot(i);
-			if (stack != null) {
-				Item item = stack.getItem();
-				int meta = item.getDamage(stack);
-				Block b = null;
-				if (item instanceof ItemBlock) {
-					ItemBlock itemBlock = (ItemBlock) item;
-					b = itemBlock.getBlock();
-				} else if (item == Items.water_bucket) {
-					b = Blocks.water;
-				} else if (item == Items.lava_bucket) {
-					b = Blocks.lava;
-				}
-
-				if (b != null) {
-					IBlockState state = b.getStateFromMeta(meta);
-					HotbarSlot slot = new HotbarSlot(state, i + 1);
-					slots.add(slot);
-				}
-			}
-		}
-		if (slots.isEmpty()) {
-			slots.add(new HotbarSlot(Blocks.dirt.getDefaultState()));
-		}
-		// Prepare an array of appropriate size to be returned
-		HotbarSlot[] array = new HotbarSlot[slots.size()];
-		return slots.toArray(array);
+	public Hotbar getHotbar() {
+		return new Hotbar(player.inventory);
 	}
 
 	@Override
@@ -146,11 +117,6 @@ public class Player implements IPlayer {
 			throw new RuntimeException("Unexpected modulus. Got " + modulus);
 		}
 		return direction;
-	}
-
-	@Override
-	public HotbarDistribution getHotbarDistribution() {
-		return new HotbarDistribution(getHotbar());
 	}
 
 	@Override

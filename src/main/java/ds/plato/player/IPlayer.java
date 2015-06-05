@@ -16,11 +16,9 @@ public interface IPlayer {
 
 	public abstract IWorld getWorld();
 
-	public abstract HotbarSlot[] getHotbar();
+	public abstract Hotbar getHotbar();
 
 	public abstract Direction getDirection();
-
-	public abstract HotbarDistribution getHotbarDistribution();
 
 	public abstract ItemStack getHeldItemStack();
 
@@ -40,7 +38,7 @@ public interface IPlayer {
 
 	public abstract void moveTo(BlockPos pos);
 
-	// Thought I saw something like this somewhere
+	// Thought I saw something like this somewhere in an interface
 	// public static IPlayer getPlayer(EntityPlayer player) {
 	// this.player = player;
 	// }

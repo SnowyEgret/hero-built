@@ -67,7 +67,7 @@ public class Overlay {
 
 		// TODO SpellFillRandom should set message
 		if (spell instanceof SpellFillRandom) {
-			r.drawStringWithShadow(player.getHotbarDistribution().toString(), x, y += rowHeight, blue);
+			r.drawStringWithShadow(player.getHotbar().getDistribution().toString(), x, y += rowHeight, blue);
 		}
 		
 		if (MouseHandler.isOrbiting) {

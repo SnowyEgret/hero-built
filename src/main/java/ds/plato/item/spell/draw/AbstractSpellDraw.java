@@ -57,21 +57,11 @@ public abstract class AbstractSpellDraw extends Spell {
 			if (onSurface) {
 				pos = pos.up();
 			}
-			// incrementJumpHeight(pos, player);
 			jumper.setHeight(pos);
-			IBlockState state = player.getHotbar()[0].state;
-			// TODO
-			// IBlockState state = player.firstBlockInHotbar();
-			// IBlockState state = player.getHotbar().firstBlock();
-
+			IBlockState state = player.getHotbar().firstBlock();
 			setBlocks.add(new UndoableSetBlock(world, selectionManager, pos, state));
 		}
 
-		// Move the player above the highest block to be set above the player
-		// if (jumpHeight != 0) {
-		// player.jump(jumpHeight + 1);
-		// }
-		// jumpHeight = 0;
 		jumper.jump();
 
 		// Set the blocks inside an undoManager transaction

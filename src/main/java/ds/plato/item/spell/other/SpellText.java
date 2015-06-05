@@ -11,6 +11,7 @@ import java.util.Set;
 
 import javax.vecmath.Vector3d;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Items;
 import net.minecraft.util.BlockPos;
 import ds.plato.gui.GuiHandler;
@@ -18,7 +19,6 @@ import ds.plato.gui.ITextSetable;
 import ds.plato.item.spell.Spell;
 import ds.plato.pick.IPick;
 import ds.plato.pick.Pick;
-import ds.plato.player.HotbarSlot;
 import ds.plato.player.IPlayer;
 import ds.plato.select.ISelect;
 import ds.plato.undo.IUndo;
@@ -30,7 +30,7 @@ public class SpellText extends Spell implements ITextSetable {
 
 	private Font font;
 	private IWorld world;
-	private HotbarSlot[] slots;
+	private IBlockState firstBlockInHotbar;
 	private Pick[] picks;
 	private Graphics graphics;
 
@@ -52,7 +52,7 @@ public class SpellText extends Spell implements ITextSetable {
 	@Override
 	public void invoke(IWorld world, IPlayer player) {
 		this.world = world;
-		this.slots = player.getHotbar();
+		firstBlockInHotbar = player.getHotbar().firstBlock();
 		player.openGui(GuiHandler.GUI_SPELL_TEXT, world);
 		picks = pickManager.getPicks();
 		// Clear the picks because player may have cancelled
@@ -107,7 +107,7 @@ public class SpellText extends Spell implements ITextSetable {
 		pickManager.clearPicks();
 		Transaction t = undoManager.newTransaction();
 		for (BlockPos p : positions) {
-			t.add(new UndoableSetBlock(world, selectionManager, p, slots[0].state).set());
+			t.add(new UndoableSetBlock(world, selectionManager, p, firstBlockInHotbar).set());
 		}
 		t.commit();
 	}

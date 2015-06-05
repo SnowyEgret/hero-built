@@ -21,7 +21,6 @@ public class WorldWrapper implements IWorld {
 		}
 	}
 
-	@Deprecated
 	@Override
 	public Block getBlock(BlockPos pos) {
 		IBlockState b = world.getBlockState(pos);

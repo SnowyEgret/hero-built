@@ -8,34 +8,33 @@ import java.util.Random;
 import java.util.Set;
 import java.util.TreeMap;
 
-import org.apache.commons.lang3.tuple.Pair;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 
 import com.google.common.base.Joiner;
-import com.google.common.collect.Lists;
 
 import ds.plato.util.StringUtils;
-import net.minecraft.block.Block;
 
 public class HotbarDistribution {
 
-	private final HotbarSlot[] slots;
+	private List<HotbarSlot> slots = new ArrayList<>();
 	private final List<Integer> indices = new ArrayList<>();
 	private final Random random = new Random();
-	private final Map<Integer, Block> mapPercentBlock = new TreeMap<>();
+	private final Map<Integer, IBlockState> mapPercentBlock = new TreeMap<>();
 
-	public HotbarDistribution(HotbarSlot... slots) {
+	public HotbarDistribution(List<HotbarSlot> slots) {
 		this.slots = slots;
 		int j = 0;
 		for (HotbarSlot s : slots) {
-			for (int i = 0; i < s.slotNumber; i++) {
+			for (int i = 0; i < s.getIndex(); i++) {
 				indices.add(j);
 			}
 			j++;
 		}
 		if (!indices.isEmpty()) {
-			for (int i = 0; i < slots.length; i++) {
-				int percentage = 100 * slots[i].slotNumber / indices.size();
-				if (i == slots.length - 1) {
+			for (int i = 0; i < slots.size(); i++) {
+				int percentage = 100 * slots.get(i).getIndex() / indices.size();
+				if (i == slots.size() - 1) {
 					int sum = 0;
 					for (Integer p : getPecentages()) {
 						sum += p;
@@ -44,7 +43,7 @@ public class HotbarDistribution {
 					int d = 100 - sum;
 					percentage += d;
 				}
-				mapPercentBlock.put(percentage, slots[i].state.getBlock());
+				mapPercentBlock.put(percentage, slots.get(i).getState());
 			}
 		}
 	}
@@ -55,21 +54,21 @@ public class HotbarDistribution {
 
 	public HotbarSlot randomSlot() {
 		int i = random.nextInt(indices.size() - 1);
-		return slots[indices.get(i)];
+		return slots.get(indices.get(i));
 	}
 
 	@Override
 	public String toString() {
 		List<String> tokens = new ArrayList();
-		for (Entry<Integer, Block> e : mapPercentBlock.entrySet()) {
-			Block b = e.getValue();
+		for (Entry<Integer, IBlockState> e : mapPercentBlock.entrySet()) {
+			IBlockState state = e.getValue();
 			//TODO get color of BlockColored for example Wool
 			//int color = b.getBlockColor();
-			//System.out.println("[SlotDistribution.toString] color=" + color);
-			String name = b.getLocalizedName();
+			String name = state.getBlock().getLocalizedName();
 			if (name.startsWith("tile.")) {
-				name = StringUtils.lastWordInCamelCase(b.getClass().getSimpleName());
+				name = StringUtils.lastWordInCamelCase(state.getClass().getSimpleName());
 			}
+			//props = state.getProperties()
 			tokens.add(String.format("%s: %d%%", name, e.getKey()));
 		}
 		return Joiner.on(", ").join(tokens);
