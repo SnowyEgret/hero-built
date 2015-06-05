@@ -8,10 +8,12 @@ import java.util.Random;
 import java.util.Set;
 import java.util.TreeMap;
 
-import net.minecraft.block.Block;
+import org.apache.commons.lang3.text.WordUtils;
+
 import net.minecraft.block.state.IBlockState;
 
 import com.google.common.base.Joiner;
+import com.google.common.collect.ImmutableMap;
 
 import ds.plato.util.StringUtils;
 
@@ -62,13 +64,16 @@ public class HotbarDistribution {
 		List<String> tokens = new ArrayList();
 		for (Entry<Integer, IBlockState> e : mapPercentBlock.entrySet()) {
 			IBlockState state = e.getValue();
-			//TODO get color of BlockColored for example Wool
-			//int color = b.getBlockColor();
 			String name = state.getBlock().getLocalizedName();
 			if (name.startsWith("tile.")) {
 				name = StringUtils.lastWordInCamelCase(state.getClass().getSimpleName());
 			}
-			//props = state.getProperties()
+			ImmutableMap props = state.getProperties();
+			for (Object prop : props.values()) {
+				String adjective = prop.toString();
+				name = adjective + " " + name;
+			}
+			name = WordUtils.capitalize(name);
 			tokens.add(String.format("%s: %d%%", name, e.getKey()));
 		}
 		return Joiner.on(", ").join(tokens);
