@@ -29,7 +29,8 @@ public class SpellFillChecker extends AbstractSpellTransform {
 				} else {
 					i = ((y & 1) == 0) ? 1 : 0;
 				}
-				s = new Selection(pos, player.getHotbar()[i].state);
+				//s = new Selection(pos, player.getHotbar()[i].state);
+				s = new Selection(pos, player.getHotbar().getBlock(i));
 				return s;
 			}
 		});

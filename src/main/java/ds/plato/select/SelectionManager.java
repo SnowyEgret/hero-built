@@ -132,6 +132,7 @@ public class SelectionManager implements ISelect {
 		if (selections.isEmpty()) {
 			return null;
 		}
+		//TODO ConcurrentModificationException here in MP
 		return selections.values().iterator().next();
 	}
 

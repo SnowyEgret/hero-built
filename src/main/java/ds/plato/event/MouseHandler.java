@@ -69,7 +69,8 @@ public class MouseHandler {
 						int meta = heldItem.getDamage(stack);
 						IBlockState state = b.getStateFromMeta(meta);
 						//FIXME not reselecting in MP
-						new SpellFill(undoManager, selectionManager, pickManager).invoke(world, player);
+						//FIXME how to pass block instead of player.
+						new SpellFill(undoManager, selectionManager, pickManager).invoke(world, player, state);
 						e.setCanceled(true);
 					}
 				}

@@ -23,7 +23,18 @@ public class SpellFill extends AbstractSpellTransform {
 			public Selection transform(Selection s) {
 				// Create a copy here because we don't want to modify the selection list.
 				// Use first (left-most) block in inventory
-				return new Selection(s.getPos(), player.getHotbar()[0].state);
+				return new Selection(s.getPos(), player.getHotbar().firstBlock());
+			}
+		});
+	}
+
+	public void invoke(IWorld world, final IPlayer player, final IBlockState state) {
+		transformSelections(world, player, new ITransform() {
+			@Override
+			public Selection transform(Selection s) {
+				// Create a copy here because we don't want to modify the selection list.
+				// Use first (left-most) block in inventory
+				return new Selection(s.getPos(), state);
 			}
 		});
 	}	
