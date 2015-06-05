@@ -32,6 +32,8 @@ public class SpellCopy extends AbstractSpellMatrix {
 		Matrix4d matrix = new TranslationMatrix(v);
 		boolean deleteOriginal = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
 		transformSelections(world, player, matrix, deleteOriginal);
+		//FIXME transformSelections is clearing the picks, but repick is still finding BlockSelected in world
+		//FIXME SpellCopy returns null pick when repeating
 		pickManager.repick();
 	}
 

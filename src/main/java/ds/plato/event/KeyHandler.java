@@ -130,38 +130,39 @@ public class KeyHandler {
 	
 	//Private ------------------------------------------------------------------------------------
 
-	private void copy(IPlayer player, IWorld w, int leftRight, int upDown) {
-		pickManager.clearPicks();
+	private void copy(IPlayer player, IWorld world, int leftRight, int upDown) {
+		//Reset clears picks
+		//pickManager.clearPicks();
 		pickManager.reset(2);
-		pickManager.pick(w, new BlockPos(0,0,0), null);
+		pickManager.pick(world, new BlockPos(0,0,0), null);
 		switch (player.getDirection()) {
 		case NORTH:
-			pickManager.pick(w, new BlockPos(leftRight,0,upDown), null);
+			pickManager.pick(world, new BlockPos(leftRight,0,upDown), null);
 			break;
 		case SOUTH:
-			pickManager.pick(w, new BlockPos(-leftRight,0,-upDown), null);
+			pickManager.pick(world, new BlockPos(-leftRight,0,-upDown), null);
 			break;
 		case EAST:
-			pickManager.pick(w, new BlockPos(-upDown,0,leftRight), null);
+			pickManager.pick(world, new BlockPos(-upDown,0,leftRight), null);
 			break;
 		case WEST:
-			pickManager.pick(w, new BlockPos(upDown,0,-leftRight), null);
+			pickManager.pick(world, new BlockPos(upDown,0,-leftRight), null);
 			break;
 		}
 		if (selectionManager.size() != 0) {
 			//FIXME not reselecting in MP
-			new SpellCopy(undoManager, selectionManager, pickManager).invoke(w, null);
+			new SpellCopy(undoManager, selectionManager, pickManager).invoke(world, player);
 		}
 		pickManager.clearPicks();
 	}
 
 	private void copyVertical(IPlayer player, IWorld world, int upDown) {
-		pickManager.clearPicks();
+		//pickManager.clearPicks();
 		pickManager.reset(2);
 		pickManager.pick(world, new BlockPos(0,0,0), null);
 		pickManager.pick(world, new BlockPos(0,upDown,0), null);
 		//FIXME not reselecting in MP
-		new SpellCopy(undoManager, selectionManager, pickManager).invoke(world, null);
+		new SpellCopy(undoManager, selectionManager, pickManager).invoke(world, player);
 		pickManager.clearPicks();
 	}
 

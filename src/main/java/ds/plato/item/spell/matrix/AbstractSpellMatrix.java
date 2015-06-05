@@ -28,8 +28,8 @@ public abstract class AbstractSpellMatrix extends Spell {
 	protected void transformSelections(IWorld world, IPlayer player, Matrix4d matrix, boolean deleteInitialBlocks) {
 
 		List<UndoableSetBlock> deletes = new ArrayList<>();
-		List<UndoableSetBlock> adds = new ArrayList<>();
-		List<BlockPos> addedPos = new ArrayList<>();
+		List<UndoableSetBlock> setBlocks = new ArrayList<>();
+		List<BlockPos> reselects = new ArrayList<>();
 
 		Jumper jumper = new Jumper(player);
 		Iterable<Selection> selections = selectionManager.getSelections();
@@ -44,8 +44,8 @@ public abstract class AbstractSpellMatrix extends Spell {
 			matrix.transform(p);
 			BlockPos pos = new BlockPos(p.x, p.y, p.z);
 			jumper.setHeight(pos);
-			adds.add(new UndoableSetBlock(world, selectionManager, pos, s.getState()));
-			addedPos.add(pos);
+			setBlocks.add(new UndoableSetBlock(world, selectionManager, pos, s.getState()));
+			reselects.add(pos);
 		}
 
 		jumper.jump();
@@ -54,13 +54,13 @@ public abstract class AbstractSpellMatrix extends Spell {
 		for (UndoableSetBlock u : deletes) {
 			t.add(u.set());
 		}
-		for (UndoableSetBlock u : adds) {
+		for (UndoableSetBlock u : setBlocks) {
 			t.add(u.set());
 		}
 		t.commit();
 
 		// Select all transformed blocks
-		for (BlockPos pos : addedPos) {
+		for (BlockPos pos : reselects) {
 			// FIXME in MP select is rejecting these even though clearSelections
 			// should have removed BlockSelected from world.
 			// Same problem as when first corner of a region was left unselected

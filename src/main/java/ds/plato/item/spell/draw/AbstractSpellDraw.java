@@ -52,6 +52,7 @@ public abstract class AbstractSpellDraw extends Spell {
 		Jumper jumper = new Jumper(player);
 
 		List<UndoableSetBlock> setBlocks = new ArrayList<>();
+		List<BlockPos> reselects = new ArrayList<>();
 		for (Point3i p : voxels) {
 			BlockPos pos = new BlockPos(p.x, p.y, p.z);
 			if (onSurface) {
@@ -60,6 +61,7 @@ public abstract class AbstractSpellDraw extends Spell {
 			jumper.setHeight(pos);
 			IBlockState state = player.getHotbar().firstBlock();
 			setBlocks.add(new UndoableSetBlock(world, selectionManager, pos, state));
+			reselects.add(pos);
 		}
 
 		jumper.jump();
@@ -71,6 +73,12 @@ public abstract class AbstractSpellDraw extends Spell {
 		}
 		t.commit();
 
+		//Moved this here from UndoableSetBlock.set()
+		//FIXME state is wrong in MP
+		for (BlockPos pos : reselects) {
+			selectionManager.select(world, pos);
+		}
+		
 		// Try playing a sound
 		String sound = "plato:" + StringUtils.toCamelCase(getClass());
 		// world.getWorld().playSoundAtEntity(player.getPlayer(), sound, 1f, 1f);

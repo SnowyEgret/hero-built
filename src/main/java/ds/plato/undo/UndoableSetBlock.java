@@ -15,7 +15,7 @@ public class UndoableSetBlock implements IUndoable {
 	ISelect selectionManager;
 	BlockPos pos;
 	IBlockState state, prevState;
-	
+
 	@Deprecated
 	public UndoableSetBlock(IWorld world, ISelect selectionManager, Selection s) {
 		this(world, selectionManager, s.getPos(), s.getState());
@@ -26,8 +26,9 @@ public class UndoableSetBlock implements IUndoable {
 		this.selectionManager = selectionManager;
 		this.pos = pos;
 		this.state = state;
-		//TODO changed this to getActualState from getState. Not tested
-		prevState = world.getActualState(pos);
+		// TODO changed this to getActualState from getState. Not tested
+		//prevState = world.getActualState(pos);
+		 prevState = world.getState(pos);
 	}
 
 	public UndoableSetBlock set() {
@@ -35,28 +36,28 @@ public class UndoableSetBlock implements IUndoable {
 		Selection s = selectionManager.getSelection(pos);
 		selectionManager.removeSelection(pos);
 		if (s != null) {
-			//prevBlock = s.getBlock();
 			prevState = s.getState();
 		}
-		//world.setBlock(pos, block);
 		world.setState(pos, state);
 
-		if (!(state.getBlock() instanceof BlockAir)) {
-			selectionManager.select(world, pos);
-		}
+		// Selecting here is causing problems in MP
+		//Shouldn't be unconditional - leave decision to spell
+		// if (!(state.getBlock() instanceof BlockAir)) {
+		// selectionManager.select(world, pos);
+		// }
 		return this;
 	}
 
 	@Override
 	public void undo() {
 		selectionManager.deselect(world, pos);
-		//world.setBlock(pos, prevBlock);
+		// world.setBlock(pos, prevBlock);
 		world.setState(pos, prevState);
 	}
 
 	@Override
 	public void redo() {
-		//world.setBlock(pos, block);
+		// world.setBlock(pos, block);
 		world.setState(pos, state);
 	}
 
@@ -66,8 +67,7 @@ public class UndoableSetBlock implements IUndoable {
 		int result = 1;
 		result = prime * result + ((state == null) ? 0 : state.hashCode());
 		result = prime * result + ((pos == null) ? 0 : pos.hashCode());
-		result = prime * result
-				+ ((prevState == null) ? 0 : prevState.hashCode());
+		result = prime * result + ((prevState == null) ? 0 : prevState.hashCode());
 		return result;
 	}
 
