@@ -1,17 +1,12 @@
 package ds.plato.event;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.IRegistry;
 import net.minecraft.util.Vec3;
 import net.minecraft.util.Vec3i;
-import net.minecraft.world.World;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -19,24 +14,21 @@ import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import ds.plato.Plato;
 import ds.plato.block.BlockPicked;
 import ds.plato.block.BlockPickedModel;
 import ds.plato.block.BlockSelected;
 import ds.plato.block.BlockSelectedModel;
 import ds.plato.gui.Overlay;
 import ds.plato.item.spell.ISpell;
-import ds.plato.item.spell.Spell;
 import ds.plato.item.spell.other.SpellTrail;
 import ds.plato.item.staff.Staff;
-import ds.plato.item.staff.TagStaff;
-import ds.plato.network.NextSpellMessage;
 import ds.plato.pick.IPick;
 import ds.plato.pick.Pick;
 import ds.plato.player.IPlayer;
 import ds.plato.player.Player;
 import ds.plato.select.ISelect;
 import ds.plato.select.Selection;
+import ds.plato.world.IWorld;
 
 public class ForgeEventHandler {
 
@@ -88,6 +80,7 @@ public class ForgeEventHandler {
 		}
 
 		IPlayer player = Player.instance();
+		IWorld world = player.getWorld();
 		ISpell s = player.getSpell();
 
 		// The player may have changed spells on a staff. Reset picking on the spell.
@@ -98,7 +91,7 @@ public class ForgeEventHandler {
 			// If the spell has changed reset it.
 			if (s != spell) {
 				spell = s;
-				s.reset();
+				s.reset(world);
 			}
 		}
 
@@ -106,7 +99,7 @@ public class ForgeEventHandler {
 		if (s instanceof SpellTrail && !player.isFlying()) {
 			if (s.isPicking()) {
 				BlockPos pos = player.getPosition();
-				Block b = player.getWorld().getBlock(pos.down());
+				Block b = world.getBlock(pos.down());
 				// Try second block down when block underneath is air if the player is jumping or stepping on a plant
 				if (b == Blocks.air || !b.isNormalCube()) {
 					pos = pos.down();

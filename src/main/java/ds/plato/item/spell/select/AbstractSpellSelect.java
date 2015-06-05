@@ -51,7 +51,7 @@ public abstract class AbstractSpellSelect extends Spell {
 		// Select the pick if there are no selections.
 		// Either way the pickManager must be cleared.
 		Pick p = pickManager.getPicks()[0];
-		pickManager.clearPicks();
+		pickManager.clearPicks(world);
 		if (selectionManager.size() == 0) {
 			selectionManager.select(world, p.getPos());
 		}

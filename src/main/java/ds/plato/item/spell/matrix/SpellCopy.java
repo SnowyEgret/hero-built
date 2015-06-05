@@ -34,7 +34,7 @@ public class SpellCopy extends AbstractSpellMatrix {
 		transformSelections(world, player, matrix, deleteOriginal);
 		//FIXME transformSelections is clearing the picks, but repick is still finding BlockSelected in world
 		//FIXME SpellCopy returns null pick when repeating
-		pickManager.repick();
+		pickManager.repick(world);
 	}
 
 	@Override

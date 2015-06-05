@@ -6,13 +6,13 @@ import ds.plato.world.IWorld;
 
 public interface IPick {
 
-	public Pick pick(IWorld w, BlockPos pos, EnumFacing side);
+	public Pick pick(IWorld world, BlockPos pos, EnumFacing side);
 
 	public Pick[] getPicks();
 
 	public Pick getPick(BlockPos pos); 
 	
-	public void clearPicks();
+	public void clearPicks(IWorld world);
 
 	public boolean isPicking();
 
@@ -22,6 +22,6 @@ public interface IPick {
 
 	public Pick lastPick();
 	
-	public void repick();
+	public void repick(IWorld world);
 	
 }

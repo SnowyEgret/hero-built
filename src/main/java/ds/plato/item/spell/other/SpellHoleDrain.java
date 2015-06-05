@@ -37,7 +37,7 @@ public class SpellHoleDrain extends Spell {
 		positions.clear();
 		positionsSize = 0;
 		BlockPos pos = pickManager.getPicks()[0].getPos();
-		pickManager.clearPicks();
+		pickManager.clearPicks(world);
 
 		while (true) {
 			Block b = world.getBlock(pos.up());

@@ -43,7 +43,7 @@ public class SpellThicken extends AbstractSpellTransform {
 		}
 
 		selectionManager.clearSelections(world);
-		pickManager.clearPicks();
+		pickManager.clearPicks(world);
 
 		Transaction t = undoManager.newTransaction();
 		for (BlockPos p : positions) {

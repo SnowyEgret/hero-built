@@ -56,7 +56,7 @@ public class SpellText extends Spell implements ITextSetable {
 		player.openGui(GuiHandler.GUI_SPELL_TEXT, world);
 		picks = pickManager.getPicks();
 		// Clear the picks because player may have cancelled
-		pickManager.clearPicks();
+		pickManager.clearPicks(world);
 	}
 
 	@Override
@@ -104,7 +104,7 @@ public class SpellText extends Spell implements ITextSetable {
 
 		System.out.println("size=" + positions.size());
 		selectionManager.clearSelections(world);
-		pickManager.clearPicks();
+		pickManager.clearPicks(world);
 		Transaction t = undoManager.newTransaction();
 		for (BlockPos p : positions) {
 			t.add(new UndoableSetBlock(world, selectionManager, p, firstBlockInHotbar).set());

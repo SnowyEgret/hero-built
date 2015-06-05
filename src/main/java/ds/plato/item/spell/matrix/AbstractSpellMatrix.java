@@ -34,7 +34,7 @@ public abstract class AbstractSpellMatrix extends Spell {
 		Jumper jumper = new Jumper(player);
 		Iterable<Selection> selections = selectionManager.getSelections();
 		selectionManager.clearSelections(world);
-		pickManager.clearPicks();
+		pickManager.clearPicks(world);
 		for (Selection s : selections) {
 			Point3d p = s.point3d();
 			if (deleteInitialBlocks) {

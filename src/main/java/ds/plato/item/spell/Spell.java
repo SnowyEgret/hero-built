@@ -161,8 +161,8 @@ public abstract class Spell extends ItemBase implements ISpell {
 	}
 
 	@Override
-	public void reset() {
-		pickManager.clearPicks();
+	public void reset(IWorld world) {
+		pickManager.clearPicks(world);
 		pickManager.reset(numPicks);
 		message = null;
 	}

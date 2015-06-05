@@ -45,7 +45,7 @@ public abstract class AbstractSpellTransform extends Spell {
 			}
 			t.commit();
 		}
-		pickManager.clearPicks();
+		pickManager.clearPicks(world);
 		//TODO why is this happening?
 		// Clear the selections because BlockSelected is still rendering with old state
 		// Player can reselect last

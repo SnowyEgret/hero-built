@@ -50,6 +50,7 @@ import ds.plato.select.ISelect;
 import ds.plato.select.SelectionManager;
 import ds.plato.undo.IUndo;
 import ds.plato.undo.UndoManager;
+import ds.plato.world.IWorld;
 
 @Mod(modid = Plato.ID, name = Plato.NAME, version = Plato.VERSION)
 public class Plato {
@@ -163,9 +164,9 @@ public class Plato {
 	@EventHandler
 	public void serverStopping(FMLServerStoppingEvent event) {
 		System.out.println("Server stopping");
-		selectionManager.clearSelections(Player.instance().getWorld());
-		// TODO change IPick to pass world like ISelect
-		pickManager.clearPicks();
+		IWorld world = Player.instance().getWorld();
+		selectionManager.clearSelections(world);
+		pickManager.clearPicks(world);
 	}
 	
 	//Private----------------------------------------------------------------------

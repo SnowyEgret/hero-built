@@ -29,7 +29,7 @@ public class SpellTrail extends Spell {
 		Transaction transaction = undoManager.newTransaction();
 		Iterable<Selection> selections = selectionManager.getSelections();
 		selectionManager.clearSelections(world);
-		pickManager.clearPicks();
+		pickManager.clearPicks(world);
 		for (Selection s : selections) {
 			world.setState(s.getPos(), player.getHotbar().firstBlock());
 		}

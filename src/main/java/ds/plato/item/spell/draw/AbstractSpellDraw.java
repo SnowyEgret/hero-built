@@ -39,7 +39,7 @@ public abstract class AbstractSpellDraw extends Spell {
 	protected void draw(IDrawable drawable, IWorld world, IPlayer player) {
 
 		selectionManager.clearSelections(world);
-		pickManager.clearPicks();
+		pickManager.clearPicks(world);
 		boolean isHollow = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
 		boolean onSurface = Keyboard.isKeyDown(Keyboard.KEY_LMENU);
 

@@ -56,7 +56,7 @@ public class KeyHandler {
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void onKeyInput(KeyInputEvent event) {
-	
+
 		IPlayer player = Player.instance();
 		IWorld world = player.getWorld();
 
@@ -69,11 +69,11 @@ public class KeyHandler {
 						undoManager.undo();
 					}
 				}
-				//When undoing a copy/move it is helpful to reselect.
-				//If we had a reference to the last spell, we could do this conditionally
-				//Last spell is not necessarily what is in hand
-				//Comment out for now
-				//selectionManager.reselect(w)
+				// When undoing a copy/move it is helpful to reselect.
+				// If we had a reference to the last spell, we could do this conditionally
+				// Last spell is not necessarily what is in hand
+				// Comment out for now
+				// selectionManager.reselect(w)
 			} catch (NoSuchElementException e) {
 				// TODO Log to overlay. Create info line in overlay
 				System.out.println(e.getMessage());
@@ -88,7 +88,7 @@ public class KeyHandler {
 				} else {
 					Plato.network.sendToServer(new NextSpellMessage());
 				}
-			}			
+			}
 		}
 
 		if (keyBindings.get("delete").isPressed()) {
@@ -108,7 +108,7 @@ public class KeyHandler {
 		}
 
 		if (keyBindings.get("up").isPressed()) {
-			//This should be alt so that control can be deleteOriginal
+			// This should be alt so that control can be deleteOriginal
 			if (Keyboard.isKeyDown(Keyboard.KEY_RCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
 				copyVertical(player, world, 1);
 			} else {
@@ -127,43 +127,43 @@ public class KeyHandler {
 		if (event.isCancelable())
 			event.setCanceled(true);
 	}
-	
-	//Private ------------------------------------------------------------------------------------
+
+	// Private ------------------------------------------------------------------------------------
 
 	private void copy(IPlayer player, IWorld world, int leftRight, int upDown) {
-		//Reset clears picks
-		//pickManager.clearPicks();
 		pickManager.reset(2);
-		pickManager.pick(world, new BlockPos(0,0,0), null);
+		// Same old problem. reset is clearing the picks, but the state is not cleared yet in MP
+		// Check for picking a BlockSelected in PickManager.pick returns null and array is out of bounds
+		// in both MP and SP
+		pickManager.pick(world, new BlockPos(0, 0, 0), null);
 		switch (player.getDirection()) {
 		case NORTH:
-			pickManager.pick(world, new BlockPos(leftRight,0,upDown), null);
+			pickManager.pick(world, new BlockPos(leftRight, 0, upDown), null);
 			break;
 		case SOUTH:
-			pickManager.pick(world, new BlockPos(-leftRight,0,-upDown), null);
+			pickManager.pick(world, new BlockPos(-leftRight, 0, -upDown), null);
 			break;
 		case EAST:
-			pickManager.pick(world, new BlockPos(-upDown,0,leftRight), null);
+			pickManager.pick(world, new BlockPos(-upDown, 0, leftRight), null);
 			break;
 		case WEST:
-			pickManager.pick(world, new BlockPos(upDown,0,-leftRight), null);
+			pickManager.pick(world, new BlockPos(upDown, 0, -leftRight), null);
 			break;
 		}
 		if (selectionManager.size() != 0) {
-			//FIXME not reselecting in MP
+			// FIXME not reselecting in MP
 			new SpellCopy(undoManager, selectionManager, pickManager).invoke(world, player);
 		}
-		pickManager.clearPicks();
+		pickManager.clearPicks(world);
 	}
 
 	private void copyVertical(IPlayer player, IWorld world, int upDown) {
-		//pickManager.clearPicks();
 		pickManager.reset(2);
-		pickManager.pick(world, new BlockPos(0,0,0), null);
-		pickManager.pick(world, new BlockPos(0,upDown,0), null);
-		//FIXME not reselecting in MP
+		pickManager.pick(world, new BlockPos(0, 0, 0), null);
+		pickManager.pick(world, new BlockPos(0, upDown, 0), null);
+		// FIXME not reselecting in MP
 		new SpellCopy(undoManager, selectionManager, pickManager).invoke(world, player);
-		pickManager.clearPicks();
+		pickManager.clearPicks(world);
 	}
 
 	private KeyBinding registerKeyBinding(String name, int key) {

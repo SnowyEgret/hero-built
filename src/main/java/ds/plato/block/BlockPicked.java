@@ -47,10 +47,6 @@ public class BlockPicked extends Block {
 	@SideOnly(Side.CLIENT)
 	public EnumWorldBlockLayer getBlockLayer() {
 		return EnumWorldBlockLayer.SOLID;
-		//Tried all three of these. No effect on problem with picking stairs
-		//return EnumWorldBlockLayer.CUTOUT;
-		//return EnumWorldBlockLayer.CUTOUT_MIPPED;
-		//return EnumWorldBlockLayer.TRANSLUCENT;
 	}
 
 	@Override
@@ -63,11 +59,11 @@ public class BlockPicked extends Block {
 		IExtendedBlockState extendedState = (IExtendedBlockState) state;
 		Pick pick = pickManager.getPick(pos);
 		if (pick != null) {
-			Block pickedBlock = pick.getBlock();
+			//Block pickedBlock = pick.getState().getBlock();
 			// Commented out because could not reproduce bug it was trying to fix (infinite loop at
 			// isAmbientOcclusion())
 			// Handle case where pick is already selected
-			//if (pickedBlock instanceof BlockSelected) {
+			//if (!(pickedBlock instanceof BlockPicked)) {
 			//	pickedBlock = selectionManager.getSelection(pos).getBlock();
 			//}
 			IBlockState pickedBlockState = pick.getState();

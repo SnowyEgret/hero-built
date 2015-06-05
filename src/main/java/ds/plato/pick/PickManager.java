@@ -18,7 +18,7 @@ public class PickManager implements IPick {
 	private LinkedList<Pick> picks = new LinkedList<>();
 	private LinkedList<Pick> lastPicks = new LinkedList<>();
 	private int maxPicks = 0;
-	private IWorld world;
+	// private IWorld world;
 	private Block blockPicked;
 	private ISelect selectionManager;
 
@@ -29,20 +29,22 @@ public class PickManager implements IPick {
 
 	@Override
 	public Pick pick(IWorld world, BlockPos pos, EnumFacing side) {
-		this.world = world;
+		// this.world = world;
 		IBlockState state = world.getActualState(pos);
-		// This is preventing crash when repicking after spellCopy in MP but is making second pick null using arrows to
-		// copy in SP
-		// if (state.getBlock() instanceof BlockPicked) {
-		// // Even though picks may have been cleared the state may not be set yet.
-		// // getPick is already null so we have no way of knowing what the original block was
-		// Pick p = getPick(pos);
-		// System.out.println("pick="+p);
-		// return p;
-		// }
-		
-		//SpellCopy is repicking so the copy can be repeated. Method addPick is returning null because
-		//maxPicks is already reached. We don't want a BlockPicked in the world when there is no
+
+		// This is preventing isAmbientOcclustion crash (but still missing a pick) when repicking after spellCopy in MP
+		// but is making second pick
+		// out of bounds using arrows to copy in SP
+//		if (state.getBlock() instanceof BlockPicked) {
+//			// Even though picks may have been cleared the state may not be set yet.
+//			// getPick is already null so we have no way of knowing what the original block was
+//			Pick p = getPick(pos);
+//			System.out.println("pick=" + p);
+//			return p;
+//		}
+
+		// SpellCopy is repicking so the copy can be repeated. Method addPick is returning null because
+		// maxPicks is already reached. We don't want a BlockPicked in the world when there is no
 		// corresponding pick at that position in the PickManager.
 		Pick pick = addPick(pos, state, side);
 		if (pick != null) {
@@ -68,9 +70,9 @@ public class PickManager implements IPick {
 	}
 
 	@Override
-	public void clearPicks() {
+	public void clearPicks(IWorld world) {
 		for (Pick p : getPicks()) {
-			IBlockState state = world.getState(p.getPos());
+			IBlockState state = world.getActualState(p.getPos());
 			if (state.getBlock() instanceof BlockPicked) {
 				world.setState(p.getPos(), p.getState());
 			}
@@ -97,8 +99,7 @@ public class PickManager implements IPick {
 	}
 
 	@Override
-	public void repick() {
-		// clearPicks();
+	public void repick(IWorld world) {
 		if (lastPicks != null) {
 			for (Pick p : lastPicks) {
 				pick(world, p.getPos(), p.side);

@@ -34,7 +34,7 @@ public class SpellMengerSponge extends Spell {
 		recursivelySubtract(selectionManager.voxelSet());
 		System.out.println("pointsToDelete=" + pointsToDelete);
 		selectionManager.clearSelections(world);
-		pickManager.clearPicks();
+		pickManager.clearPicks(world);
 		Transaction t = undoManager.newTransaction();
 		for (BlockPos v : pointsToDelete) {
 			t.add(new UndoableSetBlock(world, selectionManager, v, Blocks.air.getDefaultState()).set());

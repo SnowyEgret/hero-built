@@ -13,7 +13,7 @@ public interface ISpell {
 
 	public abstract boolean isPicking();
 
-	public abstract void reset();
+	public abstract void reset(IWorld world);
 
 	public abstract SpellInfo getInfo();
 

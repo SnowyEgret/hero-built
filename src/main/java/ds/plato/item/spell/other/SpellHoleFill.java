@@ -40,7 +40,7 @@ public class SpellHoleFill extends Spell {
 		boolean useBlockInHotbar = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
 		Iterable<Selection> selections = selectionManager.getSelections();
 		selectionManager.clearSelections(world);
-		pickManager.clearPicks();
+		pickManager.clearPicks(world);
 		Set<UndoableSetBlock> setBlocks = new HashSet();
 		for (Selection s : selections) {
 			BlockPos[] pos = isHorizontal ? Select.horizontal : Select.belowInclusive;
