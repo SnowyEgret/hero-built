@@ -2,7 +2,6 @@ package ds.plato.item.spell;
 
 import java.util.List;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
@@ -46,20 +45,6 @@ public abstract class Spell extends ItemBase implements ISpell {
 		this.pickManager = pickManager;
 		info = new SpellInfo(this);
 	}
-
-//	protected void incrementJumpHeight(BlockPos pos, IPlayer player) {
-//		BlockPos p = player.getPosition();
-//		int dx = pos.getX() - p.getX();
-//		int dy = pos.getY() - p.getY();
-//		int dz = pos.getZ() - p.getZ();
-//		// System.out.println(dx);
-//		// System.out.println(dy);
-//		if (dx == 0 && dz == 0 && dy > 0) {
-//			if (dy > jumpHeight) {
-//				jumpHeight = dy;
-//			}
-//		}
-//	}
 
 	@Override
 	public void onMouseClickLeft(ItemStack stack, BlockPos pos, EnumFacing sideHit) {

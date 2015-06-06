@@ -5,6 +5,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IItemRenderer;
 
 //Based on http://greyminecraftcoder.blogspot.com.au/2013/09/custom-item-rendering-using.html
+@Deprecated
 public class SpellRenderer implements IItemRenderer {
 
 	//private IModelCustom model;

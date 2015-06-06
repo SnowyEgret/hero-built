@@ -18,6 +18,7 @@ import ds.plato.undo.IUndo;
 
 public class ClientProxy extends CommonProxy {
 
+	@Deprecated
 	@Override
 	public void setCustomRenderers(ISelect select, IPick pick, Iterable<Staff> staffs, Iterable<Spell> spells) {
 		for (Staff s : staffs) {

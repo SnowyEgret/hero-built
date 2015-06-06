@@ -146,7 +146,7 @@ public class Plato {
 
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
-		proxy.setCustomRenderers(selectionManager, pickManager, staffs, spells);
+		//proxy.setCustomRenderers(selectionManager, pickManager, staffs, spells);
 		//TODO could pass MouseHandler here to avoid static reference to isOrbiting
 		proxy.registerEventHandlers(this, selectionManager, undoManager, pickManager);
 	}

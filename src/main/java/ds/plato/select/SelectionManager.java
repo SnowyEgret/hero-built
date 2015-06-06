@@ -37,13 +37,14 @@ public class SelectionManager implements ISelect {
 		IBlockState state = world.getActualState(pos);
 		Block b = (state.getBlock());
 		if (b instanceof BlockAir) {
+			System.out.println("Found BlockAir. Returning null.");
 			return null;
 		}
 		if (b instanceof BlockSelected) {
 			//getSelection is already null so we have no way of knowing what the original block was
+			System.out.println("Found BlockSelected. Returning null.");
 			return getSelection(pos);
 		}
-		//state = b.getActualState(state, world.getWorld(), pos);
 		Selection selection = new Selection(pos, state);
 		selections.put(pos, selection);
 		world.setState(pos, blockSelected.getDefaultState());
