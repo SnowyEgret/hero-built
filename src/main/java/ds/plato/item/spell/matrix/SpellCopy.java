@@ -32,9 +32,10 @@ public class SpellCopy extends AbstractSpellMatrix {
 		Matrix4d matrix = new TranslationMatrix(v);
 		boolean deleteOriginal = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
 		transformSelections(world, player, matrix, deleteOriginal);
-		//FIXME transformSelections is clearing the picks, but repick is still finding BlockSelected in world
-		//FIXME SpellCopy returns null pick when repeating
-		pickManager.repick(world);
+		// Fix for MultiPlayer: Infinite loop when SpellCopy repicks. #95
+		// Solution is a generic way to repeat last spell with same input
+		// Can repeat with arrow keys in MP but only for orthogonal copies
+		// pickManager.repick(world);
 	}
 
 	@Override
@@ -42,5 +43,5 @@ public class SpellCopy extends AbstractSpellMatrix {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 }
