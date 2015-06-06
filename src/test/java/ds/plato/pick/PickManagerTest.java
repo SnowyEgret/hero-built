@@ -51,7 +51,7 @@ public class PickManagerTest extends PlatoTest {
 	@Test
 	public void clearPicks() {
 		Pick p = m.pick(world, p1, EnumFacing.DOWN);
-		m.clearPicks();
+		m.clearPicks(world);
 		assertThat(m.getPicks().length, is(0));
 	}
 

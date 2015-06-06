@@ -73,10 +73,16 @@ public abstract class AbstractSpellDraw extends Spell {
 		}
 		t.commit();
 
-		//Moved this here from UndoableSetBlock.set()
-		//FIXME state is wrong in MP
-		for (BlockPos pos : reselects) {
-			selectionManager.select(world, pos);
+		// Select all transformed blocks
+		if (Minecraft.getMinecraft().isSingleplayer() && !world.isForceMessaging()) {
+			for (BlockPos pos : reselects) {
+				// FIXME in MP select is rejecting these even though clearSelections
+				// should have removed BlockSelected from world.
+				// Same problem as when first corner of a region was left unselected
+				selectionManager.select(world, pos);
+			}
+		} else {
+			selectionManager.setReselects(reselects);
 		}
 		
 		// Try playing a sound

@@ -18,7 +18,6 @@ public class PickManager implements IPick {
 	private LinkedList<Pick> picks = new LinkedList<>();
 	private LinkedList<Pick> lastPicks = new LinkedList<>();
 	private int maxPicks = 0;
-	// private IWorld world;
 	private Block blockPicked;
 	private ISelect selectionManager;
 
@@ -29,7 +28,6 @@ public class PickManager implements IPick {
 
 	@Override
 	public Pick pick(IWorld world, BlockPos pos, EnumFacing side) {
-		// this.world = world;
 		IBlockState state = world.getActualState(pos);
 
 		// This is preventing isAmbientOcclustion crash (but still missing a pick) when repicking after spellCopy in MP

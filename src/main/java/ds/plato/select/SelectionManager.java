@@ -25,7 +25,7 @@ public class SelectionManager implements ISelect {
 
 	private final Map<BlockPos, Selection> selections = new LinkedHashMap<>();
 	private Block blockSelected;
-	private List<BlockPos> lastSelections;
+	private List<BlockPos> reselects;
 	private List<BlockPos> grownSelections = new ArrayList<>();
 
 	public SelectionManager(Block blockSelected) {
@@ -82,11 +82,15 @@ public class SelectionManager implements ISelect {
 		return selections.get(pos);
 	}
 
+	public void setReselects(List<BlockPos> reselects) {
+		this.reselects = reselects;
+	}
+
 	@Override
 	public void reselect(IWorld world) {
 		clearSelections(world);
-		if (lastSelections != null) {
-			for (BlockPos pos : lastSelections) {
+		if (reselects != null) {
+			for (BlockPos pos : reselects) {
 				select(world, pos);
 			}
 		}
@@ -95,7 +99,7 @@ public class SelectionManager implements ISelect {
 	@Override
 	public void clearSelections(IWorld world) {
 		if (!selections.isEmpty()) {
-			lastSelections = Lists.newArrayList(selections.keySet());
+			reselects = Lists.newArrayList(selections.keySet());
 			// getSelections returns a copy so that it is not modified by deselect
 			for (Selection s : getSelections()) {
 				deselect(world, s);

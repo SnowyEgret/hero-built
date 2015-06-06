@@ -19,4 +19,6 @@ public interface IWorld {
 	public IBlockState getActualState(BlockPos p);
 
 	public void setState(BlockPos pos, IBlockState state);
+
+	public boolean isForceMessaging();
 }

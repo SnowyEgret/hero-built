@@ -22,6 +22,8 @@ public interface ISelect {
 
 	public void reselect(IWorld world);
 
+	public void setReselects(List<BlockPos> reselects);
+	
 	public void clearSelections(IWorld world);
 
 	public Selection removeSelection(BlockPos pos);

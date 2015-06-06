@@ -131,8 +131,10 @@ public class KeyHandler {
 	// Private ------------------------------------------------------------------------------------
 
 	private void copy(IPlayer player, IWorld world, int leftRight, int upDown) {
+		// Method reset clears picks
 		pickManager.reset(2);
 		// Same old problem. reset is clearing the picks, but the state is not cleared yet in MP
+		// Pick at BlockPos(0, 0, 0) is still BlockSelected but PickManager is already cleared.
 		// Check for picking a BlockSelected in PickManager.pick returns null and array is out of bounds
 		// in both MP and SP
 		pickManager.pick(world, new BlockPos(0, 0, 0), null);
@@ -151,7 +153,6 @@ public class KeyHandler {
 			break;
 		}
 		if (selectionManager.size() != 0) {
-			// FIXME not reselecting in MP
 			new SpellCopy(undoManager, selectionManager, pickManager).invoke(world, player);
 		}
 		pickManager.clearPicks(world);
@@ -161,9 +162,11 @@ public class KeyHandler {
 		pickManager.reset(2);
 		pickManager.pick(world, new BlockPos(0, 0, 0), null);
 		pickManager.pick(world, new BlockPos(0, upDown, 0), null);
-		// FIXME not reselecting in MP
 		new SpellCopy(undoManager, selectionManager, pickManager).invoke(world, player);
 		pickManager.clearPicks(world);
+		if (Minecraft.getMinecraft().isSingleplayer()) {
+			selectionManager.reselect(world);
+		}
 	}
 
 	private KeyBinding registerKeyBinding(String name, int key) {

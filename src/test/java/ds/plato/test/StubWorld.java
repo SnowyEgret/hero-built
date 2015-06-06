@@ -67,4 +67,10 @@ public class StubWorld implements IWorld {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public boolean isForceMessaging() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

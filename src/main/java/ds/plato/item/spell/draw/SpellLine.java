@@ -25,7 +25,7 @@ public class SpellLine extends AbstractSpellDraw {
 		IDrawable d = new Line(picks[0].point3d(), picks[1].point3d());
 		draw(d, world, player);
 		if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
-			pickManager.clearPicks();
+			pickManager.clearPicks(world);
 			pickManager.reset(2);
 			pickManager.pick(world, picks[1].getPos(), null);
 		}

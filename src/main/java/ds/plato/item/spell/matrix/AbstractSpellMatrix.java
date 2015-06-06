@@ -6,6 +6,7 @@ import java.util.List;
 import javax.vecmath.Matrix4d;
 import javax.vecmath.Point3d;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
 import ds.plato.item.spell.Spell;
@@ -38,7 +39,6 @@ public abstract class AbstractSpellMatrix extends Spell {
 		for (Selection s : selections) {
 			Point3d p = s.point3d();
 			if (deleteInitialBlocks) {
-				// deletes.add(new UndoableSetBlock(world, selectionManager, s.getPos(), Blocks.air));
 				deletes.add(new UndoableSetBlock(world, selectionManager, s.getPos(), Blocks.air.getDefaultState()));
 			}
 			matrix.transform(p);
@@ -59,12 +59,17 @@ public abstract class AbstractSpellMatrix extends Spell {
 		}
 		t.commit();
 
-		// Select all transformed blocks
-		for (BlockPos pos : reselects) {
-			// FIXME in MP select is rejecting these even though clearSelections
-			// should have removed BlockSelected from world.
-			// Same problem as when first corner of a region was left unselected
-			selectionManager.select(world, pos);
+		// Select all transformed blocks but only when not messaging between client and server
+		// Fix for MultiPlayer: State incorrect when reselecting after applying a draw or matrix spell #93
+		if (Minecraft.getMinecraft().isSingleplayer() && !world.isForceMessaging()) {
+			for (BlockPos pos : reselects) {
+				// FIXME in MP select is rejecting these even though clearSelections
+				// should have removed BlockSelected from world.
+				// Same problem as when first corner of a region was left unselected
+				selectionManager.select(world, pos);
+			}
+		} else {
+			selectionManager.setReselects(reselects);
 		}
 	}
 

@@ -80,4 +80,9 @@ public class WorldWrapper implements IWorld {
 		return builder.toString();
 	}
 
+	@Override
+	public boolean isForceMessaging() {
+		return forceMessaging;
+	}
+
 }
