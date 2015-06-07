@@ -2,13 +2,11 @@ package ds.plato.event;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -19,6 +17,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
 
 import ds.plato.Plato;
+import ds.plato.item.spell.ISpell;
+import ds.plato.item.spell.SpellInvoker;
 import ds.plato.item.spell.matrix.SpellCopy;
 import ds.plato.item.spell.transform.SpellDelete;
 import ds.plato.item.staff.Staff;
@@ -36,21 +36,38 @@ public class KeyHandler {
 	private IUndo undoManager;
 	private ISelect selectionManager;
 	private IPick pickManager;
-	private Map<String, KeyBinding> keyBindings = new HashMap<>();
+	private Map<Action, KeyBinding> keyBindings = new HashMap<>();
+	private SpellInvoker lastSpell;
+
+	private enum Action {
+
+		UNDO(Keyboard.KEY_Z),
+		NEXT(Keyboard.KEY_TAB),
+		DELETE(Keyboard.KEY_DELETE),
+		RESELECT(Keyboard.KEY_L),
+		LEFT(Keyboard.KEY_LEFT),
+		RIGHT(Keyboard.KEY_RIGHT),
+		UP(Keyboard.KEY_UP),
+		DOWN(Keyboard.KEY_DOWN),
+		AGAIN(Keyboard.KEY_PERIOD);
+
+		private int keyCode;
+
+		Action(int keyCode) {
+			this.keyCode = keyCode;
+		}
+	}
 
 	public KeyHandler(IUndo undo, ISelect select, IPick pick) {
 		this.undoManager = undo;
 		this.selectionManager = select;
 		this.pickManager = pick;
-		// TODO internationalize these strings
-		keyBindings.put("undo", registerKeyBinding("Undo", Keyboard.KEY_Z));
-		keyBindings.put("nextSpell", registerKeyBinding("Next spell", Keyboard.KEY_TAB));
-		keyBindings.put("delete", registerKeyBinding("Delete", Keyboard.KEY_DELETE));
-		keyBindings.put("lastSelection", registerKeyBinding("Last selection", Keyboard.KEY_L));
-		keyBindings.put("left", registerKeyBinding("Move left", Keyboard.KEY_LEFT));
-		keyBindings.put("right", registerKeyBinding("Move right", Keyboard.KEY_RIGHT));
-		keyBindings.put("up", registerKeyBinding("Move up", Keyboard.KEY_UP));
-		keyBindings.put("down", registerKeyBinding("Move down", Keyboard.KEY_DOWN));
+		for (Action a : Action.values()) {
+			String s = a.toString().toLowerCase();
+			// TODO internationalize
+			keyBindings.put(a, registerKeyBinding(s, a.keyCode));
+		}
+		//System.out.println(keyBindings);
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -60,7 +77,14 @@ public class KeyHandler {
 		IPlayer player = Player.instance();
 		IWorld world = player.getWorld();
 
-		if (keyBindings.get("undo").isPressed()) {
+		Action action = getAction();
+		if (action == null) {
+			return;
+		}
+
+		switch (action) {
+
+		case UNDO:
 			try {
 				if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
 					if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
@@ -78,9 +102,9 @@ public class KeyHandler {
 				// TODO Log to overlay. Create info line in overlay
 				System.out.println(e.getMessage());
 			}
-		}
+			break;
 
-		if (keyBindings.get("nextSpell").isPressed()) {
+		case NEXT:
 			Staff staff = player.getStaff();
 			if (staff != null) {
 				if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
@@ -89,39 +113,48 @@ public class KeyHandler {
 					Plato.network.sendToServer(new NextSpellMessage());
 				}
 			}
-		}
+			break;
 
-		if (keyBindings.get("delete").isPressed()) {
-			new SpellDelete(undoManager, selectionManager, pickManager).invoke(world, null);
-		}
+		case AGAIN:
+			lastSpell.invoke();
+			break;
 
-		if (keyBindings.get("lastSelection").isPressed()) {
+		case DELETE:
+			new SpellDelete(undoManager, selectionManager, pickManager).invoke(world, player);
+			break;
+
+		case RESELECT:
 			selectionManager.reselect(world);
-		}
+			break;
 
-		if (keyBindings.get("left").isPressed()) {
+		case LEFT:
 			copy(player, world, -1, 0);
-		}
+			break;
 
-		if (keyBindings.get("right").isPressed()) {
+		case RIGHT:
 			copy(player, world, 1, 0);
-		}
+			break;
 
-		if (keyBindings.get("up").isPressed()) {
+		case UP:
 			// This should be alt so that control can be deleteOriginal
 			if (Keyboard.isKeyDown(Keyboard.KEY_RCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
 				copyVertical(player, world, 1);
 			} else {
 				copy(player, world, 0, -1);
 			}
-		}
+			break;
 
-		if (keyBindings.get("down").isPressed()) {
+		case DOWN:
+			// This should be alt so that control can be deleteOriginal
 			if (Keyboard.isKeyDown(Keyboard.KEY_RCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
 				copyVertical(player, world, -1);
 			} else {
 				copy(player, world, 0, 1);
 			}
+			break;
+
+		default:
+			return;
 		}
 
 		if (event.isCancelable())
@@ -129,6 +162,16 @@ public class KeyHandler {
 	}
 
 	// Private ------------------------------------------------------------------------------------
+
+	private Action getAction() {
+		for (Entry<Action, KeyBinding> s : keyBindings.entrySet()) {
+			if (s.getValue().isPressed()) {
+				System.out.println("action="+s.getKey());
+				return s.getKey();
+			}
+		}
+		return null;
+	}
 
 	private void copy(IPlayer player, IWorld world, int leftRight, int upDown) {
 		// Method reset clears picks
@@ -152,10 +195,9 @@ public class KeyHandler {
 			pickManager.pick(world, new BlockPos(upDown, 0, -leftRight), null);
 			break;
 		}
-		if (selectionManager.size() != 0) {
-			new SpellCopy(undoManager, selectionManager, pickManager).invoke(world, player);
-		}
-		pickManager.clearPicks(world);
+		ISpell spell = new SpellCopy(undoManager, selectionManager, pickManager);
+		lastSpell = new SpellInvoker(pickManager, spell, world, player);
+		spell.invoke(world, player);
 	}
 
 	private void copyVertical(IPlayer player, IWorld world, int upDown) {
@@ -163,10 +205,6 @@ public class KeyHandler {
 		pickManager.pick(world, new BlockPos(0, 0, 0), null);
 		pickManager.pick(world, new BlockPos(0, upDown, 0), null);
 		new SpellCopy(undoManager, selectionManager, pickManager).invoke(world, player);
-		pickManager.clearPicks(world);
-		if (Minecraft.getMinecraft().isSingleplayer()) {
-			selectionManager.reselect(world);
-		}
 	}
 
 	private KeyBinding registerKeyBinding(String name, int key) {
