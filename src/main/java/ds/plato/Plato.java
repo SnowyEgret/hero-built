@@ -68,7 +68,7 @@ public class Plato {
 	private static IUndo undoManager;
 	private static ISelect selectionManager;
 	private static IPick pickManager;
-	private Configuration configuration;
+	//private Configuration configuration;
 	private List<Spell> spells;
 	private List<Staff> staffs;
 
@@ -119,7 +119,7 @@ public class Plato {
 			e.printStackTrace();
 			throw new RuntimeException(e.getMessage());
 		}
-		configuration.save();
+		//configuration.save();
 
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
 

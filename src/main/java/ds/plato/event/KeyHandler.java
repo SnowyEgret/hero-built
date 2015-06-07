@@ -37,7 +37,7 @@ public class KeyHandler {
 	private ISelect selectionManager;
 	private IPick pickManager;
 	private Map<Action, KeyBinding> keyBindings = new HashMap<>();
-	private SpellInvoker lastSpell;
+	public static SpellInvoker lastSpell;
 
 	private enum Action {
 
@@ -49,7 +49,7 @@ public class KeyHandler {
 		RIGHT(Keyboard.KEY_RIGHT),
 		UP(Keyboard.KEY_UP),
 		DOWN(Keyboard.KEY_DOWN),
-		AGAIN(Keyboard.KEY_PERIOD);
+		REINVOKE(Keyboard.KEY_PERIOD);
 
 		private int keyCode;
 
@@ -115,7 +115,7 @@ public class KeyHandler {
 			}
 			break;
 
-		case AGAIN:
+		case REINVOKE:
 			lastSpell.invoke();
 			break;
 

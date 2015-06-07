@@ -7,7 +7,9 @@ import javax.vecmath.Vector3d;
 import org.lwjgl.input.Keyboard;
 
 import ds.geom.matrix.TranslationMatrix;
+import ds.plato.event.KeyHandler;
 import ds.plato.item.spell.Modifier;
+import ds.plato.item.spell.SpellInvoker;
 import ds.plato.pick.IPick;
 import ds.plato.pick.Pick;
 import ds.plato.player.IPlayer;
@@ -36,6 +38,8 @@ public class SpellCopy extends AbstractSpellMatrix {
 		// Solution is a generic way to repeat last spell with same input
 		// Can repeat with arrow keys in MP but only for orthogonal copies
 		// pickManager.repick(world);
+		//For now, static reference
+		KeyHandler.lastSpell = new SpellInvoker(pickManager, this, world, player); 
 	}
 
 	@Override
