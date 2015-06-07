@@ -71,9 +71,11 @@ public class PickManager implements IPick {
 	public void clearPicks(IWorld world) {
 		for (Pick p : getPicks()) {
 			IBlockState state = world.getActualState(p.getPos());
-			if (state.getBlock() instanceof BlockPicked) {
+			//Why are doing this test?
+			//Commented out as fix for: Second pick not cleared after a spell #102
+			//if (state.getBlock() instanceof BlockPicked) {
 				world.setState(p.getPos(), p.getState());
-			}
+			//}
 		}
 		lastPicks.clear();
 		lastPicks.addAll(picks);
