@@ -28,6 +28,7 @@ public class SpellSelectEdge extends AbstractSpellSelect {
 		case DOWN:
 			setConditions(new IsOnEdgeOnCeiling());
 			break;
+			//$CASES-OMITTED$
 		default:
 			return;
 		}

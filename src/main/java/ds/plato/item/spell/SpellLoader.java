@@ -28,23 +28,19 @@ import ds.plato.util.StringUtils;
 public class SpellLoader {
 
 	public static CreativeTabs tabSpells;
-	private String modId;
+	// private String modId;
 	IUndo undoManager;
 	ISelect selectionManager;
 	IPick pickManager;
-	private Configuration config;
 
-	public SpellLoader(
-			Configuration config,
-			IUndo undoManager,
-			ISelect selectionManager,
-			IPick pickManager,
-			String modId) {
+	// private Configuration config;
+
+	public SpellLoader(IUndo undoManager, ISelect selectionManager, IPick pickManager) {
 		this.undoManager = undoManager;
 		this.selectionManager = selectionManager;
 		this.pickManager = pickManager;
-		this.modId = modId;
-		this.config = config;
+		// this.modId = modId;
+		// this.config = config;
 
 		tabSpells = new CreativeTabs("tabSpells") {
 			@Override
@@ -54,7 +50,7 @@ public class SpellLoader {
 		};
 	}
 
-	//For now, duplicate method loadStaff()
+	// For now, duplicate method loadStaff()
 	public Staff loadStaff(Class<? extends Staff> staffClass) throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		System.out.println("Loading staff " + staffClass.getSimpleName());
 		String name = StringUtils.toCamelCase(staffClass);
@@ -63,7 +59,7 @@ public class SpellLoader {
 		s.setUnlocalizedName(name);
 		s.setMaxStackSize(1);
 		s.setCreativeTab(tabSpells);
-		//s.setTextureName(modId + ":staff");
+		// s.setTextureName(modId + ":staff");
 		GameRegistry.registerItem(s, name);
 		if (s.hasRecipe()) {
 			GameRegistry.addRecipe(new ItemStack(s), s.getRecipe());
@@ -72,7 +68,7 @@ public class SpellLoader {
 	}
 
 	public StaffPreset loadStaffPreset(Class<? extends StaffPreset> staffClass, List<Spell>... spells) throws NoSuchMethodException, SecurityException, MalformedURLException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ClassNotFoundException, IOException {
-		//Combine varyarg spells into one list
+		// Combine varyarg spells into one list
 		List<Spell> allSpells = new ArrayList();
 		for (List<Spell> list : spells) {
 			allSpells.addAll(list);
@@ -84,7 +80,7 @@ public class SpellLoader {
 		s.setUnlocalizedName(name);
 		s.setMaxStackSize(1);
 		s.setCreativeTab(tabSpells);
-		//s.setTextureName(modId + ":staff");
+		// s.setTextureName(modId + ":staff");
 		GameRegistry.registerItem(s, name);
 		if (s.hasRecipe()) {
 			GameRegistry.addRecipe(new ItemStack(s), s.getRecipe());
@@ -104,22 +100,22 @@ public class SpellLoader {
 		}
 		return spells;
 	}
-	
+
 	private Spell loadSpell(Class<? extends Spell> spellClass) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, ClassNotFoundException {
-	
+
 		System.out.println("Loading spell " + spellClass.getSimpleName());
 		String name = StringUtils.toCamelCase(spellClass);
 		Constructor<? extends Spell> c = spellClass.getConstructor(IUndo.class, ISelect.class, IPick.class);
-		Spell s = (Spell) c.newInstance(undoManager, selectionManager, pickManager);
+		Spell s = c.newInstance(undoManager, selectionManager, pickManager);
 		s.setUnlocalizedName(name);
 		s.setMaxStackSize(1);
 		s.setCreativeTab(tabSpells);
-		//s.setTextureName(modId + ":spell");
-		//Can't remember why I did this. For SpellRestore?
+		// s.setTextureName(modId + ":spell");
+		// Can't remember why I did this. For SpellRestore?
 		GameRegistry.registerItem(s, s.getClass().getSimpleName());
-		//GameRegistry.registerItem(s, name);
+		// GameRegistry.registerItem(s, name);
 		if (s.hasRecipe()) {
-			//System.out.println("[SpellLoader.loadSpell] s.getRecipe()=" + s.getRecipe());
+			// System.out.println("[SpellLoader.loadSpell] s.getRecipe()=" + s.getRecipe());
 			GameRegistry.addRecipe(new ItemStack(s), s.getRecipe());
 		}
 		return s;

@@ -85,11 +85,12 @@ public class Plato {
 
 		blockSelected.setSelectionManager(selectionManager);
 		blockPicked.setPickManager(pickManager);
-		blockPicked.setSelectionManager(selectionManager);
+		//blockPicked.setSelectionManager(selectionManager);
 
 		System.out.println("Initializing spells and staffs...");
-		configuration = new Configuration(event.getSuggestedConfigurationFile());
-		SpellLoader loader = new SpellLoader(configuration, undoManager, selectionManager, pickManager, ID);
+		//configuration = new Configuration(event.getSuggestedConfigurationFile());
+		//SpellLoader loader = new SpellLoader(configuration, undoManager, selectionManager, pickManager, ID);
+		SpellLoader loader = new SpellLoader(undoManager, selectionManager, pickManager);
 		try {
 
 			spells = new ArrayList<>();

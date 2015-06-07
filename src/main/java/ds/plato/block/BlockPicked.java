@@ -23,7 +23,7 @@ public class BlockPicked extends Block {
 	public static final BlockPickedProperty pickedBlockProperty = new BlockPickedProperty();
 	public static ModelResourceLocation modelResourceLocation = new ModelResourceLocation("plato:blockPicked");
 	private IPick pickManager;
-	private ISelect selectionManager;
+	//private ISelect selectionManager;
 
 	public IPick getPickManager() {
 		return pickManager;
@@ -39,9 +39,9 @@ public class BlockPicked extends Block {
 		this.pickManager = pickManager;
 	}
 
-	public void setSelectionManager(ISelect selectionManager) {
-		this.selectionManager = selectionManager;
-	}
+//	public void setSelectionManager(ISelect selectionManager) {
+//		this.selectionManager = selectionManager;
+//	}
 
 	// Is this the default layer?
 	@SideOnly(Side.CLIENT)

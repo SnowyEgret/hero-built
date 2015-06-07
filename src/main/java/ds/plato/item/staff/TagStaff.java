@@ -9,13 +9,10 @@ import ds.plato.item.spell.Spell;
 public class TagStaff {
 
 	private NBTTagCompound tag;
-	private int size = Staff.MAX_NUM_SPELLS;
 	private final String INDEX = "index";
 
 	public TagStaff(ItemStack stack) {
 		tag = stack.getTagCompound();
-		//System.out.println("tag=" + tag);
-		//new Throwable().printStackTrace();
 		if (tag == null) {
 			System.out.println("Tag null - created a new one");
 			tag = new NBTTagCompound();

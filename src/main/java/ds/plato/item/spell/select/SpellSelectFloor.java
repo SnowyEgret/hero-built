@@ -28,6 +28,7 @@ public class SpellSelectFloor extends AbstractSpellSelect {
 		case DOWN:
 			setConditions(new IsOnCeiling());
 			break;
+			//$CASES-OMITTED$
 		default:
 			return;
 		}

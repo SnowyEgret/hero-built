@@ -43,10 +43,13 @@ public class SpellRotate90 extends AbstractSpellMatrix {
 		switch (Keyboard.getEventKey()) {
 		case (Keyboard.KEY_X):
 			matrix = GeomUtil.newRotX90Matrix(center);
+			break;
 		case (Keyboard.KEY_Y):
 			matrix = GeomUtil.newRotY90Matrix(center);
+			break;
 		case (Keyboard.KEY_Z):
 			matrix = GeomUtil.newRotZ90Matrix(center);
+			break;
 		default:
 			matrix = GeomUtil.newRotY90Matrix(center);
 		}

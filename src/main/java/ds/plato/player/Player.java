@@ -17,7 +17,7 @@ import ds.plato.world.WorldWrapper;
 
 public class Player implements IPlayer {
 
-	private static Player instance = null;
+	//private static Player instance = null;
 	private EntityPlayer player;
 
 	public enum Direction {

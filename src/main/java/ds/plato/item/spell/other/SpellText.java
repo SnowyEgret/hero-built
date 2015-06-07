@@ -77,7 +77,7 @@ public class SpellText extends Spell implements ITextSetable {
 
 		double hyp = Math.sqrt(Math.pow(r.getWidth(), 2) + Math.pow(r.getHeight(), 2));
 		int width = (int) hyp * 2;
-		int height = (int) width;
+		int height = width;
 
 		BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		Graphics g = image.getGraphics();

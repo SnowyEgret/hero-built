@@ -165,6 +165,7 @@ public abstract class Spell extends ItemBase implements ISpell {
 			return true;
 		return false;
 	}
+	
 
 	@Override
 	public String toString() {
