@@ -4,6 +4,8 @@ import javax.vecmath.Matrix4d;
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
 
+import net.minecraft.client.Minecraft;
+
 import org.lwjgl.input.Keyboard;
 
 import ds.geom.matrix.TranslationMatrix;
@@ -37,9 +39,9 @@ public class SpellCopy extends AbstractSpellMatrix {
 		// Fix for MultiPlayer: Infinite loop when SpellCopy repicks. #95
 		// Solution is a generic way to repeat last spell with same input
 		// Can repeat with arrow keys in MP but only for orthogonal copies
-		// pickManager.repick(world);
+		pickManager.repick(world);
 		//For now, static reference
-		KeyHandler.lastSpell = new SpellInvoker(pickManager, this, world, player); 
+		//KeyHandler.lastSpell = new SpellInvoker(pickManager, this, world, player); 
 	}
 
 	@Override

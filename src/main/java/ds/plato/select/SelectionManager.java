@@ -41,7 +41,7 @@ public class SelectionManager implements ISelect {
 			return null;
 		}
 		if (b instanceof BlockSelected) {
-			//getSelection is already null so we have no way of knowing what the original block was
+			// getSelection is already null so we have no way of knowing what the original block was
 			System.out.println("Found BlockSelected. Returning null.");
 			return getSelection(pos);
 		}
@@ -58,6 +58,7 @@ public class SelectionManager implements ISelect {
 		// //Look up pick from pickManager
 		// //b = ((BlockPicked)b).getPos())
 		// }
+		System.out.println("selection=" + selection);
 		world.setState(selection.getPos(), selection.getState());
 		selections.remove(selection.getPos());
 	}
@@ -137,7 +138,7 @@ public class SelectionManager implements ISelect {
 		if (selections.isEmpty()) {
 			return null;
 		}
-		//TODO ConcurrentModificationException here in MP
+		// TODO ConcurrentModificationException here in MP
 		return selections.values().iterator().next();
 	}
 

@@ -64,17 +64,26 @@ public class Plato {
 	@SidedProxy(clientSide = "ds.plato.proxy.ClientProxy", serverSide = "ds.plato.proxy.CommonProxy")
 	public static CommonProxy proxy;
 	public static SimpleNetworkWrapper network;
+	public static boolean forceMessaging = false;
 
 	private static IUndo undoManager;
 	private static ISelect selectionManager;
 	private static IPick pickManager;
-	//private Configuration configuration;
+	// private Configuration configuration;
 	private List<Spell> spells;
 	private List<Staff> staffs;
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 
+		
+		String prop = System.getProperties().getProperty("plato.forceMessaging");
+		if (prop != null) {
+			if (prop.equals("true")) {
+				forceMessaging = true;
+			}
+		}
+		
 		System.out.println("Initializing blocks...");
 		BlockSelected blockSelected = (BlockSelected) initBlock(new BlockSelected());
 		BlockPicked blockPicked = (BlockPicked) initBlock(new BlockPicked());
@@ -85,11 +94,11 @@ public class Plato {
 
 		blockSelected.setSelectionManager(selectionManager);
 		blockPicked.setPickManager(pickManager);
-		//blockPicked.setSelectionManager(selectionManager);
+		// blockPicked.setSelectionManager(selectionManager);
 
 		System.out.println("Initializing spells and staffs...");
-		//configuration = new Configuration(event.getSuggestedConfigurationFile());
-		//SpellLoader loader = new SpellLoader(configuration, undoManager, selectionManager, pickManager, ID);
+		// configuration = new Configuration(event.getSuggestedConfigurationFile());
+		// SpellLoader loader = new SpellLoader(configuration, undoManager, selectionManager, pickManager, ID);
 		SpellLoader loader = new SpellLoader(undoManager, selectionManager, pickManager);
 		try {
 
@@ -119,7 +128,7 @@ public class Plato {
 			e.printStackTrace();
 			throw new RuntimeException(e.getMessage());
 		}
-		//configuration.save();
+		// configuration.save();
 
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
 
@@ -130,7 +139,7 @@ public class Plato {
 		network.registerMessage(NextSpellMessageHandler.class, NextSpellMessage.class, 2, Side.SERVER);
 		network.registerMessage(SetBlockStateMessageHandler.class, SetBlockStateMessage.class, 3, Side.SERVER);
 
-		//Create custom state mappers for BlockSelected and BlockPicked models
+		// Create custom state mappers for BlockSelected and BlockPicked models
 		ModelLoader.setCustomStateMapper(blockSelected, new StateMapperBase() {
 			@Override
 			protected ModelResourceLocation getModelResourceLocation(IBlockState iBlockState) {
@@ -147,8 +156,8 @@ public class Plato {
 
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
-		//proxy.setCustomRenderers(selectionManager, pickManager, staffs, spells);
-		//TODO could pass MouseHandler here to avoid static reference to isOrbiting
+		// proxy.setCustomRenderers(selectionManager, pickManager, staffs, spells);
+		// TODO could pass MouseHandler here to avoid static reference to isOrbiting
 		proxy.registerEventHandlers(this, selectionManager, undoManager, pickManager);
 	}
 
@@ -156,7 +165,7 @@ public class Plato {
 	public void postInit(FMLPostInitializationEvent event) {
 		System.out.println();
 	}
-	
+
 	@EventHandler
 	public void serverStarted(FMLServerStartedEvent event) {
 		System.out.println();
@@ -164,13 +173,15 @@ public class Plato {
 
 	@EventHandler
 	public void serverStopping(FMLServerStoppingEvent event) {
-		System.out.println("Server stopping");
-		IWorld world = Player.instance().getWorld();
-		selectionManager.clearSelections(world);
-		pickManager.clearPicks(world);
+//		System.out.println("Server stopping");
+		// System.out.println("side="+event.getSide());
+		// IWorld world = Player.instance().getWorld();
+		// System.out.println("world=" + world);
+		// selectionManager.clearSelections(world);
+		// pickManager.clearPicks(world);
 	}
-	
-	//Private----------------------------------------------------------------------
+
+	// Private----------------------------------------------------------------------
 
 	private Block initBlock(Block block) {
 		String classname = block.getClass().getSimpleName();

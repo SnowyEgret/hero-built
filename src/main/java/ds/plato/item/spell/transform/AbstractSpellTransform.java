@@ -10,6 +10,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.IPlantable;
+import ds.plato.Plato;
 import ds.plato.item.spell.Spell;
 import ds.plato.pick.IPick;
 import ds.plato.player.IPlayer;
@@ -66,7 +67,7 @@ public abstract class AbstractSpellTransform extends Spell {
 		t.commit();
 
 		// Select all transformed blocks but only when not messaging between client and server
-		if (Minecraft.getMinecraft().isSingleplayer() && !world.isForceMessaging()) {
+		if (Minecraft.getMinecraft().isSingleplayer() && !Plato.forceMessaging) {
 			// FIXME Still not working but is working in AbstractSpellDraw
 			for (BlockPos pos : reselects) {
 				selectionManager.select(world, pos);

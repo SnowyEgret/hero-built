@@ -14,18 +14,8 @@ public class WorldWrapper implements IWorld {
 
 	private World world;
 
-	boolean forceMessaging = false;
-
 	public WorldWrapper(World world) {
 		this.world = world;
-		
-		String prop = System.getProperties().getProperty("plato.forceMessaging");
-		if (prop != null) {
-			if (prop.equals("true")) {
-				forceMessaging = true;
-				// return new WorldWrapper(Minecraft.getMinecraft().theWorld);
-			}
-		}
 	}
 
 	@Override
@@ -37,8 +27,8 @@ public class WorldWrapper implements IWorld {
 	@Deprecated
 	@Override
 	public void setBlock(BlockPos pos, Block block) {
-		
-		if (world.isRemote || forceMessaging) {
+
+		if (world.isRemote || Plato.forceMessaging) {
 			Plato.network.sendToServer(new SetBlockMessage(pos, block));
 		} else {
 			IBlockState state = block.getBlockState().getBaseState();
@@ -48,7 +38,7 @@ public class WorldWrapper implements IWorld {
 
 	@Override
 	public void setState(BlockPos pos, IBlockState state) {
-		if (world.isRemote || forceMessaging) {
+		if (world.isRemote || Plato.forceMessaging) {
 			Plato.network.sendToServer(new SetBlockStateMessage(pos, state));
 		} else {
 			world.setBlockState(pos, state, 3);
@@ -79,10 +69,4 @@ public class WorldWrapper implements IWorld {
 		builder.append("]");
 		return builder.toString();
 	}
-
-	@Override
-	public boolean isForceMessaging() {
-		return forceMessaging;
-	}
-
 }

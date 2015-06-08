@@ -7,8 +7,6 @@ import javax.vecmath.Point3i;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
 
 import org.lwjgl.input.Keyboard;
@@ -16,6 +14,7 @@ import org.lwjgl.input.Keyboard;
 import ds.geom.IDrawable;
 import ds.geom.VoxelSet;
 import ds.geom.solid.Solid;
+import ds.plato.Plato;
 import ds.plato.item.spell.Modifier;
 import ds.plato.item.spell.Spell;
 import ds.plato.pick.IPick;
@@ -32,7 +31,6 @@ public abstract class AbstractSpellDraw extends Spell {
 
 	public AbstractSpellDraw(int numPicks, IUndo undoManager, ISelect selectionManager, IPick pickManager) {
 		super(numPicks, undoManager, selectionManager, pickManager);
-		// TODO
 		info.addModifiers(Modifier.SHIFT, Modifier.ALT);
 	}
 
@@ -74,7 +72,7 @@ public abstract class AbstractSpellDraw extends Spell {
 		t.commit();
 
 		// Select all transformed blocks
-		if (Minecraft.getMinecraft().isSingleplayer() && !world.isForceMessaging()) {
+		if (Minecraft.getMinecraft().isSingleplayer() && !Plato.forceMessaging) {
 			for (BlockPos pos : reselects) {
 				// FIXME in MP select is rejecting these even though clearSelections
 				// should have removed BlockSelected from world.
@@ -85,7 +83,6 @@ public abstract class AbstractSpellDraw extends Spell {
 			selectionManager.setReselects(reselects);
 		}
 		
-		// Try playing a sound
 		String sound = "plato:" + StringUtils.toCamelCase(getClass());
 		// world.getWorld().playSoundAtEntity(player.getPlayer(), sound, 1f, 1f);
 		// TODO

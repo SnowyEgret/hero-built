@@ -1,6 +1,7 @@
 package ds.plato.event;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.gui.GuiIngameMenu;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
@@ -8,6 +9,7 @@ import net.minecraft.util.IRegistry;
 import net.minecraft.util.Vec3;
 import net.minecraft.util.Vec3i;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
+import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
@@ -42,6 +44,11 @@ public class ForgeEventHandler {
 		this.pickManager = pickManager;
 		this.overlay = overlay;
 	}
+
+	// http://jabelarminecraft.blogspot.ca/p/minecraft-forge-172-event-handling.html
+	// Due to the danger of other mods canceling events you might want to intercept, and also useful in some specific
+	// cases, you can force a subscribed method to still get events that have been canceled. This is by using the
+	// receiveCanceled=true parameter in the @Subscribe annotation.
 
 	// When the cursor falls on a new block update the overlay so that when it is rendered
 	// in onRenderGameOverlayEvent below it will show the distance from the first pick or selection.
@@ -133,4 +140,16 @@ public class ForgeEventHandler {
 		r.putObject(BlockPicked.modelResourceLocation, new BlockPickedModel());
 	}
 
+	// You can use GuiScreenEvent.ActionPerformedEvent, it is fired whenever a GuiButton is pressed. Check if the Gui is
+	// GuiIngameMenu and the button ID is 1 (= quit button). If so, send whatever you need. The next that happens after
+	// you return from your event handler is that Minecraft will send the quit packet causing you to leave the server
+	// immediately. You can alternatively cancel the event, which will stop the button from having any effect.
+	@SubscribeEvent
+	public void onLogout(GuiScreenEvent.ActionPerformedEvent event) {
+		if (event.gui instanceof GuiIngameMenu && event.button.id == 1) {
+			IWorld world = Player.instance().getWorld();
+			selectionManager.clearSelections(world);
+			pickManager.clearPicks(world);
+		}
+	}
 }

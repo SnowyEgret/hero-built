@@ -9,6 +9,7 @@ import javax.vecmath.Point3d;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
+import ds.plato.Plato;
 import ds.plato.item.spell.Spell;
 import ds.plato.pick.IPick;
 import ds.plato.player.IPlayer;
@@ -61,7 +62,7 @@ public abstract class AbstractSpellMatrix extends Spell {
 
 		// Select all transformed blocks but only when not messaging between client and server
 		// Fix for MultiPlayer: State incorrect when reselecting after applying a draw or matrix spell #93
-		if (Minecraft.getMinecraft().isSingleplayer() && !world.isForceMessaging()) {
+		if (Minecraft.getMinecraft().isSingleplayer() && !Plato.forceMessaging) {
 			for (BlockPos pos : reselects) {
 				// FIXME in MP select is rejecting these even though clearSelections
 				// should have removed BlockSelected from world.
