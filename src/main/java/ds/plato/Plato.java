@@ -34,6 +34,8 @@ import ds.plato.item.staff.StaffDraw;
 import ds.plato.item.staff.StaffOak;
 import ds.plato.item.staff.StaffSelect;
 import ds.plato.item.staff.StaffTransform;
+import ds.plato.network.SetBlockStateDoneMessage;
+import ds.plato.network.SetBlockStateDoneMessageHandler;
 import ds.plato.network.NextSpellMessage;
 import ds.plato.network.NextSpellMessageHandler;
 import ds.plato.network.PrevSpellMessage;
@@ -69,6 +71,7 @@ public class Plato {
 	private static IUndo undoManager;
 	private static ISelect selectionManager;
 	private static IPick pickManager;
+	public static boolean setBlockMessageDone = false;
 	// private Configuration configuration;
 	private List<Spell> spells;
 	private List<Staff> staffs;
@@ -138,6 +141,7 @@ public class Plato {
 		network.registerMessage(PrevSpellMessageHandler.class, PrevSpellMessage.class, 1, Side.SERVER);
 		network.registerMessage(NextSpellMessageHandler.class, NextSpellMessage.class, 2, Side.SERVER);
 		network.registerMessage(SetBlockStateMessageHandler.class, SetBlockStateMessage.class, 3, Side.SERVER);
+		network.registerMessage(SetBlockStateDoneMessageHandler.class, SetBlockStateDoneMessage.class, 4, Side.CLIENT);
 
 		// Create custom state mappers for BlockSelected and BlockPicked models
 		ModelLoader.setCustomStateMapper(blockSelected, new StateMapperBase() {
@@ -171,15 +175,9 @@ public class Plato {
 		System.out.println();
 	}
 
-	@EventHandler
-	public void serverStopping(FMLServerStoppingEvent event) {
-//		System.out.println("Server stopping");
-		// System.out.println("side="+event.getSide());
-		// IWorld world = Player.instance().getWorld();
-		// System.out.println("world=" + world);
-		// selectionManager.clearSelections(world);
-		// pickManager.clearPicks(world);
-	}
+	// @EventHandler
+	// public void serverStopping(FMLServerStoppingEvent event) {
+	// }
 
 	// Private----------------------------------------------------------------------
 

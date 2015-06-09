@@ -51,13 +51,11 @@ public class UndoableSetBlock implements IUndoable {
 	@Override
 	public void undo() {
 		selectionManager.deselect(world, pos);
-		// world.setBlock(pos, prevBlock);
 		world.setState(pos, prevState);
 	}
 
 	@Override
 	public void redo() {
-		// world.setBlock(pos, block);
 		world.setState(pos, state);
 	}
 

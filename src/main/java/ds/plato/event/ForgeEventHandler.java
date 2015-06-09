@@ -140,12 +140,9 @@ public class ForgeEventHandler {
 		r.putObject(BlockPicked.modelResourceLocation, new BlockPickedModel());
 	}
 
-	// You can use GuiScreenEvent.ActionPerformedEvent, it is fired whenever a GuiButton is pressed. Check if the Gui is
-	// GuiIngameMenu and the button ID is 1 (= quit button). If so, send whatever you need. The next that happens after
-	// you return from your event handler is that Minecraft will send the quit packet causing you to leave the server
-	// immediately. You can alternatively cancel the event, which will stop the button from having any effect.
+	// http://www.minecraftforge.net/forum/index.php/topic,30987.msg161224.html
 	@SubscribeEvent
-	public void onLogout(GuiScreenEvent.ActionPerformedEvent event) {
+	public void onGuiIngameMenuQuit(GuiScreenEvent.ActionPerformedEvent event) {
 		if (event.gui instanceof GuiIngameMenu && event.button.id == 1) {
 			IWorld world = Player.instance().getWorld();
 			selectionManager.clearSelections(world);

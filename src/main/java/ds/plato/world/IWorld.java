@@ -16,7 +16,7 @@ public interface IWorld {
 
 	public IBlockState getState(BlockPos pos);
 
-	public IBlockState getActualState(BlockPos p);
+	public IBlockState getActualState(BlockPos pos);
 
 	public void setState(BlockPos pos, IBlockState state);
 }

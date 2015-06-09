@@ -41,8 +41,8 @@ public class MouseHandler {
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void onMouseEvent(MouseEvent e) {
-
-		// Do nothing if returning from a gui
+		
+			// Do nothing if returning from a gui
 		// TODO Seems not to work in multiplayer
 		if (Minecraft.getMinecraft().isGamePaused()) {
 			return;
@@ -52,6 +52,13 @@ public class MouseHandler {
 		IWorld world = player.getWorld();
 		MovingObjectPosition cursor = Minecraft.getMinecraft().objectMouseOver;
 		
+		//Do class Test in client thread
+		// if (e.button == 0) {
+		// new Test(world.getWorld(), cursor.getBlockPos());
+		// e.setCanceled(true);
+		// return;
+		// }
+
 		// Return if player is holding nothing
 		ItemStack stack = player.getHeldItemStack();
 		if (stack == null) {

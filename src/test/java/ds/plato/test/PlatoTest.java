@@ -51,11 +51,11 @@ public class PlatoTest {
 		p2 = new BlockPos(2,2,2);
 		p3 = new BlockPos(3,3,3);
 		MockitoAnnotations.initMocks(this);
-		when(dirt.getBlock().getLocalizedName()).thenReturn("dirt");
-		when(sand.getBlock().getLocalizedName()).thenReturn("sand");
-		when(clay.getBlock().getLocalizedName()).thenReturn("clay");
+//		when(dirt.getBlock().getLocalizedName()).thenReturn("dirt");
+//		when(sand.getBlock().getLocalizedName()).thenReturn("sand");
+//		when(clay.getBlock().getLocalizedName()).thenReturn("clay");
 		//TODO class Item does not have method getLocalizedName. What is called instead? Used in T_Spell.getRecipe
-		when(bucket.toString()).thenReturn("bucket");
+//		when(bucket.toString()).thenReturn("bucket");
 	}
 
 	//Returns a StubWorld initialized with a mock air block

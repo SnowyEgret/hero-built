@@ -24,37 +24,9 @@ public class SetBlockStateMessage implements IMessage {
 		this.z = pos.getZ();
 		stateId = Block.getStateId(state);
 	}
-
-	public void setX(int x) {
-		this.x = x;
-	}
-
-	public void setY(int y) {
-		this.y = y;
-	}
-
-	public void setZ(int z) {
-		this.z = z;
-	}
-
-	public void setStateId(int stateId) {
-		this.stateId = stateId;
-	}
-
-	public int getX() {
-		return x;
-	}
-
-	public int getY() {
-		return y;
-	}
-
-	public int getZ() {
-		return z;
-	}
 	
-	public int getStateId() {
-		return stateId;
+	public BlockPos getPos() {
+		return new BlockPos(x, y, z);
 	}
 
 	public IBlockState getState() {
@@ -83,16 +55,10 @@ public class SetBlockStateMessage implements IMessage {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("SetBlockStateMessage [x=");
-		builder.append(x);
-		builder.append(", y=");
-		builder.append(y);
-		builder.append(", z=");
-		builder.append(z);
-		builder.append(", state=");
+		builder.append("SetBlockStateMessage [getPos()=");
+		builder.append(getPos());
+		builder.append(", getState()=");
 		builder.append(getState());
-		builder.append(", size=");
-		builder.append(size);
 		builder.append("]");
 		return builder.toString();
 	}
