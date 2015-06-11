@@ -59,7 +59,7 @@ public class BlockSelected extends Block {
 		IExtendedBlockState extendedState = (IExtendedBlockState) state;
 		Selection s = selectionManager.getSelection(pos);
 		if (s != null) {
-			Block selectedBlock = s.getBlock();
+			//Block selectedBlock = s.getBlock();
 			IBlockState selectedBlockState = s.getState();
 			extendedState = extendedState.withProperty(selectedBlockProperty, selectedBlockState);
 		} else {

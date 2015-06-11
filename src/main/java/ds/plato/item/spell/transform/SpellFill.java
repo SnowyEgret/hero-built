@@ -28,6 +28,7 @@ public class SpellFill extends AbstractSpellTransform {
 		});
 	}
 
+	//Added for call from MouseHandler or SpellFillMessageHandler
 	public void invoke(IWorld world, final IPlayer player, final IBlockState state) {
 		transformSelections(world, player, new ITransform() {
 			@Override

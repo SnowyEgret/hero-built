@@ -8,7 +8,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -17,7 +16,6 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
-import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -34,25 +32,25 @@ import ds.plato.item.staff.StaffDraw;
 import ds.plato.item.staff.StaffOak;
 import ds.plato.item.staff.StaffSelect;
 import ds.plato.item.staff.StaffTransform;
-import ds.plato.network.SetBlockStateDoneMessage;
-import ds.plato.network.SetBlockStateDoneMessageHandler;
 import ds.plato.network.NextSpellMessage;
 import ds.plato.network.NextSpellMessageHandler;
 import ds.plato.network.PrevSpellMessage;
 import ds.plato.network.PrevSpellMessageHandler;
 import ds.plato.network.SetBlockMessage;
 import ds.plato.network.SetBlockMessageHandler;
+import ds.plato.network.SetBlockStateDoneMessage;
+import ds.plato.network.SetBlockStateDoneMessageHandler;
 import ds.plato.network.SetBlockStateMessage;
 import ds.plato.network.SetBlockStateMessageHandler;
+import ds.plato.network.SpellFillMessage;
+import ds.plato.network.SpellFillMessageHandler;
 import ds.plato.pick.IPick;
 import ds.plato.pick.PickManager;
-import ds.plato.player.Player;
 import ds.plato.proxy.CommonProxy;
 import ds.plato.select.ISelect;
 import ds.plato.select.SelectionManager;
 import ds.plato.undo.IUndo;
 import ds.plato.undo.UndoManager;
-import ds.plato.world.IWorld;
 
 @Mod(modid = Plato.ID, name = Plato.NAME, version = Plato.VERSION)
 public class Plato {
@@ -68,18 +66,19 @@ public class Plato {
 	public static SimpleNetworkWrapper network;
 	public static boolean forceMessaging = false;
 
-	private static IUndo undoManager;
-	private static ISelect selectionManager;
-	private static IPick pickManager;
+	public static IUndo undoManager;
+	public static ISelect selectionManager;
+	public static IPick pickManager;
 	public static boolean setBlockMessageDone = false;
 	// private Configuration configuration;
-	private List<Spell> spells;
-	private List<Staff> staffs;
 
+	//TODO Should these be constructed in a proxy?
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 
-		
+		List<Spell> spells= new ArrayList<>();
+		List<Staff> staffs = new ArrayList<>();
+	
 		String prop = System.getProperties().getProperty("plato.forceMessaging");
 		if (prop != null) {
 			if (prop.equals("true")) {
@@ -97,15 +96,12 @@ public class Plato {
 
 		blockSelected.setSelectionManager(selectionManager);
 		blockPicked.setPickManager(pickManager);
-		// blockPicked.setSelectionManager(selectionManager);
 
 		System.out.println("Initializing spells and staffs...");
 		// configuration = new Configuration(event.getSuggestedConfigurationFile());
 		// SpellLoader loader = new SpellLoader(configuration, undoManager, selectionManager, pickManager, ID);
 		SpellLoader loader = new SpellLoader(undoManager, selectionManager, pickManager);
 		try {
-
-			spells = new ArrayList<>();
 			List<Spell> drawSpells = loader.loadSpellsFromPackage("ds.plato.item.spell.draw");
 			List<Spell> selectSpells = loader.loadSpellsFromPackage("ds.plato.item.spell.select");
 			List<Spell> transformSpells = loader.loadSpellsFromPackage("ds.plato.item.spell.transform");
@@ -118,7 +114,6 @@ public class Plato {
 			spells.addAll(otherSpells);
 
 			// Create some empty staffs. For now, they have a different base class.
-			staffs = new ArrayList<>();
 			staffs.add(loader.loadStaff(StaffOak.class));
 			staffs.add(loader.loadStaff(StaffBirch.class));
 			staffs.add(loader.loadStaff(StaffAcacia.class));
@@ -142,6 +137,7 @@ public class Plato {
 		network.registerMessage(NextSpellMessageHandler.class, NextSpellMessage.class, 2, Side.SERVER);
 		network.registerMessage(SetBlockStateMessageHandler.class, SetBlockStateMessage.class, 3, Side.SERVER);
 		network.registerMessage(SetBlockStateDoneMessageHandler.class, SetBlockStateDoneMessage.class, 4, Side.CLIENT);
+		network.registerMessage(SpellFillMessageHandler.class, SpellFillMessage.class, 3, Side.SERVER);
 
 		// Create custom state mappers for BlockSelected and BlockPicked models
 		ModelLoader.setCustomStateMapper(blockSelected, new StateMapperBase() {
@@ -167,13 +163,11 @@ public class Plato {
 
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
-		System.out.println();
 	}
 
-	@EventHandler
-	public void serverStarted(FMLServerStartedEvent event) {
-		System.out.println();
-	}
+	// @EventHandler
+	// public void serverStarted(FMLServerStartedEvent event) {
+	// }
 
 	// @EventHandler
 	// public void serverStopping(FMLServerStoppingEvent event) {

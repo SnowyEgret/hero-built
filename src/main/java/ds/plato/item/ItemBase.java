@@ -1,37 +1,66 @@
 package ds.plato.item;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 import ds.plato.Plato;
+import ds.plato.select.ISelect;
 import ds.plato.util.StringUtils;
+import ds.plato.world.WorldWrapper;
 
 public abstract class ItemBase extends Item implements IItem {
 
 	private final String modelPath = "models/" + StringUtils.toCamelCase(getClass());
 	private final ResourceLocation modelLocation = new ResourceLocation(Plato.ID, modelPath + ".obj");
 	private final ResourceLocation textureLocation = new ResourceLocation(Plato.ID, modelPath + ".png");
-	//protected IModelCustom model;
+	// protected IModelCustom model;
+	private ISelect selectionManager;
 
-//	protected ItemBase() {
-//		try {
-//			model = AdvancedModelLoader.loadModel(modelLocation);
-//		} catch (Exception e) {
-//			// ClientProxy.setCustomRenderers logs missing model
-//		}
-//	}
+	// protected ItemBase() {
+	// try {
+	// model = AdvancedModelLoader.loadModel(modelLocation);
+	// } catch (Exception e) {
+	// // ClientProxy.setCustomRenderers logs missing model
+	// }
+	// }
 
-//	@Override
-//	public int getSpriteNumber() {
-//		return model == null ? 1 : 0;
-//	}
+	// @Override
+	// public int getSpriteNumber() {
+	// return model == null ? 1 : 0;
+	// }
 
-//	@Override
-//	public IModelCustom getModel() {
-//		return model;
-//	}
+	// @Override
+	// public IModelCustom getModel() {
+	// return model;
+	// }
+
+	protected ItemBase() {
+	}
+
+	protected ItemBase(ISelect selectionManager) {
+		this.selectionManager = selectionManager;
+	}
+
+	//No PlayerInteractEvent.Action.LEFT_CLICK_AIR in ForgeEventHandler.onPlayerInteractEvent
+	@Override
+	public boolean onEntitySwing(EntityLivingBase entityLiving, ItemStack stack) {
+		World w = entityLiving.worldObj;
+		if (w.isRemote) {
+			return true;
+		}
+		MovingObjectPosition cursor = Minecraft.getMinecraft().objectMouseOver;
+		if (cursor.typeOfHit == MovingObjectType.MISS) {
+			selectionManager.clearSelections(new WorldWrapper(w));
+		}
+		return true;
+	}
 
 	@Override
 	public ResourceLocation getModelResourceLocation() {

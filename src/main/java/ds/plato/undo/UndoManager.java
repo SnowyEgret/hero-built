@@ -6,6 +6,7 @@ public class UndoManager implements IUndo {
 
 	private Node currentNode;
 	int maxLength = 0;
+	final static int DEFAULT_MAX_LENGTH = 10;
 
 	public UndoManager(int maxLength) {
 		currentNode = new Node();
@@ -13,12 +14,20 @@ public class UndoManager implements IUndo {
 	}
 
 	public UndoManager() {
-		this(50);
+		this(DEFAULT_MAX_LENGTH);
 	}
-	
+
 	// Interface IUndo -------------------------------------
 
 	public void addUndoable(IUndoable undoable) {
+		// TODO
+		// Ernio's suggestion in my post: http://www.minecraftforge.net/forum/index.php/topic,30991
+		// if (transaction.getSize() > Transaction.MAX_SIZE) {
+		// CompressedStreamTools.writeCompressed(undoable.tooNBT(), new FileOutputStream(f));
+		// }
+		// Read it like this:
+		// NBTTagCompound nbt = CompressedStreamTools.readCompressed(new FileInputStream(f));
+		// Filename has position of node in it so that it is rewritten
 		Node node = new Node(undoable);
 		currentNode.right = node;
 		node.left = currentNode;
@@ -47,7 +56,7 @@ public class UndoManager implements IUndo {
 		currentNode = currentNode.right;
 		currentNode.undoable.redo();
 	}
-	
+
 	// Default for testing -----------------------------------------------------------
 
 	int size() {
@@ -77,7 +86,7 @@ public class UndoManager implements IUndo {
 		n = n.right;
 		n.left = null;
 	}
-	
+
 	// Private ---------------------------------------------------------
 
 	private class Node {

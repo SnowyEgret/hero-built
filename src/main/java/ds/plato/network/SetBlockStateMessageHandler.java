@@ -1,6 +1,6 @@
 package ds.plato.network;
 
-import io.netty.buffer.ByteBuf;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
@@ -14,22 +14,30 @@ public class SetBlockStateMessageHandler implements IMessageHandler<SetBlockStat
 	@Override
 	public IMessage onMessage(final SetBlockStateMessage message, MessageContext ctx) {
 		final EntityPlayerMP player = ctx.getServerHandler().playerEntity;
-		// player.getServerForPlayer().addScheduledTask(new Runnable() {
-		// public void run() {
-		processMessage(message, player);
-		// }
-		// });
-		//Maybe something like this
-		//if(message.isLast()) {
+		player.getServerForPlayer().addScheduledTask(new Runnable() {
+			public void run() {
+				processMessage(message, player);
+			}
+		});
+		// Maybe something like this
+		// if(message.isLast()) {
+		//For TestWait
 		return new SetBlockStateDoneMessage();
-		//}
-		//return null;
+		// }
+		// return null;
 	}
 
 	private void processMessage(SetBlockStateMessage message, EntityPlayerMP player) {
-		// System.out.println("message=" + message);
+		System.out.println("message=" + message);
 		World world = player.worldObj;
-		// world.setBlockState(new BlockPos(message.getX(), message.getY(), message.getZ()), message.getState());
-		world.setBlockState(message.getPos(), message.getState());
+		BlockPos pos = message.getPos();
+		IBlockState state = message.getState();
+		if (canSetBlockState(player, pos, state)) {
+			world.setBlockState(pos, state);
+		}
+	}
+
+	private boolean canSetBlockState(EntityPlayerMP player, BlockPos pos, IBlockState state) {
+		return true;
 	}
 }

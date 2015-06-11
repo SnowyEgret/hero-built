@@ -3,6 +3,7 @@ package ds.plato.item.spell;
 import java.util.List;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
@@ -27,18 +28,17 @@ public abstract class Spell extends ItemBase implements ISpell {
 	protected ISelect selectionManager;
 	protected IPick pickManager;
 	protected String message;
-	private int numPicks;
 	protected SpellInfo info;
-
-	protected int jumpHeight = 0;
-	protected String CTRL = "ctrl,";
-	protected String ALT = "alt,";
-	protected String SHIFT = "shift,";
-	protected String X = "X,";
-	protected String Y = "Y,";
-	protected String Z = "Z,";
+	protected final String CTRL = "ctrl,";
+	protected final String ALT = "alt,";
+	protected final String SHIFT = "shift,";
+	protected final String X = "X,";
+	protected final String Y = "Y,";
+	protected final String Z = "Z,";
+	private int numPicks;
 
 	public Spell(int numPicks, IUndo undoManager, ISelect selectionManager, IPick pickManager) {
+		super(selectionManager);
 		this.numPicks = numPicks;
 		this.undoManager = undoManager;
 		this.selectionManager = selectionManager;
@@ -64,11 +64,11 @@ public abstract class Spell extends ItemBase implements ISpell {
 			if (selectionManager.size() > 1) {
 				selectionManager.clearSelections(w);
 			}
-			// TODO modifier for block type
+
 			for (Object o : BlockPos.getAllInBox(lastPos, pos)) {
 				BlockPos p = (BlockPos) o;
 				if (Keyboard.isKeyDown(Keyboard.KEY_LMENU)) {
-					//TODO create method getActualState() in interface IWorld
+					// Only select blocks similar to first block
 					IBlockState state = w.getActualState(p);
 					if (state == firstState) {
 						selectionManager.select(w, p);
@@ -96,10 +96,10 @@ public abstract class Spell extends ItemBase implements ISpell {
 	}
 
 	// FIXME Has no effect
-	@Override
-	public EnumAction getItemUseAction(ItemStack stack) {
-		return EnumAction.NONE;
-	}
+	// @Override
+	// public EnumAction getItemUseAction(ItemStack stack) {
+	// return EnumAction.NONE;
+	// }
 
 	@Override
 	public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ) {
@@ -107,6 +107,7 @@ public abstract class Spell extends ItemBase implements ISpell {
 		if (world.isRemote) {
 			return true;
 		}
+		System.out.println("selectionManager=" + selectionManager);
 		IWorld w = new WorldWrapper(world);
 		pickManager.pick(w, pos, side);
 		if (pickManager.isFinishedPicking()) {
@@ -165,7 +166,6 @@ public abstract class Spell extends ItemBase implements ISpell {
 			return true;
 		return false;
 	}
-	
 
 	@Override
 	public String toString() {

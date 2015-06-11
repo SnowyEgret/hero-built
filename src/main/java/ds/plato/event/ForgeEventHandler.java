@@ -1,9 +1,14 @@
 package ds.plato.event;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.GuiIngameMenu;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
+import net.minecraft.network.play.server.S42PacketCombatEvent.Event;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.IRegistry;
 import net.minecraft.util.Vec3;
@@ -13,9 +18,14 @@ import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import org.lwjgl.input.Keyboard;
+
 import ds.plato.block.BlockPicked;
 import ds.plato.block.BlockPickedModel;
 import ds.plato.block.BlockSelected;
@@ -23,6 +33,7 @@ import ds.plato.block.BlockSelectedModel;
 import ds.plato.gui.Overlay;
 import ds.plato.item.spell.ISpell;
 import ds.plato.item.spell.other.SpellTrail;
+import ds.plato.item.staff.IStaff;
 import ds.plato.item.staff.Staff;
 import ds.plato.pick.IPick;
 import ds.plato.pick.Pick;
@@ -31,6 +42,7 @@ import ds.plato.player.Player;
 import ds.plato.select.ISelect;
 import ds.plato.select.Selection;
 import ds.plato.world.IWorld;
+import ds.plato.world.WorldWrapper;
 
 public class ForgeEventHandler {
 
@@ -76,6 +88,58 @@ public class ForgeEventHandler {
 	}
 
 	@SubscribeEvent
+	public void onPlayerInteractEvent(PlayerInteractEvent e) {
+		
+		System.out.println(e);
+
+		IPlayer player = Player.instance(e.entityPlayer);
+		// TODO
+		// IPlayer player = new PlayerWrapper((e.entityPlayer);
+		IWorld world = new WorldWrapper(e.world);
+		
+		// Return if player is holding nothing
+		ItemStack stack = player.getHeldItemStack();
+		if (stack == null) {
+			return;
+		}
+		
+		Item heldItem = stack.getItem();
+
+		switch (e.action) {
+		//Left click air handled in ItemBase.onEntitySwing
+		case LEFT_CLICK_BLOCK:
+			// Select
+			if (heldItem instanceof IStaff || heldItem instanceof ISpell) {
+				select(world, e.pos);
+				//TODO Maybe eliminate this method
+				//((IItem) heldItem).onMouseClickLeft(stack, e.pos, e.face);
+				e.setCanceled(true);
+				return;
+			}
+			break;
+		case RIGHT_CLICK_AIR:
+			// Deselect
+			pickManager.clearPicks(world);
+			e.setCanceled(true);
+			return;
+		case RIGHT_CLICK_BLOCK:
+			if (heldItem instanceof ItemBlock) {
+				// Fill selections
+				Block b = ((ItemBlock) heldItem).getBlock();
+				int meta = heldItem.getDamage(stack);
+				IBlockState state = b.getStateFromMeta(meta);
+				// We don't have the undoManager. Comment out until spell use static references to managers
+				// new SpellFill().invoke(world, player, state);
+				e.setCanceled(true);
+				return;
+			}
+			break;
+		default:
+			break;
+		}
+	}
+
+	@SubscribeEvent
 	public void onLivingUpdate(LivingUpdateEvent e) {
 
 		// If this is run on the server side the overlay does not update while switching slots in GuiStaff
@@ -86,8 +150,9 @@ public class ForgeEventHandler {
 			return;
 		}
 
-		IPlayer player = Player.instance();
+		IPlayer player = Player.instance((EntityPlayer)e.entity);
 		IWorld world = player.getWorld();
+		//IWorld world = new WorldWrapper();
 		ISpell s = player.getSpell();
 
 		// The player may have changed spells on a staff. Reset picking on the spell.
@@ -111,7 +176,7 @@ public class ForgeEventHandler {
 				if (b == Blocks.air || !b.isNormalCube()) {
 					pos = pos.down();
 				}
-				Selection sel = selectionManager.select(player.getWorld(), pos.down());
+				Selection sel = selectionManager.select(world, pos.down());
 			}
 		}
 	}
@@ -149,4 +214,52 @@ public class ForgeEventHandler {
 			pickManager.clearPicks(world);
 		}
 	}
+	
+	//TODO
+	//Copied here from Spell.onMouseClickLeft. Might be simpler this way
+	private void select(IWorld w, BlockPos pos) {
+
+		// Shift replaces the current selections with a region.
+		if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) && selectionManager.size() != 0) {
+			BlockPos lastPos = selectionManager.lastSelection().getPos();
+			IBlockState firstState = selectionManager.firstSelection().getState();
+			// Fix for: MultiPlayer: First selection is not included when shift selecting a region #75
+			// In MP selections block was not set fast enough so position was rejected
+			// in SelectionManager.select in test for block instanceof BlockSelected
+			// resulting in the first selection being left unselected. Only clear if we
+			// need to.
+			if (selectionManager.size() > 1) {
+				selectionManager.clearSelections(w);
+			}
+
+			for (Object o : BlockPos.getAllInBox(lastPos, pos)) {
+				BlockPos p = (BlockPos) o;
+				if (Keyboard.isKeyDown(Keyboard.KEY_LMENU)) {
+					// Only select blocks similar to first block
+					IBlockState state = w.getActualState(p);
+					if (state == firstState) {
+						selectionManager.select(w, p);
+					}
+				} else {
+					selectionManager.select(w, p);
+				}
+			}
+			return;
+		}
+
+		// Control adds or subtracts a selection to the current selections
+		if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
+			if (selectionManager.isSelected(pos)) {
+				selectionManager.deselect(w, pos);
+			} else {
+				selectionManager.select(w, pos);
+			}
+			return;
+		}
+
+		// No modifier replaces the current selections with a new selection
+		selectionManager.clearSelections(w);
+		selectionManager.select(w, pos);
+	}
+
 }

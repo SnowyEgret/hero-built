@@ -25,6 +25,8 @@ public abstract class Staff extends ItemBase implements IStaff {
 	private IPick pickManager;
 
 	protected Staff(IPick pickManager) {
+		//TODO Don't have a selectionManager
+		//super(selectionManager)
 		this.pickManager = pickManager;
 	}
 

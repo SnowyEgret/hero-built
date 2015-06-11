@@ -34,6 +34,10 @@ public class Player implements IPlayer {
 	protected Player() {
 		player = Minecraft.getMinecraft().thePlayer;
 	}
+	
+	public static IPlayer instance(EntityPlayer player) {
+		return new Player(player);
+	}
 
 	// Singleton necessary for fields jumpHeight and prevYaw
 	public static IPlayer instance() {
