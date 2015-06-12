@@ -15,7 +15,6 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -23,6 +22,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import ds.plato.block.BlockPicked;
 import ds.plato.block.BlockSelected;
 import ds.plato.gui.GuiHandler;
+import ds.plato.item.spell.Modifiers;
 import ds.plato.item.spell.Spell;
 import ds.plato.item.spell.SpellLoader;
 import ds.plato.item.staff.Staff;
@@ -66,9 +66,13 @@ public class Plato {
 	public static SimpleNetworkWrapper network;
 	public static boolean forceMessaging = false;
 
+	//TODO Select, pick, undo, modifier context for each player #121
 	public static IUndo undoManager;
 	public static ISelect selectionManager;
 	public static IPick pickManager;
+	public static Modifiers modifiers;
+	
+	//TODO Remove SetBlockStateDoneMessage and handler #122
 	public static boolean setBlockMessageDone = false;
 	// private Configuration configuration;
 

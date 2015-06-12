@@ -89,30 +89,30 @@ public class ForgeEventHandler {
 
 	@SubscribeEvent
 	public void onPlayerInteractEvent(PlayerInteractEvent e) {
-		
+
 		System.out.println(e);
 
 		IPlayer player = Player.instance(e.entityPlayer);
 		// TODO
 		// IPlayer player = new PlayerWrapper((e.entityPlayer);
 		IWorld world = new WorldWrapper(e.world);
-		
+
 		// Return if player is holding nothing
 		ItemStack stack = player.getHeldItemStack();
 		if (stack == null) {
 			return;
 		}
-		
+
 		Item heldItem = stack.getItem();
 
 		switch (e.action) {
-		//Left click air handled in ItemBase.onEntitySwing
+		// Left click air handled in ItemBase.onEntitySwing
 		case LEFT_CLICK_BLOCK:
 			// Select
 			if (heldItem instanceof IStaff || heldItem instanceof ISpell) {
 				select(world, e.pos);
-				//TODO Maybe eliminate this method
-				//((IItem) heldItem).onMouseClickLeft(stack, e.pos, e.face);
+				// TODO Maybe eliminate this method
+				// ((IItem) heldItem).onMouseClickLeft(stack, e.pos, e.face);
 				e.setCanceled(true);
 				return;
 			}
@@ -150,9 +150,9 @@ public class ForgeEventHandler {
 			return;
 		}
 
-		IPlayer player = Player.instance((EntityPlayer)e.entity);
+		IPlayer player = Player.instance((EntityPlayer) e.entity);
 		IWorld world = player.getWorld();
-		//IWorld world = new WorldWrapper();
+		// IWorld world = new WorldWrapper();
 		ISpell s = player.getSpell();
 
 		// The player may have changed spells on a staff. Reset picking on the spell.
@@ -214,9 +214,11 @@ public class ForgeEventHandler {
 			pickManager.clearPicks(world);
 		}
 	}
-	
-	//TODO
-	//Copied here from Spell.onMouseClickLeft. Might be simpler this way
+
+	// Private-------------------------------------------------------------------------------------
+
+	// TODO
+	// Copied here from Spell.onMouseClickLeft. Might be simpler this way
 	private void select(IWorld w, BlockPos pos) {
 
 		// Shift replaces the current selections with a region.

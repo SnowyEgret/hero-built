@@ -5,9 +5,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.BlockPos;
+import net.minecraftforge.common.IExtendedEntityProperties;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
@@ -18,10 +18,12 @@ import org.lwjgl.input.Keyboard;
 
 import ds.plato.Plato;
 import ds.plato.item.spell.ISpell;
+import ds.plato.item.spell.Modifier;
 import ds.plato.item.spell.SpellInvoker;
 import ds.plato.item.spell.matrix.SpellCopy;
 import ds.plato.item.spell.transform.SpellDelete;
 import ds.plato.item.staff.Staff;
+import ds.plato.network.KeyModifierMessage;
 import ds.plato.network.NextSpellMessage;
 import ds.plato.network.PrevSpellMessage;
 import ds.plato.pick.IPick;
@@ -37,6 +39,7 @@ public class KeyHandler {
 	private ISelect selectionManager;
 	private IPick pickManager;
 	private Map<Action, KeyBinding> keyBindings = new HashMap<>();
+	private Modifier lastModifier;
 	public static SpellInvoker lastSpell;
 
 	private enum Action {
@@ -67,15 +70,48 @@ public class KeyHandler {
 			// TODO internationalize
 			keyBindings.put(a, registerKeyBinding(s, a.keyCode));
 		}
-		//System.out.println(keyBindings);
+		// System.out.println(keyBindings);
 	}
 
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void onKeyInput(KeyInputEvent event) {
 
+		System.out.println("event=" + event);
 		IPlayer player = Player.instance();
 		IWorld world = player.getWorld();
+
+		// First check for Modifier presses and releases
+		Modifier modifier = getModifier();
+		int keyState;
+
+		if (lastModifier == null) {
+			// Looking for a press
+			if (modifier != null) {
+				keyState = 1;
+				lastModifier = modifier;
+				System.out.println("modifier=" + modifier);
+				System.out.println("keyState=" + keyState);
+				Plato.network.sendToServer(new KeyModifierMessage(modifier, keyState));
+				return;
+			}
+		} else {
+			// Looking for a release
+			// assuming the next event is the release after the press.
+			// Not necessarily true - could be another modifier press
+			if (modifier == null) {
+				modifier = lastModifier;
+				keyState = 0;
+				lastModifier = null;
+				System.out.println("modifier=" + modifier);
+				System.out.println("keyState=" + keyState);
+				Plato.network.sendToServer(new KeyModifierMessage(modifier, keyState));
+				return;
+			} else {
+				// Looking for a press on a new modifier
+				System.out.println("Looking for a press on a new modifier");
+			}
+		}
 
 		Action action = getAction();
 		if (action == null) {
@@ -84,10 +120,12 @@ public class KeyHandler {
 
 		switch (action) {
 
+		// TODO replace Keyboard.key with Modifier.
 		case UNDO:
 			try {
-				if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
-					if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+				// if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
+				if (Modifier.isPressed(Modifier.CTRL)) {
+					if (Modifier.isPressed(Modifier.SHIFT)) {
 						undoManager.redo();
 					} else {
 						undoManager.undo();
@@ -107,7 +145,7 @@ public class KeyHandler {
 		case NEXT:
 			Staff staff = player.getStaff();
 			if (staff != null) {
-				if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
+				if (Modifier.isPressed(Modifier.CTRL)) {
 					Plato.network.sendToServer(new PrevSpellMessage());
 				} else {
 					Plato.network.sendToServer(new NextSpellMessage());
@@ -137,7 +175,7 @@ public class KeyHandler {
 
 		case UP:
 			// This should be alt so that control can be deleteOriginal
-			if (Keyboard.isKeyDown(Keyboard.KEY_RCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
+			if (Keyboard.isKeyDown(Keyboard.KEY_RCONTROL) || Modifier.isPressed(Modifier.CTRL)) {
 				copyVertical(player, world, 1);
 			} else {
 				copy(player, world, 0, -1);
@@ -146,7 +184,8 @@ public class KeyHandler {
 
 		case DOWN:
 			// This should be alt so that control can be deleteOriginal
-			if (Keyboard.isKeyDown(Keyboard.KEY_RCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
+			//TODO Modifier constructor with mulitple keys
+			if (Keyboard.isKeyDown(Keyboard.KEY_RCONTROL) || Modifier.isPressed(Modifier.CTRL)) {
 				copyVertical(player, world, -1);
 			} else {
 				copy(player, world, 0, 1);
@@ -163,10 +202,20 @@ public class KeyHandler {
 
 	// Private ------------------------------------------------------------------------------------
 
+	private Modifier getModifier() {
+		for (Modifier m : Modifier.values()) {
+			if (Keyboard.isKeyDown(m.key)) {
+				// System.out.println("modifier=" + m);
+				return m;
+			}
+		}
+		return null;
+	}
+
 	private Action getAction() {
 		for (Entry<Action, KeyBinding> s : keyBindings.entrySet()) {
 			if (s.getValue().isPressed()) {
-				System.out.println("action="+s.getKey());
+				System.out.println("action=" + s.getKey());
 				return s.getKey();
 			}
 		}
