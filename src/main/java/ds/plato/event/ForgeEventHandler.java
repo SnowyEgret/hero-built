@@ -123,7 +123,7 @@ public class ForgeEventHandler {
 			e.setCanceled(true);
 			return;
 		case RIGHT_CLICK_BLOCK:
-			if (heldItem instanceof ItemBlock) {
+			if (heldItem instanceof ItemBlock && selectionManager.isSelected(e.pos)) {
 				// Fill selections
 				Block b = ((ItemBlock) heldItem).getBlock();
 				int meta = heldItem.getDamage(stack);

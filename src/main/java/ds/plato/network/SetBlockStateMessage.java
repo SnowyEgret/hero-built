@@ -13,7 +13,7 @@ public class SetBlockStateMessage implements IMessage {
 	private int y;
 	private int z;
 	private int stateId;
-	private int size = 5;
+	private static final int SIZE = 5;
 	
 	public SetBlockStateMessage() {
 	}
@@ -35,21 +35,21 @@ public class SetBlockStateMessage implements IMessage {
 
 	@Override
 	public void fromBytes(ByteBuf buf) {
-		x = ByteBufUtils.readVarInt(buf, size);
-		y = ByteBufUtils.readVarInt(buf, size);
-		z = ByteBufUtils.readVarInt(buf, size);
-		int stateId = ByteBufUtils.readVarInt(buf, size);
+		x = ByteBufUtils.readVarInt(buf, SIZE);
+		y = ByteBufUtils.readVarInt(buf, SIZE);
+		z = ByteBufUtils.readVarInt(buf, SIZE);
+		int stateId = ByteBufUtils.readVarInt(buf, SIZE);
 		//System.out.println("stateId=" + stateId);
 		this.stateId = stateId;
 	}
 
 	@Override
 	public void toBytes(ByteBuf buf) {
-		ByteBufUtils.writeVarInt(buf, x, size);
-		ByteBufUtils.writeVarInt(buf, y, size);
-		ByteBufUtils.writeVarInt(buf, z, size);
+		ByteBufUtils.writeVarInt(buf, x, SIZE);
+		ByteBufUtils.writeVarInt(buf, y, SIZE);
+		ByteBufUtils.writeVarInt(buf, z, SIZE);
 		//System.out.println("stateId=" + stateId);
-		ByteBufUtils.writeVarInt(buf, stateId, size);
+		ByteBufUtils.writeVarInt(buf, stateId, SIZE);
 	}
 
 	@Override

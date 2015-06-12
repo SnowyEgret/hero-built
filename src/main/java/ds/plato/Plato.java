@@ -32,6 +32,8 @@ import ds.plato.item.staff.StaffDraw;
 import ds.plato.item.staff.StaffOak;
 import ds.plato.item.staff.StaffSelect;
 import ds.plato.item.staff.StaffTransform;
+import ds.plato.network.KeyModifierMessage;
+import ds.plato.network.KeyModifierMessageHandler;
 import ds.plato.network.NextSpellMessage;
 import ds.plato.network.NextSpellMessageHandler;
 import ds.plato.network.PrevSpellMessage;
@@ -141,8 +143,9 @@ public class Plato {
 		network.registerMessage(NextSpellMessageHandler.class, NextSpellMessage.class, 2, Side.SERVER);
 		network.registerMessage(SetBlockStateMessageHandler.class, SetBlockStateMessage.class, 3, Side.SERVER);
 		network.registerMessage(SetBlockStateDoneMessageHandler.class, SetBlockStateDoneMessage.class, 4, Side.CLIENT);
-		network.registerMessage(SpellFillMessageHandler.class, SpellFillMessage.class, 3, Side.SERVER);
-
+		network.registerMessage(SpellFillMessageHandler.class, SpellFillMessage.class, 5, Side.SERVER);
+		network.registerMessage(KeyModifierMessageHandler.class, KeyModifierMessage.class, 6, Side.SERVER);
+		
 		// Create custom state mappers for BlockSelected and BlockPicked models
 		ModelLoader.setCustomStateMapper(blockSelected, new StateMapperBase() {
 			@Override

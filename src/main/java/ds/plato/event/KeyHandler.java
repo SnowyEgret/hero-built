@@ -1,13 +1,9 @@
 package ds.plato.event;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.BlockPos;
-import net.minecraftforge.common.IExtendedEntityProperties;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
@@ -38,8 +34,6 @@ public class KeyHandler {
 	private IUndo undoManager;
 	private ISelect selectionManager;
 	private IPick pickManager;
-	private Map<Action, KeyBinding> keyBindings = new HashMap<>();
-	private Modifier lastModifier;
 	public static SpellInvoker lastSpell;
 
 	private enum Action {
@@ -54,10 +48,13 @@ public class KeyHandler {
 		DOWN(Keyboard.KEY_DOWN),
 		REINVOKE(Keyboard.KEY_PERIOD);
 
-		private int keyCode;
+		KeyBinding binding;
 
 		Action(int keyCode) {
-			this.keyCode = keyCode;
+			String s = this.toString().toLowerCase();
+			KeyBinding b = new KeyBinding(s, keyCode, Plato.NAME);
+			ClientRegistry.registerKeyBinding(b);
+			this.binding = b;
 		}
 	}
 
@@ -65,12 +62,6 @@ public class KeyHandler {
 		this.undoManager = undo;
 		this.selectionManager = select;
 		this.pickManager = pick;
-		for (Action a : Action.values()) {
-			String s = a.toString().toLowerCase();
-			// TODO internationalize
-			keyBindings.put(a, registerKeyBinding(s, a.keyCode));
-		}
-		// System.out.println(keyBindings);
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -78,54 +69,33 @@ public class KeyHandler {
 	public void onKeyInput(KeyInputEvent event) {
 
 		System.out.println("event=" + event);
+
 		IPlayer player = Player.instance();
 		IWorld world = player.getWorld();
 
 		// First check for Modifier presses and releases
 		Modifier modifier = getModifier();
-		int keyState;
-
-		if (lastModifier == null) {
-			// Looking for a press
-			if (modifier != null) {
-				keyState = 1;
-				lastModifier = modifier;
-				System.out.println("modifier=" + modifier);
-				System.out.println("keyState=" + keyState);
-				Plato.network.sendToServer(new KeyModifierMessage(modifier, keyState));
-				return;
-			}
-		} else {
-			// Looking for a release
-			// assuming the next event is the release after the press.
-			// Not necessarily true - could be another modifier press
-			if (modifier == null) {
-				modifier = lastModifier;
-				keyState = 0;
-				lastModifier = null;
-				System.out.println("modifier=" + modifier);
-				System.out.println("keyState=" + keyState);
-				Plato.network.sendToServer(new KeyModifierMessage(modifier, keyState));
-				return;
-			} else {
-				// Looking for a press on a new modifier
-				System.out.println("Looking for a press on a new modifier");
-			}
+		if (modifier != null) {
+			Plato.network.sendToServer(new KeyModifierMessage(modifier, Keyboard.getEventKeyState()));
 		}
 
+		// Look for an action keybinding press and message server
 		Action action = getAction();
+		System.out.println("action=" + action);
+		// FIXME coming up null on first press
 		if (action == null) {
 			return;
 		}
 
 		switch (action) {
 
-		// TODO replace Keyboard.key with Modifier.
 		case UNDO:
 			try {
-				// if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
-				if (Modifier.isPressed(Modifier.CTRL)) {
-					if (Modifier.isPressed(Modifier.SHIFT)) {
+				// Method isPressed is client side only. Modifiers.isPressed(Modifier) to
+				// be used on server side in staffs and spells
+				// if (Keyboard.isKeyDown(Modifier.CTRL.key)) {
+				if (Modifier.CTRL.isPressed()) {
+					if (Modifier.SHIFT.isPressed()) {
 						undoManager.redo();
 					} else {
 						undoManager.undo();
@@ -134,7 +104,7 @@ public class KeyHandler {
 				// When undoing a copy/move it is helpful to reselect.
 				// If we had a reference to the last spell, we could do this conditionally
 				// Last spell is not necessarily what is in hand
-				// Comment out for now
+				// We can reselect in the return from the message
 				// selectionManager.reselect(w)
 			} catch (NoSuchElementException e) {
 				// TODO Log to overlay. Create info line in overlay
@@ -145,7 +115,7 @@ public class KeyHandler {
 		case NEXT:
 			Staff staff = player.getStaff();
 			if (staff != null) {
-				if (Modifier.isPressed(Modifier.CTRL)) {
+				if (Modifier.CTRL.isPressed()) {
 					Plato.network.sendToServer(new PrevSpellMessage());
 				} else {
 					Plato.network.sendToServer(new NextSpellMessage());
@@ -175,7 +145,7 @@ public class KeyHandler {
 
 		case UP:
 			// This should be alt so that control can be deleteOriginal
-			if (Keyboard.isKeyDown(Keyboard.KEY_RCONTROL) || Modifier.isPressed(Modifier.CTRL)) {
+			if (Keyboard.isKeyDown(Keyboard.KEY_RCONTROL) || Modifier.CTRL.isPressed()) {
 				copyVertical(player, world, 1);
 			} else {
 				copy(player, world, 0, -1);
@@ -184,8 +154,8 @@ public class KeyHandler {
 
 		case DOWN:
 			// This should be alt so that control can be deleteOriginal
-			//TODO Modifier constructor with mulitple keys
-			if (Keyboard.isKeyDown(Keyboard.KEY_RCONTROL) || Modifier.isPressed(Modifier.CTRL)) {
+			// TODO Modifier constructor with mulitple keys
+			if (Keyboard.isKeyDown(Keyboard.KEY_RCONTROL) || Modifier.CTRL.isPressed()) {
 				copyVertical(player, world, -1);
 			} else {
 				copy(player, world, 0, 1);
@@ -195,28 +165,30 @@ public class KeyHandler {
 		default:
 			return;
 		}
-
-		if (event.isCancelable())
-			event.setCanceled(true);
+		// Event is uncancelable
 	}
 
 	// Private ------------------------------------------------------------------------------------
 
 	private Modifier getModifier() {
+		int key = Keyboard.getEventKey();
+		//System.out.println("key="+key);
 		for (Modifier m : Modifier.values()) {
-			if (Keyboard.isKeyDown(m.key)) {
-				// System.out.println("modifier=" + m);
+			//System.out.println("m.key="+m.key);
+			if (m.key == key) {
 				return m;
 			}
 		}
 		return null;
 	}
 
+	// TODO Test that this still works if user changes binding
 	private Action getAction() {
-		for (Entry<Action, KeyBinding> s : keyBindings.entrySet()) {
-			if (s.getValue().isPressed()) {
-				System.out.println("action=" + s.getKey());
-				return s.getKey();
+		for (Action a : Action.values()) {
+			//FIXME coming up null first time through
+			// if (a.binding.isKeyDown()) {
+			if (a.binding.isPressed()) {
+				return a;
 			}
 		}
 		return null;
@@ -256,9 +228,4 @@ public class KeyHandler {
 		new SpellCopy(undoManager, selectionManager, pickManager).invoke(world, player);
 	}
 
-	private KeyBinding registerKeyBinding(String name, int key) {
-		KeyBinding b = new KeyBinding(name, key, Plato.NAME);
-		ClientRegistry.registerKeyBinding(b);
-		return b;
-	}
 }

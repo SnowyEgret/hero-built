@@ -57,6 +57,7 @@ public abstract class ItemBase extends Item implements IItem {
 		}
 		MovingObjectPosition cursor = Minecraft.getMinecraft().objectMouseOver;
 		if (cursor.typeOfHit == MovingObjectType.MISS) {
+			//TODO selectionManager null until spell constructors reworked
 			selectionManager.clearSelections(new WorldWrapper(w));
 		}
 		return true;
