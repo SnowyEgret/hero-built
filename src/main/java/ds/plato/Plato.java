@@ -32,8 +32,10 @@ import ds.plato.item.staff.StaffDraw;
 import ds.plato.item.staff.StaffOak;
 import ds.plato.item.staff.StaffSelect;
 import ds.plato.item.staff.StaffTransform;
-import ds.plato.network.KeyModifierMessage;
-import ds.plato.network.KeyModifierMessageHandler;
+import ds.plato.network.KeyMessage;
+import ds.plato.network.KeyMessageHandler;
+import ds.plato.network.ModifierMessage;
+import ds.plato.network.ModifierMessageHandler;
 import ds.plato.network.NextSpellMessage;
 import ds.plato.network.NextSpellMessageHandler;
 import ds.plato.network.PrevSpellMessage;
@@ -68,33 +70,37 @@ public class Plato {
 	public static SimpleNetworkWrapper network;
 	public static boolean forceMessaging = false;
 
-	//TODO Select, pick, undo, modifier context for each player #121
+	// TODO Select, pick, undo, modifier context for each player #121
 	public static IUndo undoManager;
 	public static ISelect selectionManager;
 	public static IPick pickManager;
 	public static Modifiers modifiers;
 	
-	//TODO Remove SetBlockStateDoneMessage and handler #122
+	public static BlockSelected blockSelected;
+	public static BlockPicked blockPicked;
+
+	// TODO Remove SetBlockStateDoneMessage and handler #122
 	public static boolean setBlockMessageDone = false;
+
 	// private Configuration configuration;
 
-	//TODO Should these be constructed in a proxy?
+	// TODO Should these be constructed in a proxy?
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 
-		List<Spell> spells= new ArrayList<>();
+		List<Spell> spells = new ArrayList<>();
 		List<Staff> staffs = new ArrayList<>();
-	
+
 		String prop = System.getProperties().getProperty("plato.forceMessaging");
 		if (prop != null) {
 			if (prop.equals("true")) {
 				forceMessaging = true;
 			}
 		}
-		
+
 		System.out.println("Initializing blocks...");
-		BlockSelected blockSelected = (BlockSelected) initBlock(new BlockSelected());
-		BlockPicked blockPicked = (BlockPicked) initBlock(new BlockPicked());
+		blockSelected = (BlockSelected) initBlock(new BlockSelected());
+		blockPicked = (BlockPicked) initBlock(new BlockPicked());
 
 		undoManager = new UndoManager();
 		selectionManager = new SelectionManager(blockSelected);
@@ -144,8 +150,9 @@ public class Plato {
 		network.registerMessage(SetBlockStateMessageHandler.class, SetBlockStateMessage.class, 3, Side.SERVER);
 		network.registerMessage(SetBlockStateDoneMessageHandler.class, SetBlockStateDoneMessage.class, 4, Side.CLIENT);
 		network.registerMessage(SpellFillMessageHandler.class, SpellFillMessage.class, 5, Side.SERVER);
-		network.registerMessage(KeyModifierMessageHandler.class, KeyModifierMessage.class, 6, Side.SERVER);
-		
+		network.registerMessage(ModifierMessageHandler.class, ModifierMessage.class, 6, Side.SERVER);
+		network.registerMessage(KeyMessageHandler.class, KeyMessage.class, 7, Side.SERVER);
+
 		// Create custom state mappers for BlockSelected and BlockPicked models
 		ModelLoader.setCustomStateMapper(blockSelected, new StateMapperBase() {
 			@Override

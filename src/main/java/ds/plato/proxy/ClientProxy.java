@@ -40,8 +40,8 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public void registerEventHandlers(Plato plato, ISelect select, IUndo undo, IPick pick) {
 		Overlay overlay = new Overlay(select);
-		MinecraftForge.EVENT_BUS.register(new ForgeEventHandler(select, pick, overlay));
-		MinecraftForge.EVENT_BUS.register(new MouseHandler(undo, select, pick));
-		FMLCommonHandler.instance().bus().register(new KeyHandler(undo, select, pick));
+		MinecraftForge.EVENT_BUS.register(new ForgeEventHandler(overlay));
+		MinecraftForge.EVENT_BUS.register(new MouseHandler());
+		FMLCommonHandler.instance().bus().register(new KeyHandler());
 	}
 }

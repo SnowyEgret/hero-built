@@ -16,10 +16,12 @@ import ds.geom.VoxelSet;
 import ds.geom.solid.Solid;
 import ds.plato.Plato;
 import ds.plato.item.spell.Modifier;
+import ds.plato.item.spell.Modifiers;
 import ds.plato.item.spell.Spell;
 import ds.plato.pick.IPick;
 import ds.plato.player.IPlayer;
 import ds.plato.player.Jumper;
+import ds.plato.player.Player;
 import ds.plato.select.ISelect;
 import ds.plato.undo.IUndo;
 import ds.plato.undo.Transaction;
@@ -38,7 +40,9 @@ public abstract class AbstractSpellDraw extends Spell {
 
 		selectionManager.clearSelections(world);
 		pickManager.clearPicks(world);
-		boolean isHollow = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
+		
+		Modifiers modifiers = player.getModifiers();
+		boolean isHollow = modifiers.isPressed(Modifier.SHIFT);
 		boolean onSurface = Keyboard.isKeyDown(Keyboard.KEY_LMENU);
 
 		VoxelSet voxels = drawable.voxelize();

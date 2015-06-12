@@ -6,8 +6,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.Vec3;
 import ds.plato.item.spell.ISpell;
+import ds.plato.item.spell.Modifiers;
 import ds.plato.item.staff.Staff;
+import ds.plato.pick.PickManager;
 import ds.plato.player.Player.Direction;
+import ds.plato.select.SelectionManager;
+import ds.plato.undo.UndoManager;
 import ds.plato.world.IWorld;
 
 public interface IPlayer {
@@ -37,6 +41,14 @@ public interface IPlayer {
 	public abstract void openGui(int id, IWorld world);
 
 	public abstract void moveTo(BlockPos pos);
+
+	public abstract Modifiers getModifiers();
+
+	public abstract UndoManager getUndoManager();
+
+	public abstract SelectionManager getSelectionManager();
+
+	public abstract PickManager getPickManager();
 
 	// Thought I saw something like this somewhere in an interface
 	// public static IPlayer getPlayer(EntityPlayer player) {

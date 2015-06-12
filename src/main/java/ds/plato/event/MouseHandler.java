@@ -1,10 +1,7 @@
 package ds.plato.event;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.util.Vec3;
@@ -12,32 +9,15 @@ import net.minecraftforge.client.event.MouseEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import ds.plato.Plato;
-import ds.plato.item.IItem;
-import ds.plato.item.spell.ISpell;
-import ds.plato.item.staff.IStaff;
-import ds.plato.network.SpellFillMessage;
-import ds.plato.pick.IPick;
 import ds.plato.player.IPlayer;
 import ds.plato.player.Player;
-import ds.plato.select.ISelect;
-import ds.plato.undo.IUndo;
+import ds.plato.select.SelectionManager;
 import ds.plato.world.IWorld;
 
 public class MouseHandler {
 
 	public static boolean isOrbiting;
-
-	private IUndo undoManager;
-	private ISelect selectionManager;
-	private IPick pickManager;
 	private Vec3 centroid;
-
-	public MouseHandler(IUndo undoManager, ISelect selectionManager, IPick pickManager) {
-		this.undoManager = undoManager;
-		this.selectionManager = selectionManager;
-		this.pickManager = pickManager;
-	}
 
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
@@ -51,6 +31,7 @@ public class MouseHandler {
 
 		IPlayer player = Player.instance();
 		IWorld world = player.getWorld();
+		SelectionManager selectionManager = player.getSelectionManager();
 		MovingObjectPosition cursor = Minecraft.getMinecraft().objectMouseOver;
 		// Do nothing if player clicks on a mob
 		if (cursor.typeOfHit == MovingObjectType.ENTITY) {

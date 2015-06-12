@@ -8,7 +8,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.play.server.S42PacketCombatEvent.Event;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.IRegistry;
 import net.minecraft.util.Vec3;
@@ -17,9 +16,9 @@ import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -33,27 +32,26 @@ import ds.plato.block.BlockSelectedModel;
 import ds.plato.gui.Overlay;
 import ds.plato.item.spell.ISpell;
 import ds.plato.item.spell.other.SpellTrail;
+import ds.plato.item.spell.transform.SpellFill;
 import ds.plato.item.staff.IStaff;
 import ds.plato.item.staff.Staff;
-import ds.plato.pick.IPick;
 import ds.plato.pick.Pick;
+import ds.plato.pick.PickManager;
 import ds.plato.player.IPlayer;
 import ds.plato.player.Player;
-import ds.plato.select.ISelect;
+import ds.plato.player.PlayerProperies;
 import ds.plato.select.Selection;
+import ds.plato.select.SelectionManager;
+import ds.plato.undo.UndoManager;
 import ds.plato.world.IWorld;
 import ds.plato.world.WorldWrapper;
 
 public class ForgeEventHandler {
 
 	private ISpell spell = null;
-	private ISelect selectionManager;
-	private IPick pickManager;
 	private Overlay overlay;
 
-	public ForgeEventHandler(ISelect selectionManager, IPick pickManager, Overlay overlay) {
-		this.selectionManager = selectionManager;
-		this.pickManager = pickManager;
+	public ForgeEventHandler(Overlay overlay) {
 		this.overlay = overlay;
 	}
 
@@ -67,7 +65,10 @@ public class ForgeEventHandler {
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void onDrawBlockHightlight(DrawBlockHighlightEvent e) {
-		// We are only getting this event on client side
+		//FIXME We are only getting this event on client side
+		IPlayer player = Player.instance(e.player);
+		SelectionManager selectionManager = player.getSelectionManager();
+		PickManager pickManager = player.getPickManager();
 		if (spell != null) {
 			BlockPos p = null;
 			Pick pick = pickManager.lastPick();
@@ -96,6 +97,9 @@ public class ForgeEventHandler {
 		// TODO
 		// IPlayer player = new PlayerWrapper((e.entityPlayer);
 		IWorld world = new WorldWrapper(e.world);
+		SelectionManager selectionManager = player.getSelectionManager();
+		PickManager pickManager = player.getPickManager();
+		UndoManager undoManager = player.getUndoManager();
 
 		// Return if player is holding nothing
 		ItemStack stack = player.getHeldItemStack();
@@ -110,7 +114,7 @@ public class ForgeEventHandler {
 		case LEFT_CLICK_BLOCK:
 			// Select
 			if (heldItem instanceof IStaff || heldItem instanceof ISpell) {
-				select(world, e.pos);
+				select(world, selectionManager, e.pos);
 				// TODO Maybe eliminate this method
 				// ((IItem) heldItem).onMouseClickLeft(stack, e.pos, e.face);
 				e.setCanceled(true);
@@ -128,8 +132,7 @@ public class ForgeEventHandler {
 				Block b = ((ItemBlock) heldItem).getBlock();
 				int meta = heldItem.getDamage(stack);
 				IBlockState state = b.getStateFromMeta(meta);
-				// We don't have the undoManager. Comment out until spell use static references to managers
-				// new SpellFill().invoke(world, player, state);
+				new SpellFill(undoManager, selectionManager, pickManager).invoke(world, player, state);
 				e.setCanceled(true);
 				return;
 			}
@@ -153,6 +156,7 @@ public class ForgeEventHandler {
 		IPlayer player = Player.instance((EntityPlayer) e.entity);
 		IWorld world = player.getWorld();
 		// IWorld world = new WorldWrapper();
+		SelectionManager selectionManager = player.getSelectionManager();
 		ISpell s = player.getSpell();
 
 		// The player may have changed spells on a staff. Reset picking on the spell.
@@ -205,13 +209,25 @@ public class ForgeEventHandler {
 		r.putObject(BlockPicked.modelResourceLocation, new BlockPickedModel());
 	}
 
+	// Clears selections and picks when quitting game
 	// http://www.minecraftforge.net/forum/index.php/topic,30987.msg161224.html
 	@SubscribeEvent
 	public void onGuiIngameMenuQuit(GuiScreenEvent.ActionPerformedEvent event) {
 		if (event.gui instanceof GuiIngameMenu && event.button.id == 1) {
-			IWorld world = Player.instance().getWorld();
+			// TODO We are on client side Must send message here
+			IPlayer player = Player.instance();
+			IWorld world = player.getWorld();
+			SelectionManager selectionManager = player.getSelectionManager();
+			PickManager pickManager = player.getPickManager();
 			selectionManager.clearSelections(world);
 			pickManager.clearPicks(world);
+		}
+	}
+
+	@SubscribeEvent
+	public void onEntityConstructing(EntityConstructing event) {
+		if (event.entity instanceof EntityPlayer) {
+			event.entity.registerExtendedProperties(PlayerProperies.NAME, new PlayerProperies());
 		}
 	}
 
@@ -219,7 +235,7 @@ public class ForgeEventHandler {
 
 	// TODO
 	// Copied here from Spell.onMouseClickLeft. Might be simpler this way
-	private void select(IWorld w, BlockPos pos) {
+	private void select(IWorld w, SelectionManager selectionManager, BlockPos pos) {
 
 		// Shift replaces the current selections with a region.
 		if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) && selectionManager.size() != 0) {

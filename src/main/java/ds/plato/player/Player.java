@@ -8,16 +8,20 @@ import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import net.minecraftforge.common.IExtendedEntityProperties;
 import ds.plato.Plato;
 import ds.plato.item.spell.ISpell;
+import ds.plato.item.spell.Modifiers;
 import ds.plato.item.spell.Spell;
 import ds.plato.item.staff.Staff;
+import ds.plato.pick.PickManager;
+import ds.plato.select.SelectionManager;
+import ds.plato.undo.UndoManager;
 import ds.plato.world.IWorld;
 import ds.plato.world.WorldWrapper;
 
 public class Player implements IPlayer {
 
-	//private static Player instance = null;
 	private EntityPlayer player;
 
 	public enum Direction {
@@ -39,12 +43,7 @@ public class Player implements IPlayer {
 		return new Player(player);
 	}
 
-	// Singleton necessary for fields jumpHeight and prevYaw
 	public static IPlayer instance() {
-		// if (instance == null) {
-		// instance = new Player();
-		// }
-		// return instance;
 		return new Player();
 	}
 
@@ -179,4 +178,28 @@ public class Player implements IPlayer {
 		player.moveEntity(pos.getX(), pos.getY(), pos.getZ());
 		// player.moveToBlockPosAndAngles(pos, player.rotationYaw, player.rotationPitch);
 	}
+
+	@Override
+	public Modifiers getModifiers() {
+		IExtendedEntityProperties p = player.getExtendedProperties(PlayerProperies.NAME);
+		return ((PlayerProperies) p).getModifiers();
+	}
+
+	@Override
+	public UndoManager getUndoManager() {
+		IExtendedEntityProperties p = player.getExtendedProperties(PlayerProperies.NAME);
+		return ((PlayerProperies) p).getUndoManager();
+	}
+
+	@Override
+	public SelectionManager getSelectionManager() {
+		IExtendedEntityProperties p = player.getExtendedProperties(PlayerProperies.NAME);
+		return ((PlayerProperies) p).getSelectionManager();
+	}
+
+	@Override
+	public PickManager getPickManager() {
+		IExtendedEntityProperties p = player.getExtendedProperties(PlayerProperies.NAME);
+		return ((PlayerProperies) p).getPickManager();
+	}	
 }
