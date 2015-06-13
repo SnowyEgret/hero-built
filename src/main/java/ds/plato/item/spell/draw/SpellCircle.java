@@ -11,6 +11,7 @@ import org.lwjgl.input.Keyboard;
 
 import ds.geom.IDrawable;
 import ds.geom.curve.CircleXZ;
+import ds.plato.item.spell.Modifiers;
 import ds.plato.pick.IPick;
 import ds.plato.pick.Pick;
 import ds.plato.player.IPlayer;
@@ -21,12 +22,14 @@ import ds.plato.world.IWorld;
 
 public class SpellCircle extends AbstractSpellDraw {
 
-	public SpellCircle(IUndo undoManager, ISelect selectionManager, IPick pickManager) {
-		super(2, undoManager, selectionManager, pickManager);
+	public SpellCircle() {
+		super(2);
 	}
 
 	@Override
 	public void invoke(IWorld world, IPlayer player) {
+		Modifiers modifiers = player.getModifiers();
+		IPick pickManager = player.getPickManager();
 		Pick[] picks = pickManager.getPicks();
 		boolean onSurface = Keyboard.isKeyDown(Keyboard.KEY_LMENU);
 		Point3d p0 = picks[0].point3d();

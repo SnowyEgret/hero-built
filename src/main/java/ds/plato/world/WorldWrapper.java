@@ -4,9 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
 import ds.plato.Plato;
-import ds.plato.network.SetBlockMessage;
 import ds.plato.network.SetBlockStateMessage;
 
 public class WorldWrapper implements IWorld {
@@ -23,22 +21,11 @@ public class WorldWrapper implements IWorld {
 		return b.getBlock();
 	}
 
-	@Deprecated
-	@Override
-	public void setBlock(BlockPos pos, Block block) {
-
-		if (world.isRemote || Plato.forceMessaging) {
-			Plato.network.sendToServer(new SetBlockMessage(pos, block));
-		} else {
-			IBlockState state = block.getBlockState().getBaseState();
-			world.setBlockState(pos, state, 3);
-		}
-	}
-
 	@Override
 	public void setState(BlockPos pos, IBlockState state) {
 		// TODO This is wrong. Remove forceMessaging flag
 		if (world.isRemote || Plato.forceMessaging) {
+			System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Sending SetBlockStateMessage");
 			Plato.network.sendToServer(new SetBlockStateMessage(pos, state));
 		} else {
 			world.setBlockState(pos, state, 3);

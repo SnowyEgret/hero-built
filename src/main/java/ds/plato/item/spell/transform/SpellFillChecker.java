@@ -10,8 +10,8 @@ import ds.plato.world.IWorld;
 
 public class SpellFillChecker extends AbstractSpellTransform {
 
-	public SpellFillChecker(IUndo undo, ISelect select, IPick pick) {
-		super(undo, select, pick);
+	public SpellFillChecker() {
+		super();
 	}
 
 	@Override

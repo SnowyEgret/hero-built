@@ -11,6 +11,7 @@ import net.minecraft.util.BlockPos;
 import org.lwjgl.input.Keyboard;
 
 import ds.plato.item.spell.Modifier;
+import ds.plato.item.spell.Modifiers;
 import ds.plato.item.spell.Spell;
 import ds.plato.pick.IPick;
 import ds.plato.player.IPlayer;
@@ -23,13 +24,18 @@ import ds.plato.world.IWorld;
 
 public class SpellDrop extends Spell {
 
-	public SpellDrop(IUndo undoManager, ISelect selectionManager, IPick pickManager) {
-		super(1, undoManager, selectionManager, pickManager);
+	public SpellDrop() {
+		super(1);
 		info.addModifiers(Modifier.CTRL, Modifier.ALT, Modifier.SHIFT);
 	}
 
 	@Override
 	public void invoke(IWorld world, IPlayer player) {
+
+		Modifiers modifiers = player.getModifiers();
+		ISelect selectionManager = player.getSelectionManager();
+		IPick pickManager = player.getPickManager();
+		IUndo undoManager = player.getUndoManager();
 
 		boolean deleteOriginal = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL);
 		boolean fill = Keyboard.isKeyDown(Keyboard.KEY_LMENU);
@@ -45,9 +51,9 @@ public class SpellDrop extends Spell {
 		pickManager.clearPicks(world);
 		for (Selection s : selections) {
 			if (raise) {
-				setBlocks.addAll(raiseBurriedBlocks(world, s));
+				setBlocks.addAll(raiseBurriedBlocks(world, selectionManager, s));
 			} else {
-				setBlocks.addAll(drop(world, s, fill));
+				setBlocks.addAll(drop(world, selectionManager, s, fill));
 			}
 			if (deleteOriginal) {
 				setBlocks.add(new UndoableSetBlock(world, selectionManager, s.getPos(), Blocks.air.getDefaultState()));
@@ -61,7 +67,7 @@ public class SpellDrop extends Spell {
 		t.commit();
 	}
 
-	private List<UndoableSetBlock> drop(IWorld world, Selection s, boolean fill) {
+	private List<UndoableSetBlock> drop(IWorld world, ISelect selectionManager, Selection s, boolean fill) {
 		List<UndoableSetBlock> setBlocks = new ArrayList();
 		BlockPos pos = s.getPos();
 		for (int distance = 1;; distance++) {
@@ -80,7 +86,7 @@ public class SpellDrop extends Spell {
 		return setBlocks;
 	}
 
-	private List<UndoableSetBlock> raiseBurriedBlocks(IWorld world, Selection s) {
+	private List<UndoableSetBlock> raiseBurriedBlocks(IWorld world, ISelect selectionManager, Selection s) {
 		List<UndoableSetBlock> setBlocks = new ArrayList();
 		BlockPos pos = s.getPos();
 		for (int distance = 1;; distance++) {

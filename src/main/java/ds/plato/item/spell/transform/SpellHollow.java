@@ -17,12 +17,13 @@ import ds.plato.world.IWorld;
 
 public class SpellHollow extends AbstractSpellTransform {
 
-	public SpellHollow(IUndo undo, ISelect select, IPick pick) {
-		super(undo, select, pick);
+	public SpellHollow() {
+		super();
 	}
 
 	@Override
 	public void invoke(IWorld world, IPlayer player) {
+		final ISelect selectionManager = player.getSelectionManager();
 		transformSelections(world, player, new ITransform() {
 			VoxelSet voxels = selectionManager.voxelSet();
 

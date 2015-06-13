@@ -35,13 +35,16 @@ import ds.plato.item.spell.other.SpellTrail;
 import ds.plato.item.spell.transform.SpellFill;
 import ds.plato.item.staff.IStaff;
 import ds.plato.item.staff.Staff;
+import ds.plato.pick.IPick;
 import ds.plato.pick.Pick;
 import ds.plato.pick.PickManager;
 import ds.plato.player.IPlayer;
 import ds.plato.player.Player;
 import ds.plato.player.PlayerProperies;
+import ds.plato.select.ISelect;
 import ds.plato.select.Selection;
 import ds.plato.select.SelectionManager;
+import ds.plato.undo.IUndo;
 import ds.plato.undo.UndoManager;
 import ds.plato.world.IWorld;
 import ds.plato.world.WorldWrapper;
@@ -65,10 +68,10 @@ public class ForgeEventHandler {
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void onDrawBlockHightlight(DrawBlockHighlightEvent e) {
-		//FIXME We are only getting this event on client side
+		// FIXME We are only getting this event on client side
 		IPlayer player = Player.instance(e.player);
-		SelectionManager selectionManager = player.getSelectionManager();
-		PickManager pickManager = player.getPickManager();
+		ISelect selectionManager = player.getSelectionManager();
+		IPick pickManager = player.getPickManager();
 		if (spell != null) {
 			BlockPos p = null;
 			Pick pick = pickManager.lastPick();
@@ -97,9 +100,9 @@ public class ForgeEventHandler {
 		// TODO
 		// IPlayer player = new PlayerWrapper((e.entityPlayer);
 		IWorld world = new WorldWrapper(e.world);
-		SelectionManager selectionManager = player.getSelectionManager();
-		PickManager pickManager = player.getPickManager();
-		UndoManager undoManager = player.getUndoManager();
+		ISelect selectionManager = player.getSelectionManager();
+		IPick pickManager = player.getPickManager();
+		IUndo undoManager = player.getUndoManager();
 
 		// Return if player is holding nothing
 		ItemStack stack = player.getHeldItemStack();
@@ -132,7 +135,7 @@ public class ForgeEventHandler {
 				Block b = ((ItemBlock) heldItem).getBlock();
 				int meta = heldItem.getDamage(stack);
 				IBlockState state = b.getStateFromMeta(meta);
-				new SpellFill(undoManager, selectionManager, pickManager).invoke(world, player, state);
+				new SpellFill().invoke(world, player, state);
 				e.setCanceled(true);
 				return;
 			}
@@ -156,7 +159,8 @@ public class ForgeEventHandler {
 		IPlayer player = Player.instance((EntityPlayer) e.entity);
 		IWorld world = player.getWorld();
 		// IWorld world = new WorldWrapper();
-		SelectionManager selectionManager = player.getSelectionManager();
+		ISelect selectionManager = player.getSelectionManager();
+		IPick pickManager = player.getPickManager();
 		ISpell s = player.getSpell();
 
 		// The player may have changed spells on a staff. Reset picking on the spell.
@@ -167,13 +171,14 @@ public class ForgeEventHandler {
 			// If the spell has changed reset it.
 			if (s != spell) {
 				spell = s;
-				s.reset(world);
+				s.reset(world, null);
 			}
 		}
 
 		// Select blocks under foot for SpellTrail
 		if (s instanceof SpellTrail && !player.isFlying()) {
-			if (s.isPicking()) {
+			// if (s.isPicking()) {
+			if (pickManager.isPicking()) {
 				BlockPos pos = player.getPosition();
 				Block b = world.getBlock(pos.down());
 				// Try second block down when block underneath is air if the player is jumping or stepping on a plant
@@ -217,8 +222,8 @@ public class ForgeEventHandler {
 			// TODO We are on client side Must send message here
 			IPlayer player = Player.instance();
 			IWorld world = player.getWorld();
-			SelectionManager selectionManager = player.getSelectionManager();
-			PickManager pickManager = player.getPickManager();
+			ISelect selectionManager = player.getSelectionManager();
+			IPick pickManager = player.getPickManager();
 			selectionManager.clearSelections(world);
 			pickManager.clearPicks(world);
 		}
@@ -235,7 +240,7 @@ public class ForgeEventHandler {
 
 	// TODO
 	// Copied here from Spell.onMouseClickLeft. Might be simpler this way
-	private void select(IWorld w, SelectionManager selectionManager, BlockPos pos) {
+	private void select(IWorld w, ISelect selectionManager, BlockPos pos) {
 
 		// Shift replaces the current selections with a region.
 		if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) && selectionManager.size() != 0) {

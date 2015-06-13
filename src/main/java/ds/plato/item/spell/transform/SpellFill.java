@@ -12,8 +12,8 @@ import ds.plato.world.IWorld;
 
 public class SpellFill extends AbstractSpellTransform {
 
-	public SpellFill(IUndo undo, ISelect select, IPick pick) {
-		super(undo, select, pick);
+	public SpellFill() {
+		super();
 	}
 
 	@Override

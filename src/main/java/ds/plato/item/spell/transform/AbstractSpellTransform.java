@@ -11,6 +11,7 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.IPlantable;
 import ds.plato.Plato;
+import ds.plato.item.spell.Modifiers;
 import ds.plato.item.spell.Spell;
 import ds.plato.pick.IPick;
 import ds.plato.player.IPlayer;
@@ -24,11 +25,14 @@ import ds.plato.world.IWorld;
 
 public abstract class AbstractSpellTransform extends Spell {
 
-	public AbstractSpellTransform(IUndo undo, ISelect select, IPick pick) {
-		super(1, undo, select, pick);
+	public AbstractSpellTransform() {
+		super(1);
 	}
 
 	protected void transformSelections(IWorld world, IPlayer player, ITransform transformer) {
+		ISelect selectionManager = player.getSelectionManager();
+		IPick pickManager = player.getPickManager();
+		IUndo undoManager = player.getUndoManager();
 
 		if (selectionManager.getSelectionList().size() == 0) {
 			return;

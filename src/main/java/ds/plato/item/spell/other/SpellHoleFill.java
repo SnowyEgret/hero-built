@@ -11,6 +11,7 @@ import net.minecraft.util.BlockPos;
 import org.lwjgl.input.Keyboard;
 
 import ds.plato.item.spell.Modifier;
+import ds.plato.item.spell.Modifiers;
 import ds.plato.item.spell.Spell;
 import ds.plato.item.spell.select.Select;
 import ds.plato.pick.IPick;
@@ -24,8 +25,8 @@ import ds.plato.world.IWorld;
 
 public class SpellHoleFill extends Spell {
 
-	public SpellHoleFill(IUndo undoManager, ISelect selectionManager, IPick pickManager) {
-		super(1, undoManager, selectionManager, pickManager);
+	public SpellHoleFill() {
+		super(1);
 		info.addModifiers(Modifier.CTRL, Modifier.SHIFT);
 	}
 
@@ -36,8 +37,14 @@ public class SpellHoleFill extends Spell {
 
 	@Override
 	public void invoke(IWorld world, IPlayer player) {
+		Modifiers modifiers = player.getModifiers();
+		ISelect selectionManager = player.getSelectionManager();
+		IPick pickManager = player.getPickManager();
+		IUndo undoManager = player.getUndoManager();
+
 		boolean isHorizontal = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL);
 		boolean useBlockInHotbar = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
+		
 		Iterable<Selection> selections = selectionManager.getSelections();
 		selectionManager.clearSelections(world);
 		pickManager.clearPicks(world);

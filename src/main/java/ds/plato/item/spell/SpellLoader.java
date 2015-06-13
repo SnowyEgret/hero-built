@@ -28,19 +28,10 @@ import ds.plato.util.StringUtils;
 public class SpellLoader {
 
 	public static CreativeTabs tabSpells;
-	// private String modId;
-	IUndo undoManager;
-	ISelect selectionManager;
-	IPick pickManager;
 
 	// private Configuration config;
 
-	public SpellLoader(IUndo undoManager, ISelect selectionManager, IPick pickManager) {
-		this.undoManager = undoManager;
-		this.selectionManager = selectionManager;
-		this.pickManager = pickManager;
-		// this.modId = modId;
-		// this.config = config;
+	public SpellLoader() {
 
 		tabSpells = new CreativeTabs("tabSpells") {
 			@Override
@@ -55,7 +46,7 @@ public class SpellLoader {
 		System.out.println("Loading staff " + staffClass.getSimpleName());
 		String name = StringUtils.toCamelCase(staffClass);
 		Constructor c = staffClass.getConstructor(IPick.class);
-		Staff s = (Staff) c.newInstance(pickManager);
+		Staff s = (Staff) c.newInstance();
 		s.setUnlocalizedName(name);
 		s.setMaxStackSize(1);
 		s.setCreativeTab(tabSpells);
@@ -76,7 +67,7 @@ public class SpellLoader {
 		System.out.println("Loading staff " + staffClass.getSimpleName());
 		String name = StringUtils.toCamelCase(staffClass);
 		Constructor c = staffClass.getConstructor(IPick.class, List.class);
-		StaffPreset s = (StaffPreset) c.newInstance(pickManager, allSpells);
+		StaffPreset s = (StaffPreset) c.newInstance(allSpells);
 		s.setUnlocalizedName(name);
 		s.setMaxStackSize(1);
 		s.setCreativeTab(tabSpells);
@@ -106,7 +97,7 @@ public class SpellLoader {
 		System.out.println("Loading spell " + spellClass.getSimpleName());
 		String name = StringUtils.toCamelCase(spellClass);
 		Constructor<? extends Spell> c = spellClass.getConstructor(IUndo.class, ISelect.class, IPick.class);
-		Spell s = c.newInstance(undoManager, selectionManager, pickManager);
+		Spell s = c.newInstance();
 		s.setUnlocalizedName(name);
 		s.setMaxStackSize(1);
 		s.setCreativeTab(tabSpells);

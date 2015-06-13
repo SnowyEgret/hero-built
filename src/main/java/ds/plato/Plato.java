@@ -34,20 +34,8 @@ import ds.plato.item.staff.StaffSelect;
 import ds.plato.item.staff.StaffTransform;
 import ds.plato.network.KeyMessage;
 import ds.plato.network.KeyMessageHandler;
-import ds.plato.network.ModifierMessage;
-import ds.plato.network.ModifierMessageHandler;
-import ds.plato.network.NextSpellMessage;
-import ds.plato.network.NextSpellMessageHandler;
-import ds.plato.network.PrevSpellMessage;
-import ds.plato.network.PrevSpellMessageHandler;
-import ds.plato.network.SetBlockMessage;
-import ds.plato.network.SetBlockMessageHandler;
-import ds.plato.network.SetBlockStateDoneMessage;
-import ds.plato.network.SetBlockStateDoneMessageHandler;
 import ds.plato.network.SetBlockStateMessage;
 import ds.plato.network.SetBlockStateMessageHandler;
-import ds.plato.network.SpellFillMessage;
-import ds.plato.network.SpellFillMessageHandler;
 import ds.plato.pick.IPick;
 import ds.plato.pick.PickManager;
 import ds.plato.proxy.CommonProxy;
@@ -71,9 +59,6 @@ public class Plato {
 	public static boolean forceMessaging = false;
 
 	// TODO Select, pick, undo, modifier context for each player #121
-	public static IUndo undoManager;
-	public static ISelect selectionManager;
-	public static IPick pickManager;
 	public static Modifiers modifiers;
 	
 	public static BlockSelected blockSelected;
@@ -102,17 +87,18 @@ public class Plato {
 		blockSelected = (BlockSelected) initBlock(new BlockSelected());
 		blockPicked = (BlockPicked) initBlock(new BlockPicked());
 
-		undoManager = new UndoManager();
-		selectionManager = new SelectionManager(blockSelected);
-		pickManager = new PickManager(blockPicked, selectionManager);
+//		UndoManager undoManager = new UndoManager();
+//		SelectionManager selectionManager = new SelectionManager(blockSelected);
+//		PickManager pickManager = new PickManager(blockPicked);
 
-		blockSelected.setSelectionManager(selectionManager);
-		blockPicked.setPickManager(pickManager);
+		//TODO BlockSelected and picked will have to have a tileEntity
+		//blockSelected.setSelectionManager(selectionManager);
+		//blockPicked.setPickManager(pickManager);
 
 		System.out.println("Initializing spells and staffs...");
 		// configuration = new Configuration(event.getSuggestedConfigurationFile());
 		// SpellLoader loader = new SpellLoader(configuration, undoManager, selectionManager, pickManager, ID);
-		SpellLoader loader = new SpellLoader(undoManager, selectionManager, pickManager);
+		SpellLoader loader = new SpellLoader();
 		try {
 			List<Spell> drawSpells = loader.loadSpellsFromPackage("ds.plato.item.spell.draw");
 			List<Spell> selectSpells = loader.loadSpellsFromPackage("ds.plato.item.spell.select");
@@ -144,13 +130,7 @@ public class Plato {
 
 		// http://www.minecraftforge.net/forum/index.php?topic=20135.0
 		network = NetworkRegistry.INSTANCE.newSimpleChannel("plato");
-		network.registerMessage(SetBlockMessageHandler.class, SetBlockMessage.class, 0, Side.SERVER);
-		network.registerMessage(PrevSpellMessageHandler.class, PrevSpellMessage.class, 1, Side.SERVER);
-		network.registerMessage(NextSpellMessageHandler.class, NextSpellMessage.class, 2, Side.SERVER);
 		network.registerMessage(SetBlockStateMessageHandler.class, SetBlockStateMessage.class, 3, Side.SERVER);
-		network.registerMessage(SetBlockStateDoneMessageHandler.class, SetBlockStateDoneMessage.class, 4, Side.CLIENT);
-		network.registerMessage(SpellFillMessageHandler.class, SpellFillMessage.class, 5, Side.SERVER);
-		network.registerMessage(ModifierMessageHandler.class, ModifierMessage.class, 6, Side.SERVER);
 		network.registerMessage(KeyMessageHandler.class, KeyMessage.class, 7, Side.SERVER);
 
 		// Create custom state mappers for BlockSelected and BlockPicked models
@@ -172,20 +152,12 @@ public class Plato {
 	public void init(FMLInitializationEvent event) {
 		// proxy.setCustomRenderers(selectionManager, pickManager, staffs, spells);
 		// TODO could pass MouseHandler here to avoid static reference to isOrbiting
-		proxy.registerEventHandlers(this, selectionManager, undoManager, pickManager);
+		proxy.registerEventHandlers();
 	}
 
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
 	}
-
-	// @EventHandler
-	// public void serverStarted(FMLServerStartedEvent event) {
-	// }
-
-	// @EventHandler
-	// public void serverStopping(FMLServerStoppingEvent event) {
-	// }
 
 	// Private----------------------------------------------------------------------
 

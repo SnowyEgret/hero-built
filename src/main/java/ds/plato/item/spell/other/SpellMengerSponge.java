@@ -10,6 +10,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
 import ds.geom.IntegerDomain;
 import ds.geom.VoxelSet;
+import ds.plato.item.spell.Modifiers;
 import ds.plato.item.spell.Spell;
 import ds.plato.pick.IPick;
 import ds.plato.player.IPlayer;
@@ -24,12 +25,17 @@ public class SpellMengerSponge extends Spell {
 	int level = 0;
 	List<BlockPos> pointsToDelete = new ArrayList<>();
 
-	public SpellMengerSponge(IUndo undoManager, ISelect selectionManager, IPick pickManager) {
-		super(1, undoManager, selectionManager, pickManager);
+	public SpellMengerSponge() {
+		super(1);
 	}
 
 	@Override
 	public void invoke(IWorld world, IPlayer player) {
+		Modifiers modifiers = player.getModifiers();
+		ISelect selectionManager = player.getSelectionManager();
+		IPick pickManager = player.getPickManager();
+		IUndo undoManager = player.getUndoManager();
+
 		//TODO use enclosing cube
 		recursivelySubtract(selectionManager.voxelSet());
 		System.out.println("pointsToDelete=" + pointsToDelete);

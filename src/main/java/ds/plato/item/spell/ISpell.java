@@ -1,5 +1,6 @@
 package ds.plato.item.spell;
 
+import ds.plato.pick.IPick;
 import ds.plato.player.IPlayer;
 import ds.plato.world.IWorld;
 
@@ -11,9 +12,7 @@ public interface ISpell {
 
 	public abstract int getNumPicks();
 
-	public abstract boolean isPicking();
-
-	public abstract void reset(IWorld world);
+	public abstract void reset(IWorld world, IPick pickManager);
 
 	public abstract SpellInfo getInfo();
 

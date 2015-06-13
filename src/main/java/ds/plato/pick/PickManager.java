@@ -19,11 +19,9 @@ public class PickManager implements IPick {
 	private LinkedList<Pick> lastPicks = new LinkedList<>();
 	private int maxPicks = 0;
 	private Block blockPicked;
-	private ISelect selectionManager;
 
-	public PickManager(Block blockPicked, ISelect selectionManager) {
+	public PickManager(Block blockPicked) {
 		this.blockPicked = blockPicked;
-		this.selectionManager = selectionManager;
 	}
 
 	@Override
@@ -128,14 +126,6 @@ public class PickManager implements IPick {
 	}
 
 	// Default - also used by test class---------------------------------------------------------------
-
-	private Pick getPick(int i) {
-		return picks.get(i);
-	}
-
-	private int size() {
-		return picks.size();
-	}
 
 	@Deprecated
 	Pick addPick(BlockPos pos, Block block, EnumFacing side) {

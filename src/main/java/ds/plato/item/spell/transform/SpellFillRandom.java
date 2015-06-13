@@ -2,6 +2,7 @@ package ds.plato.item.spell.transform;
 
 import net.minecraft.block.state.IBlockState;
 import ds.plato.event.KeyHandler;
+import ds.plato.item.spell.ISpell;
 import ds.plato.item.spell.SpellInvoker;
 import ds.plato.pick.IPick;
 import ds.plato.player.IPlayer;
@@ -12,8 +13,8 @@ import ds.plato.world.IWorld;
 
 public class SpellFillRandom extends AbstractSpellTransform {
 
-	public SpellFillRandom(IUndo undo, ISelect select, IPick pick) {
-		super(undo, select, pick);
+	public SpellFillRandom() {
+		super();
 	}
 
 	@Override
@@ -25,7 +26,8 @@ public class SpellFillRandom extends AbstractSpellTransform {
 				return new Selection(s.getPos(), state);
 			}
 		});
-		//Right clicking is same
-		KeyHandler.lastSpell = new SpellInvoker(pickManager, this, world, player);
+		// Right clicking is same
+		player.setLastSpell(this);
+
 	}
 }

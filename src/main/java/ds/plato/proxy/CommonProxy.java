@@ -13,10 +13,6 @@ import ds.plato.undo.IUndo;
 
 public class CommonProxy {
 
-	@Deprecated
-	public void setCustomRenderers(ISelect selectionManager, IPick pickManager, Iterable<Staff> staffs, Iterable<Spell> spells) {
-	}
-
-	public void registerEventHandlers(Plato plato, ISelect select, IUndo undo, IPick pick) {
+	public void registerEventHandlers() {
 	}
 }

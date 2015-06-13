@@ -11,7 +11,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ds.plato.player.IPlayer;
 import ds.plato.player.Player;
-import ds.plato.select.SelectionManager;
+import ds.plato.select.ISelect;
 import ds.plato.world.IWorld;
 
 public class MouseHandler {
@@ -31,7 +31,8 @@ public class MouseHandler {
 
 		IPlayer player = Player.instance();
 		IWorld world = player.getWorld();
-		SelectionManager selectionManager = player.getSelectionManager();
+		//TODO Test that this is right selectionManager
+		ISelect selectionManager = player.getSelectionManager();
 		MovingObjectPosition cursor = Minecraft.getMinecraft().objectMouseOver;
 		// Do nothing if player clicks on a mob
 		if (cursor.typeOfHit == MovingObjectType.ENTITY) {
@@ -58,7 +59,7 @@ public class MouseHandler {
 		// // int meta = heldItem.getDamage(stack);
 		// // IBlockState state = b.getStateFromMeta(meta);
 		// // // FIXME not reselecting in MP
-		// // new SpellFill(undoManager, selectionManager, pickManager).invoke(world, player, state);
+		// // new SpellFill().invoke(world, player, state);
 		//
 		// e.setCanceled(true);
 		// }

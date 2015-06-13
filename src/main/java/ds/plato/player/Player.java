@@ -14,9 +14,9 @@ import ds.plato.item.spell.ISpell;
 import ds.plato.item.spell.Modifiers;
 import ds.plato.item.spell.Spell;
 import ds.plato.item.staff.Staff;
-import ds.plato.pick.PickManager;
-import ds.plato.select.SelectionManager;
-import ds.plato.undo.UndoManager;
+import ds.plato.pick.IPick;
+import ds.plato.select.ISelect;
+import ds.plato.undo.IUndo;
 import ds.plato.world.IWorld;
 import ds.plato.world.WorldWrapper;
 
@@ -186,19 +186,19 @@ public class Player implements IPlayer {
 	}
 
 	@Override
-	public UndoManager getUndoManager() {
+	public IUndo getUndoManager() {
 		IExtendedEntityProperties p = player.getExtendedProperties(PlayerProperies.NAME);
 		return ((PlayerProperies) p).getUndoManager();
 	}
 
 	@Override
-	public SelectionManager getSelectionManager() {
+	public ISelect getSelectionManager() {
 		IExtendedEntityProperties p = player.getExtendedProperties(PlayerProperies.NAME);
 		return ((PlayerProperies) p).getSelectionManager();
 	}
 
 	@Override
-	public PickManager getPickManager() {
+	public IPick getPickManager() {
 		IExtendedEntityProperties p = player.getExtendedProperties(PlayerProperies.NAME);
 		return ((PlayerProperies) p).getPickManager();
 	}	

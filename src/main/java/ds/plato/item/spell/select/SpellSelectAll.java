@@ -1,13 +1,10 @@
 package ds.plato.item.spell.select;
 
-import ds.plato.pick.IPick;
-import ds.plato.select.ISelect;
-import ds.plato.undo.IUndo;
 
 public class SpellSelectAll extends AbstractSpellSelect {
 
-	public SpellSelectAll(IUndo undoManager, ISelect selectionManager, IPick pickManager) {
-		super(Select.all, undoManager, selectionManager, pickManager);
+	public SpellSelectAll() {
+		super(Select.all);
 	}
 
 	@Override

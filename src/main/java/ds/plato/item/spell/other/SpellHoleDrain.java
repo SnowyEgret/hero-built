@@ -8,6 +8,7 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.util.BlockPos;
+import ds.plato.item.spell.Modifiers;
 import ds.plato.item.spell.Spell;
 import ds.plato.item.spell.select.Select;
 import ds.plato.pick.IPick;
@@ -23,8 +24,8 @@ public class SpellHoleDrain extends Spell {
 	private Set<BlockPos> positions = Collections.newSetFromMap(new ConcurrentHashMap<BlockPos, Boolean>());
 	private int positionsSize = 0;
 
-	public SpellHoleDrain(IUndo undoManager, ISelect selectionManager, IPick pickManager) {
-		super(1, undoManager, selectionManager, pickManager);
+	public SpellHoleDrain() {
+		super(1);
 	}
 
 	@Override
@@ -34,6 +35,11 @@ public class SpellHoleDrain extends Spell {
 
 	@Override
 	public void invoke(IWorld world, IPlayer player) {
+		Modifiers modifiers = player.getModifiers();
+		ISelect selectionManager = player.getSelectionManager();
+		IPick pickManager = player.getPickManager();
+		IUndo undoManager = player.getUndoManager();
+
 		positions.clear();
 		positionsSize = 0;
 		BlockPos pos = pickManager.getPicks()[0].getPos();

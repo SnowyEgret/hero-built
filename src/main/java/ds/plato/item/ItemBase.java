@@ -20,32 +20,9 @@ public abstract class ItemBase extends Item implements IItem {
 	private final String modelPath = "models/" + StringUtils.toCamelCase(getClass());
 	private final ResourceLocation modelLocation = new ResourceLocation(Plato.ID, modelPath + ".obj");
 	private final ResourceLocation textureLocation = new ResourceLocation(Plato.ID, modelPath + ".png");
-	// protected IModelCustom model;
 	private ISelect selectionManager;
 
-	// protected ItemBase() {
-	// try {
-	// model = AdvancedModelLoader.loadModel(modelLocation);
-	// } catch (Exception e) {
-	// // ClientProxy.setCustomRenderers logs missing model
-	// }
-	// }
-
-	// @Override
-	// public int getSpriteNumber() {
-	// return model == null ? 1 : 0;
-	// }
-
-	// @Override
-	// public IModelCustom getModel() {
-	// return model;
-	// }
-
 	protected ItemBase() {
-	}
-
-	protected ItemBase(ISelect selectionManager) {
-		this.selectionManager = selectionManager;
 	}
 
 	//No PlayerInteractEvent.Action.LEFT_CLICK_AIR in ForgeEventHandler.onPlayerInteractEvent

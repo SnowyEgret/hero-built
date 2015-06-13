@@ -55,7 +55,7 @@ public class KeyHandler {
 	// }
 	// }
 
-	// public KeyHandler(IUndo undo, ISelect select, IPick pick) {
+	// public KeyHandler() {
 	// this.undoManager = undo;
 	// this.selectionManager = select;
 	// this.pickManager = pick;
@@ -132,7 +132,7 @@ public class KeyHandler {
 		// break;
 		//
 		// case DELETE:
-		// new SpellDelete(undoManager, selectionManager, pickManager).invoke(world, player);
+		// new SpellDelete().invoke(world, player);
 		// break;
 		//
 		// case RESELECT:
@@ -220,7 +220,7 @@ public class KeyHandler {
 	// pickManager.pick(world, new BlockPos(upDown, 0, -leftRight), null);
 	// break;
 	// }
-	// ISpell spell = new SpellCopy(undoManager, selectionManager, pickManager);
+	// ISpell spell = new SpellCopy();
 	// lastSpell = new SpellInvoker(pickManager, spell, world, player);
 	// spell.invoke(world, player);
 	// }
@@ -229,7 +229,7 @@ public class KeyHandler {
 	// pickManager.reset(2);
 	// pickManager.pick(world, new BlockPos(0, 0, 0), null);
 	// pickManager.pick(world, new BlockPos(0, upDown, 0), null);
-	// new SpellCopy(undoManager, selectionManager, pickManager).invoke(world, player);
+	// new SpellCopy().invoke(world, player);
 	// }
 
 }

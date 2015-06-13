@@ -14,21 +14,17 @@ import org.lwjgl.input.Keyboard;
 import ds.plato.gui.GuiHandler;
 import ds.plato.item.ItemBase;
 import ds.plato.item.spell.ISpell;
+import ds.plato.item.spell.Modifier;
+import ds.plato.item.spell.Modifiers;
 import ds.plato.item.spell.Spell;
 import ds.plato.pick.IPick;
+import ds.plato.player.IPlayer;
 import ds.plato.player.Player;
 import ds.plato.world.WorldWrapper;
 
 public abstract class Staff extends ItemBase implements IStaff {
 
 	static final int MAX_NUM_SPELLS = 9;
-	private IPick pickManager;
-
-	protected Staff(IPick pickManager) {
-		//TODO Don't have a selectionManager
-		//super(selectionManager)
-		this.pickManager = pickManager;
-	}
 
 	// Item--------------------------------------------------------
 
@@ -48,10 +44,14 @@ public abstract class Staff extends ItemBase implements IStaff {
 	}
 
 	@Override
-	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float sx, float sy, float sz) {
+	public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World world, BlockPos pos, EnumFacing side, float sx, float sy, float sz) {
 
 		// To compare item stacks and their tags on both sides
 		//System.out.println("tag=" + stack.getTagCompound());
+		IPlayer player = Player.instance(playerIn);
+		Modifiers modifiers = player.getModifiers();
+		IPick pickManager = player.getPickManager();
+		
 
 		// Return if called from the client thread
 		if (world.isRemote) {
@@ -59,20 +59,15 @@ public abstract class Staff extends ItemBase implements IStaff {
 		}
 
 		// We are on the server side. Open staff gui if space bar is down
-		if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
-		//if (player.isSneaking()) {
-			//TODO
-			//IPlayer.getPlayer(player).openGui(GuiHandler.GUI_STAFF, IWorld.getWorld(world));
-			new Player(player).openGui(GuiHandler.GUI_STAFF, new WorldWrapper(world));
-			//player.openGui(Plato.instance, GuiHandler.GUI_STAFF, world, (int) player.posX, (int) player.posY,
-			//		(int) player.posZ);
+		if (modifiers.isPressed(Modifier.SPACE)) {
+			player.openGui(GuiHandler.GUI_STAFF, new WorldWrapper(world));
 			return true;
 		}
 
 		// Get the current spell on this staff and use it
 		if (!isEmpty(stack)) {
-			Spell s = getSpell(stack);
-			s.onItemUse(stack, player, world, pos, side, sx, sy, sz);
+			Spell s = getSpell(stack, pickManager);
+			s.onItemUse(stack, playerIn, world, pos, side, sx, sy, sz);
 			return true;
 		}
 
@@ -82,10 +77,11 @@ public abstract class Staff extends ItemBase implements IStaff {
 	// ItemBase----------------------------------------------------------------------
 
 	// Passes call on to current spell
+	@Deprecated
 	@Override
 	public void onMouseClickLeft(ItemStack stack, BlockPos pos, EnumFacing sideHit) {
 		if (!isEmpty(stack)) {
-			getSpell(stack).onMouseClickLeft(stack, pos, sideHit);
+			//getSpell(stack).onMouseClickLeft(stack, pos, sideHit);
 		} else {
 			System.out.println("Cannot select with an empty staff.");
 		}
@@ -94,7 +90,7 @@ public abstract class Staff extends ItemBase implements IStaff {
 	// IStaff ----------------------------------------------------------------------
 
 	@Override
-	public Spell getSpell(ItemStack stack) {
+	public Spell getSpell(ItemStack stack, IPick pickManager) {
 		// System.out.println("tag=" + stack.getTagCompound());
 		// Throwable().printStackTrace();
 		if (isEmpty(stack)) {
@@ -103,13 +99,13 @@ public abstract class Staff extends ItemBase implements IStaff {
 		TagStaff t = new TagStaff(stack);
 		Spell s = t.getSpell();
 		if (s == null) {
-			s = nextSpell(stack);
+			s = nextSpell(stack, pickManager);
 		}
 		return s;
 	}
 
 	@Override
-	public Spell nextSpell(ItemStack stack) {
+	public Spell nextSpell(ItemStack stack, IPick pickManager) {
 		TagStaff t = new TagStaff(stack);
 		Spell s = null;
 		for (int i = 0; i < MAX_NUM_SPELLS; i++) {
@@ -137,7 +133,7 @@ public abstract class Staff extends ItemBase implements IStaff {
 	}
 
 	@Override
-	public ISpell prevSpell(ItemStack stack) {
+	public ISpell prevSpell(ItemStack stack, IPick pickManager) {
 		TagStaff t = new TagStaff(stack);
 		ISpell s = null;
 		for (int i = 0; i < MAX_NUM_SPELLS; i++) {

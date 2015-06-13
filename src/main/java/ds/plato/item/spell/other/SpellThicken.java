@@ -12,10 +12,12 @@ import org.lwjgl.input.Keyboard;
 
 import ds.geom.IntegerDomain;
 import ds.plato.item.spell.Modifier;
+import ds.plato.item.spell.Modifiers;
 import ds.plato.item.spell.select.Select;
 import ds.plato.item.spell.transform.AbstractSpellTransform;
 import ds.plato.pick.IPick;
 import ds.plato.player.IPlayer;
+import ds.plato.player.Player;
 import ds.plato.select.ISelect;
 import ds.plato.select.Selection;
 import ds.plato.undo.IUndo;
@@ -25,21 +27,26 @@ import ds.plato.world.IWorld;
 
 public class SpellThicken extends AbstractSpellTransform {
 
-	public SpellThicken(IUndo undo, ISelect select, IPick pick) {
-		super(undo, select, pick);
+	public SpellThicken() {
+		super();
 		// ctrl-inward, shift-outward, alt-within plane
 		info.addModifiers(Modifier.CTRL, Modifier.SHIFT, Modifier.ALT);
 	}
 
 	@Override
 	public void invoke(final IWorld world, IPlayer player) {
+		Modifiers modifiers = player.getModifiers();
+		ISelect selectionManager = player.getSelectionManager();
+		IPick pickManager = player.getPickManager();
+		IUndo undoManager = player.getUndoManager();
+		
 		Set<BlockPos> positions = new HashSet<>();
 		Selection firstSelection = selectionManager.firstSelection();
 		IntegerDomain domain = selectionManager.getDomain();
 		if (domain.isPlanar()) {
-			thickenPlane(positions, domain, world);
+			thickenPlane(positions, domain, world, selectionManager);
 		} else {
-			thicken(positions, world);
+			thicken(positions, world, selectionManager);
 		}
 
 		selectionManager.clearSelections(world);
@@ -52,7 +59,7 @@ public class SpellThicken extends AbstractSpellTransform {
 		t.commit();
 	}
 
-	private void thicken(Set<BlockPos> positions, IWorld world) {
+	private void thicken(Set<BlockPos> positions, IWorld world, ISelect selectionManager) {
 		boolean in = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL);
 		boolean out = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
 		//TODO
@@ -81,7 +88,7 @@ public class SpellThicken extends AbstractSpellTransform {
 		}
 	}
 
-	private void thickenPlane(Set<BlockPos> points, IntegerDomain domain, IWorld world) {
+	private void thickenPlane(Set<BlockPos> points, IntegerDomain domain, IWorld world, ISelect selectionManager) {
 		boolean withinPlane = Keyboard.isKeyDown(Keyboard.KEY_LMENU);
 		BlockPos[] select = null;
 		switch (domain.getPlane()) {

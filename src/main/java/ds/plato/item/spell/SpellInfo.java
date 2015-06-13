@@ -63,6 +63,9 @@ public class SpellInfo {
 			case Z:
 				this.modifiers.put("z", format("modifier.z"));
 				break;
+			case SPACE:
+				this.modifiers.put("space", format("modifier.space"));
+				break;
 			default:
 				break;
 			}

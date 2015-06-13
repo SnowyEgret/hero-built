@@ -11,22 +11,23 @@ import org.lwjgl.input.Keyboard;
 
 import ds.geom.matrix.ReflectionMatrix;
 import ds.plato.item.spell.Modifier;
+import ds.plato.item.spell.Modifiers;
 import ds.plato.pick.IPick;
 import ds.plato.pick.Pick;
 import ds.plato.player.IPlayer;
-import ds.plato.select.ISelect;
-import ds.plato.undo.IUndo;
 import ds.plato.world.IWorld;
 
 public class SpellMirror extends AbstractSpellMatrix {
 
-	public SpellMirror(IUndo undoManager, ISelect selectionManager, IPick pickManager) {
-		super(1, undoManager, selectionManager, pickManager);
+	public SpellMirror() {
+		super(1);
 		info.addModifiers(Modifier.CTRL, Modifier.ALT);
 	}
 
 	@Override
 	public void invoke(IWorld world, IPlayer player) {
+		Modifiers modifiers = player.getModifiers();
+		IPick pickManager = player.getPickManager();
 
 		boolean deleteOriginal = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL);
 		boolean mirrorAboutCentroid = Keyboard.isKeyDown(Keyboard.KEY_LMENU);

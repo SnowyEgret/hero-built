@@ -14,6 +14,7 @@ import org.lwjgl.input.Keyboard;
 import ds.plato.block.BlockSelected;
 import ds.plato.item.spell.ICondition;
 import ds.plato.item.spell.Modifier;
+import ds.plato.item.spell.Modifiers;
 import ds.plato.item.spell.Spell;
 import ds.plato.pick.IPick;
 import ds.plato.pick.Pick;
@@ -30,8 +31,8 @@ public abstract class AbstractSpellSelect extends Spell {
 	protected BlockPos[] positions;
 	private List<ICondition> conditions = new ArrayList<>();
 
-	public AbstractSpellSelect(BlockPos[] positions, IUndo undo, ISelect select, IPick pick) {
-		super(1, undo, select, pick);
+	public AbstractSpellSelect(BlockPos[] positions) {
+		super(1);
 		this.positions = positions;
 		// CTRL shrinks selection instead of grows
 		// ALT (MENU) ignores pattern block
@@ -48,6 +49,11 @@ public abstract class AbstractSpellSelect extends Spell {
 	@Override
 	public void invoke(IWorld world, IPlayer player) {
 
+		Modifiers modifiers = player.getModifiers();
+		ISelect selectionManager = player.getSelectionManager();
+		IPick pickManager = player.getPickManager();
+		IUndo undoManager = player.getUndoManager();
+
 		// Select the pick if there are no selections.
 		// Either way the pickManager must be cleared.
 		Pick p = pickManager.getPicks()[0];
@@ -58,16 +64,16 @@ public abstract class AbstractSpellSelect extends Spell {
 
 		// Shrink or grow selections
 		if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
-			shrinkSelections(world);
+			shrinkSelections(world, selectionManager);
 		} else {
 			Block patternBlock = selectionManager.firstSelection().getState().getBlock();
-			growSelections(world, patternBlock);
+			growSelections(world, selectionManager, patternBlock);
 		}
 	}
 
 	// Private-------------------------------------------------------------------------------
 
-	private void growSelections(IWorld world, Block patternBlock) {
+	private void growSelections(IWorld world, ISelect selectionManager, Block patternBlock) {
 		List<BlockPos> newGrownSelections = new ArrayList();
 		for (BlockPos center : selectionManager.getGrownSelections()) {
 			for (BlockPos p : positions) {
@@ -93,7 +99,7 @@ public abstract class AbstractSpellSelect extends Spell {
 		selectionManager.setGrownSelections(newGrownSelections);
 	}
 
-	private void shrinkSelections(IWorld world) {
+	private void shrinkSelections(IWorld world, ISelect selectionManager) {
 		List<Selection> shrunkSelections = new ArrayList<>();
 		for (Selection s : selectionManager.getSelections()) {
 			for (BlockPos p : positions) {

@@ -2,7 +2,6 @@ package ds.plato.item.spell.matrix;
 
 import javax.vecmath.Matrix4d;
 import javax.vecmath.Point3d;
-import javax.vecmath.Point3i;
 
 import net.minecraft.util.Vec3;
 
@@ -10,22 +9,26 @@ import org.lwjgl.input.Keyboard;
 
 import ds.geom.GeomUtil;
 import ds.plato.item.spell.Modifier;
+import ds.plato.item.spell.Modifiers;
 import ds.plato.pick.IPick;
 import ds.plato.pick.Pick;
 import ds.plato.player.IPlayer;
 import ds.plato.select.ISelect;
-import ds.plato.undo.IUndo;
 import ds.plato.world.IWorld;
 
 public class SpellRotate90 extends AbstractSpellMatrix {
 
-	public SpellRotate90(IUndo undoManager, ISelect selectionManager, IPick pickManager) {
-		super(1, undoManager, selectionManager, pickManager);
+	public SpellRotate90() {
+		super(1);
 		info.addModifiers(Modifier.ALT, Modifier.X, Modifier.Y, Modifier.Z);
 	}
 
 	@Override
 	public void invoke(IWorld world, IPlayer player) {
+
+		Modifiers modifiers = player.getModifiers();
+		IPick pickManager = player.getPickManager();
+		ISelect selectionManager = player.getSelectionManager();
 
 		boolean deleteOriginal = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL);
 		boolean rotateAboutCentroid = Keyboard.isKeyDown(Keyboard.KEY_LMENU);

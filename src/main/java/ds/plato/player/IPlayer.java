@@ -8,10 +8,10 @@ import net.minecraft.util.Vec3;
 import ds.plato.item.spell.ISpell;
 import ds.plato.item.spell.Modifiers;
 import ds.plato.item.staff.Staff;
-import ds.plato.pick.PickManager;
+import ds.plato.pick.IPick;
 import ds.plato.player.Player.Direction;
-import ds.plato.select.SelectionManager;
-import ds.plato.undo.UndoManager;
+import ds.plato.select.ISelect;
+import ds.plato.undo.IUndo;
 import ds.plato.world.IWorld;
 
 public interface IPlayer {
@@ -44,11 +44,13 @@ public interface IPlayer {
 
 	public abstract Modifiers getModifiers();
 
-	public abstract UndoManager getUndoManager();
+	public abstract IUndo getUndoManager();
 
-	public abstract SelectionManager getSelectionManager();
+	public abstract ISelect getSelectionManager();
 
-	public abstract PickManager getPickManager();
+	public abstract IPick getPickManager();
+
+	public abstract void setLastSpell(ISpell spell);
 
 	// Thought I saw something like this somewhere in an interface
 	// public static IPlayer getPlayer(EntityPlayer player) {

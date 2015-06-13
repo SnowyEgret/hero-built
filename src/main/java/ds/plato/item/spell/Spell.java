@@ -3,9 +3,7 @@ package ds.plato.item.spell;
 import java.util.List;
 
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
@@ -24,9 +22,6 @@ import ds.plato.world.WorldWrapper;
 
 public abstract class Spell extends ItemBase implements ISpell {
 
-	protected IUndo undoManager;
-	protected ISelect selectionManager;
-	protected IPick pickManager;
 	protected String message;
 	protected SpellInfo info;
 	protected final String CTRL = "ctrl,";
@@ -37,20 +32,21 @@ public abstract class Spell extends ItemBase implements ISpell {
 	protected final String Z = "Z,";
 	private int numPicks;
 
-	public Spell(int numPicks, IUndo undoManager, ISelect selectionManager, IPick pickManager) {
-		super(selectionManager);
+	public Spell(int numPicks) {
+		super();
 		this.numPicks = numPicks;
-		this.undoManager = undoManager;
-		this.selectionManager = selectionManager;
-		this.pickManager = pickManager;
 		info = new SpellInfo(this);
 	}
 
+	@Deprecated
 	@Override
 	public void onMouseClickLeft(ItemStack stack, BlockPos pos, EnumFacing sideHit) {
 
 		IPlayer player = Player.instance();
 		IWorld w = player.getWorld();
+		IUndo undoManager = player.getUndoManager();
+		ISelect selectionManager = player.getSelectionManager();
+		IPick pickManager = player.getPickManager();
 
 		// Shift replaces the current selections with a region.
 		if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) && selectionManager.size() != 0) {
@@ -107,8 +103,9 @@ public abstract class Spell extends ItemBase implements ISpell {
 		if (world.isRemote) {
 			return true;
 		}
-		System.out.println("selectionManager=" + selectionManager);
-		IWorld w = new WorldWrapper(world);
+		IPlayer player = Player.instance(playerIn);
+		IWorld w = player.getWorld();
+		IPick pickManager = player.getPickManager();
 		pickManager.pick(w, pos, side);
 		if (pickManager.isFinishedPicking()) {
 			invoke(w, new Player(playerIn));
@@ -142,12 +139,7 @@ public abstract class Spell extends ItemBase implements ISpell {
 	}
 
 	@Override
-	public boolean isPicking() {
-		return pickManager.isPicking();
-	}
-
-	@Override
-	public void reset(IWorld world) {
+	public void reset(IWorld world, IPick pickManager) {
 		pickManager.clearPicks(world);
 		pickManager.reset(numPicks);
 		message = null;
@@ -172,5 +164,11 @@ public abstract class Spell extends ItemBase implements ISpell {
 		StringBuilder builder = new StringBuilder();
 		builder.append(getClass().getSimpleName());
 		return builder.toString();
+	}
+
+	@Override
+	public int hashCode() {
+		// TODO Auto-generated method stub
+		return super.hashCode();
 	}
 }

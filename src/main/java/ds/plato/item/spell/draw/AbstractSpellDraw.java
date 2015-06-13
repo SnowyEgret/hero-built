@@ -31,19 +31,23 @@ import ds.plato.world.IWorld;
 
 public abstract class AbstractSpellDraw extends Spell {
 
-	public AbstractSpellDraw(int numPicks, IUndo undoManager, ISelect selectionManager, IPick pickManager) {
-		super(numPicks, undoManager, selectionManager, pickManager);
+	public AbstractSpellDraw(int numPicks) {
+		super(numPicks);
 		info.addModifiers(Modifier.SHIFT, Modifier.ALT);
 	}
 
 	protected void draw(IDrawable drawable, IWorld world, IPlayer player) {
 
+		Modifiers modifiers = player.getModifiers();
+		ISelect selectionManager = player.getSelectionManager();
+		IPick pickManager = player.getPickManager();
+		IUndo undoManager = player.getUndoManager();
+		
 		selectionManager.clearSelections(world);
 		pickManager.clearPicks(world);
 		
-		Modifiers modifiers = player.getModifiers();
 		boolean isHollow = modifiers.isPressed(Modifier.SHIFT);
-		boolean onSurface = Keyboard.isKeyDown(Keyboard.KEY_LMENU);
+		boolean onSurface = modifiers.isPressed(Modifier.ALT);
 
 		VoxelSet voxels = drawable.voxelize();
 

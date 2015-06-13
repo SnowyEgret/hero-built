@@ -10,6 +10,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
 import ds.plato.Plato;
+import ds.plato.item.spell.Modifiers;
 import ds.plato.item.spell.Spell;
 import ds.plato.pick.IPick;
 import ds.plato.player.IPlayer;
@@ -23,11 +24,16 @@ import ds.plato.world.IWorld;
 
 public abstract class AbstractSpellMatrix extends Spell {
 
-	public AbstractSpellMatrix(int numPicks, IUndo undo, ISelect select, IPick pick) {
-		super(numPicks, undo, select, pick);
+	public AbstractSpellMatrix(int numPicks) {
+		super(numPicks);
 	}
 
 	protected void transformSelections(IWorld world, IPlayer player, Matrix4d matrix, boolean deleteInitialBlocks) {
+
+		Modifiers modifiers = player.getModifiers();
+		ISelect selectionManager = player.getSelectionManager();
+		IPick pickManager = player.getPickManager();
+		IUndo undoManager = player.getUndoManager();
 
 		List<UndoableSetBlock> deletes = new ArrayList<>();
 		List<UndoableSetBlock> setBlocks = new ArrayList<>();

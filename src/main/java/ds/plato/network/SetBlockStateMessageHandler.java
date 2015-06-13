@@ -19,12 +19,7 @@ public class SetBlockStateMessageHandler implements IMessageHandler<SetBlockStat
 				processMessage(message, player);
 			}
 		});
-		// Maybe something like this
-		// if(message.isLast()) {
-		//For TestWait
-		return new SetBlockStateDoneMessage();
-		// }
-		// return null;
+		return null;
 	}
 
 	private void processMessage(SetBlockStateMessage message, EntityPlayerMP player) {

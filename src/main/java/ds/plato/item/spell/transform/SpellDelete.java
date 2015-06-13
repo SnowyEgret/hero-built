@@ -10,8 +10,8 @@ import ds.plato.world.IWorld;
 
 public class SpellDelete extends AbstractSpellTransform {
 
-	public SpellDelete(IUndo undoManager, ISelect selectionManager, IPick pickManager) {
-		super(undoManager, selectionManager, pickManager);
+	public SpellDelete() {
+		super();
 	}
 
 	@Override
