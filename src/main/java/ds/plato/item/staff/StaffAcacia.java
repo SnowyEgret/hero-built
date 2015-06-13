@@ -5,10 +5,6 @@ import ds.plato.pick.IPick;
 
 public class StaffAcacia extends Staff {
 
-	public StaffAcacia(IPick pickManager) {
-		super(pickManager);
-	}
-
 	@Override
 	public Object[] getRecipe() {
 		//TODO how to make recipe with acacia?

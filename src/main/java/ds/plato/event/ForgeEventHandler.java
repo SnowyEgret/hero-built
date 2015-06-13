@@ -25,6 +25,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.lwjgl.input.Keyboard;
 
+import ds.plato.Plato;
 import ds.plato.block.BlockPicked;
 import ds.plato.block.BlockPickedModel;
 import ds.plato.block.BlockSelected;
@@ -35,6 +36,7 @@ import ds.plato.item.spell.other.SpellTrail;
 import ds.plato.item.spell.transform.SpellFill;
 import ds.plato.item.staff.IStaff;
 import ds.plato.item.staff.Staff;
+import ds.plato.network.ClearManagersMessage;
 import ds.plato.pick.IPick;
 import ds.plato.pick.Pick;
 import ds.plato.pick.PickManager;
@@ -158,7 +160,6 @@ public class ForgeEventHandler {
 
 		IPlayer player = Player.instance((EntityPlayer) e.entity);
 		IWorld world = player.getWorld();
-		// IWorld world = new WorldWrapper();
 		ISelect selectionManager = player.getSelectionManager();
 		IPick pickManager = player.getPickManager();
 		ISpell s = player.getSpell();
@@ -171,7 +172,7 @@ public class ForgeEventHandler {
 			// If the spell has changed reset it.
 			if (s != spell) {
 				spell = s;
-				s.reset(world, null);
+				s.reset(world, pickManager);
 			}
 		}
 
@@ -185,7 +186,7 @@ public class ForgeEventHandler {
 				if (b == Blocks.air || !b.isNormalCube()) {
 					pos = pos.down();
 				}
-				Selection sel = selectionManager.select(world, pos.down());
+				selectionManager.select(world, pos.down());
 			}
 		}
 	}
@@ -193,14 +194,14 @@ public class ForgeEventHandler {
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void onRenderGameOverlayEvent(RenderGameOverlayEvent event) {
+		IPlayer player = Player.instance();
 		if (event.type == RenderGameOverlayEvent.ElementType.TEXT) {
 			if (spell != null) {
-				overlay.drawSpell(spell);
+				overlay.drawSpell(spell, player);
 			} else {
-				IPlayer player = Player.instance();
 				Staff staff = player.getStaff();
 				if (staff != null) {
-					overlay.drawStaff(staff, player.getHeldItemStack());
+					overlay.drawStaff(staff, player);
 					return;
 				}
 			}
@@ -219,6 +220,8 @@ public class ForgeEventHandler {
 	@SubscribeEvent
 	public void onGuiIngameMenuQuit(GuiScreenEvent.ActionPerformedEvent event) {
 		if (event.gui instanceof GuiIngameMenu && event.button.id == 1) {
+			
+			Plato.network.sendToServer(new ClearManagersMessage());
 			// TODO We are on client side Must send message here
 			IPlayer player = Player.instance();
 			IWorld world = player.getWorld();

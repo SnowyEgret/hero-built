@@ -5,6 +5,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IExtendedEntityProperties;
 import ds.plato.Plato;
+import ds.plato.item.spell.ISpell;
 import ds.plato.item.spell.Modifiers;
 import ds.plato.pick.PickManager;
 import ds.plato.select.SelectionManager;
@@ -13,12 +14,14 @@ import ds.plato.undo.UndoManager;
 public class PlayerProperies implements IExtendedEntityProperties {
 
 	public final static String NAME = "PlayerProperties";
-	
+
 	private Modifiers modifiers;
 	private SelectionManager selectionManager;
 	private PickManager pickManager;
 	private UndoManager undoManager;
-	
+
+	private ISpell lastSpell;
+
 	public Modifiers getModifiers() {
 		return modifiers;
 	}
@@ -34,6 +37,7 @@ public class PlayerProperies implements IExtendedEntityProperties {
 	public PickManager getPickManager() {
 		return pickManager;
 	}
+
 	@Override
 	public void saveNBTData(NBTTagCompound compound) {
 	}
@@ -50,5 +54,12 @@ public class PlayerProperies implements IExtendedEntityProperties {
 		undoManager = new UndoManager();
 	}
 
+	public void setLastSpell(ISpell spell) {
+		this.lastSpell = spell;
+	}
+
+	public ISpell getLastSpell() {
+		return lastSpell;
+	}
 
 }

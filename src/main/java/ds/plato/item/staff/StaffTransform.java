@@ -8,8 +8,8 @@ import ds.plato.pick.IPick;
 
 public class StaffTransform extends StaffPreset {
 
-	public StaffTransform(IPick pickManager, List<Spell> spells) {
-		super(pickManager, spells);
+	public StaffTransform(List<Spell> spells) {
+		super(spells);
 	}
 	
 	public Object[] getRecipe() {

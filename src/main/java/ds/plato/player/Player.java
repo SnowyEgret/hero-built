@@ -126,7 +126,7 @@ public class Player implements IPlayer {
 			if (item instanceof Spell) {
 				spell = (ISpell) item;
 			} else if (item instanceof Staff) {
-				spell = ((Staff) item).getSpell(stack);
+				spell = ((Staff) item).getSpell(stack, getPickManager());
 			}
 		}
 		return spell;
@@ -201,5 +201,11 @@ public class Player implements IPlayer {
 	public IPick getPickManager() {
 		IExtendedEntityProperties p = player.getExtendedProperties(PlayerProperies.NAME);
 		return ((PlayerProperies) p).getPickManager();
+	}
+
+	@Override
+	public void setLastSpell(ISpell spell) {
+		IExtendedEntityProperties p = player.getExtendedProperties(PlayerProperies.NAME);
+		((PlayerProperies) p).setLastSpell(spell);		
 	}	
 }

@@ -104,9 +104,9 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 			Staff staff = player.getStaff();
 			if (staff != null) {
 				if (modifiers.isPressed(Modifier.CTRL)) {
-					staff.prevSpell(stack);
+					staff.prevSpell(stack, pickManager);
 				} else {
-					staff.nextSpell(stack);
+					staff.nextSpell(stack, pickManager);
 				}
 			}
 			break;

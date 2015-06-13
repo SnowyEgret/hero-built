@@ -29,8 +29,6 @@ public class SpellLoader {
 
 	public static CreativeTabs tabSpells;
 
-	// private Configuration config;
-
 	public SpellLoader() {
 
 		tabSpells = new CreativeTabs("tabSpells") {
@@ -45,12 +43,11 @@ public class SpellLoader {
 	public Staff loadStaff(Class<? extends Staff> staffClass) throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		System.out.println("Loading staff " + staffClass.getSimpleName());
 		String name = StringUtils.toCamelCase(staffClass);
-		Constructor c = staffClass.getConstructor(IPick.class);
+		Constructor c = staffClass.getConstructor();
 		Staff s = (Staff) c.newInstance();
 		s.setUnlocalizedName(name);
 		s.setMaxStackSize(1);
 		s.setCreativeTab(tabSpells);
-		// s.setTextureName(modId + ":staff");
 		GameRegistry.registerItem(s, name);
 		if (s.hasRecipe()) {
 			GameRegistry.addRecipe(new ItemStack(s), s.getRecipe());
@@ -66,7 +63,7 @@ public class SpellLoader {
 		}
 		System.out.println("Loading staff " + staffClass.getSimpleName());
 		String name = StringUtils.toCamelCase(staffClass);
-		Constructor c = staffClass.getConstructor(IPick.class, List.class);
+		Constructor c = staffClass.getConstructor(List.class);
 		StaffPreset s = (StaffPreset) c.newInstance(allSpells);
 		s.setUnlocalizedName(name);
 		s.setMaxStackSize(1);
@@ -96,12 +93,11 @@ public class SpellLoader {
 
 		System.out.println("Loading spell " + spellClass.getSimpleName());
 		String name = StringUtils.toCamelCase(spellClass);
-		Constructor<? extends Spell> c = spellClass.getConstructor(IUndo.class, ISelect.class, IPick.class);
+		Constructor<? extends Spell> c = spellClass.getConstructor();
 		Spell s = c.newInstance();
 		s.setUnlocalizedName(name);
 		s.setMaxStackSize(1);
 		s.setCreativeTab(tabSpells);
-		// s.setTextureName(modId + ":spell");
 		// Can't remember why I did this. For SpellRestore?
 		GameRegistry.registerItem(s, s.getClass().getSimpleName());
 		// GameRegistry.registerItem(s, name);

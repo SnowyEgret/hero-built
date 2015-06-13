@@ -14,16 +14,15 @@ import ds.plato.item.spell.transform.SpellFillRandom;
 import ds.plato.item.staff.Staff;
 import ds.plato.pick.IPick;
 import ds.plato.player.IPlayer;
-import ds.plato.player.Player;
 import ds.plato.select.ISelect;
 
 public class Overlay {
 
 	private Vec3i displacement;
-	private final int white = 0xffffff;
-	private final int red = 0xffaaaa;
-	private final int green = 0xaaffaa;
-	private final int blue = 0xaaaaff;
+	private static final int WHITE = 0xffffff;
+	private static final int RED = 0xffaaaa;
+	private static final int GREEN = 0xaaffaa;
+	private static final int BLUE = 0xaaaaff;
 
 	public Overlay() {
 	}
@@ -32,9 +31,8 @@ public class Overlay {
 		this.displacement = displacement;
 	}
 
-	public void drawSpell(ISpell spell) {
+	public void drawSpell(ISpell spell, IPlayer player) {
 
-		IPlayer player = Player.instance();
 		IPick pickManager = player.getPickManager();
 		ISelect selectionManager = player.getSelectionManager();
 		int x = 10;
@@ -43,10 +41,10 @@ public class Overlay {
 		int rowHeight = r.FONT_HEIGHT + 5;
 
 		SpellInfo info = spell.getInfo();
-		r.drawStringWithShadow(info.getName().toUpperCase(), x, y, white);
-		r.drawStringWithShadow(info.getDescription(), x, y += rowHeight, white);
-		r.drawStringWithShadow(info.getPicks(), x, y += rowHeight, green);
-		r.drawStringWithShadow(info.getModifiers(), x, y += rowHeight, blue);
+		r.drawStringWithShadow(info.getName().toUpperCase(), x, y, WHITE);
+		r.drawStringWithShadow(info.getDescription(), x, y += rowHeight, WHITE);
+		r.drawStringWithShadow(info.getPicks(), x, y += rowHeight, GREEN);
+		r.drawStringWithShadow(info.getModifiers(), x, y += rowHeight, BLUE);
 
 		// Display the dimensions of the impending volume if player is picking or shift selecting
 		// TODO Test that pickManager is same as one on server side.
@@ -59,35 +57,36 @@ public class Overlay {
 				// Add 1 to get distance instead of displacement
 				// FIXME height is broken after port to 1.8
 				r.drawStringWithShadow(((dx >= 0) ? "East" : "West") + ": " + (Math.abs(dx) + 1) + "  "
-						+ ((dz >= 0) ? "North" : "South") + ": " + (Math.abs(dz) + 1), x, y += rowHeight, red);
-				r.drawStringWithShadow(((dy >= 0) ? "Down" : "Up") + ": " + (Math.abs(dy) + 1), x, y += rowHeight, red);
+						+ ((dz >= 0) ? "North" : "South") + ": " + (Math.abs(dz) + 1), x, y += rowHeight, RED);
+				r.drawStringWithShadow(((dy >= 0) ? "Down" : "Up") + ": " + (Math.abs(dy) + 1), x, y += rowHeight, RED);
 			}
 		}
 
 		// TODO Test that pickManager is same as one on server side.
-		r.drawStringWithShadow("Selection size: " + selectionManager.size(), x, y += rowHeight, red);
+		r.drawStringWithShadow("Selection size: " + selectionManager.size(), x, y += rowHeight, RED);
 
 		// TODO SpellFillRandom should set message
 		if (spell instanceof SpellFillRandom) {
-			r.drawStringWithShadow(player.getHotbar().getDistribution().toString(), x, y += rowHeight, blue);
+			r.drawStringWithShadow(player.getHotbar().getDistribution().toString(), x, y += rowHeight, BLUE);
 		}
 
 		if (MouseHandler.isOrbiting) {
-			r.drawStringWithShadow(player.getDirection().toString().toLowerCase(), x, y += rowHeight, blue);
+			r.drawStringWithShadow(player.getDirection().toString().toLowerCase(), x, y += rowHeight, BLUE);
 		}
 
 		String message = spell.getMessage();
 		if (message != null) {
-			r.drawStringWithShadow(message, x, y += rowHeight, green);
+			r.drawStringWithShadow(message, x, y += rowHeight, GREEN);
 		}
 	}
 
-	public void drawStaff(Staff staff, ItemStack stack) {
+	public void drawStaff(Staff staff, IPlayer player) {
+		ItemStack stack = player.getHeldItemStack();
 		int x = 10;
 		int y = x;
 		FontRenderer r = Minecraft.getMinecraft().fontRendererObj;
 		String staffName = staff.getItemStackDisplayName(stack);
-		r.drawStringWithShadow(staffName + " has no spells", x, y, white);
+		r.drawStringWithShadow(staffName + " has no spells", x, y, WHITE);
 	}
 
 }

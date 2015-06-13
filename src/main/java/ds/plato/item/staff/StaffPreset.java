@@ -15,8 +15,7 @@ public abstract class StaffPreset extends Staff {
 
 	private List<Spell> spells;
 
-	protected StaffPreset(IPick pickManager, List<Spell> spells) {
-		super(pickManager);
+	protected StaffPreset(List<Spell> spells) {
 		this.spells = spells;
 	}
 

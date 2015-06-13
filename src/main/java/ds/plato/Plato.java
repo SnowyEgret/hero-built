@@ -15,6 +15,7 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -32,17 +33,13 @@ import ds.plato.item.staff.StaffDraw;
 import ds.plato.item.staff.StaffOak;
 import ds.plato.item.staff.StaffSelect;
 import ds.plato.item.staff.StaffTransform;
+import ds.plato.network.ClearManagersMessage;
+import ds.plato.network.ClearManagersMessageHandler;
 import ds.plato.network.KeyMessage;
 import ds.plato.network.KeyMessageHandler;
 import ds.plato.network.SetBlockStateMessage;
 import ds.plato.network.SetBlockStateMessageHandler;
-import ds.plato.pick.IPick;
-import ds.plato.pick.PickManager;
 import ds.plato.proxy.CommonProxy;
-import ds.plato.select.ISelect;
-import ds.plato.select.SelectionManager;
-import ds.plato.undo.IUndo;
-import ds.plato.undo.UndoManager;
 
 @Mod(modid = Plato.ID, name = Plato.NAME, version = Plato.VERSION)
 public class Plato {
@@ -132,6 +129,7 @@ public class Plato {
 		network = NetworkRegistry.INSTANCE.newSimpleChannel("plato");
 		network.registerMessage(SetBlockStateMessageHandler.class, SetBlockStateMessage.class, 3, Side.SERVER);
 		network.registerMessage(KeyMessageHandler.class, KeyMessage.class, 7, Side.SERVER);
+		network.registerMessage(ClearManagersMessageHandler.class, ClearManagersMessage.class, 1, Side.SERVER);
 
 		// Create custom state mappers for BlockSelected and BlockPicked models
 		ModelLoader.setCustomStateMapper(blockSelected, new StateMapperBase() {
@@ -159,6 +157,10 @@ public class Plato {
 	public void postInit(FMLPostInitializationEvent event) {
 	}
 
+	@EventHandler
+	public void serverStopping(FMLServerStoppingEvent event) {
+	}
+	
 	// Private----------------------------------------------------------------------
 
 	private Block initBlock(Block block) {
