@@ -7,11 +7,10 @@ import net.minecraft.util.Vec3;
 import ds.geom.IntegerDomain;
 import ds.geom.VoxelSet;
 import ds.plato.player.IPlayer;
-import ds.plato.world.IWorld;
 
 public interface ISelect {
 
-	// Methods that message server
+	// Methods that message server------------------------------------------------
 
 	public void select(IPlayer player, BlockPos pos);
 
@@ -25,18 +24,6 @@ public interface ISelect {
 
 	public void reselect(IPlayer player);
 
-	// Methods to make private---------------------------------------------------------------------
-
-	public Selection select(IWorld world, BlockPos pos);
-
-	public void deselect(IWorld world, BlockPos pos);
-
-	public void deselect(IWorld world, Selection selection);
-
-	public void reselect(IWorld world);
-
-	public void clearSelections(IWorld world);
-	
 	// -----------------------------------------------------------------------------
 
 	public Iterable<Selection> getSelections();
@@ -44,8 +31,6 @@ public interface ISelect {
 	public Selection getSelection(BlockPos pos);
 
 	public void setReselects(List<BlockPos> reselects);
-
-	public Selection removeSelection(BlockPos pos);
 
 	public int size();
 

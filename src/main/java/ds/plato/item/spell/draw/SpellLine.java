@@ -28,7 +28,6 @@ public class SpellLine extends AbstractSpellDraw {
 		if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
 			pickManager.reset(2);
 			pickManager.clearPicks(player);
-			//TODO Can we pass null here?
 			pickManager.pick(world, picks[1].getPos(), null);
 		}
 	}

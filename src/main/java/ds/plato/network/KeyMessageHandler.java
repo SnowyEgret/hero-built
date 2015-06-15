@@ -80,6 +80,7 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 					if (modifiers.isPressed(Modifier.SHIFT)) {
 						player.getUndoManager().redo();
 					} else {
+						selectionManager.clearSelections(player);
 						player.getUndoManager().undo();
 					}
 				}

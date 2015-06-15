@@ -49,7 +49,7 @@ public class SpellThicken extends AbstractSpellTransform {
 			thicken(positions, world, selectionManager);
 		}
 
-		selectionManager.clearSelections(world);
+		selectionManager.clearSelections(player);
 		pickManager.clearPicks(world);
 
 		Transaction t = undoManager.newTransaction();

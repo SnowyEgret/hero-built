@@ -64,7 +64,12 @@ public class SpellText extends Spell implements ITextSetable {
 	}
 
 	@Override
-	public void setText(String text, ISelect selectionManager, IPick pickManager, IUndo undoManager) {
+	public void setText(String text, IPlayer player) {
+		
+		ISelect selectionManager = player.getSelectionManager();
+		IPick pickManager = player.getPickManager();
+		IUndo undoManager = player.getUndoManager();
+		
 
 		Vector3d d = new Vector3d();
 		d.sub(picks[0].point3d(), picks[1].point3d());
@@ -107,7 +112,7 @@ public class SpellText extends Spell implements ITextSetable {
 		}
 
 		System.out.println("size=" + positions.size());
-		selectionManager.clearSelections(world);
+		selectionManager.clearSelections(player);
 		pickManager.clearPicks(world);
 		Transaction t = undoManager.newTransaction();
 		for (BlockPos p : positions) {

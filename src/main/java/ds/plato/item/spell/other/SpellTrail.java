@@ -34,7 +34,7 @@ public class SpellTrail extends Spell {
 		//boolean deleteOriginal = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL);
 		Transaction transaction = undoManager.newTransaction();
 		Iterable<Selection> selections = selectionManager.getSelections();
-		selectionManager.clearSelections(world);
+		selectionManager.clearSelections(player);
 		pickManager.clearPicks(world);
 		for (Selection s : selections) {
 			world.setState(s.getPos(), player.getHotbar().firstBlock());

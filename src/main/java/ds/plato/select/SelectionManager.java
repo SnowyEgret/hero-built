@@ -48,7 +48,7 @@ public class SelectionManager implements ISelect {
 
 	@Override
 	public void select(IPlayer player, BlockPos pos) {
-		select(player.getWorld(), pos);		
+		select(player.getWorld(), pos);
 		Plato.network.sendTo(new SelectionMessage(this), (EntityPlayerMP) player.getPlayer());
 	}
 
@@ -77,47 +77,8 @@ public class SelectionManager implements ISelect {
 		clearSelections(player.getWorld());
 		Plato.network.sendTo(new SelectionMessage(this), (EntityPlayerMP) player.getPlayer());
 	}
-	
-	//----------------------------------------------------------------------------
 
-	@Override
-	public Selection select(IWorld world, BlockPos pos) {
-		IBlockState state = world.getActualState(pos);
-		Block b = (state.getBlock());
-		if (b instanceof BlockAir) {
-			System.out.println("Found BlockAir. Returning null.");
-			return null;
-		}
-		if (b instanceof BlockSelected) {
-			// getSelection is already null so we have no way of knowing what the original block was
-			System.out.println("Found BlockSelected. Returning null.");
-			return getSelection(pos);
-		}
-		Selection selection = new Selection(pos, state);
-		selections.put(pos, selection);
-		world.setState(pos, blockSelected.getDefaultState());
-		return selection;
-	}
-
-	@Override
-	public void deselect(IWorld world, Selection selection) {
-		// Block b = selection.getBlock();
-		// if (b instanceof BlockPicked) {
-		// //Look up pick from pickManager
-		// //b = ((BlockPicked)b).getPos())
-		// }
-		//System.out.println("selection=" + selection);
-		world.setState(selection.getPos(), selection.getState());
-		selections.remove(selection.getPos());
-	}
-
-	@Override
-	public void deselect(IWorld world, BlockPos pos) {
-		Selection s = getSelection(pos);
-		if (s != null) {
-			deselect(world, s);
-		}
-	}
+	// ----------------------------------------------------------------------------
 
 	// Returns a copy to avoid concurrent modification
 	@Override
@@ -134,34 +95,6 @@ public class SelectionManager implements ISelect {
 
 	public void setReselects(List<BlockPos> reselects) {
 		this.reselects = reselects;
-	}
-
-	@Override
-	public void reselect(IWorld world) {
-		clearSelections(world);
-		if (reselects != null) {
-			for (BlockPos pos : reselects) {
-				select(world, pos);
-			}
-		}
-	}
-
-	@Override
-	public void clearSelections(IWorld world) {
-		if (!selections.isEmpty()) {
-			reselects = Lists.newArrayList(selections.keySet());
-			// getSelections returns a copy so that it is not modified by deselect
-			for (Selection s : getSelections()) {
-				deselect(world, s);
-			}
-		}
-		grownSelections.clear();
-	}
-
-	// TODO Does not set a block so doesn't need world. Only called by UndoableSetBlock.set(). Is there another way?
-	@Override
-	public Selection removeSelection(BlockPos pos) {
-		return selections.remove(pos);
 	}
 
 	@Override
@@ -239,6 +172,64 @@ public class SelectionManager implements ISelect {
 	public Vec3 getCentroid() {
 		Point3d c = voxelSet().centroid();
 		return new Vec3(c.x, c.y, c.z);
+	}
+
+	// Private-----------------------------------------------------------------------
+
+	private Selection select(IWorld world, BlockPos pos) {
+		IBlockState state = world.getActualState(pos);
+		Block b = (state.getBlock());
+		if (b instanceof BlockAir) {
+			System.out.println("Found BlockAir. Returning null.");
+			return null;
+		}
+		if (b instanceof BlockSelected) {
+			// getSelection is already null so we have no way of knowing what the original block was
+			System.out.println("Found BlockSelected. Returning null.");
+			return getSelection(pos);
+		}
+		Selection selection = new Selection(pos, state);
+		selections.put(pos, selection);
+		world.setState(pos, blockSelected.getDefaultState());
+		return selection;
+	}
+
+	private void deselect(IWorld world, Selection selection) {
+		// Block b = selection.getBlock();
+		// if (b instanceof BlockPicked) {
+		// //Look up pick from pickManager
+		// //b = ((BlockPicked)b).getPos())
+		// }
+		// System.out.println("selection=" + selection);
+		world.setState(selection.getPos(), selection.getState());
+		selections.remove(selection.getPos());
+	}
+
+	private void deselect(IWorld world, BlockPos pos) {
+		Selection s = getSelection(pos);
+		if (s != null) {
+			deselect(world, s);
+		}
+	}
+
+	private void reselect(IWorld world) {
+		clearSelections(world);
+		if (reselects != null) {
+			for (BlockPos pos : reselects) {
+				select(world, pos);
+			}
+		}
+	}
+
+	private void clearSelections(IWorld world) {
+		if (!selections.isEmpty()) {
+			reselects = Lists.newArrayList(selections.keySet());
+			// getSelections returns a copy so that it is not modified by deselect
+			for (Selection s : getSelections()) {
+				deselect(world, s);
+			}
+		}
+		grownSelections.clear();
 	}
 
 }

@@ -47,7 +47,7 @@ public class SpellDrop extends Spell {
 
 		List<UndoableSetBlock> setBlocks = new ArrayList();
 		Iterable<Selection> selections = selectionManager.getSelections();
-		selectionManager.clearSelections(world);
+		selectionManager.clearSelections(player);
 		pickManager.clearPicks(world);
 		for (Selection s : selections) {
 			if (raise) {

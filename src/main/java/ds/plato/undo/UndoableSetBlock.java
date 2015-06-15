@@ -33,7 +33,7 @@ public class UndoableSetBlock implements IUndoable {
 
 		Selection s = selectionManager.getSelection(pos);
 		//TODO 
-		selectionManager.removeSelection(pos);
+		//selectionManager.removeSelection(pos);
 		if (s != null) {
 			prevState = s.getState();
 		}
@@ -43,7 +43,7 @@ public class UndoableSetBlock implements IUndoable {
 
 	@Override
 	public void undo() {
-		selectionManager.deselect(world, pos);
+		//selectionManager.deselect(world, pos);
 		world.setState(pos, prevState);
 	}
 
