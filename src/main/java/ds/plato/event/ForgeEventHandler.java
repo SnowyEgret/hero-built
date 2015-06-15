@@ -6,7 +6,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.GuiIngameMenu;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -22,11 +21,10 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import org.lwjgl.input.Keyboard;
 
 import com.google.common.collect.Lists;
 
@@ -44,7 +42,7 @@ import ds.plato.item.spell.transform.SpellFill;
 import ds.plato.item.staff.IStaff;
 import ds.plato.item.staff.Staff;
 import ds.plato.network.ClearManagersMessage;
-import ds.plato.network.SelectionMessage;
+import ds.plato.network.MyEvent;
 import ds.plato.pick.IPick;
 import ds.plato.player.IPlayer;
 import ds.plato.player.Player;
@@ -55,11 +53,7 @@ import ds.plato.world.IWorld;
 public class ForgeEventHandler {
 
 	private ISpell spell = null;
-	private Overlay overlay;
-
-	public ForgeEventHandler(Overlay overlay) {
-		this.overlay = overlay;
-	}
+	private Overlay overlay = new Overlay();
 
 	// http://jabelarminecraft.blogspot.ca/p/minecraft-forge-172-event-handling.html
 	// Due to the danger of other mods canceling events you might want to intercept, and also useful in some specific
@@ -99,47 +93,31 @@ public class ForgeEventHandler {
 	@SubscribeEvent
 	public void onPlayerInteractEvent(PlayerInteractEvent e) {
 
+		if (e.action == null) {
+			//System.out.println("isRemote=" + e.world.isRemote);
+			e.setCanceled(true);
+			return;
+		}
+
 		IPlayer player = Player.instance(e.entityPlayer);
-		IWorld world = player.getWorld();
-		ISelect selectionManager = player.getSelectionManager();
 
 		// Return if player is holding nothing
 		ItemStack stack = player.getHeldItemStack();
 		if (stack == null) {
 			return;
 		}
-
-		Item heldItem = stack.getItem();
-
-		switch (e.action) {
-		// Left click air handled in ItemBase.onEntitySwing
-		case LEFT_CLICK_BLOCK:
-			// Select
-			if (heldItem instanceof IStaff || heldItem instanceof ISpell) {
-				// Call private method in this class
-				select(world, selectionManager, e.pos, player);
-				e.setCanceled(true);
-				return;
-			}
-			break;
-		case RIGHT_CLICK_AIR:
-			// Deselect
-			player.getPickManager().clearPicks(player);
-			e.setCanceled(true);
-			return;
-		case RIGHT_CLICK_BLOCK:
-			if (heldItem instanceof ItemBlock && selectionManager.isSelected(e.pos)) {
+		
+		if (e.action == Action.RIGHT_CLICK_BLOCK) {
+			Item heldItem = stack.getItem();
+			if (heldItem instanceof ItemBlock && player.getSelectionManager().isSelected(e.pos)) {
 				// Fill selections
 				Block b = ((ItemBlock) heldItem).getBlock();
 				int meta = heldItem.getDamage(stack);
 				IBlockState state = b.getStateFromMeta(meta);
-				new SpellFill().invoke(world, player, state);
+				new SpellFill().invoke(player.getWorld(), player, state);
 				e.setCanceled(true);
 				return;
 			}
-			break;
-		default:
-			break;
 		}
 	}
 
@@ -169,7 +147,7 @@ public class ForgeEventHandler {
 			// If the spell has changed reset it.
 			if (s != spell) {
 				spell = s;
-				s.reset(world, pickManager);
+				s.reset(player);
 			}
 		}
 
@@ -226,49 +204,5 @@ public class ForgeEventHandler {
 		if (event.entity instanceof EntityPlayer) {
 			event.entity.registerExtendedProperties(PlayerProperies.NAME, new PlayerProperies());
 		}
-	}
-
-	// Private-------------------------------------------------------------------------------------
-
-	// Called by onPlayerInteractEvent on server side only.
-	private void select(IWorld w, ISelect selectionManager, BlockPos pos, IPlayer player) {
-
-		Modifiers modifiers = player.getModifiers();
-
-		// Shift replaces the current selections with a region.
-		if (modifiers.isPressed(Modifier.SHIFT) && selectionManager.size() != 0) {
-			BlockPos lastPos = selectionManager.lastSelection().getPos();
-			IBlockState firstState = selectionManager.firstSelection().getState();
-			selectionManager.clearSelections(player);
-
-			Iterable<BlockPos> allInBox = BlockPos.getAllInBox(lastPos, pos);
-			ArrayList<BlockPos> positions = Lists.newArrayList();
-			for (BlockPos p : allInBox) {
-				if (modifiers.isPressed(Modifier.ALT)) {
-					IBlockState state = w.getActualState(p);
-					if (state == firstState) {
-						positions.add(p);
-					}
-				} else {
-					positions.add(p);
-				}
-			}
-			selectionManager.select(player, positions);
-			return;
-		}
-
-		// Control adds or subtracts a selection to the current selections
-		if (modifiers.isPressed(Modifier.CTRL)) {
-			if (selectionManager.isSelected(pos)) {
-				selectionManager.deselect(player, pos);
-			} else {
-				selectionManager.select(player, pos);
-			}
-			return;
-		}
-
-		// No modifier replaces the current selections with a new selection
-		selectionManager.clearSelections(player);
-		selectionManager.select(player, pos);
 	}
 }

@@ -12,7 +12,7 @@ public interface ISpell {
 
 	public abstract int getNumPicks();
 
-	public abstract void reset(IWorld world, IPick pickManager);
+	public abstract void reset(IPlayer player);
 
 	public abstract SpellInfo getInfo();
 

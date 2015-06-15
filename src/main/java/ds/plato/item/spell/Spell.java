@@ -84,8 +84,9 @@ public abstract class Spell extends ItemBase implements ISpell {
 	}
 
 	@Override
-	public void reset(IWorld world, IPick pickManager) {
-		pickManager.clearPicks(world);
+	public void reset(IPlayer player) {
+		IPick pickManager = player.getPickManager();
+		pickManager.clearPicks(player.getWorld());
 		pickManager.reset(numPicks);
 		message = null;
 	}

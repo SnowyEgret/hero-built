@@ -29,7 +29,6 @@ import ds.plato.world.IWorld;
 
 public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> {
 
-	//private IUndo undoManager;
 	private ISelect selectionManager;
 	private IPick pickManager;
 	public static SpellInvoker lastSpell;
@@ -53,7 +52,6 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 		IPlayer player = Player.instance(playerIn);
 		IWorld world = player.getWorld();
 		Modifiers modifiers = player.getModifiers();
-		//undoManager = player.getUndoManager();
 		selectionManager = player.getSelectionManager();
 		pickManager = player.getPickManager();
 		int keyCode = message.getKeyCode();
@@ -153,10 +151,7 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 	private void copy(IPlayer player, IWorld world, int leftRight, int upDown) {
 		// Method reset clears picks
 		pickManager.reset(2);
-		// Same old problem. reset is clearing the picks, but the state is not cleared yet in MP
-		// Pick at BlockPos(0, 0, 0) is still BlockSelected but PickManager is already cleared.
-		// Check for picking a BlockSelected in PickManager.pick returns null and array is out of bounds
-		// in both MP and SP
+		pickManager.clearPicks(player);
 		pickManager.pick(world, new BlockPos(0, 0, 0), null);
 		switch (player.getDirection()) {
 		case NORTH:
@@ -179,6 +174,7 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 
 	private void copyVertical(IPlayer player, IWorld world, int upDown) {
 		pickManager.reset(2);
+		pickManager.clearPicks(player);
 		pickManager.pick(world, new BlockPos(0, 0, 0), null);
 		pickManager.pick(world, new BlockPos(0, upDown, 0), null);
 		new SpellCopy().invoke(world, player);

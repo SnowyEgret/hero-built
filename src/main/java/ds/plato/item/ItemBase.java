@@ -22,21 +22,21 @@ public abstract class ItemBase extends Item implements IItem {
 	private final ResourceLocation textureLocation = new ResourceLocation(Plato.ID, modelPath + ".png");
 
 	// No PlayerInteractEvent.Action.LEFT_CLICK_AIR in ForgeEventHandler.onPlayerInteractEvent
-	@Override
-	public boolean onEntitySwing(EntityLivingBase entityLiving, ItemStack stack) {
-		World w = entityLiving.worldObj;
-		// Select server side call
-		if (w.isRemote) {
-			return true;
-		}
-		MovingObjectPosition cursor = Minecraft.getMinecraft().objectMouseOver;
-		if (cursor.typeOfHit == MovingObjectType.MISS) {
-			IPlayer player = Player.instance((EntityPlayer) entityLiving);
-			ISelect selectionManager = player.getSelectionManager();
-			selectionManager.clearSelections(player);
-		}
-		return true;
-	}
+//	@Override
+//	public boolean onEntitySwing(EntityLivingBase entityLiving, ItemStack stack) {
+//		World w = entityLiving.worldObj;
+//		// Select server side call
+//		if (w.isRemote) {
+//			return true;
+//		}
+//		MovingObjectPosition cursor = Minecraft.getMinecraft().objectMouseOver;
+//		if (cursor.typeOfHit == MovingObjectType.MISS) {
+//			IPlayer player = Player.instance((EntityPlayer) entityLiving);
+//			ISelect selectionManager = player.getSelectionManager();
+//			selectionManager.clearSelections(player);
+//		}
+//		return true;
+//	}
 
 	@Override
 	public ResourceLocation getModelResourceLocation() {

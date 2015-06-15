@@ -106,7 +106,8 @@ public class PickManager implements IPick {
 	@Override
 	public void reset(int maxPicks) {
 		this.maxPicks = maxPicks;
-		picks.clear();
+		//TODO will this be a problem?
+		//picks.clear();
 	}
 
 	@Override

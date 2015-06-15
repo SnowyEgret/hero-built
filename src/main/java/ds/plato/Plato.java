@@ -25,7 +25,6 @@ import ds.plato.block.BlockSelected;
 import ds.plato.gui.GuiHandler;
 import ds.plato.gui.PickInfo;
 import ds.plato.gui.SelectionInfo;
-import ds.plato.item.spell.Modifiers;
 import ds.plato.item.spell.Spell;
 import ds.plato.item.spell.SpellLoader;
 import ds.plato.item.staff.Staff;
@@ -39,6 +38,8 @@ import ds.plato.network.ClearManagersMessage;
 import ds.plato.network.ClearManagersMessageHandler;
 import ds.plato.network.KeyMessage;
 import ds.plato.network.KeyMessageHandler;
+import ds.plato.network.MouseClickMessage;
+import ds.plato.network.MouseClickMessageHandler;
 import ds.plato.network.PickMessage;
 import ds.plato.network.PickMessageHandler;
 import ds.plato.network.SelectionMessage;
@@ -127,6 +128,7 @@ public class Plato {
 		network.registerMessage(SelectionMessageHandler.class, SelectionMessage.class, 2, Side.CLIENT);
 		network.registerMessage(PickMessageHandler.class, PickMessage.class, 3, Side.CLIENT);
 		network.registerMessage(SetBlockStateMessageHandler.class, SetBlockStateMessage.class, 4, Side.SERVER);
+		network.registerMessage(MouseClickMessageHandler.class, MouseClickMessage.class, 5, Side.SERVER);
 		
 		// Create custom state mappers for BlockSelected and BlockPicked models
 		ModelLoader.setCustomStateMapper(blockSelected, new StateMapperBase() {

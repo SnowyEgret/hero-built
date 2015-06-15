@@ -1,6 +1,7 @@
 package ds.plato.event;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.MovingObjectPosition;
@@ -11,9 +12,11 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ds.plato.Plato;
+import ds.plato.item.spell.ISpell;
+import ds.plato.item.staff.IStaff;
+import ds.plato.network.MouseClickMessage;
 import ds.plato.player.IPlayer;
 import ds.plato.player.Player;
-import ds.plato.select.ISelect;
 import ds.plato.world.IWorld;
 
 public class MouseHandler {
@@ -33,7 +36,6 @@ public class MouseHandler {
 
 		IPlayer player = Player.instance();
 		IWorld world = player.getWorld();
-		//ISelect selectionManager = player.getSelectionManager();
 		MovingObjectPosition cursor = Minecraft.getMinecraft().objectMouseOver;
 		// Do nothing if player clicks on a mob
 		if (cursor.typeOfHit == MovingObjectType.ENTITY) {
@@ -45,29 +47,6 @@ public class MouseHandler {
 		if (stack == null) {
 			return;
 		}
-		
-		// Fill the selections on mouse click right on a selected block when player has a block in hand
-		// Item heldItem = stack.getItem();
-		// if (!(heldItem instanceof IItem)) {
-		// if (heldItem instanceof ItemBlock) {
-		// if (e.button == 1) {
-		// BlockPos pos = cursor.getBlockPos();
-		// if (selectionManager.isSelected(pos)) {
-		//
-		// Plato.network.sendToServer(new SpellFillMessage());
-		//
-		// // Block b = ((ItemBlock) heldItem).getBlock();
-		// // int meta = heldItem.getDamage(stack);
-		// // IBlockState state = b.getStateFromMeta(meta);
-		// // // FIXME not reselecting in MP
-		// // new SpellFill().invoke(world, player, state);
-		//
-		// e.setCanceled(true);
-		// }
-		// }
-		// return;
-		// }
-		// }
 
 		// Orbit if middle mouse button is down
 		if (e.button == -1) {
@@ -78,40 +57,13 @@ public class MouseHandler {
 			return;
 		}
 
-		// Clear selections or picks if player clicks on sky
-		// Do not cancel event. Fix for Left click stuck in loop when block is broken against sky #60
-		// if (cursor.typeOfHit == MovingObjectType.MISS) {
-		// if (e.button == 0) {
-		// selectionManager.clearSelections(world);
-		// e.setCanceled(true);
-		// return;
-		// }
-		// if (e.button == 1) {
-		// pickManager.clearPicks(world);
-		// e.setCanceled(true);
-		// return;
-		// }
-		// }
-
-		// Select on mouse click left when player is holding a staff or spell
-		// Picking is handled by onItemUse. Do not cancel event on mouse click right.
-		// if (e.button == 0) {
-		// if (e.buttonstate) {
-		// ((IItem) heldItem).onMouseClickLeft(stack, cursor.getBlockPos(), cursor.sideHit);
-		// }
-		// e.setCanceled(true);
-		// return;
-		// }
-
 		// Set orbiting and orbit centroid
-		
 		if (e.button == 2) {
 			if (e.buttonstate) {
-				//if (selectionManager.size() != 0) {
-					if (Plato.selectionInfo.getSize() != 0) {
+				if (Plato.selectionInfo.getSize() != 0) {
 					isOrbiting = true;
-					//centroid = selectionManager.getCentroid();
-					//TODO method on selectionInfo for centroid;
+					// TODO method on selectionInfo for centroid;
+					 //BlockPos pos = Plato.selectionInfo.centroid();
 					BlockPos pos = Plato.selectionInfo.getFirstPos();
 					centroid = new Vec3(pos.getX(), pos.getY(), pos.getZ());
 				}
@@ -121,5 +73,19 @@ public class MouseHandler {
 			e.setCanceled(true);
 			return;
 		}
+
+		Item heldItem = stack.getItem();
+		if (heldItem instanceof IStaff || heldItem instanceof ISpell) {
+			if (e.buttonstate) {
+				if (e.button == 1 && cursor.typeOfHit == MovingObjectType.BLOCK) {
+					// Right clicking on a block handled by onItemUse
+					return;
+				}
+				Plato.network.sendToServer(new MouseClickMessage(e.button, cursor.getBlockPos(), cursor.typeOfHit));
+				e.setCanceled(true);
+				return;
+			}
+		}
 	}
+
 }

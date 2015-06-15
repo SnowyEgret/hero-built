@@ -11,8 +11,7 @@ public class ClientProxy extends CommonProxy {
 
 	@Override
 	public void registerEventHandlers() {
-		Overlay overlay = new Overlay();
-		MinecraftForge.EVENT_BUS.register(new ForgeEventHandler(overlay));
+		MinecraftForge.EVENT_BUS.register(new ForgeEventHandler());
 		MinecraftForge.EVENT_BUS.register(new MouseHandler());
 		FMLCommonHandler.instance().bus().register(new KeyHandler());
 	}
