@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
@@ -11,14 +12,15 @@ import net.minecraft.world.World;
 
 import org.lwjgl.input.Keyboard;
 
+import ds.plato.Plato;
 import ds.plato.item.ItemBase;
+import ds.plato.network.PickMessage;
 import ds.plato.pick.IPick;
 import ds.plato.player.IPlayer;
 import ds.plato.player.Player;
 import ds.plato.select.ISelect;
 import ds.plato.undo.IUndo;
 import ds.plato.world.IWorld;
-import ds.plato.world.WorldWrapper;
 
 public abstract class Spell extends ItemBase implements ISpell {
 
@@ -107,10 +109,12 @@ public abstract class Spell extends ItemBase implements ISpell {
 		IWorld w = player.getWorld();
 		IPick pickManager = player.getPickManager();
 		pickManager.pick(w, pos, side);
+		Plato.network.sendTo(new PickMessage(pickManager), (EntityPlayerMP)playerIn);
 		if (pickManager.isFinishedPicking()) {
 			invoke(w, new Player(playerIn));
 		}
 		return true;
+		
 	}
 
 	@Override

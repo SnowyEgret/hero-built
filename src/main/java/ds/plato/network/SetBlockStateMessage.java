@@ -9,12 +9,11 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 public class SetBlockStateMessage implements IMessage {
 
+	private static final int SIZE = 5;
 	private int x;
 	private int y;
 	private int z;
 	private int stateId;
-	private static final int SIZE = 5;
-	
 	public SetBlockStateMessage() {
 	}
 	
@@ -34,6 +33,15 @@ public class SetBlockStateMessage implements IMessage {
 	}
 
 	@Override
+	public void toBytes(ByteBuf buf) {
+		ByteBufUtils.writeVarInt(buf, x, SIZE);
+		ByteBufUtils.writeVarInt(buf, y, SIZE);
+		ByteBufUtils.writeVarInt(buf, z, SIZE);
+		//System.out.println("stateId=" + stateId);
+		ByteBufUtils.writeVarInt(buf, stateId, SIZE);
+	}
+
+	@Override
 	public void fromBytes(ByteBuf buf) {
 		x = ByteBufUtils.readVarInt(buf, SIZE);
 		y = ByteBufUtils.readVarInt(buf, SIZE);
@@ -41,15 +49,6 @@ public class SetBlockStateMessage implements IMessage {
 		int stateId = ByteBufUtils.readVarInt(buf, SIZE);
 		//System.out.println("stateId=" + stateId);
 		this.stateId = stateId;
-	}
-
-	@Override
-	public void toBytes(ByteBuf buf) {
-		ByteBufUtils.writeVarInt(buf, x, SIZE);
-		ByteBufUtils.writeVarInt(buf, y, SIZE);
-		ByteBufUtils.writeVarInt(buf, z, SIZE);
-		//System.out.println("stateId=" + stateId);
-		ByteBufUtils.writeVarInt(buf, stateId, SIZE);
 	}
 
 	@Override

@@ -1,9 +1,12 @@
 package ds.plato.event;
 
+import java.util.ArrayList;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.GuiIngameMenu;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -25,6 +28,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.lwjgl.input.Keyboard;
 
+import com.google.common.collect.Lists;
+
 import ds.plato.Plato;
 import ds.plato.block.BlockPicked;
 import ds.plato.block.BlockPickedModel;
@@ -32,24 +37,20 @@ import ds.plato.block.BlockSelected;
 import ds.plato.block.BlockSelectedModel;
 import ds.plato.gui.Overlay;
 import ds.plato.item.spell.ISpell;
+import ds.plato.item.spell.Modifier;
+import ds.plato.item.spell.Modifiers;
 import ds.plato.item.spell.other.SpellTrail;
 import ds.plato.item.spell.transform.SpellFill;
 import ds.plato.item.staff.IStaff;
 import ds.plato.item.staff.Staff;
 import ds.plato.network.ClearManagersMessage;
+import ds.plato.network.SelectionMessage;
 import ds.plato.pick.IPick;
-import ds.plato.pick.Pick;
-import ds.plato.pick.PickManager;
 import ds.plato.player.IPlayer;
 import ds.plato.player.Player;
 import ds.plato.player.PlayerProperies;
 import ds.plato.select.ISelect;
-import ds.plato.select.Selection;
-import ds.plato.select.SelectionManager;
-import ds.plato.undo.IUndo;
-import ds.plato.undo.UndoManager;
 import ds.plato.world.IWorld;
-import ds.plato.world.WorldWrapper;
 
 public class ForgeEventHandler {
 
@@ -70,41 +71,37 @@ public class ForgeEventHandler {
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void onDrawBlockHightlight(DrawBlockHighlightEvent e) {
-		// FIXME We are only getting this event on client side
-		IPlayer player = Player.instance(e.player);
-		ISelect selectionManager = player.getSelectionManager();
-		IPick pickManager = player.getPickManager();
 		if (spell != null) {
-			BlockPos p = null;
-			Pick pick = pickManager.lastPick();
-			if (pick != null) {
-				p = pick.getPos();
+			BlockPos pos = null;
+			// Pick pick = pickManager.lastPick();
+			BlockPos lastPickPos = Plato.pickInfo.getLastPos();
+			if (lastPickPos != null) {
+				// pos = pick.getPos();
+				pos = lastPickPos;
 			}
-			if (p == null) {
-				Selection s = selectionManager.firstSelection();
-				if (s != null) {
-					p = s.getPos();
+			if (pos == null) {
+				// Selection s = selectionManager.firstSelection();
+				BlockPos firstSelectionPos = Plato.selectionInfo.getFirstPos();
+				if (firstSelectionPos != null) {
+					// p = s.getPos();
+					pos = firstSelectionPos;
 				}
 			}
-			if (p != null) {
+			if (pos != null) {
 				Vec3 d = e.target.hitVec;
-				overlay.setDisplacement(p.subtract(new Vec3i(d.xCoord, d.yCoord, d.zCoord)));
+				overlay.setDisplacement(pos.subtract(new Vec3i(d.xCoord, d.yCoord, d.zCoord)));
 			}
 		}
 	}
 
+	// World is never remote but we have subscribe on both sides
+	// @SideOnly(Side.SERVER)
 	@SubscribeEvent
 	public void onPlayerInteractEvent(PlayerInteractEvent e) {
 
-		System.out.println(e);
-
 		IPlayer player = Player.instance(e.entityPlayer);
-		// TODO
-		// IPlayer player = new PlayerWrapper((e.entityPlayer);
-		IWorld world = new WorldWrapper(e.world);
+		IWorld world = player.getWorld();
 		ISelect selectionManager = player.getSelectionManager();
-		IPick pickManager = player.getPickManager();
-		IUndo undoManager = player.getUndoManager();
 
 		// Return if player is holding nothing
 		ItemStack stack = player.getHeldItemStack();
@@ -119,16 +116,15 @@ public class ForgeEventHandler {
 		case LEFT_CLICK_BLOCK:
 			// Select
 			if (heldItem instanceof IStaff || heldItem instanceof ISpell) {
-				select(world, selectionManager, e.pos);
-				// TODO Maybe eliminate this method
-				// ((IItem) heldItem).onMouseClickLeft(stack, e.pos, e.face);
+				// Call private method in this class
+				select(world, selectionManager, e.pos, player);
 				e.setCanceled(true);
 				return;
 			}
 			break;
 		case RIGHT_CLICK_AIR:
 			// Deselect
-			pickManager.clearPicks(world);
+			player.getPickManager().clearPicks(player);
 			e.setCanceled(true);
 			return;
 		case RIGHT_CLICK_BLOCK:
@@ -147,6 +143,7 @@ public class ForgeEventHandler {
 		}
 	}
 
+	// Server side
 	@SubscribeEvent
 	public void onLivingUpdate(LivingUpdateEvent e) {
 
@@ -220,15 +217,7 @@ public class ForgeEventHandler {
 	@SubscribeEvent
 	public void onGuiIngameMenuQuit(GuiScreenEvent.ActionPerformedEvent event) {
 		if (event.gui instanceof GuiIngameMenu && event.button.id == 1) {
-			
 			Plato.network.sendToServer(new ClearManagersMessage());
-			// TODO We are on client side Must send message here
-			IPlayer player = Player.instance();
-			IWorld world = player.getWorld();
-			ISelect selectionManager = player.getSelectionManager();
-			IPick pickManager = player.getPickManager();
-			selectionManager.clearSelections(world);
-			pickManager.clearPicks(world);
 		}
 	}
 
@@ -241,51 +230,45 @@ public class ForgeEventHandler {
 
 	// Private-------------------------------------------------------------------------------------
 
-	// TODO
-	// Copied here from Spell.onMouseClickLeft. Might be simpler this way
-	private void select(IWorld w, ISelect selectionManager, BlockPos pos) {
+	// Called by onPlayerInteractEvent on server side only.
+	private void select(IWorld w, ISelect selectionManager, BlockPos pos, IPlayer player) {
+
+		Modifiers modifiers = player.getModifiers();
 
 		// Shift replaces the current selections with a region.
-		if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) && selectionManager.size() != 0) {
+		if (modifiers.isPressed(Modifier.SHIFT) && selectionManager.size() != 0) {
 			BlockPos lastPos = selectionManager.lastSelection().getPos();
 			IBlockState firstState = selectionManager.firstSelection().getState();
-			// Fix for: MultiPlayer: First selection is not included when shift selecting a region #75
-			// In MP selections block was not set fast enough so position was rejected
-			// in SelectionManager.select in test for block instanceof BlockSelected
-			// resulting in the first selection being left unselected. Only clear if we
-			// need to.
-			if (selectionManager.size() > 1) {
-				selectionManager.clearSelections(w);
-			}
+			selectionManager.clearSelections(player);
 
-			for (Object o : BlockPos.getAllInBox(lastPos, pos)) {
-				BlockPos p = (BlockPos) o;
-				if (Keyboard.isKeyDown(Keyboard.KEY_LMENU)) {
-					// Only select blocks similar to first block
+			Iterable<BlockPos> allInBox = BlockPos.getAllInBox(lastPos, pos);
+			ArrayList<BlockPos> positions = Lists.newArrayList();
+			for (BlockPos p : allInBox) {
+				if (modifiers.isPressed(Modifier.ALT)) {
 					IBlockState state = w.getActualState(p);
 					if (state == firstState) {
-						selectionManager.select(w, p);
+						positions.add(p);
 					}
 				} else {
-					selectionManager.select(w, p);
+					positions.add(p);
 				}
 			}
+			selectionManager.select(player, positions);
 			return;
 		}
 
 		// Control adds or subtracts a selection to the current selections
-		if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
+		if (modifiers.isPressed(Modifier.CTRL)) {
 			if (selectionManager.isSelected(pos)) {
-				selectionManager.deselect(w, pos);
+				selectionManager.deselect(player, pos);
 			} else {
-				selectionManager.select(w, pos);
+				selectionManager.select(player, pos);
 			}
 			return;
 		}
 
 		// No modifier replaces the current selections with a new selection
-		selectionManager.clearSelections(w);
-		selectionManager.select(w, pos);
+		selectionManager.clearSelections(player);
+		selectionManager.select(player, pos);
 	}
-
 }

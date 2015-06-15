@@ -43,8 +43,8 @@ public abstract class AbstractSpellDraw extends Spell {
 		IPick pickManager = player.getPickManager();
 		IUndo undoManager = player.getUndoManager();
 		
-		selectionManager.clearSelections(world);
-		pickManager.clearPicks(world);
+		selectionManager.clearSelections(player);
+		pickManager.clearPicks(player);
 		
 		boolean isHollow = modifiers.isPressed(Modifier.SHIFT);
 		boolean onSurface = modifiers.isPressed(Modifier.ALT);
@@ -80,16 +80,7 @@ public abstract class AbstractSpellDraw extends Spell {
 		t.commit();
 
 		// Select all transformed blocks
-		if (Minecraft.getMinecraft().isSingleplayer() && !Plato.forceMessaging) {
-			for (BlockPos pos : reselects) {
-				// FIXME in MP select is rejecting these even though clearSelections
-				// should have removed BlockSelected from world.
-				// Same problem as when first corner of a region was left unselected
-				selectionManager.select(world, pos);
-			}
-		} else {
-			selectionManager.setReselects(reselects);
-		}
+		selectionManager.select(player, reselects);
 		
 		String sound = "plato:" + StringUtils.toCamelCase(getClass());
 		// world.getWorld().playSoundAtEntity(player.getPlayer(), sound, 1f, 1f);

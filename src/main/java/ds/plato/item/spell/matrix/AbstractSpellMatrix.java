@@ -41,8 +41,8 @@ public abstract class AbstractSpellMatrix extends Spell {
 
 		Jumper jumper = new Jumper(player);
 		Iterable<Selection> selections = selectionManager.getSelections();
-		selectionManager.clearSelections(world);
-		pickManager.clearPicks(world);
+		selectionManager.clearSelections(player);
+		pickManager.clearPicks(player);
 		for (Selection s : selections) {
 			Point3d p = s.point3d();
 			if (deleteInitialBlocks) {
@@ -66,18 +66,7 @@ public abstract class AbstractSpellMatrix extends Spell {
 		}
 		t.commit();
 
-		// Select all transformed blocks but only when not messaging between client and server
-		// Fix for MultiPlayer: State incorrect when reselecting after applying a draw or matrix spell #93
-		if (Minecraft.getMinecraft().isSingleplayer() && !Plato.forceMessaging) {
-			for (BlockPos pos : reselects) {
-				// FIXME in MP select is rejecting these even though clearSelections
-				// should have removed BlockSelected from world.
-				// Same problem as when first corner of a region was left unselected
-				selectionManager.select(world, pos);
-			}
-		} else {
-			selectionManager.setReselects(reselects);
-		}
+		selectionManager.select(player, reselects);
 	}
 
 }

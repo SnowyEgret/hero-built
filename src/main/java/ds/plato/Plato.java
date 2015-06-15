@@ -23,6 +23,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import ds.plato.block.BlockPicked;
 import ds.plato.block.BlockSelected;
 import ds.plato.gui.GuiHandler;
+import ds.plato.gui.PickInfo;
+import ds.plato.gui.SelectionInfo;
 import ds.plato.item.spell.Modifiers;
 import ds.plato.item.spell.Spell;
 import ds.plato.item.spell.SpellLoader;
@@ -37,6 +39,10 @@ import ds.plato.network.ClearManagersMessage;
 import ds.plato.network.ClearManagersMessageHandler;
 import ds.plato.network.KeyMessage;
 import ds.plato.network.KeyMessageHandler;
+import ds.plato.network.PickMessage;
+import ds.plato.network.PickMessageHandler;
+import ds.plato.network.SelectionMessage;
+import ds.plato.network.SelectionMessageHandler;
 import ds.plato.network.SetBlockStateMessage;
 import ds.plato.network.SetBlockStateMessageHandler;
 import ds.plato.proxy.CommonProxy;
@@ -55,18 +61,15 @@ public class Plato {
 	public static SimpleNetworkWrapper network;
 	public static boolean forceMessaging = false;
 
-	// TODO Select, pick, undo, modifier context for each player #121
-	public static Modifiers modifiers;
-	
 	public static BlockSelected blockSelected;
 	public static BlockPicked blockPicked;
 
 	// TODO Remove SetBlockStateDoneMessage and handler #122
 	public static boolean setBlockMessageDone = false;
-
+	public static SelectionInfo selectionInfo = new SelectionInfo();
+	public static PickInfo pickInfo = new PickInfo();
 	// private Configuration configuration;
 
-	// TODO Should these be constructed in a proxy?
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 
@@ -80,21 +83,13 @@ public class Plato {
 			}
 		}
 
+		//TODO BlockSelected and picked will have to have a tileEntity
 		System.out.println("Initializing blocks...");
 		blockSelected = (BlockSelected) initBlock(new BlockSelected());
 		blockPicked = (BlockPicked) initBlock(new BlockPicked());
 
-//		UndoManager undoManager = new UndoManager();
-//		SelectionManager selectionManager = new SelectionManager(blockSelected);
-//		PickManager pickManager = new PickManager(blockPicked);
-
-		//TODO BlockSelected and picked will have to have a tileEntity
-		//blockSelected.setSelectionManager(selectionManager);
-		//blockPicked.setPickManager(pickManager);
-
 		System.out.println("Initializing spells and staffs...");
 		// configuration = new Configuration(event.getSuggestedConfigurationFile());
-		// SpellLoader loader = new SpellLoader(configuration, undoManager, selectionManager, pickManager, ID);
 		SpellLoader loader = new SpellLoader();
 		try {
 			List<Spell> drawSpells = loader.loadSpellsFromPackage("ds.plato.item.spell.draw");
@@ -127,10 +122,12 @@ public class Plato {
 
 		// http://www.minecraftforge.net/forum/index.php?topic=20135.0
 		network = NetworkRegistry.INSTANCE.newSimpleChannel("plato");
-		network.registerMessage(SetBlockStateMessageHandler.class, SetBlockStateMessage.class, 3, Side.SERVER);
-		network.registerMessage(KeyMessageHandler.class, KeyMessage.class, 7, Side.SERVER);
+		network.registerMessage(KeyMessageHandler.class, KeyMessage.class, 0, Side.SERVER);
 		network.registerMessage(ClearManagersMessageHandler.class, ClearManagersMessage.class, 1, Side.SERVER);
-
+		network.registerMessage(SelectionMessageHandler.class, SelectionMessage.class, 2, Side.CLIENT);
+		network.registerMessage(PickMessageHandler.class, PickMessage.class, 3, Side.CLIENT);
+		network.registerMessage(SetBlockStateMessageHandler.class, SetBlockStateMessage.class, 4, Side.SERVER);
+		
 		// Create custom state mappers for BlockSelected and BlockPicked models
 		ModelLoader.setCustomStateMapper(blockSelected, new StateMapperBase() {
 			@Override
@@ -169,5 +166,14 @@ public class Plato {
 		block.setUnlocalizedName(name);
 		GameRegistry.registerBlock(block, name);
 		return block;
+	}
+
+	public void setSelectionInfo(SelectionInfo selectionInfo) {
+		this.selectionInfo = selectionInfo;
+		
+	}
+
+	public void setPickInfo(PickInfo pickInfo) {
+		this.pickInfo = pickInfo;
 	}
 }

@@ -42,9 +42,9 @@ public enum Modifier {
 		return null;
 	}
 
-	// // Convenience method for client side only
-	// @SideOnly(Side.CLIENT)
-	// public boolean isPressed() {
-	// return Keyboard.isKeyDown(this.keyCode);
-	// }
+	// Convenience method for client side only
+	@SideOnly(Side.CLIENT)
+	public boolean isPressed() {
+		return Keyboard.isKeyDown(this.keyCode);
+	}
 }

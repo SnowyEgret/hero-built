@@ -2,6 +2,7 @@ package ds.plato.event;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.util.Vec3;
@@ -9,6 +10,7 @@ import net.minecraftforge.client.event.MouseEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import ds.plato.Plato;
 import ds.plato.player.IPlayer;
 import ds.plato.player.Player;
 import ds.plato.select.ISelect;
@@ -31,8 +33,7 @@ public class MouseHandler {
 
 		IPlayer player = Player.instance();
 		IWorld world = player.getWorld();
-		//TODO Test that this is right selectionManager
-		ISelect selectionManager = player.getSelectionManager();
+		//ISelect selectionManager = player.getSelectionManager();
 		MovingObjectPosition cursor = Minecraft.getMinecraft().objectMouseOver;
 		// Do nothing if player clicks on a mob
 		if (cursor.typeOfHit == MovingObjectType.ENTITY) {
@@ -103,11 +104,16 @@ public class MouseHandler {
 		// }
 
 		// Set orbiting and orbit centroid
+		
 		if (e.button == 2) {
 			if (e.buttonstate) {
-				if (selectionManager.size() != 0) {
+				//if (selectionManager.size() != 0) {
+					if (Plato.selectionInfo.getSize() != 0) {
 					isOrbiting = true;
-					centroid = selectionManager.getCentroid();
+					//centroid = selectionManager.getCentroid();
+					//TODO method on selectionInfo for centroid;
+					BlockPos pos = Plato.selectionInfo.getFirstPos();
+					centroid = new Vec3(pos.getX(), pos.getY(), pos.getZ());
 				}
 			} else {
 				isOrbiting = false;

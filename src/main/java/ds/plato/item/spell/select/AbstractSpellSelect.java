@@ -11,6 +11,8 @@ import net.minecraft.util.BlockPos;
 
 import org.lwjgl.input.Keyboard;
 
+import com.google.common.collect.Lists;
+
 import ds.plato.block.BlockSelected;
 import ds.plato.item.spell.ICondition;
 import ds.plato.item.spell.Modifier;
@@ -57,63 +59,64 @@ public abstract class AbstractSpellSelect extends Spell {
 		// Select the pick if there are no selections.
 		// Either way the pickManager must be cleared.
 		Pick p = pickManager.getPicks()[0];
-		pickManager.clearPicks(world);
+		pickManager.clearPicks(player);
 		if (selectionManager.size() == 0) {
-			selectionManager.select(world, p.getPos());
+			selectionManager.select(player, p.getPos());
 		}
 
 		// Shrink or grow selections
 		if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
-			shrinkSelections(world, selectionManager);
+			shrinkSelections(player, selectionManager);
 		} else {
 			Block patternBlock = selectionManager.firstSelection().getState().getBlock();
-			growSelections(world, selectionManager, patternBlock);
+			growSelections(player, selectionManager, patternBlock);
 		}
 	}
 
 	// Private-------------------------------------------------------------------------------
 
-	private void growSelections(IWorld world, ISelect selectionManager, Block patternBlock) {
+	private void growSelections(IPlayer player, ISelect selectionManager, Block patternBlock) {
 		List<BlockPos> newGrownSelections = new ArrayList();
 		for (BlockPos center : selectionManager.getGrownSelections()) {
 			for (BlockPos p : positions) {
 				p = p.add(center);
-				if (!test(world, p)) {
+				if (!test(player.getWorld(), p)) {
 					continue;
 				}
-				//Block block = world.getBlock(p);
-				Block block = world.getState(p).getBlock();
+				Block block = player.getWorld().getState(p).getBlock();
 				if (!(block instanceof BlockAir) && !(block instanceof BlockSelected)) {
 					if (Keyboard.isKeyDown(Keyboard.KEY_LMENU)) {
-						selectionManager.select(world, p);
+						//selectionManager.select(world, p);
 						newGrownSelections.add(p);
 					} else {
 						if (block == patternBlock) {
-							selectionManager.select(world, p);
+							//selectionManager.select(world, p);
 							newGrownSelections.add(p);
 						}
 					}
 				}
 			}
 		}
+		selectionManager.select(player, newGrownSelections);
 		selectionManager.setGrownSelections(newGrownSelections);
 	}
 
-	private void shrinkSelections(IWorld world, ISelect selectionManager) {
-		List<Selection> shrunkSelections = new ArrayList<>();
+	private void shrinkSelections(IPlayer player, ISelect selectionManager) {
+		List<BlockPos> shrunkSelections = new ArrayList<>();
 		for (Selection s : selectionManager.getSelections()) {
 			for (BlockPos p : positions) {
 				p = p.add(s.getPos());
-				Block b = world.getBlock(p);
+				Block b = player.getWorld().getBlock(p);
 				if (!(b instanceof BlockSelected)) {
-					shrunkSelections.add(s);
+					shrunkSelections.add(s.getPos());
 					break;
 				}
 			}
 		}
-		for (Selection s : shrunkSelections) {
-			selectionManager.deselect(world, s);
-		}
+		selectionManager.deselect(player, shrunkSelections);
+		// for (Selection s : shrunkSelections) {
+		// selectionManager.deselect(world, s);
+		// }
 		selectionManager.clearGrownSelections();
 	}
 	

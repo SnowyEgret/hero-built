@@ -26,7 +26,7 @@ public class ClearManagersMessageHandler implements IMessageHandler<ClearManager
 
 	private void processMessage(ClearManagersMessage message, EntityPlayerMP playerIn) {
 		IPlayer player = Player.instance(playerIn);
-		player.getSelectionManager().clearSelections(player.getWorld());
-		player.getPickManager().clearPicks(player.getWorld());
+		player.getSelectionManager().clearSelections(player);
+		player.getPickManager().clearPicks(player);	
 	}
 }

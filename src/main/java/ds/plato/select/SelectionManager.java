@@ -11,6 +11,7 @@ import javax.vecmath.Point3i;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.Vec3;
 
@@ -18,7 +19,10 @@ import com.google.common.collect.Lists;
 
 import ds.geom.IntegerDomain;
 import ds.geom.VoxelSet;
+import ds.plato.Plato;
 import ds.plato.block.BlockSelected;
+import ds.plato.network.SelectionMessage;
+import ds.plato.player.IPlayer;
 import ds.plato.world.IWorld;
 
 public class SelectionManager implements ISelect {
@@ -31,6 +35,42 @@ public class SelectionManager implements ISelect {
 	public SelectionManager(Block blockSelected) {
 		this.blockSelected = blockSelected;
 	}
+
+	@Override
+	public void select(IPlayer player, Iterable<BlockPos> pos) {
+		for (BlockPos p : pos) {
+			select(player.getWorld(), p);
+		}
+		Plato.network.sendTo(new SelectionMessage(this), (EntityPlayerMP) player.getPlayer());
+	}
+
+	@Override
+	public void select(IPlayer player, BlockPos pos) {
+		select(player.getWorld(), pos);		
+		Plato.network.sendTo(new SelectionMessage(this), (EntityPlayerMP) player.getPlayer());
+	}
+
+	@Override
+	public void deselect(IPlayer player, BlockPos pos) {
+		deselect(player.getWorld(), pos);		
+		Plato.network.sendTo(new SelectionMessage(this), (EntityPlayerMP) player.getPlayer());
+	}
+
+	@Override
+	public void deselect(IPlayer player, Iterable<BlockPos> positions) {
+		for (BlockPos p : positions) {
+			deselect(player.getWorld(), p);
+		}
+		Plato.network.sendTo(new SelectionMessage(this), (EntityPlayerMP) player.getPlayer());
+	}
+
+	@Override
+	public void clearSelections(IPlayer player) {
+		clearSelections(player.getWorld());
+		Plato.network.sendTo(new SelectionMessage(this), (EntityPlayerMP) player.getPlayer());
+	}
+	
+	//----------------------------------------------------------------------------
 
 	@Override
 	public Selection select(IWorld world, BlockPos pos) {

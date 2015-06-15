@@ -6,10 +6,15 @@ import java.util.NoSuchElementException;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import ds.plato.Plato;
 import ds.plato.block.BlockPicked;
 import ds.plato.block.BlockSelected;
+import ds.plato.network.PickMessage;
+import ds.plato.network.SelectionMessage;
+import ds.plato.player.IPlayer;
 import ds.plato.select.ISelect;
 import ds.plato.world.IWorld;
 
@@ -23,6 +28,14 @@ public class PickManager implements IPick {
 	public PickManager(Block blockPicked) {
 		this.blockPicked = blockPicked;
 	}
+
+	@Override
+	public void clearPicks(IPlayer player) {
+		clearPicks(player.getWorld());
+		Plato.network.sendTo(new PickMessage(this), (EntityPlayerMP) player.getPlayer());
+	}
+	
+	//-------------------------------------------------------------------------
 
 	@Override
 	public Pick pick(IWorld world, BlockPos pos, EnumFacing side) {

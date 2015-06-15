@@ -2,9 +2,14 @@ package ds.plato.pick;
 
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import ds.plato.player.IPlayer;
 import ds.plato.world.IWorld;
 
 public interface IPick {
+
+	public void clearPicks(IPlayer player);
+	
+	//--------------------------------------------------------
 
 	public Pick pick(IWorld world, BlockPos pos, EnumFacing side);
 

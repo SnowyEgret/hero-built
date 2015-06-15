@@ -40,8 +40,8 @@ public abstract class AbstractSpellTransform extends Spell {
 
 		Jumper jumper = new Jumper(player);
 		Iterable<Selection> selections = selectionManager.getSelections();
-		selectionManager.clearSelections(world);
-		pickManager.clearPicks(world);
+		selectionManager.clearSelections(player);
+		pickManager.clearPicks(player);
 		List<UndoableSetBlock> setBlocks = new ArrayList<>();
 		List<BlockPos> reselects = new ArrayList<>();
 		for (Selection s : selections) {
@@ -70,18 +70,7 @@ public abstract class AbstractSpellTransform extends Spell {
 		}
 		t.commit();
 
-		// Commented out for SpellFillMessage
-		// Select all transformed blocks but only when not messaging between client and server
-		// if (Minecraft.getMinecraft().isSingleplayer() && !Plato.forceMessaging) {
-		// // FIXME Still not working but is working in AbstractSpellDraw
-		// for (BlockPos pos : reselects) {
-		// selectionManager.select(world, pos);
-		// }
-		// // Temporary fix
-		// // selectionManager.setReselects(reselects);
-		// } else {
-		// selectionManager.setReselects(reselects);
-		// }
+		selectionManager.select(player, reselects);
 	}
 
 	@Override

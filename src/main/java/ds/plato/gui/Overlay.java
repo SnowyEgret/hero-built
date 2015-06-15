@@ -4,25 +4,23 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Vec3i;
-
-import org.lwjgl.input.Keyboard;
-
+import ds.plato.Plato;
 import ds.plato.event.MouseHandler;
 import ds.plato.item.spell.ISpell;
+import ds.plato.item.spell.Modifier;
 import ds.plato.item.spell.SpellInfo;
 import ds.plato.item.spell.transform.SpellFillRandom;
 import ds.plato.item.staff.Staff;
-import ds.plato.pick.IPick;
 import ds.plato.player.IPlayer;
-import ds.plato.select.ISelect;
 
 public class Overlay {
 
-	private Vec3i displacement;
 	private static final int WHITE = 0xffffff;
 	private static final int RED = 0xffaaaa;
 	private static final int GREEN = 0xaaffaa;
 	private static final int BLUE = 0xaaaaff;
+
+	private Vec3i displacement;
 
 	public Overlay() {
 	}
@@ -31,10 +29,9 @@ public class Overlay {
 		this.displacement = displacement;
 	}
 
+	// Called by ForgeEventHandler.onRenderGameOverlayEvent on the client side
 	public void drawSpell(ISpell spell, IPlayer player) {
 
-		IPick pickManager = player.getPickManager();
-		ISelect selectionManager = player.getSelectionManager();
 		int x = 10;
 		int y = x;
 		FontRenderer r = Minecraft.getMinecraft().fontRendererObj;
@@ -47,9 +44,10 @@ public class Overlay {
 		r.drawStringWithShadow(info.getModifiers(), x, y += rowHeight, BLUE);
 
 		// Display the dimensions of the impending volume if player is picking or shift selecting
-		// TODO Test that pickManager is same as one on server side.
 		// if (spell.isPicking() || (!spell.isPicking() && Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))) {
-		if (pickManager.isPicking() || (!pickManager.isPicking() && Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))) {
+		boolean isFinishedPicking = Plato.pickInfo.isFinishedPicking();
+		// if (pickManager.isPicking() || (!pickManager.isPicking() && Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))) {
+		if (!isFinishedPicking || (isFinishedPicking && Modifier.SHIFT.isPressed())) {
 			if (displacement != null) {
 				int dx = displacement.getX();
 				int dy = displacement.getY();
@@ -62,8 +60,8 @@ public class Overlay {
 			}
 		}
 
-		// TODO Test that pickManager is same as one on server side.
-		r.drawStringWithShadow("Selection size: " + selectionManager.size(), x, y += rowHeight, RED);
+		// r.drawStringWithShadow("Selection size: " + selectionManager.size(), x, y += rowHeight, RED);
+		r.drawStringWithShadow("Selection size: " + Plato.selectionInfo.getSize(), x, y += rowHeight, RED);
 
 		// TODO SpellFillRandom should set message
 		if (spell instanceof SpellFillRandom) {
@@ -80,6 +78,7 @@ public class Overlay {
 		}
 	}
 
+	// Called by ForgeEventHandler.onRenderGameOverlayEvent on the client side
 	public void drawStaff(Staff staff, IPlayer player) {
 		ItemStack stack = player.getHeldItemStack();
 		int x = 10;
