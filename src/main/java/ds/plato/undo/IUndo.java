@@ -5,6 +5,6 @@ public interface IUndo extends IUndoable {
 	public Transaction newTransaction();
 
 	// TODO change to addTransaction(Transaction transaction);
-	public void addUndoable(IUndoable undoable);
+	public void addTransaction(Transaction transaction);
 
 }

@@ -52,7 +52,7 @@ public class Transaction implements IUndoable, Iterable {
 
 	public void commit() {
 		if (undoManager != null) {
-			undoManager.addUndoable(this);
+			undoManager.addTransaction(this);
 		}
 		if (world != null) {
 			world.updateClient();

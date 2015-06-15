@@ -1,5 +1,6 @@
 package ds.plato.player;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -52,6 +53,8 @@ public interface IPlayer {
 	public abstract IPick getPickManager();
 
 	public abstract void setLastSpell(ISpell spell);
+
+	public abstract void playSoundAtPlayer(String sound);
 
 
 	// Thought I saw something like this somewhere in an interface

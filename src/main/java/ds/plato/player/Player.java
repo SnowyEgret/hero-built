@@ -1,13 +1,12 @@
 package ds.plato.player;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.SoundRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.Vec3;
-import net.minecraft.world.World;
 import net.minecraftforge.common.IExtendedEntityProperties;
 import ds.plato.Plato;
 import ds.plato.item.spell.ISpell;
@@ -17,7 +16,6 @@ import ds.plato.item.staff.Staff;
 import ds.plato.pick.IPick;
 import ds.plato.select.ISelect;
 import ds.plato.undo.IUndo;
-import ds.plato.undo.Transaction;
 import ds.plato.world.IWorld;
 import ds.plato.world.WorldWrapper;
 
@@ -39,7 +37,7 @@ public class Player implements IPlayer {
 	protected Player() {
 		player = Minecraft.getMinecraft().thePlayer;
 	}
-	
+
 	public static IPlayer instance(EntityPlayer player) {
 		return new Player(player);
 	}
@@ -57,15 +55,15 @@ public class Player implements IPlayer {
 	@Override
 	public IWorld getWorld() {
 
-//		World w = null;
-//		Minecraft mc = Minecraft.getMinecraft();
-//		IntegratedServer integratedServer = mc.getIntegratedServer();
-//		if (integratedServer != null) {
-//			w = integratedServer.worldServerForDimension(player.dimension);
-//		} else {
-//			w = mc.theWorld;
-//		}
-//		return new WorldWrapper(w);
+		// World w = null;
+		// Minecraft mc = Minecraft.getMinecraft();
+		// IntegratedServer integratedServer = mc.getIntegratedServer();
+		// if (integratedServer != null) {
+		// w = integratedServer.worldServerForDimension(player.dimension);
+		// } else {
+		// w = mc.theWorld;
+		// }
+		// return new WorldWrapper(w);
 		return new WorldWrapper(player.worldObj);
 	}
 
@@ -172,7 +170,8 @@ public class Player implements IPlayer {
 
 	@Override
 	public void openGui(int id) {
-		player.openGui(Plato.instance, id, getWorld().getWorld(), (int) player.posX, (int) player.posY, (int) player.posZ);
+		player.openGui(Plato.instance, id, getWorld().getWorld(), (int) player.posX, (int) player.posY,
+				(int) player.posZ);
 	}
 
 	@Override
@@ -208,7 +207,17 @@ public class Player implements IPlayer {
 	@Override
 	public void setLastSpell(ISpell spell) {
 		IExtendedEntityProperties p = player.getExtendedProperties(PlayerProperies.NAME);
-		((PlayerProperies) p).setLastSpell(spell);		
+		((PlayerProperies) p).setLastSpell(spell);
+	}
+
+	@Override
+	public void playSoundAtPlayer(String sound) {
+		// On client
+		// /Minecraft.getMinecraft().getSoundHandler().playSound(sound);
+
+		// Only good on server when world is not remeote
+		
+		getWorld().getWorld().playSoundAtEntity(player, sound, 1f, 1f);
 	}
 
 }

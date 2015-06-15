@@ -41,10 +41,10 @@ public abstract class AbstractSpellDraw extends Spell {
 		ISelect selectionManager = player.getSelectionManager();
 		IPick pickManager = player.getPickManager();
 		IUndo undoManager = player.getUndoManager();
-		
+
 		selectionManager.clearSelections(player);
 		pickManager.clearPicks(player);
-		
+
 		boolean isHollow = modifiers.isPressed(Modifier.SHIFT);
 		boolean onSurface = modifiers.isPressed(Modifier.ALT);
 
@@ -58,13 +58,13 @@ public abstract class AbstractSpellDraw extends Spell {
 
 		List<UndoableSetBlock> setBlocks = new ArrayList<>();
 		List<BlockPos> reselects = new ArrayList<>();
+		IBlockState state = player.getHotbar().firstBlock();
 		for (Point3i p : voxels) {
 			BlockPos pos = new BlockPos(p.x, p.y, p.z);
 			if (onSurface) {
 				pos = pos.up();
 			}
 			jumper.setHeight(pos);
-			IBlockState state = player.getHotbar().firstBlock();
 			setBlocks.add(new UndoableSetBlock(player.getWorld(), selectionManager, pos, state));
 			reselects.add(pos);
 		}
@@ -80,14 +80,12 @@ public abstract class AbstractSpellDraw extends Spell {
 
 		// Select all transformed blocks
 		selectionManager.select(player, reselects);
-		
-		String sound = "plato:" + StringUtils.toCamelCase(getClass());
-		// world.getWorld().playSoundAtEntity(player.getPlayer(), sound, 1f, 1f);
-		// TODO
-		// world.playSound(player, this, setBlocks.size());
-		// new Sound(this, setBlocks.size()).play(world, player);
-		// this.playSound(setBlocks.size(), world, player);
-		// world.playSound(new Sound(this, setBlocks.size()), player);
+
+		// String sound = "plato:" + StringUtils.toCamelCase(getClass());
+		// TODO how to look up sound from state
+		String sound = "ambient.weather.thunder";
+		player.playSoundAtPlayer(sound);
+		// player.playSoundAtPlayer(sound);
 	}
 
 }
