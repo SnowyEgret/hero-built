@@ -20,7 +20,6 @@ import ds.plato.item.spell.Spell;
 import ds.plato.pick.IPick;
 import ds.plato.player.IPlayer;
 import ds.plato.player.Player;
-import ds.plato.world.WorldWrapper;
 
 public abstract class Staff extends ItemBase implements IStaff {
 
@@ -60,7 +59,7 @@ public abstract class Staff extends ItemBase implements IStaff {
 
 		// We are on the server side. Open staff gui if space bar is down
 		if (modifiers.isPressed(Modifier.SPACE)) {
-			player.openGui(GuiHandler.GUI_STAFF, new WorldWrapper(world));
+			player.openGui(GuiHandler.GUI_STAFF);
 			return true;
 		}
 
@@ -72,19 +71,6 @@ public abstract class Staff extends ItemBase implements IStaff {
 		}
 
 		return false;
-	}
-
-	// ItemBase----------------------------------------------------------------------
-
-	// Passes call on to current spell
-	@Deprecated
-	@Override
-	public void onMouseClickLeft(ItemStack stack, BlockPos pos, EnumFacing sideHit) {
-		if (!isEmpty(stack)) {
-			//getSpell(stack).onMouseClickLeft(stack, pos, sideHit);
-		} else {
-			System.out.println("Cannot select with an empty staff.");
-		}
 	}
 
 	// IStaff ----------------------------------------------------------------------

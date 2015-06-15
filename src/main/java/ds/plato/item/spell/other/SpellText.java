@@ -57,7 +57,7 @@ public class SpellText extends Spell implements ITextSetable {
 		IPick pickManager = player.getPickManager();
 		IUndo undoManager = player.getUndoManager();
 		firstBlockInHotbar = player.getHotbar().firstBlock();
-		player.openGui(GuiHandler.GUI_SPELL_TEXT, world);
+		player.openGui(GuiHandler.GUI_SPELL_TEXT);
 		picks = pickManager.getPicks();
 		// Clear the picks because player may have cancelled
 		pickManager.clearPicks(world);

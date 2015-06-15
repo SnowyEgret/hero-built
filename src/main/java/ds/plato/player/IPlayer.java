@@ -39,7 +39,7 @@ public interface IPlayer {
 
 	public abstract boolean isFlying();
 
-	public abstract void openGui(int id, IWorld world);
+	public abstract void openGui(int id);
 
 	public abstract void moveTo(BlockPos pos);
 

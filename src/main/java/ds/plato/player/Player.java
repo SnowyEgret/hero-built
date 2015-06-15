@@ -171,8 +171,8 @@ public class Player implements IPlayer {
 	}
 
 	@Override
-	public void openGui(int id, IWorld world) {
-		player.openGui(Plato.instance, id, world.getWorld(), (int) player.posX, (int) player.posY, (int) player.posZ);
+	public void openGui(int id) {
+		player.openGui(Plato.instance, id, getWorld().getWorld(), (int) player.posX, (int) player.posY, (int) player.posZ);
 	}
 
 	@Override
