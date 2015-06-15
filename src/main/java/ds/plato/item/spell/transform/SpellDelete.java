@@ -6,7 +6,6 @@ import ds.plato.player.IPlayer;
 import ds.plato.select.ISelect;
 import ds.plato.select.Selection;
 import ds.plato.undo.IUndo;
-import ds.plato.world.IWorld;
 
 public class SpellDelete extends AbstractSpellTransform {
 
@@ -15,8 +14,8 @@ public class SpellDelete extends AbstractSpellTransform {
 	}
 
 	@Override
-	public void invoke(IWorld world, IPlayer player) {
-		transformSelections(world, player, new ITransform() {
+	public void invoke(IPlayer player) {
+		transformSelections(player, new ITransform() {
 			@Override
 			public Selection transform(Selection s) {
 				// Create a copy here because we don't want to modify the selectionManager's selection list.

@@ -21,7 +21,6 @@ import ds.plato.select.Selection;
 import ds.plato.undo.IUndo;
 import ds.plato.undo.Transaction;
 import ds.plato.undo.UndoableSetBlock;
-import ds.plato.world.IWorld;
 
 public abstract class AbstractSpellTransform extends Spell {
 
@@ -29,7 +28,7 @@ public abstract class AbstractSpellTransform extends Spell {
 		super(1);
 	}
 
-	protected void transformSelections(IWorld world, IPlayer player, ITransform transformer) {
+	protected void transformSelections(IPlayer player, ITransform transformer) {
 		ISelect selectionManager = player.getSelectionManager();
 		IPick pickManager = player.getPickManager();
 		IUndo undoManager = player.getUndoManager();
@@ -58,7 +57,7 @@ public abstract class AbstractSpellTransform extends Spell {
 				// }
 			}
 			jumper.setHeight(pos);
-			setBlocks.add(new UndoableSetBlock(world, selectionManager, pos, state));
+			setBlocks.add(new UndoableSetBlock(player.getWorld(), selectionManager, pos, state));
 			reselects.add(pos);
 		}
 

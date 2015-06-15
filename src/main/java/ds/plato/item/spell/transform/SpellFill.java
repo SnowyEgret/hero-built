@@ -17,8 +17,8 @@ public class SpellFill extends AbstractSpellTransform {
 	}
 
 	@Override
-	public void invoke(IWorld world, final IPlayer player) {
-		transformSelections(world, player, new ITransform() {
+	public void invoke(final IPlayer player) {
+		transformSelections(player, new ITransform() {
 			@Override
 			public Selection transform(Selection s) {
 				// Create a copy here because we don't want to modify the selection list.
@@ -30,7 +30,7 @@ public class SpellFill extends AbstractSpellTransform {
 
 	//Added for call from MouseHandler or SpellFillMessageHandler
 	public void invoke(IWorld world, final IPlayer player, final IBlockState state) {
-		transformSelections(world, player, new ITransform() {
+		transformSelections(player, new ITransform() {
 			@Override
 			public Selection transform(Selection s) {
 				// Create a copy here because we don't want to modify the selection list.

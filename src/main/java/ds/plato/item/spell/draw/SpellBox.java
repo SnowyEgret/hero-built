@@ -13,7 +13,6 @@ import ds.plato.pick.Pick;
 import ds.plato.player.IPlayer;
 import ds.plato.select.ISelect;
 import ds.plato.undo.IUndo;
-import ds.plato.world.IWorld;
 
 public class SpellBox extends AbstractSpellDraw {
 
@@ -23,7 +22,7 @@ public class SpellBox extends AbstractSpellDraw {
 	}
 
 	@Override
-	public void invoke(IWorld world, IPlayer player) {
+	public void invoke(IPlayer player) {
 		Modifiers modifiers = player.getModifiers();
 		IPick pickManager = player.getPickManager();
 		boolean isCube = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL);
@@ -31,7 +30,7 @@ public class SpellBox extends AbstractSpellDraw {
 		Point3d p0 = picks[0].point3d();
 		Point3d p1 = picks[1].point3d();
 		IDrawable d = new Box(p0, p1, isCube);
-		draw(d, world, player);
+		draw(d, player);
 	}
 
 	@Override

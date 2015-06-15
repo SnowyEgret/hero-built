@@ -51,7 +51,7 @@ public class SpellText extends Spell implements ITextSetable {
 	}
 
 	@Override
-	public void invoke(IWorld world, IPlayer player) {
+	public void invoke(IPlayer player) {
 		Modifiers modifiers = player.getModifiers();
 		ISelect selectionManager = player.getSelectionManager();
 		IPick pickManager = player.getPickManager();

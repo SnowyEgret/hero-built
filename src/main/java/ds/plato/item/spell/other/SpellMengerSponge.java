@@ -18,7 +18,6 @@ import ds.plato.select.ISelect;
 import ds.plato.undo.IUndo;
 import ds.plato.undo.Transaction;
 import ds.plato.undo.UndoableSetBlock;
-import ds.plato.world.IWorld;
 
 public class SpellMengerSponge extends Spell {
 
@@ -30,7 +29,7 @@ public class SpellMengerSponge extends Spell {
 	}
 
 	@Override
-	public void invoke(IWorld world, IPlayer player) {
+	public void invoke(IPlayer player) {
 		Modifiers modifiers = player.getModifiers();
 		ISelect selectionManager = player.getSelectionManager();
 		IPick pickManager = player.getPickManager();
@@ -40,10 +39,10 @@ public class SpellMengerSponge extends Spell {
 		recursivelySubtract(selectionManager.voxelSet());
 		System.out.println("pointsToDelete=" + pointsToDelete);
 		selectionManager.clearSelections(player);
-		pickManager.clearPicks(world);
+		pickManager.clearPicks(player);
 		Transaction t = undoManager.newTransaction();
 		for (BlockPos v : pointsToDelete) {
-			t.add(new UndoableSetBlock(world, selectionManager, v, Blocks.air.getDefaultState()).set());
+			t.add(new UndoableSetBlock(player.getWorld(), selectionManager, v, Blocks.air.getDefaultState()).set());
 		}
 		t.commit();
 	}

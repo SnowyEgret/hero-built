@@ -27,7 +27,6 @@ import ds.plato.undo.IUndo;
 import ds.plato.undo.Transaction;
 import ds.plato.undo.UndoableSetBlock;
 import ds.plato.util.StringUtils;
-import ds.plato.world.IWorld;
 
 public abstract class AbstractSpellDraw extends Spell {
 
@@ -36,7 +35,7 @@ public abstract class AbstractSpellDraw extends Spell {
 		info.addModifiers(Modifier.SHIFT, Modifier.ALT);
 	}
 
-	protected void draw(IDrawable drawable, IWorld world, IPlayer player) {
+	protected void draw(IDrawable drawable, IPlayer player) {
 
 		Modifiers modifiers = player.getModifiers();
 		ISelect selectionManager = player.getSelectionManager();
@@ -66,7 +65,7 @@ public abstract class AbstractSpellDraw extends Spell {
 			}
 			jumper.setHeight(pos);
 			IBlockState state = player.getHotbar().firstBlock();
-			setBlocks.add(new UndoableSetBlock(world, selectionManager, pos, state));
+			setBlocks.add(new UndoableSetBlock(player.getWorld(), selectionManager, pos, state));
 			reselects.add(pos);
 		}
 

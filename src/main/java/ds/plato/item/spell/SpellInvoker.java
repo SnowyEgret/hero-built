@@ -26,7 +26,7 @@ public class SpellInvoker {
 		}
 		pickManager.repick(world);
 		//TODO How to pass modifiers?
-		spell.invoke(world, player);		
+		spell.invoke(player);		
 	}
 
 	public ISpell getSpell() {

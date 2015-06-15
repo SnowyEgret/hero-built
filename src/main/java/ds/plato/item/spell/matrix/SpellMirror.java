@@ -15,7 +15,6 @@ import ds.plato.item.spell.Modifiers;
 import ds.plato.pick.IPick;
 import ds.plato.pick.Pick;
 import ds.plato.player.IPlayer;
-import ds.plato.world.IWorld;
 
 public class SpellMirror extends AbstractSpellMatrix {
 
@@ -25,7 +24,7 @@ public class SpellMirror extends AbstractSpellMatrix {
 	}
 
 	@Override
-	public void invoke(IWorld world, IPlayer player) {
+	public void invoke(IPlayer player) {
 		Modifiers modifiers = player.getModifiers();
 		IPick pickManager = player.getPickManager();
 
@@ -78,7 +77,7 @@ public class SpellMirror extends AbstractSpellMatrix {
 			break;
 		}
 		Matrix4d matrix = new ReflectionMatrix(p, new Vector3d(d.getX(), d.getY(), d.getZ()));
-		transformSelections(world, player, matrix, deleteOriginal);
+		transformSelections(player, matrix, deleteOriginal);
 	}
 
 	@Override

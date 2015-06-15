@@ -7,7 +7,6 @@ import org.lwjgl.input.Keyboard;
 import ds.plato.item.spell.Modifier;
 import ds.plato.pick.IPick;
 import ds.plato.player.IPlayer;
-import ds.plato.world.IWorld;
 
 public class SpellSelectSurface extends AbstractSpellSelect {
 
@@ -22,7 +21,7 @@ public class SpellSelectSurface extends AbstractSpellSelect {
 	}
 
 	@Override
-	public void invoke(IWorld world, IPlayer player) {
+	public void invoke(IPlayer player) {
 		IPick pickManager = player.getPickManager();
 		EnumFacing side = pickManager.getPicks()[0].side;
 		boolean ignoreSide = false;
@@ -33,7 +32,7 @@ public class SpellSelectSurface extends AbstractSpellSelect {
 			positions = Select.planeForSide(side);
 		}
 		setConditions(new IsOnSurface(side, ignoreSide));	
-		super.invoke(world, player);
+		super.invoke(player);
 	}
 	
 }

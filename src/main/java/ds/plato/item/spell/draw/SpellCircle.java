@@ -18,7 +18,6 @@ import ds.plato.player.IPlayer;
 import ds.plato.player.Player;
 import ds.plato.select.ISelect;
 import ds.plato.undo.IUndo;
-import ds.plato.world.IWorld;
 
 public class SpellCircle extends AbstractSpellDraw {
 
@@ -27,7 +26,7 @@ public class SpellCircle extends AbstractSpellDraw {
 	}
 
 	@Override
-	public void invoke(IWorld world, IPlayer player) {
+	public void invoke(IPlayer player) {
 		Modifiers modifiers = player.getModifiers();
 		IPick pickManager = player.getPickManager();
 		Pick[] picks = pickManager.getPicks();
@@ -39,7 +38,7 @@ public class SpellCircle extends AbstractSpellDraw {
 			p1.y += 1;
 		}
 		IDrawable d = new CircleXZ(p0, p1);
-		draw(d, world, player);
+		draw(d, player);
 	}
 
 	@Override

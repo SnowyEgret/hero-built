@@ -9,7 +9,6 @@ import ds.plato.player.IPlayer;
 import ds.plato.select.ISelect;
 import ds.plato.select.Selection;
 import ds.plato.undo.IUndo;
-import ds.plato.world.IWorld;
 
 public class SpellFillRandom extends AbstractSpellTransform {
 
@@ -18,8 +17,8 @@ public class SpellFillRandom extends AbstractSpellTransform {
 	}
 
 	@Override
-	public void invoke(IWorld world, final IPlayer player) {
-		transformSelections(world, player, new ITransform() {
+	public void invoke(final IPlayer player) {
+		transformSelections(player, new ITransform() {
 			@Override
 			public Selection transform(Selection s) {
 				IBlockState state = player.getHotbar().randomBlock();

@@ -37,7 +37,7 @@ public abstract class AbstractSpellSelect extends Spell {
 		super(1);
 		this.positions = positions;
 		// CTRL shrinks selection instead of grows
-		// ALT (MENU) ignores pattern block
+		// ALT ignores pattern block
 		info.addModifiers(Modifier.CTRL, Modifier.ALT);
 	}
 
@@ -49,7 +49,7 @@ public abstract class AbstractSpellSelect extends Spell {
 	}
 
 	@Override
-	public void invoke(IWorld world, IPlayer player) {
+	public void invoke(IPlayer player) {
 
 		Modifiers modifiers = player.getModifiers();
 		ISelect selectionManager = player.getSelectionManager();
@@ -86,11 +86,9 @@ public abstract class AbstractSpellSelect extends Spell {
 				Block block = player.getWorld().getState(p).getBlock();
 				if (!(block instanceof BlockAir) && !(block instanceof BlockSelected)) {
 					if (Keyboard.isKeyDown(Keyboard.KEY_LMENU)) {
-						//selectionManager.select(world, p);
 						newGrownSelections.add(p);
 					} else {
 						if (block == patternBlock) {
-							//selectionManager.select(world, p);
 							newGrownSelections.add(p);
 						}
 					}
@@ -114,9 +112,6 @@ public abstract class AbstractSpellSelect extends Spell {
 			}
 		}
 		selectionManager.deselect(player, shrunkSelections);
-		// for (Selection s : shrunkSelections) {
-		// selectionManager.deselect(world, s);
-		// }
 		selectionManager.clearGrownSelections();
 	}
 	

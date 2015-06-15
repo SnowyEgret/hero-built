@@ -110,7 +110,7 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 			break;
 
 		case DELETE:
-			new SpellDelete().invoke(world, player);
+			new SpellDelete().invoke(player);
 			break;
 
 		case RESELECT:
@@ -170,7 +170,7 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 		}
 		ISpell spell = new SpellCopy();
 		lastSpell = new SpellInvoker(pickManager, spell, world, player);
-		spell.invoke(world, player);
+		spell.invoke(player);
 	}
 
 	private void copyVertical(IPlayer player, IWorld world, int upDown) {
@@ -178,7 +178,7 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 		pickManager.clearPicks(player);
 		pickManager.pick(world, new BlockPos(0, 0, 0), null);
 		pickManager.pick(world, new BlockPos(0, upDown, 0), null);
-		new SpellCopy().invoke(world, player);
+		new SpellCopy().invoke(player);
 	}
 
 }

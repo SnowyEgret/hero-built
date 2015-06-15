@@ -4,7 +4,6 @@ import org.lwjgl.input.Keyboard;
 
 import ds.plato.item.spell.Modifier;
 import ds.plato.player.IPlayer;
-import ds.plato.world.IWorld;
 
 public class SpellSelectVertical extends AbstractSpellSelect {
 
@@ -14,9 +13,9 @@ public class SpellSelectVertical extends AbstractSpellSelect {
 	}
 
 	@Override
-	public void invoke(IWorld world, IPlayer player) {
+	public void invoke(IPlayer player) {
 		positions = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ? Select.northSouth : Select.eastWest;
-		super.invoke(world, player);
+		super.invoke(player);
 	}
 
 	@Override

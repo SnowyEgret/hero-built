@@ -14,7 +14,6 @@ import ds.plato.pick.IPick;
 import ds.plato.pick.Pick;
 import ds.plato.player.IPlayer;
 import ds.plato.select.ISelect;
-import ds.plato.world.IWorld;
 
 public class SpellRotate90 extends AbstractSpellMatrix {
 
@@ -24,7 +23,7 @@ public class SpellRotate90 extends AbstractSpellMatrix {
 	}
 
 	@Override
-	public void invoke(IWorld world, IPlayer player) {
+	public void invoke(IPlayer player) {
 
 		Modifiers modifiers = player.getModifiers();
 		IPick pickManager = player.getPickManager();
@@ -57,7 +56,7 @@ public class SpellRotate90 extends AbstractSpellMatrix {
 			matrix = GeomUtil.newRotY90Matrix(center);
 		}
 
-		transformSelections(world, player, matrix, deleteOriginal);
+		transformSelections(player, matrix, deleteOriginal);
 	}
 
 	@Override

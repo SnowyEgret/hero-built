@@ -20,7 +20,6 @@ import ds.plato.select.Selection;
 import ds.plato.undo.IUndo;
 import ds.plato.undo.Transaction;
 import ds.plato.undo.UndoableSetBlock;
-import ds.plato.world.IWorld;
 
 public abstract class AbstractSpellMatrix extends Spell {
 
@@ -28,7 +27,7 @@ public abstract class AbstractSpellMatrix extends Spell {
 		super(numPicks);
 	}
 
-	protected void transformSelections(IWorld world, IPlayer player, Matrix4d matrix, boolean deleteInitialBlocks) {
+	protected void transformSelections(IPlayer player, Matrix4d matrix, boolean deleteInitialBlocks) {
 
 		Modifiers modifiers = player.getModifiers();
 		ISelect selectionManager = player.getSelectionManager();
@@ -46,12 +45,12 @@ public abstract class AbstractSpellMatrix extends Spell {
 		for (Selection s : selections) {
 			Point3d p = s.point3d();
 			if (deleteInitialBlocks) {
-				deletes.add(new UndoableSetBlock(world, selectionManager, s.getPos(), Blocks.air.getDefaultState()));
+				deletes.add(new UndoableSetBlock(player.getWorld(), selectionManager, s.getPos(), Blocks.air.getDefaultState()));
 			}
 			matrix.transform(p);
 			BlockPos pos = new BlockPos(p.x, p.y, p.z);
 			jumper.setHeight(pos);
-			setBlocks.add(new UndoableSetBlock(world, selectionManager, pos, s.getState()));
+			setBlocks.add(new UndoableSetBlock(player.getWorld(), selectionManager, pos, s.getState()));
 			reselects.add(pos);
 		}
 

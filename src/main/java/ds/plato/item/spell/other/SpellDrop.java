@@ -30,7 +30,7 @@ public class SpellDrop extends Spell {
 	}
 
 	@Override
-	public void invoke(IWorld world, IPlayer player) {
+	public void invoke(IPlayer player) {
 
 		Modifiers modifiers = player.getModifiers();
 		ISelect selectionManager = player.getSelectionManager();
@@ -48,15 +48,15 @@ public class SpellDrop extends Spell {
 		List<UndoableSetBlock> setBlocks = new ArrayList();
 		Iterable<Selection> selections = selectionManager.getSelections();
 		selectionManager.clearSelections(player);
-		pickManager.clearPicks(world);
+		pickManager.clearPicks(player);
 		for (Selection s : selections) {
 			if (raise) {
-				setBlocks.addAll(raiseBurriedBlocks(world, selectionManager, s));
+				setBlocks.addAll(raiseBurriedBlocks(player.getWorld(), selectionManager, s));
 			} else {
-				setBlocks.addAll(drop(world, selectionManager, s, fill));
+				setBlocks.addAll(drop(player.getWorld(), selectionManager, s, fill));
 			}
 			if (deleteOriginal) {
-				setBlocks.add(new UndoableSetBlock(world, selectionManager, s.getPos(), Blocks.air.getDefaultState()));
+				setBlocks.add(new UndoableSetBlock(player.getWorld(), selectionManager, s.getPos(), Blocks.air.getDefaultState()));
 			}
 		}
 

@@ -13,7 +13,6 @@ import ds.plato.player.IPlayer;
 import ds.plato.select.ISelect;
 import ds.plato.select.Selection;
 import ds.plato.undo.IUndo;
-import ds.plato.world.IWorld;
 
 public class SpellHollow extends AbstractSpellTransform {
 
@@ -22,9 +21,9 @@ public class SpellHollow extends AbstractSpellTransform {
 	}
 
 	@Override
-	public void invoke(IWorld world, IPlayer player) {
+	public void invoke(IPlayer player) {
 		final ISelect selectionManager = player.getSelectionManager();
-		transformSelections(world, player, new ITransform() {
+		transformSelections(player, new ITransform() {
 			VoxelSet voxels = selectionManager.voxelSet();
 
 			@Override

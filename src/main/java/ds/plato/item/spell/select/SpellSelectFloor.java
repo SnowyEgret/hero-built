@@ -6,7 +6,6 @@ import ds.plato.pick.IPick;
 import ds.plato.player.IPlayer;
 import ds.plato.select.ISelect;
 import ds.plato.undo.IUndo;
-import ds.plato.world.IWorld;
 
 public class SpellSelectFloor extends AbstractSpellSelect {
 
@@ -20,7 +19,7 @@ public class SpellSelectFloor extends AbstractSpellSelect {
 	}
 
 	@Override
-	public void invoke(IWorld world, IPlayer player) {
+	public void invoke(IPlayer player) {
 		IPick pickManager = player.getPickManager();
 		EnumFacing side = pickManager.getPicks()[0].side;
 		switch (side) {
@@ -34,7 +33,7 @@ public class SpellSelectFloor extends AbstractSpellSelect {
 		default:
 			return;
 		}
-		super.invoke(world, player);
+		super.invoke(player);
 	}
 	
 }

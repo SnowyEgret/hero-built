@@ -12,7 +12,6 @@ import ds.plato.item.spell.Modifiers;
 import ds.plato.pick.IPick;
 import ds.plato.pick.Pick;
 import ds.plato.player.IPlayer;
-import ds.plato.world.IWorld;
 
 public class SpellCopy extends AbstractSpellMatrix {
 
@@ -22,7 +21,7 @@ public class SpellCopy extends AbstractSpellMatrix {
 	}
 
 	@Override
-	public void invoke(IWorld world, IPlayer player) {
+	public void invoke(IPlayer player) {
 		Modifiers modifiers = player.getModifiers();
 		IPick pickManager = player.getPickManager();
 		Pick[] picks = pickManager.getPicks();
@@ -32,13 +31,7 @@ public class SpellCopy extends AbstractSpellMatrix {
 		v.sub(to, from);
 		Matrix4d matrix = new TranslationMatrix(v);
 		boolean deleteOriginal = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
-		transformSelections(world, player, matrix, deleteOriginal);
-		// Fix for MultiPlayer: Infinite loop when SpellCopy repicks. #95
-		// Solution is a generic way to repeat last spell with same input
-		// Can repeat with arrow keys in MP but only for orthogonal copies
-		pickManager.repick(world);
-		//For now, static reference
-		//KeyHandler.lastSpell = new SpellInvoker(pickManager, this, world, player); 
+		transformSelections(player, matrix, deleteOriginal);
 	}
 
 	@Override

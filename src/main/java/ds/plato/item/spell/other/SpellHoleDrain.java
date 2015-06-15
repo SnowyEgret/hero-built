@@ -34,7 +34,7 @@ public class SpellHoleDrain extends Spell {
 	}
 
 	@Override
-	public void invoke(IWorld world, IPlayer player) {
+	public void invoke(IPlayer player) {
 		Modifiers modifiers = player.getModifiers();
 		ISelect selectionManager = player.getSelectionManager();
 		IPick pickManager = player.getPickManager();
@@ -43,10 +43,10 @@ public class SpellHoleDrain extends Spell {
 		positions.clear();
 		positionsSize = 0;
 		BlockPos pos = pickManager.getPicks()[0].getPos();
-		pickManager.clearPicks(world);
+		pickManager.clearPicks(player);
 
 		while (true) {
-			Block b = world.getBlock(pos.up());
+			Block b = player.getWorld().getBlock(pos.up());
 			if (b == Blocks.air) {
 				break;
 			} else {
@@ -55,11 +55,11 @@ public class SpellHoleDrain extends Spell {
 		}
 
 		positions.add(pos);
-		drainWater(world);
+		drainWater(player.getWorld());
 
 		Transaction t = undoManager.newTransaction();
 		for (BlockPos p : positions) {
-			t.add(new UndoableSetBlock(world, selectionManager, p, Blocks.air.getDefaultState()).set());
+			t.add(new UndoableSetBlock(player.getWorld(), selectionManager, p, Blocks.air.getDefaultState()).set());
 		}
 		t.commit();
 

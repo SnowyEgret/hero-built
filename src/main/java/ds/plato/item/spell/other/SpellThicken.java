@@ -34,7 +34,7 @@ public class SpellThicken extends AbstractSpellTransform {
 	}
 
 	@Override
-	public void invoke(final IWorld world, IPlayer player) {
+	public void invoke(IPlayer player) {
 		Modifiers modifiers = player.getModifiers();
 		ISelect selectionManager = player.getSelectionManager();
 		IPick pickManager = player.getPickManager();
@@ -44,17 +44,17 @@ public class SpellThicken extends AbstractSpellTransform {
 		Selection firstSelection = selectionManager.firstSelection();
 		IntegerDomain domain = selectionManager.getDomain();
 		if (domain.isPlanar()) {
-			thickenPlane(positions, domain, world, selectionManager);
+			thickenPlane(positions, domain, player.getWorld(), selectionManager);
 		} else {
-			thicken(positions, world, selectionManager);
+			thicken(positions, player.getWorld(), selectionManager);
 		}
 
 		selectionManager.clearSelections(player);
-		pickManager.clearPicks(world);
+		pickManager.clearPicks(player);
 
 		Transaction t = undoManager.newTransaction();
 		for (BlockPos p : positions) {
-			t.add(new UndoableSetBlock(world, selectionManager, p, firstSelection.getState()).set());
+			t.add(new UndoableSetBlock(player.getWorld(), selectionManager, p, firstSelection.getState()).set());
 		}
 		t.commit();
 	}

@@ -21,7 +21,6 @@ import ds.plato.select.Selection;
 import ds.plato.undo.IUndo;
 import ds.plato.undo.Transaction;
 import ds.plato.undo.UndoableSetBlock;
-import ds.plato.world.IWorld;
 
 public class SpellHoleFill extends Spell {
 
@@ -36,7 +35,7 @@ public class SpellHoleFill extends Spell {
 	}
 
 	@Override
-	public void invoke(IWorld world, IPlayer player) {
+	public void invoke(IPlayer player) {
 		Modifiers modifiers = player.getModifiers();
 		ISelect selectionManager = player.getSelectionManager();
 		IPick pickManager = player.getPickManager();
@@ -47,18 +46,18 @@ public class SpellHoleFill extends Spell {
 		
 		Iterable<Selection> selections = selectionManager.getSelections();
 		selectionManager.clearSelections(player);
-		pickManager.clearPicks(world);
+		pickManager.clearPicks(player);
 		Set<UndoableSetBlock> setBlocks = new HashSet();
 		for (Selection s : selections) {
 			BlockPos[] pos = isHorizontal ? Select.horizontal : Select.belowInclusive;
 			for (BlockPos p : pos) {
 				p = p.add(s.getPos());
-				Block b = world.getBlock(p);
+				Block b = player.getWorld().getBlock(p);
 				if (b == Blocks.air || b == Blocks.water) {
 					if (useBlockInHotbar) {
-						setBlocks.add(new UndoableSetBlock(world, selectionManager, p, player.getHotbar().firstBlock()));
+						setBlocks.add(new UndoableSetBlock(player.getWorld(), selectionManager, p, player.getHotbar().firstBlock()));
 					} else {
-						setBlocks.add(new UndoableSetBlock(world, selectionManager, p, s.getState()));
+						setBlocks.add(new UndoableSetBlock(player.getWorld(), selectionManager, p, s.getState()));
 					}
 				}
 			}

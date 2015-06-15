@@ -14,7 +14,6 @@ import ds.plato.select.Selection;
 import ds.plato.undo.IUndo;
 import ds.plato.undo.Transaction;
 import ds.plato.undo.UndoableSetBlock;
-import ds.plato.world.IWorld;
 
 public class SpellTrail extends Spell {
 
@@ -23,7 +22,7 @@ public class SpellTrail extends Spell {
 	}
 
 	@Override
-	public void invoke(IWorld world, IPlayer player) {
+	public void invoke(IPlayer player) {
 		Modifiers modifiers = player.getModifiers();
 		ISelect selectionManager = player.getSelectionManager();
 		IPick pickManager = player.getPickManager();
@@ -35,9 +34,9 @@ public class SpellTrail extends Spell {
 		Transaction transaction = undoManager.newTransaction();
 		Iterable<Selection> selections = selectionManager.getSelections();
 		selectionManager.clearSelections(player);
-		pickManager.clearPicks(world);
+		pickManager.clearPicks(player);
 		for (Selection s : selections) {
-			world.setState(s.getPos(), player.getHotbar().firstBlock());
+			player.getWorld().setState(s.getPos(), player.getHotbar().firstBlock());
 		}
 		transaction.commit();
 	}

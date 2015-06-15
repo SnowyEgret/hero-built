@@ -12,7 +12,6 @@ import ds.plato.pick.Pick;
 import ds.plato.player.IPlayer;
 import ds.plato.select.ISelect;
 import ds.plato.undo.IUndo;
-import ds.plato.world.IWorld;
 
 public class SpellMeasure extends AbstractSpellDraw {
 
@@ -22,7 +21,7 @@ public class SpellMeasure extends AbstractSpellDraw {
 	}
 
 	@Override
-	public void invoke(IWorld world, IPlayer player) {
+	public void invoke(IPlayer player) {
 		Modifiers modifiers = player.getModifiers();
 		IPick pickManager = player.getPickManager();
 		Pick[] picks = pickManager.getPicks();
@@ -45,7 +44,7 @@ public class SpellMeasure extends AbstractSpellDraw {
 			points.addPoints(p0, p1);
 		}
 		if (!points.isEmpty()) {
-			draw(points, world, player);
+			draw(points, player);
 			//selectionManager.clearSelections(world);
 		}
 		//pickManager.clearPicks();

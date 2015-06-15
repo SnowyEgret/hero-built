@@ -52,7 +52,7 @@ public abstract class Spell extends ItemBase implements ISpell {
 		pickManager.pick(w, pos, side);
 		Plato.network.sendTo(new PickMessage(pickManager), (EntityPlayerMP) playerIn);
 		if (pickManager.isFinishedPicking()) {
-			invoke(w, Player.instance(playerIn));
+			invoke(Player.instance(playerIn));
 		}
 		return true;
 
@@ -66,7 +66,7 @@ public abstract class Spell extends ItemBase implements ISpell {
 	// ISpell --------------------------------------------
 
 	@Override
-	public abstract void invoke(IWorld world, IPlayer player);
+	public abstract void invoke(IPlayer player);
 
 	@Override
 	public String getMessage() {
