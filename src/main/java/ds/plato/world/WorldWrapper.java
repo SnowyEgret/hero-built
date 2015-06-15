@@ -24,12 +24,12 @@ public class WorldWrapper implements IWorld {
 	@Override
 	public void setState(BlockPos pos, IBlockState state) {
 		// TODO This is wrong. Remove forceMessaging flag
-		if (world.isRemote || Plato.forceMessaging) {
-			System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Sending SetBlockStateMessage");
-			Plato.network.sendToServer(new SetBlockStateMessage(pos, state));
-		} else {
-			world.setBlockState(pos, state, 3);
-		}
+		// if (world.isRemote || Plato.forceMessaging) {
+		// System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Sending SetBlockStateMessage");
+		// Plato.network.sendToServer(new SetBlockStateMessage(pos, state));
+		// } else {
+		world.setBlockState(pos, state, 3);
+		// }
 	}
 
 	@Override
