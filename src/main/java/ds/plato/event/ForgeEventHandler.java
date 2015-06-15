@@ -183,7 +183,7 @@ public class ForgeEventHandler {
 				if (b == Blocks.air || !b.isNormalCube()) {
 					pos = pos.down();
 				}
-				selectionManager.select(world, pos.down());
+				selectionManager.select(player, pos.down());
 			}
 		}
 	}

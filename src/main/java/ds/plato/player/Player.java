@@ -17,6 +17,7 @@ import ds.plato.item.staff.Staff;
 import ds.plato.pick.IPick;
 import ds.plato.select.ISelect;
 import ds.plato.undo.IUndo;
+import ds.plato.undo.Transaction;
 import ds.plato.world.IWorld;
 import ds.plato.world.WorldWrapper;
 
@@ -31,7 +32,7 @@ public class Player implements IPlayer {
 		WEST;
 	}
 
-	public Player(EntityPlayer player) {
+	protected Player(EntityPlayer player) {
 		this.player = player;
 	}
 
@@ -56,15 +57,16 @@ public class Player implements IPlayer {
 	@Override
 	public IWorld getWorld() {
 
-		World w = null;
-		Minecraft mc = Minecraft.getMinecraft();
-		IntegratedServer integratedServer = mc.getIntegratedServer();
-		if (integratedServer != null) {
-			w = integratedServer.worldServerForDimension(player.dimension);
-		} else {
-			w = mc.theWorld;
-		}
-		return new WorldWrapper(w);
+//		World w = null;
+//		Minecraft mc = Minecraft.getMinecraft();
+//		IntegratedServer integratedServer = mc.getIntegratedServer();
+//		if (integratedServer != null) {
+//			w = integratedServer.worldServerForDimension(player.dimension);
+//		} else {
+//			w = mc.theWorld;
+//		}
+//		return new WorldWrapper(w);
+		return new WorldWrapper(player.worldObj);
 	}
 
 	@Override
@@ -207,5 +209,6 @@ public class Player implements IPlayer {
 	public void setLastSpell(ISpell spell) {
 		IExtendedEntityProperties p = player.getExtendedProperties(PlayerProperies.NAME);
 		((PlayerProperies) p).setLastSpell(spell);		
-	}	
+	}
+
 }

@@ -4,8 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
-import ds.plato.Plato;
-import ds.plato.network.SetBlockStateMessage;
+import ds.plato.undo.Transaction;
 
 public class WorldWrapper implements IWorld {
 
@@ -15,6 +14,11 @@ public class WorldWrapper implements IWorld {
 		this.world = world;
 	}
 
+	// @Override
+	// public Transaction newTransaction() {
+	// return new Transaction(this);
+	// }
+
 	@Override
 	public Block getBlock(BlockPos pos) {
 		IBlockState b = world.getBlockState(pos);
@@ -23,13 +27,8 @@ public class WorldWrapper implements IWorld {
 
 	@Override
 	public void setState(BlockPos pos, IBlockState state) {
-		// TODO This is wrong. Remove forceMessaging flag
-		// if (world.isRemote || Plato.forceMessaging) {
-		// System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Sending SetBlockStateMessage");
-		// Plato.network.sendToServer(new SetBlockStateMessage(pos, state));
-		// } else {
+		// TODO Do not update client
 		world.setBlockState(pos, state, 3);
-		// }
 	}
 
 	@Override
@@ -55,5 +54,10 @@ public class WorldWrapper implements IWorld {
 		builder.append(world);
 		builder.append("]");
 		return builder.toString();
+	}
+
+	@Override
+	public void updateClient() {
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 	}
 }

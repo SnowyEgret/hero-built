@@ -29,7 +29,7 @@ import ds.plato.world.IWorld;
 
 public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> {
 
-	private IUndo undoManager;
+	//private IUndo undoManager;
 	private ISelect selectionManager;
 	private IPick pickManager;
 	public static SpellInvoker lastSpell;
@@ -53,7 +53,7 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 		IPlayer player = Player.instance(playerIn);
 		IWorld world = player.getWorld();
 		Modifiers modifiers = player.getModifiers();
-		undoManager = player.getUndoManager();
+		//undoManager = player.getUndoManager();
 		selectionManager = player.getSelectionManager();
 		pickManager = player.getPickManager();
 		int keyCode = message.getKeyCode();
@@ -62,12 +62,12 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 		Modifier modifier = Modifier.fromKeyCode(keyCode);
 		if (modifier != null) {
 			modifiers.setPressed(modifier, keyState);
-			System.out.println("modifiers=" + modifiers);
+			//System.out.println("modifiers=" + modifiers);
 		}
 
-		System.out.println("keyCode=" + keyCode);
+		//System.out.println("keyCode=" + keyCode);
 		Action action = Action.fromKeyCode(keyCode);
-		System.out.println("action=" + action);
+		//System.out.println("action=" + action);
 
 		if (action == null || !keyState) {
 			return;
@@ -80,18 +80,13 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 			try {
 				if (modifiers.isPressed(Modifier.CTRL)) {
 					if (modifiers.isPressed(Modifier.SHIFT)) {
-						undoManager.redo();
+						player.getUndoManager().redo();
 					} else {
-						undoManager.undo();
+						player.getUndoManager().undo();
 					}
 				}
-
-				// When undoing a copy/move it is helpful to reselect.
-				// If we had a reference to the last spell, we could do this conditionally
-				// Last spell is not necessarily what is in hand
-				// We can reselect in the return from the message
 				if (lastSpell.getSpell() instanceof SpellCopy) {
-					selectionManager.reselect(world);
+					selectionManager.reselect(player);
 				}
 			} catch (NoSuchElementException e) {
 				// TODO Log to overlay. Create info line in overlay
@@ -120,7 +115,7 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 			break;
 
 		case RESELECT:
-			selectionManager.reselect(world);
+			selectionManager.reselect(player);
 			break;
 
 		case LEFT:

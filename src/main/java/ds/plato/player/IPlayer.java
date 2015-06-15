@@ -12,6 +12,7 @@ import ds.plato.pick.IPick;
 import ds.plato.player.Player.Direction;
 import ds.plato.select.ISelect;
 import ds.plato.undo.IUndo;
+import ds.plato.undo.Transaction;
 import ds.plato.world.IWorld;
 
 public interface IPlayer {
@@ -51,6 +52,7 @@ public interface IPlayer {
 	public abstract IPick getPickManager();
 
 	public abstract void setLastSpell(ISpell spell);
+
 
 	// Thought I saw something like this somewhere in an interface
 	// public static IPlayer getPlayer(EntityPlayer player) {

@@ -23,6 +23,7 @@ import ds.plato.Plato;
 import ds.plato.block.BlockSelected;
 import ds.plato.network.SelectionMessage;
 import ds.plato.player.IPlayer;
+import ds.plato.undo.Transaction;
 import ds.plato.world.IWorld;
 
 public class SelectionManager implements ISelect {
@@ -41,6 +42,7 @@ public class SelectionManager implements ISelect {
 		for (BlockPos p : pos) {
 			select(player.getWorld(), p);
 		}
+		player.getWorld().updateClient();
 		Plato.network.sendTo(new SelectionMessage(this), (EntityPlayerMP) player.getPlayer());
 	}
 
@@ -52,7 +54,7 @@ public class SelectionManager implements ISelect {
 
 	@Override
 	public void deselect(IPlayer player, BlockPos pos) {
-		deselect(player.getWorld(), pos);		
+		deselect(player.getWorld(), pos);
 		Plato.network.sendTo(new SelectionMessage(this), (EntityPlayerMP) player.getPlayer());
 	}
 
@@ -61,6 +63,12 @@ public class SelectionManager implements ISelect {
 		for (BlockPos p : positions) {
 			deselect(player.getWorld(), p);
 		}
+		Plato.network.sendTo(new SelectionMessage(this), (EntityPlayerMP) player.getPlayer());
+	}
+
+	@Override
+	public void reselect(IPlayer player) {
+		reselect(player.getWorld());
 		Plato.network.sendTo(new SelectionMessage(this), (EntityPlayerMP) player.getPlayer());
 	}
 

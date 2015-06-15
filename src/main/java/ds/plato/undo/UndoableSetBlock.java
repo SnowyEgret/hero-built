@@ -26,25 +26,18 @@ public class UndoableSetBlock implements IUndoable {
 		this.selectionManager = selectionManager;
 		this.pos = pos;
 		this.state = state;
-		// TODO changed this to getActualState from getState. Not tested
-		//prevState = world.getActualState(pos);
-		 prevState = world.getState(pos);
+		prevState = world.getState(pos);
 	}
 
 	public UndoableSetBlock set() {
 
 		Selection s = selectionManager.getSelection(pos);
+		//TODO 
 		selectionManager.removeSelection(pos);
 		if (s != null) {
 			prevState = s.getState();
 		}
 		world.setState(pos, state);
-
-		// Selecting here is causing problems in MP
-		//Shouldn't be unconditional - leave decision to spell
-		// if (!(state.getBlock() instanceof BlockAir)) {
-		// selectionManager.select(world, pos);
-		// }
 		return this;
 	}
 

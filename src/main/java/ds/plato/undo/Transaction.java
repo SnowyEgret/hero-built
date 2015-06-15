@@ -4,16 +4,23 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import ds.plato.select.Selection;
+import ds.plato.world.IWorld;
 
 public class Transaction implements IUndoable, Iterable {
 
 	public static final int MAX_SIZE = 9999;
 	protected Set<IUndoable> undoables = new HashSet<>();
 	private final IUndo undoManager;
+	private IWorld world;
 
-	public Transaction(IUndo undoManager) {
+	protected Transaction(IUndo undoManager) {
+		this.world = null;
 		this.undoManager = undoManager;
+	}
+
+	public Transaction(IWorld world) {
+		this.world = world;
+		undoManager = null;
 	}
 
 	public void add(IUndoable undoable) {
@@ -44,7 +51,12 @@ public class Transaction implements IUndoable, Iterable {
 	}
 
 	public void commit() {
-		undoManager.addUndoable(this);
+		if (undoManager != null) {
+			undoManager.addUndoable(this);
+		}
+		if (world != null) {
+			world.updateClient();
+		}
 	}
 
 	@Override
