@@ -80,7 +80,7 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 						player.getUndoManager().undo();
 					}
 				}
-				if (lastSpell.getSpell() instanceof SpellCopy) {
+				if (lastSpell != null && lastSpell.getSpell() instanceof SpellCopy) {
 					selectionManager.reselect(player);
 				}
 			} catch (NoSuchElementException e) {

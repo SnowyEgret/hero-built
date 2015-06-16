@@ -5,29 +5,28 @@ import java.util.List;
 
 import javax.vecmath.Point3i;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
+
+import com.google.common.collect.Lists;
+
 import ds.geom.VoxelSet;
-import ds.plato.pick.IPick;
 import ds.plato.player.IPlayer;
 import ds.plato.select.ISelect;
 import ds.plato.select.Selection;
-import ds.plato.undo.IUndo;
 
 public class SpellHollow extends AbstractSpellTransform {
-
-	public SpellHollow() {
-		super();
-	}
 
 	@Override
 	public void invoke(IPlayer player) {
 		final ISelect selectionManager = player.getSelectionManager();
+		final IBlockState air = Blocks.air.getDefaultState();
 		transformSelections(player, new ITransform() {
 			VoxelSet voxels = selectionManager.voxelSet();
 
 			@Override
-			public Selection transform(Selection s) {
+			public Iterable<Selection> transform(Selection s) {
 				//TODO BlockPos.getAllInBox(from, to);
 				BlockPos pos = s.getPos();
 				int x = pos.getX();
@@ -41,9 +40,9 @@ public class SpellHollow extends AbstractSpellTransform {
 				surroundingPoints.add(new Point3i(x, y, z + 1));
 				surroundingPoints.add(new Point3i(x, y, z - 1));
 				if (voxels.containsAll(surroundingPoints)) {
-					s = new Selection(pos, Blocks.air.getDefaultState());
+					s = new Selection(pos, air);
 				}
-				return s;
+				return Lists.newArrayList(s);
 			}
 		});
 	}

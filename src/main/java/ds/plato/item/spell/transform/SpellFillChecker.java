@@ -1,23 +1,19 @@
 package ds.plato.item.spell.transform;
 
 import net.minecraft.util.BlockPos;
-import ds.plato.pick.IPick;
+
+import com.google.common.collect.Lists;
+
 import ds.plato.player.IPlayer;
-import ds.plato.select.ISelect;
 import ds.plato.select.Selection;
-import ds.plato.undo.IUndo;
 
 public class SpellFillChecker extends AbstractSpellTransform {
-
-	public SpellFillChecker() {
-		super();
-	}
 
 	@Override
 	public void invoke(final IPlayer player) {
 		transformSelections(player, new ITransform() {
 			@Override
-			public Selection transform(Selection s) {
+			public Iterable<Selection> transform(Selection s) {
 				int i = 0;
 				BlockPos pos = s.getPos();
 				int x = pos.getX();
@@ -28,9 +24,7 @@ public class SpellFillChecker extends AbstractSpellTransform {
 				} else {
 					i = ((y & 1) == 0) ? 1 : 0;
 				}
-				//s = new Selection(pos, player.getHotbar()[i].state);
-				s = new Selection(pos, player.getHotbar().getBlock(i));
-				return s;
+				return Lists.newArrayList(new Selection(pos, player.getHotbar().getBlock(i)));
 			}
 		});
 	}	
