@@ -118,11 +118,11 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 			break;
 
 		case LEFT:
-			copy(player, world, -1, 0);
+			copy(player, -1, 0);
 			break;
 
 		case RIGHT:
-			copy(player, world, 1, 0);
+			copy(player, 1, 0);
 			break;
 
 		case UP:
@@ -130,7 +130,7 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 			if (modifiers.isPressed(Modifier.CTRL)) {
 				copyVertical(player, 1);
 			} else {
-				copy(player, world, 0, -1);
+				copy(player, 0, -1);
 			}
 			break;
 
@@ -140,7 +140,7 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 			if (modifiers.isPressed(Modifier.CTRL)) {
 				copyVertical(player, -1);
 			} else {
-				copy(player, world, 0, 1);
+				copy(player, 0, 1);
 			}
 			break;
 
@@ -149,7 +149,7 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 		}
 	}
 
-	private void copy(IPlayer player, IWorld world, int leftRight, int upDown) {
+	private void copy(IPlayer player, int leftRight, int upDown) {
 		pickManager.reset(2);
 		pickManager.clearPicks(player);
 		pickManager.pick(player, new BlockPos(0, 0, 0), null);
@@ -168,7 +168,7 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 			break;
 		}
 		ISpell spell = new SpellCopy();
-		lastSpell = new SpellInvoker(pickManager, spell, world, player);
+		lastSpell = new SpellInvoker(player, spell);
 		spell.invoke(player);
 	}
 
