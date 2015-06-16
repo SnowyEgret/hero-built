@@ -29,11 +29,9 @@ import ds.plato.world.IWorld;
 
 public class SpellText extends Spell implements ITextSetable {
 
-	private Font font;
-	private IWorld world;
-	private IBlockState firstBlockInHotbar;
-	private Pick[] picks;
 	private Graphics graphics;
+	private Font font;
+	private Pick[] picks;
 
 	public SpellText() {
 		super(2);
@@ -56,11 +54,10 @@ public class SpellText extends Spell implements ITextSetable {
 		ISelect selectionManager = player.getSelectionManager();
 		IPick pickManager = player.getPickManager();
 		IUndo undoManager = player.getUndoManager();
-		firstBlockInHotbar = player.getHotbar().firstBlock();
 		player.openGui(GuiHandler.GUI_SPELL_TEXT);
 		picks = pickManager.getPicks();
 		// Clear the picks because player may have cancelled
-		pickManager.clearPicks(world);
+		pickManager.clearPicks(player);
 	}
 
 	@Override
@@ -70,7 +67,6 @@ public class SpellText extends Spell implements ITextSetable {
 		IPick pickManager = player.getPickManager();
 		IUndo undoManager = player.getUndoManager();
 		
-
 		Vector3d d = new Vector3d();
 		d.sub(picks[0].point3d(), picks[1].point3d());
 		double angle = new Vector3d(-1, 0, 0).angle(d);
@@ -113,10 +109,10 @@ public class SpellText extends Spell implements ITextSetable {
 
 		System.out.println("size=" + positions.size());
 		selectionManager.clearSelections(player);
-		pickManager.clearPicks(world);
+		pickManager.clearPicks(player);
 		Transaction t = undoManager.newTransaction();
 		for (BlockPos p : positions) {
-			t.add(new UndoableSetBlock(world, selectionManager, p, firstBlockInHotbar).set());
+			t.add(new UndoableSetBlock(player.getWorld(), selectionManager, p, player.getHotbar().firstBlock()).set());
 		}
 		t.commit();
 	}

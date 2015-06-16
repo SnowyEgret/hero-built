@@ -128,7 +128,7 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 		case UP:
 			// This should be alt so that control can be deleteOriginal
 			if (modifiers.isPressed(Modifier.CTRL)) {
-				copyVertical(player, world, 1);
+				copyVertical(player, 1);
 			} else {
 				copy(player, world, 0, -1);
 			}
@@ -138,7 +138,7 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 			// This should be alt so that control can be deleteOriginal
 			// TODO Modifier constructor with mulitple keys
 			if (modifiers.isPressed(Modifier.CTRL)) {
-				copyVertical(player, world, -1);
+				copyVertical(player, -1);
 			} else {
 				copy(player, world, 0, 1);
 			}
@@ -150,22 +150,21 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 	}
 
 	private void copy(IPlayer player, IWorld world, int leftRight, int upDown) {
-		// Method reset clears picks
 		pickManager.reset(2);
 		pickManager.clearPicks(player);
-		pickManager.pick(world, new BlockPos(0, 0, 0), null);
+		pickManager.pick(player, new BlockPos(0, 0, 0), null);
 		switch (player.getDirection()) {
 		case NORTH:
-			pickManager.pick(world, new BlockPos(leftRight, 0, upDown), null);
+			pickManager.pick(player, new BlockPos(leftRight, 0, upDown), null);
 			break;
 		case SOUTH:
-			pickManager.pick(world, new BlockPos(-leftRight, 0, -upDown), null);
+			pickManager.pick(player, new BlockPos(-leftRight, 0, -upDown), null);
 			break;
 		case EAST:
-			pickManager.pick(world, new BlockPos(-upDown, 0, leftRight), null);
+			pickManager.pick(player, new BlockPos(-upDown, 0, leftRight), null);
 			break;
 		case WEST:
-			pickManager.pick(world, new BlockPos(upDown, 0, -leftRight), null);
+			pickManager.pick(player, new BlockPos(upDown, 0, -leftRight), null);
 			break;
 		}
 		ISpell spell = new SpellCopy();
@@ -173,11 +172,11 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 		spell.invoke(player);
 	}
 
-	private void copyVertical(IPlayer player, IWorld world, int upDown) {
+	private void copyVertical(IPlayer player, int upDown) {
 		pickManager.reset(2);
 		pickManager.clearPicks(player);
-		pickManager.pick(world, new BlockPos(0, 0, 0), null);
-		pickManager.pick(world, new BlockPos(0, upDown, 0), null);
+		pickManager.pick(player, new BlockPos(0, 0, 0), null);
+		pickManager.pick(player, new BlockPos(0, upDown, 0), null);
 		new SpellCopy().invoke(player);
 	}
 

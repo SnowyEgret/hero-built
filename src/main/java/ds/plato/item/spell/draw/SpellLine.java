@@ -29,7 +29,7 @@ public class SpellLine extends AbstractSpellDraw {
 		if (modifiers.isPressed(Modifier.CTRL)) {
 			pickManager.reset(2);
 			pickManager.clearPicks(player);
-			pickManager.pick(player.getWorld(), picks[1].getPos(), null);
+			pickManager.pick(player, picks[1].getPos(), null);
 		}
 	}
 

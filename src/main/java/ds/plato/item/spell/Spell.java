@@ -47,9 +47,8 @@ public abstract class Spell extends ItemBase implements ISpell {
 			return true;
 		}
 		IPlayer player = Player.instance(playerIn);
-		IWorld w = player.getWorld();
 		IPick pickManager = player.getPickManager();
-		pickManager.pick(w, pos, side);
+		pickManager.pick(player, pos, side);
 		Plato.network.sendTo(new PickMessage(pickManager), (EntityPlayerMP) playerIn);
 		if (pickManager.isFinishedPicking()) {
 			invoke(Player.instance(playerIn));
@@ -86,7 +85,7 @@ public abstract class Spell extends ItemBase implements ISpell {
 	@Override
 	public void reset(IPlayer player) {
 		IPick pickManager = player.getPickManager();
-		pickManager.clearPicks(player.getWorld());
+		pickManager.clearPicks(player);
 		pickManager.reset(numPicks);
 		message = null;
 	}

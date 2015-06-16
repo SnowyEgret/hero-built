@@ -9,15 +9,23 @@ public interface IPick {
 
 	public void clearPicks(IPlayer player);
 
+	public void repick(IPlayer player);
+
+	public Pick pick(IPlayer player, BlockPos pos, EnumFacing side);
+
 	// --------------------------------------------------------
 
-	public Pick pick(IWorld world, BlockPos pos, EnumFacing side);
+//	public void clearPicks(IWorld world);
+//
+//	public void repick(IWorld world);
+//
+//	public Pick pick(IWorld world, BlockPos pos, EnumFacing side);
+
+	// --------------------------------------------------------
 
 	public Pick[] getPicks();
 
 	public Pick getPick(BlockPos pos);
-
-	public void clearPicks(IWorld world);
 
 	public boolean isPicking();
 
@@ -28,7 +36,5 @@ public interface IPick {
 	public Pick firstPick();
 
 	public Pick lastPick();
-
-	public void repick(IWorld world);
 
 }
