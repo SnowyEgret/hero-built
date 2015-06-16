@@ -1,18 +1,14 @@
 package ds.plato.proxy;
 
-import java.util.List;
-
-import ds.plato.Plato;
-import ds.plato.item.spell.ISpell;
-import ds.plato.item.spell.Spell;
-import ds.plato.item.staff.IStaff;
-import ds.plato.item.staff.Staff;
-import ds.plato.pick.IPick;
-import ds.plato.select.ISelect;
-import ds.plato.undo.IUndo;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import ds.plato.block.PrevStateTileEntity;
 
 public class CommonProxy {
 
 	public void registerEventHandlers() {
+	}
+
+	public void registerTileEntities() {
+		GameRegistry.registerTileEntity(PrevStateTileEntity.class, PrevStateTileEntity.class.getSimpleName()); 
 	}
 }

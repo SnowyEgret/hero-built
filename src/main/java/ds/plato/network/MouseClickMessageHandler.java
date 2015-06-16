@@ -42,7 +42,7 @@ public class MouseClickMessageHandler implements IMessageHandler<MouseClickMessa
 		IPick pickManager = player.getPickManager();
 		MovingObjectType typeOfHit = message.getTypeOfHit();
 		int button = message.getButton();
-		System.out.println("button=" + button);
+		//System.out.println("button=" + button);
 		switch (typeOfHit) {
 		case BLOCK:
 			if (button == 0) {

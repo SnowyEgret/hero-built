@@ -17,24 +17,16 @@ import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import ds.plato.select.ISelect;
-import ds.plato.select.Selection;
-import ds.plato.select.SelectionManager;
 
 public class BlockSelected extends Block implements ITileEntityProvider {
 
 	public static final BlockSelectedProperty selectedBlockProperty = new BlockSelectedProperty();
 	public static ModelResourceLocation modelResourceLocation = new ModelResourceLocation("plato:blockSelected");
-	private ISelect selectionManager;
 
 	public BlockSelected() {
 		super(Material.clay);
 		setHardness(-1F);
 		setStepSound(soundTypeGravel);
-	}
-
-	public void setSelectionManager(ISelect selectionManager) {
-		this.selectionManager = selectionManager;
 	}
 
 	@Override
@@ -60,22 +52,20 @@ public class BlockSelected extends Block implements ITileEntityProvider {
 	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
 		assert IExtendedBlockState.class.isAssignableFrom(state.getClass());
 		IExtendedBlockState extendedState = (IExtendedBlockState) state;
-		// TODO Get this from a tileEntity. We would have to check all players' selectionManagers
-		//Selection s = selectionManager.getSelection(pos);
-		Selection s = null;
-		if (s != null) {
-			IBlockState selectedBlockState = s.getState();
-			extendedState = extendedState.withProperty(selectedBlockProperty, selectedBlockState);
+		PrevStateTileEntity tileEntity = (PrevStateTileEntity) world.getTileEntity(pos);
+		IBlockState prevState = null;
+		if (tileEntity != null) {
+			prevState = tileEntity.getPrevState();
 		} else {
-			extendedState = extendedState.withProperty(selectedBlockProperty, null);
+			System.out.println("No tile entity on Block");
 		}
+		extendedState = extendedState.withProperty(selectedBlockProperty, prevState);
 		return extendedState;
 	}
 
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		// TODO Auto-generated method stub
-		return null;
+		return new PrevStateTileEntity();
 	}
 
 }

@@ -1,9 +1,6 @@
 package ds.plato.item.spell;
 
-import ds.plato.item.spell.matrix.SpellCopy;
-import ds.plato.pick.IPick;
 import ds.plato.player.IPlayer;
-import ds.plato.world.IWorld;
 
 public class SpellInvoker {
 

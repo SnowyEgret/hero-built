@@ -69,7 +69,16 @@ public class Plato {
 	public static boolean setBlockMessageDone = false;
 	public static SelectionInfo selectionInfo = new SelectionInfo();
 	public static PickInfo pickInfo = new PickInfo();
+
 	// private Configuration configuration;
+
+	public void setSelectionInfo(SelectionInfo selectionInfo) {
+		this.selectionInfo = selectionInfo;
+	}
+
+	public void setPickInfo(PickInfo pickInfo) {
+		this.pickInfo = pickInfo;
+	}
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
@@ -84,7 +93,7 @@ public class Plato {
 			}
 		}
 
-		//TODO BlockSelected and picked will have to have a tileEntity
+		// TODO BlockSelected and picked will have to have a tileEntity
 		System.out.println("Initializing blocks...");
 		blockSelected = (BlockSelected) initBlock(new BlockSelected());
 		blockPicked = (BlockPicked) initBlock(new BlockPicked());
@@ -129,7 +138,7 @@ public class Plato {
 		network.registerMessage(PickMessageHandler.class, PickMessage.class, 3, Side.CLIENT);
 		network.registerMessage(SetBlockStateMessageHandler.class, SetBlockStateMessage.class, 4, Side.SERVER);
 		network.registerMessage(MouseClickMessageHandler.class, MouseClickMessage.class, 5, Side.SERVER);
-		
+
 		// Create custom state mappers for BlockSelected and BlockPicked models
 		ModelLoader.setCustomStateMapper(blockSelected, new StateMapperBase() {
 			@Override
@@ -147,9 +156,10 @@ public class Plato {
 
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
-		// proxy.setCustomRenderers(selectionManager, pickManager, staffs, spells);
-		// TODO could pass MouseHandler here to avoid static reference to isOrbiting
+		//TODO move network registry stuff in preInit here
+		//proxy.registerNetworkMessages();
 		proxy.registerEventHandlers();
+		proxy.registerTileEntities();
 	}
 
 	@EventHandler
@@ -159,7 +169,7 @@ public class Plato {
 	@EventHandler
 	public void serverStopping(FMLServerStoppingEvent event) {
 	}
-	
+
 	// Private----------------------------------------------------------------------
 
 	private Block initBlock(Block block) {
@@ -170,12 +180,4 @@ public class Plato {
 		return block;
 	}
 
-	public void setSelectionInfo(SelectionInfo selectionInfo) {
-		this.selectionInfo = selectionInfo;
-		
-	}
-
-	public void setPickInfo(PickInfo pickInfo) {
-		this.pickInfo = pickInfo;
-	}
 }

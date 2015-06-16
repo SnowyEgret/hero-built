@@ -18,13 +18,9 @@ import ds.plato.item.spell.matrix.SpellCopy;
 import ds.plato.item.spell.transform.SpellDelete;
 import ds.plato.item.staff.Staff;
 import ds.plato.pick.IPick;
-import ds.plato.pick.PickManager;
 import ds.plato.player.IPlayer;
 import ds.plato.player.Player;
 import ds.plato.select.ISelect;
-import ds.plato.select.SelectionManager;
-import ds.plato.undo.IUndo;
-import ds.plato.undo.UndoManager;
 import ds.plato.world.IWorld;
 
 public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> {

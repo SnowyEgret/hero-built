@@ -21,9 +21,9 @@ import ds.geom.IntegerDomain;
 import ds.geom.VoxelSet;
 import ds.plato.Plato;
 import ds.plato.block.BlockSelected;
+import ds.plato.block.PrevStateTileEntity;
 import ds.plato.network.SelectionMessage;
 import ds.plato.player.IPlayer;
-import ds.plato.undo.Transaction;
 import ds.plato.world.IWorld;
 
 public class SelectionManager implements ISelect {
@@ -188,19 +188,20 @@ public class SelectionManager implements ISelect {
 			System.out.println("Found BlockSelected. Returning null.");
 			return getSelection(pos);
 		}
+
 		Selection selection = new Selection(pos, state);
 		selections.put(pos, selection);
+
 		world.setState(pos, blockSelected.getDefaultState());
+		PrevStateTileEntity tileEntity = (PrevStateTileEntity) world.getTileEntity(pos);
+		tileEntity.setPrevState(state);
+		// Seems we don't have to do this
+		// world.getWorld().markBlockForUpdate(pos);
+
 		return selection;
 	}
 
 	private void deselect(IWorld world, Selection selection) {
-		// Block b = selection.getBlock();
-		// if (b instanceof BlockPicked) {
-		// //Look up pick from pickManager
-		// //b = ((BlockPicked)b).getPos())
-		// }
-		// System.out.println("selection=" + selection);
 		world.setState(selection.getPos(), selection.getState());
 		selections.remove(selection.getPos());
 	}

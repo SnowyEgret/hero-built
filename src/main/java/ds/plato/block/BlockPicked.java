@@ -24,20 +24,11 @@ public class BlockPicked extends Block implements ITileEntityProvider {
 
 	public static final BlockPickedProperty pickedBlockProperty = new BlockPickedProperty();
 	public static ModelResourceLocation modelResourceLocation = new ModelResourceLocation("plato:blockPicked");
-	private IPick pickManager;
-
-	public IPick getPickManager() {
-		return pickManager;
-	}
 
 	public BlockPicked() {
 		super(Material.clay);
 		setHardness(-1F);
 		setStepSound(soundTypeGravel);
-	}
-
-	public void setPickManager(IPick pickManager) {
-		this.pickManager = pickManager;
 	}
 
 	// Is this the default layer?
@@ -52,31 +43,27 @@ public class BlockPicked extends Block implements ITileEntityProvider {
 	}
 
 	@Override
+	public boolean hasTileEntity(IBlockState state) {
+		return true;
+	}
+
+	@Override
 	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
 		IExtendedBlockState extendedState = (IExtendedBlockState) state;
-		//TODO Get this from a tileEntity. We would have to check all players' pickManagers
-		//Pick pick = pickManager.getPick(pos);
-		Pick pick = null;
-		if (pick != null) {
-			//Block pickedBlock = pick.getState().getBlock();
-			// Commented out because could not reproduce bug it was trying to fix (infinite loop at
-			// isAmbientOcclusion())
-			// Handle case where pick is already selected
-			//if (!(pickedBlock instanceof BlockPicked)) {
-			//	pickedBlock = selectionManager.getSelection(pos).getBlock();
-			//}
-			IBlockState pickedBlockState = pick.getState();
-			extendedState = extendedState.withProperty(pickedBlockProperty, pickedBlockState);
+		PrevStateTileEntity tileEntity = (PrevStateTileEntity) world.getTileEntity(pos);
+		IBlockState prevState = null;
+		if (tileEntity != null) {
+			prevState = tileEntity.getPrevState();
 		} else {
-			extendedState = extendedState.withProperty(pickedBlockProperty, null);
+			System.out.println("No tile entity on Block");
 		}
+		extendedState = extendedState.withProperty(pickedBlockProperty, prevState);
 		return extendedState;
 	}
 
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		// TODO Auto-generated method stub
-		return null;
+		return new PrevStateTileEntity();
 	}
 
 }

@@ -2,9 +2,9 @@ package ds.plato.world;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
-import ds.plato.undo.Transaction;
 
 public class WorldWrapper implements IWorld {
 
@@ -59,5 +59,10 @@ public class WorldWrapper implements IWorld {
 	@Override
 	public void updateClient() {
 		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+	}
+
+	@Override
+	public TileEntity getTileEntity(BlockPos pos) {
+		return world.getTileEntity(pos);
 	}
 }

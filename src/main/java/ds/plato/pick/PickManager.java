@@ -12,6 +12,7 @@ import net.minecraft.util.EnumFacing;
 import ds.plato.Plato;
 import ds.plato.block.BlockPicked;
 import ds.plato.block.BlockSelected;
+import ds.plato.block.PrevStateTileEntity;
 import ds.plato.network.PickMessage;
 import ds.plato.network.SelectionMessage;
 import ds.plato.player.IPlayer;
@@ -111,23 +112,13 @@ public class PickManager implements IPick {
 	private Pick pick(IWorld world, BlockPos pos, EnumFacing side) {
 		IBlockState state = world.getActualState(pos);
 
-		// This is preventing isAmbientOcclustion crash (but still missing a pick) when repicking after spellCopy in MP
-		// but is making second pick
-		// out of bounds using arrows to copy in SP
-		// if (state.getBlock() instanceof BlockPicked) {
-		// // Even though picks may have been cleared the state may not be set yet.
-		// // getPick is already null so we have no way of knowing what the original block was
-		// Pick p = getPick(pos);
-		// System.out.println("pick=" + p);
-		// return p;
-		// }
-
-		// SpellCopy is repicking so the copy can be repeated. Method addPick is returning null because
-		// maxPicks is already reached. We don't want a BlockPicked in the world when there is no
-		// corresponding pick at that position in the PickManager.
 		Pick pick = addPick(pos, state, side);
 		if (pick != null) {
 			world.setState(pos, blockPicked.getDefaultState());
+			PrevStateTileEntity tileEntity = (PrevStateTileEntity) world.getTileEntity(pos);
+			tileEntity.setPrevState(state);
+			// Seems we don't have to do this
+			// world.getWorld().markBlockForUpdate(pos);
 		}
 		return pick;
 	}
@@ -135,11 +126,7 @@ public class PickManager implements IPick {
 	private void clearPicks(IWorld world) {
 		for (Pick p : getPicks()) {
 			IBlockState state = world.getActualState(p.getPos());
-			// Why are doing this test?
-			// Commented out as fix for: Second pick not cleared after a spell #102
-			// if (state.getBlock() instanceof BlockPicked) {
 			world.setState(p.getPos(), p.getState());
-			// }
 		}
 		lastPicks.clear();
 		lastPicks.addAll(picks);
