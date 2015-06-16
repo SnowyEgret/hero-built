@@ -44,9 +44,9 @@ public class Overlay {
 		r.drawStringWithShadow(info.getModifiers(), x, y += rowHeight, BLUE);
 
 		// Display the dimensions of the impending volume if player is picking or shift selecting
-		// if (spell.isPicking() || (!spell.isPicking() && Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))) {
+		// if (spell.isPicking() || (!spell.isPicking() && modifiers.isPressed(Modifier.SHIFT))) {
 		boolean isFinishedPicking = Plato.pickInfo.isFinishedPicking();
-		// if (pickManager.isPicking() || (!pickManager.isPicking() && Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))) {
+		// if (pickManager.isPicking() || (!pickManager.isPicking() && modifiers.isPressed(Modifier.SHIFT))) {
 		if (!isFinishedPicking || (isFinishedPicking && Modifier.SHIFT.isPressed())) {
 			if (displacement != null) {
 				int dx = displacement.getX();

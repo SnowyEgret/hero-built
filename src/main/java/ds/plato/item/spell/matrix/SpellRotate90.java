@@ -29,8 +29,8 @@ public class SpellRotate90 extends AbstractSpellMatrix {
 		IPick pickManager = player.getPickManager();
 		ISelect selectionManager = player.getSelectionManager();
 
-		boolean deleteOriginal = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL);
-		boolean rotateAboutCentroid = Keyboard.isKeyDown(Keyboard.KEY_LMENU);
+		boolean deleteOriginal = modifiers.isPressed(Modifier.CTRL);
+		boolean rotateAboutCentroid = modifiers.isPressed(Modifier.SHIFT);
 		Pick[] picks = pickManager.getPicks();
 		Point3d center = null;
 		if (rotateAboutCentroid) {

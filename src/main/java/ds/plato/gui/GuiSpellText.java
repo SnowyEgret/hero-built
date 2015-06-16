@@ -2,14 +2,14 @@ package ds.plato.gui;
 
 import java.awt.Font;
 
-import say.swing.JFontChooser;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.EntityPlayer;
+import say.swing.JFontChooser;
 import ds.plato.item.spell.other.SpellText;
+import ds.plato.player.IPlayer;
 
 public class GuiSpellText extends GuiTextInputDialog {
 
-	public GuiSpellText(EntityPlayer player) {
+	public GuiSpellText(IPlayer player) {
 		super(player, "Font");
 	}
 
@@ -17,7 +17,7 @@ public class GuiSpellText extends GuiTextInputDialog {
 	protected void actionPerformed(GuiButton button) {
 		switch (button.id) {
 		case 2:
-			SpellText s = (SpellText) player.getHeldItem().getItem();
+			SpellText s = (SpellText) player.getHeldItem();
 			JFontChooser chooser = new JFontChooser();
 			Font font = s.getFont();
 			System.out.println("font=" + font);

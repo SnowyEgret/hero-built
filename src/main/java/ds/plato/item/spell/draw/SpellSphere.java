@@ -26,7 +26,7 @@ public class SpellSphere extends AbstractSpellDraw {
 		Modifiers modifiers = player.getModifiers();
 		IPick pickManager = player.getPickManager();
 		Pick[] picks = pickManager.getPicks();
-		boolean isHemisphere = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
+		boolean isHemisphere = modifiers.isPressed(Modifier.SHIFT);
 		IDrawable d = new Sphere(picks[0].point3d(), picks[1].point3d(), isHemisphere);
 		draw(d, player);
 	}

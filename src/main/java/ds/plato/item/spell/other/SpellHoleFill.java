@@ -41,8 +41,8 @@ public class SpellHoleFill extends Spell {
 		IPick pickManager = player.getPickManager();
 		IUndo undoManager = player.getUndoManager();
 
-		boolean isHorizontal = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL);
-		boolean useBlockInHotbar = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
+		boolean isHorizontal = modifiers.isPressed(Modifier.CTRL);
+		boolean useBlockInHotbar = modifiers.isPressed(Modifier.SHIFT);
 		
 		Iterable<Selection> selections = selectionManager.getSelections();
 		selectionManager.clearSelections(player);

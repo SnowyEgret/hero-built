@@ -14,7 +14,7 @@ public class SpellSelectVertical extends AbstractSpellSelect {
 
 	@Override
 	public void invoke(IPlayer player) {
-		positions = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ? Select.northSouth : Select.eastWest;
+		positions = player.getModifiers().isPressed(Modifier.SHIFT) ? Select.northSouth : Select.eastWest;
 		super.invoke(player);
 	}
 

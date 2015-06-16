@@ -3,9 +3,8 @@ package ds.plato.gui;
 import java.io.IOException;
 
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiLabel;
 import net.minecraft.client.gui.GuiTextField;
-import net.minecraft.entity.player.EntityPlayer;
+import ds.plato.player.IPlayer;
 
 public class GuiTextInputDialog extends GuiDialog {
 
@@ -13,7 +12,7 @@ public class GuiTextInputDialog extends GuiDialog {
 	private String text;
 	private int margin = 20;
 
-	public GuiTextInputDialog(EntityPlayer player, String...buttons) {
+	public GuiTextInputDialog(IPlayer player, String...buttons) {
 		super(player, "Ok", "Cancel");
 		if (buttons != null) {
 			for (String b : buttons) {
@@ -27,8 +26,8 @@ public class GuiTextInputDialog extends GuiDialog {
 		switch (button.id) {
 		case 0:
 			text = textField.getText();
-			ITextSetable s = (ITextSetable) player.getHeldItem().getItem();
-			s.setText(text);
+			ITextSetable s = (ITextSetable) player.getHeldItem();
+			s.setText(text, player);
 			break;
 		case 1:
 			break;

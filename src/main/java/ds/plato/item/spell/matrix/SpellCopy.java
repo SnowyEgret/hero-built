@@ -30,7 +30,7 @@ public class SpellCopy extends AbstractSpellMatrix {
 		Vector3d v = new Vector3d();
 		v.sub(to, from);
 		Matrix4d matrix = new TranslationMatrix(v);
-		boolean deleteOriginal = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
+		boolean deleteOriginal = modifiers.isPressed(Modifier.SHIFT);
 		transformSelections(player, matrix, deleteOriginal);
 	}
 

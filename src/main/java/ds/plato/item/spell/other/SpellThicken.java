@@ -44,9 +44,9 @@ public class SpellThicken extends AbstractSpellTransform {
 		Selection firstSelection = selectionManager.firstSelection();
 		IntegerDomain domain = selectionManager.getDomain();
 		if (domain.isPlanar()) {
-			thickenPlane(positions, domain, player.getWorld(), selectionManager);
+			thickenPlane(positions, modifiers, selectionManager, domain, player.getWorld());
 		} else {
-			thicken(positions, player.getWorld(), selectionManager);
+			thicken(positions, modifiers, selectionManager, player.getWorld());
 		}
 
 		selectionManager.clearSelections(player);
@@ -59,11 +59,9 @@ public class SpellThicken extends AbstractSpellTransform {
 		t.commit();
 	}
 
-	private void thicken(Set<BlockPos> positions, IWorld world, ISelect selectionManager) {
-		boolean in = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL);
-		boolean out = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
-		//TODO
-		//boolean noAir = Modifiers.isPressed(Modifier.RSHIFT);
+	private void thicken(Set<BlockPos> positions, Modifiers modifiers, ISelect selectionManager, IWorld world) {
+		boolean in = modifiers.isPressed(Modifier.CTRL);
+		boolean out = modifiers.isPressed(Modifier.SHIFT);
 		boolean noAir = Keyboard.isKeyDown(Keyboard.KEY_RSHIFT);
 		final Vec3 c = selectionManager.getCentroid();
 		for (Selection s : selectionManager.getSelections()) {
@@ -88,8 +86,8 @@ public class SpellThicken extends AbstractSpellTransform {
 		}
 	}
 
-	private void thickenPlane(Set<BlockPos> points, IntegerDomain domain, IWorld world, ISelect selectionManager) {
-		boolean withinPlane = Keyboard.isKeyDown(Keyboard.KEY_LMENU);
+	private void thickenPlane(Set<BlockPos> points, Modifiers modifiers, ISelect selectionManager, IntegerDomain domain, IWorld world) {
+		boolean withinPlane = modifiers.isPressed(Modifier.SHIFT);
 		BlockPos[] select = null;
 		switch (domain.getPlane()) {
 		case XY:

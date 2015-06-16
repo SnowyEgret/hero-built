@@ -5,6 +5,7 @@ import org.lwjgl.input.Keyboard;
 import ds.geom.IDrawable;
 import ds.geom.curve.Line;
 import ds.plato.item.spell.Modifier;
+import ds.plato.item.spell.Modifiers;
 import ds.plato.pick.IPick;
 import ds.plato.pick.Pick;
 import ds.plato.player.IPlayer;
@@ -20,11 +21,12 @@ public class SpellLine extends AbstractSpellDraw {
 
 	@Override
 	public void invoke(IPlayer player) {
+		Modifiers modifiers = player.getModifiers();
 		IPick pickManager = player.getPickManager();
 		Pick[] picks = pickManager.getPicks();
 		IDrawable d = new Line(picks[0].point3d(), picks[1].point3d());
 		draw(d, player);
-		if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
+		if (modifiers.isPressed(Modifier.CTRL)) {
 			pickManager.reset(2);
 			pickManager.clearPicks(player);
 			pickManager.pick(player.getWorld(), picks[1].getPos(), null);

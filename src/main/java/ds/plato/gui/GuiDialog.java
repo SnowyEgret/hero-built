@@ -5,10 +5,7 @@ import java.util.List;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ResourceLocation;
-
-import org.lwjgl.opengl.GL11;
+import ds.plato.player.IPlayer;
 
 public class GuiDialog extends GuiScreen {
 
@@ -17,12 +14,12 @@ public class GuiDialog extends GuiScreen {
 	private int buttonWidth = 60;
 	protected int buttonHeight = 20;
 	protected int padding = 10;
-	protected EntityPlayer player;
+	protected IPlayer player;
 	protected List<String> buttonNames = new ArrayList<>();
 	private int dx = 0;
 	private int buttonCount = 0;
 
-	public GuiDialog(EntityPlayer player, String... buttonNames) {
+	public GuiDialog(IPlayer player, String... buttonNames) {
 		this.player = player;
 		for (String b : buttonNames) {
 			this.buttonNames.add(b);

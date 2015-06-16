@@ -65,17 +65,17 @@ public abstract class AbstractSpellSelect extends Spell {
 		}
 
 		// Shrink or grow selections
-		if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
+		if (modifiers.isPressed(Modifier.CTRL)) {
 			shrinkSelections(player, selectionManager);
 		} else {
 			Block patternBlock = selectionManager.firstSelection().getState().getBlock();
-			growSelections(player, selectionManager, patternBlock);
+			growSelections(player, modifiers, selectionManager, patternBlock);
 		}
 	}
 
 	// Private-------------------------------------------------------------------------------
 
-	private void growSelections(IPlayer player, ISelect selectionManager, Block patternBlock) {
+	private void growSelections(IPlayer player, Modifiers modifiers, ISelect selectionManager, Block patternBlock) {
 		List<BlockPos> newGrownSelections = new ArrayList();
 		for (BlockPos center : selectionManager.getGrownSelections()) {
 			for (BlockPos p : positions) {
@@ -85,7 +85,7 @@ public abstract class AbstractSpellSelect extends Spell {
 				}
 				Block block = player.getWorld().getState(p).getBlock();
 				if (!(block instanceof BlockAir) && !(block instanceof BlockSelected)) {
-					if (Keyboard.isKeyDown(Keyboard.KEY_LMENU)) {
+					if (modifiers.isPressed(Modifier.SHIFT)) {
 						newGrownSelections.add(p);
 					} else {
 						if (block == patternBlock) {

@@ -24,7 +24,7 @@ public class SpellRectangle extends AbstractSpellDraw {
 		Modifiers modifiers = player.getModifiers();
 		IPick pickManager = player.getPickManager();
 		Pick[] picks = pickManager.getPicks();
-		boolean isSquare = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL);
+		boolean isSquare = modifiers.isPressed(Modifier.CTRL);
 		IDrawable d = new Rectangle(picks[0].point3d(), picks[1].point3d(), isSquare);
 		draw(d, player);
 	}

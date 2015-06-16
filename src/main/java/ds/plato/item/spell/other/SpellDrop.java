@@ -37,10 +37,10 @@ public class SpellDrop extends Spell {
 		IPick pickManager = player.getPickManager();
 		IUndo undoManager = player.getUndoManager();
 
-		boolean deleteOriginal = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL);
-		boolean fill = Keyboard.isKeyDown(Keyboard.KEY_LMENU);
+		boolean deleteOriginal = modifiers.isPressed(Modifier.CTRL);
+		boolean fill = modifiers.isPressed(Modifier.SHIFT);
 		// TODO check for all air or all non-air around block
-		boolean raise = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
+		boolean raise = modifiers.isPressed(Modifier.SHIFT);
 		if (raise) {
 			deleteOriginal = true;
 		}

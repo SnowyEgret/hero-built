@@ -28,8 +28,8 @@ public class SpellMirror extends AbstractSpellMatrix {
 		Modifiers modifiers = player.getModifiers();
 		IPick pickManager = player.getPickManager();
 
-		boolean deleteOriginal = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL);
-		boolean mirrorAboutCentroid = Keyboard.isKeyDown(Keyboard.KEY_LMENU);
+		boolean deleteOriginal = modifiers.isPressed(Modifier.CTRL);
+		boolean mirrorAboutCentroid = modifiers.isPressed(Modifier.SHIFT);
 		// boolean mirrorAboutCentroid = Modifiers.isPressed(Modifier.ALT);
 		// Vec3 c = selectionManager.getCentroid();
 

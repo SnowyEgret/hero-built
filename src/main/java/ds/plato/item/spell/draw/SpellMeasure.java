@@ -29,18 +29,18 @@ public class SpellMeasure extends AbstractSpellDraw {
 		Point3d p1 = picks[1].point3d();
 		message = String.format("Distance: %.1f", p0.distance(p1));
 		PointSet points = new PointSet();
-		if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+		if (modifiers.isPressed(Modifier.SHIFT)) {
 			// TODO if point is on border between two blocks, draw both blocks
 			points.addPoint(interpolate(p0, p1, .5d));
 		}
-		if (Keyboard.isKeyDown(Keyboard.KEY_LMENU)) { // Alt
+		if (modifiers.isPressed(Modifier.SHIFT)) { // Alt
 			double d = 1 / 3d;
 			for (int i = 1; i < 3; i++) {
 				double dd = i * d;
 				points.addPoint(interpolate(p0, p1, i * d));
 			}
 		}
-		if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
+		if (modifiers.isPressed(Modifier.CTRL)) {
 			points.addPoints(p0, p1);
 		}
 		if (!points.isEmpty()) {

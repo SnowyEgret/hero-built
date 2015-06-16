@@ -4,6 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import ds.plato.item.staff.InventoryStaff;
+import ds.plato.player.Player;
 
 public class GuiHandler implements IGuiHandler {
 
@@ -28,9 +29,9 @@ public class GuiHandler implements IGuiHandler {
 	public Object getClientGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
 		switch (id) {
 		case GUI_DIALOG:
-			return new GuiDialog(player, "Ok", "Cancel");
+			return new GuiDialog(Player.instance(player), "Ok", "Cancel");
 		case GUI_TEXT_INPUT_DIALOG:
-			return new GuiTextInputDialog(player);
+			return new GuiTextInputDialog(Player.instance(player));
 		case GUI_SPELL_TEXT:
 			return new GuiSpellText(player);
 		case GUI_STAFF:

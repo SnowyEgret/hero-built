@@ -29,8 +29,8 @@ public class SpellTrail extends Spell {
 		IUndo undoManager = player.getUndoManager();
 		
 		//On LivingUpdateEvent selections are added when SpellTrail is in hand
-		//boolean fill = Keyboard.isKeyDown(Keyboard.KEY_LMENU);
-		//boolean deleteOriginal = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL);
+		//boolean fill = modifiers.isPressed(Modifier.SHIFT);
+		//boolean deleteOriginal = modifiers.isPressed(Modifier.CTRL);
 		Transaction transaction = undoManager.newTransaction();
 		Iterable<Selection> selections = selectionManager.getSelections();
 		selectionManager.clearSelections(player);

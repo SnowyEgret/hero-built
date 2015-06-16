@@ -22,10 +22,9 @@ public class SpellSelectSurface extends AbstractSpellSelect {
 
 	@Override
 	public void invoke(IPlayer player) {
-		IPick pickManager = player.getPickManager();
-		EnumFacing side = pickManager.getPicks()[0].side;
+		EnumFacing side = player.getPickManager().getPicks()[0].side;
 		boolean ignoreSide = false;
-		if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+		if(player.getModifiers().isPressed(Modifier.SHIFT)) {
 			positions = Select.all;
 			ignoreSide = true;
 		} else {

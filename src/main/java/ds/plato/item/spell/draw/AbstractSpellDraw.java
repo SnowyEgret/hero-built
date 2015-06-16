@@ -5,28 +5,22 @@ import java.util.List;
 
 import javax.vecmath.Point3i;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.util.BlockPos;
-
-import org.lwjgl.input.Keyboard;
-
 import ds.geom.IDrawable;
 import ds.geom.VoxelSet;
 import ds.geom.solid.Solid;
-import ds.plato.Plato;
 import ds.plato.item.spell.Modifier;
 import ds.plato.item.spell.Modifiers;
 import ds.plato.item.spell.Spell;
 import ds.plato.pick.IPick;
 import ds.plato.player.IPlayer;
 import ds.plato.player.Jumper;
-import ds.plato.player.Player;
 import ds.plato.select.ISelect;
 import ds.plato.undo.IUndo;
 import ds.plato.undo.Transaction;
 import ds.plato.undo.UndoableSetBlock;
-import ds.plato.util.StringUtils;
 
 public abstract class AbstractSpellDraw extends Spell {
 
@@ -84,6 +78,7 @@ public abstract class AbstractSpellDraw extends Spell {
 		// String sound = "plato:" + StringUtils.toCamelCase(getClass());
 		// TODO how to look up sound from state
 		String sound = "ambient.weather.thunder";
+		Block b;
 		player.playSoundAtPlayer(sound);
 		// player.playSoundAtPlayer(sound);
 	}
