@@ -33,7 +33,7 @@ public class GuiHandler implements IGuiHandler {
 		case GUI_TEXT_INPUT_DIALOG:
 			return new GuiTextInputDialog(Player.instance(player));
 		case GUI_SPELL_TEXT:
-			return new GuiSpellText(player);
+			return new GuiSpellText(Player.instance(player));
 		case GUI_STAFF:
 			 return new GuiStaff(new GuiStaffContainer(player.inventory, new InventoryStaff(player.inventory,
 			 player.inventory.currentItem)));

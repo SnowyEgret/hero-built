@@ -120,6 +120,11 @@ public class PickManager implements IPick {
 	}
 
 	@Override
+	public Pick firstPick() {
+		return getPicks()[0];
+	}
+
+	@Override
 	public Pick lastPick() {
 		try {
 			return picks.getLast();

@@ -21,7 +21,7 @@ public class SpellSelectFloor extends AbstractSpellSelect {
 	@Override
 	public void invoke(IPlayer player) {
 		IPick pickManager = player.getPickManager();
-		EnumFacing side = pickManager.getPicks()[0].side;
+		EnumFacing side = pickManager.firstPick().side;
 		switch (side) {
 		case UP:
 			setConditions(new IsOnGround());

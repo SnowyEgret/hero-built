@@ -42,7 +42,7 @@ public class SpellHoleDrain extends Spell {
 
 		positions.clear();
 		positionsSize = 0;
-		BlockPos pos = pickManager.getPicks()[0].getPos();
+		BlockPos pos = pickManager.firstPick().getPos();
 		pickManager.clearPicks(player);
 
 		while (true) {
