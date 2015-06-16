@@ -11,7 +11,7 @@ import ds.plato.player.IPlayer;
 public class SpellSelectSurface extends AbstractSpellSelect {
 
 	public SpellSelectSurface() {
-		super(Select.all);
+		super(Select.ALL);
 		info.addModifiers(Modifier.SHIFT);
 	}
 
@@ -25,7 +25,7 @@ public class SpellSelectSurface extends AbstractSpellSelect {
 		EnumFacing side = player.getPickManager().getPicks()[0].side;
 		boolean ignoreSide = false;
 		if(player.getModifiers().isPressed(Modifier.SHIFT)) {
-			positions = Select.all;
+			positions = Select.ALL;
 			ignoreSide = true;
 		} else {
 			positions = Select.planeForSide(side);

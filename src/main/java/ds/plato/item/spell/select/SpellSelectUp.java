@@ -4,7 +4,7 @@ package ds.plato.item.spell.select;
 public class SpellSelectUp extends AbstractSpellSelect {
 
 	public SpellSelectUp() {
-		super(Select.up);
+		super(Select.UP);
 	}
 
 	@Override

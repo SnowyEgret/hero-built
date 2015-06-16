@@ -69,7 +69,7 @@ public class SpellHoleDrain extends Spell {
 	private void drainWater(IWorld world) {
 
 		for (BlockPos pos : positions) {
-			for (BlockPos p : Select.horizontal) {
+			for (BlockPos p : Select.HORIZONTAL) {
 				p = p.add(pos);
 				Block b = world.getBlock(p);
 				if (b == Blocks.water) {

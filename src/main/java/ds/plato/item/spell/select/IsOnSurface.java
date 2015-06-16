@@ -20,7 +20,7 @@ public class IsOnSurface implements ICondition {
 	@Override
 	public boolean test(IWorld world, BlockPos pos) {
 		if (ignoreSide) {
-			for (BlockPos p : Select.upDownNorhEastSouthWest) {
+			for (BlockPos p : Select.UP_DOWN_NESW) {
 				p = p.add(pos);
 				if (world.getBlock(p) == Blocks.air) {
 					return true;

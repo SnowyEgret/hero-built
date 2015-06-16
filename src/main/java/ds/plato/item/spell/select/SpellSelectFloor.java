@@ -10,7 +10,7 @@ import ds.plato.undo.IUndo;
 public class SpellSelectFloor extends AbstractSpellSelect {
 
 	public SpellSelectFloor() {
-		super(Select.horizontal);
+		super(Select.HORIZONTAL);
 	}
 
 	@Override

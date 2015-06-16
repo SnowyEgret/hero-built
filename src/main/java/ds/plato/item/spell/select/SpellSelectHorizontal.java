@@ -4,7 +4,7 @@ package ds.plato.item.spell.select;
 public class SpellSelectHorizontal extends AbstractSpellSelect {
 
 	public SpellSelectHorizontal() {
-		super(Select.horizontal);
+		super(Select.HORIZONTAL);
 	}
 
 	@Override

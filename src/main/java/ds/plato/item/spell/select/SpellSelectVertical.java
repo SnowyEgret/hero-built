@@ -8,13 +8,13 @@ import ds.plato.player.IPlayer;
 public class SpellSelectVertical extends AbstractSpellSelect {
 
 	public SpellSelectVertical() {
-		super(Select.eastWest);
+		super(Select.EAST_WEST);
 		info.addModifiers(Modifier.SHIFT);
 	}
 
 	@Override
 	public void invoke(IPlayer player) {
-		positions = player.getModifiers().isPressed(Modifier.SHIFT) ? Select.northSouth : Select.eastWest;
+		positions = player.getModifiers().isPressed(Modifier.SHIFT) ? Select.NORTH_SOUTH : Select.EAST_WEST;
 		super.invoke(player);
 	}
 

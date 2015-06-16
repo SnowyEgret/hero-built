@@ -66,7 +66,7 @@ public class SpellThicken extends AbstractSpellTransform {
 		final Vec3 c = selectionManager.getCentroid();
 		for (Selection s : selectionManager.getSelections()) {
 			double d = s.getPos().distanceSqToCenter(c.xCoord, c.yCoord, c.zCoord);
-			for (BlockPos p : Select.all) {
+			for (BlockPos p : Select.ALL) {
 				p = p.add(s.getPos());
 				//Throw out this position if we don't want air and it is air
 				if (noAir) {

@@ -12,7 +12,7 @@ public class IsOnEdgeOnGround implements ICondition {
 		if(world.getBlock(pos.up()) != Blocks.air) {
 			return false;
 		}
-		for (BlockPos p : Select.above) {
+		for (BlockPos p : Select.ABOVE) {
 			p = p.add(pos);
 			if (world.getBlock(p) != Blocks.air) {
 				return true;

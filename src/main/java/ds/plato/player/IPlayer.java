@@ -1,5 +1,6 @@
 package ds.plato.player;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -17,7 +18,7 @@ import ds.plato.undo.Transaction;
 import ds.plato.world.IWorld;
 
 public interface IPlayer {
-	
+
 	public abstract EntityPlayer getPlayer();
 
 	public abstract IWorld getWorld();
@@ -55,7 +56,6 @@ public interface IPlayer {
 	public abstract void setLastSpell(ISpell spell);
 
 	public abstract void playSoundAtPlayer(String sound);
-
 
 	// Thought I saw something like this somewhere in an interface
 	// public static IPlayer getPlayer(EntityPlayer player) {

@@ -49,7 +49,7 @@ public class SpellHoleFill extends Spell {
 		pickManager.clearPicks(player);
 		Set<UndoableSetBlock> setBlocks = new HashSet();
 		for (Selection s : selections) {
-			BlockPos[] pos = isHorizontal ? Select.horizontal : Select.belowInclusive;
+			BlockPos[] pos = isHorizontal ? Select.HORIZONTAL : Select.BELOW_INCLUSIVE;
 			for (BlockPos p : pos) {
 				p = p.add(s.getPos());
 				Block b = player.getWorld().getBlock(p);

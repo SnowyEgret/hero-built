@@ -12,7 +12,7 @@ public class IsOnEdgeOnCeiling implements ICondition {
 		if(world.getBlock(pos.down()) != Blocks.air) {
 			return false;
 		}
-		for (BlockPos p : Select.below) {
+		for (BlockPos p : Select.BELOW) {
 			p = p.add(pos);
 			if (world.getBlock(p) != Blocks.air) {
 				return true;

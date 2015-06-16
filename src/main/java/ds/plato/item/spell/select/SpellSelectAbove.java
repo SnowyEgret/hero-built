@@ -4,7 +4,7 @@ package ds.plato.item.spell.select;
 public class SpellSelectAbove extends AbstractSpellSelect {
 
 	public SpellSelectAbove() {
-		super(Select.aboveInclusive);
+		super(Select.ABOVE_INCLUSIVE);
 	}
 
 	@Override

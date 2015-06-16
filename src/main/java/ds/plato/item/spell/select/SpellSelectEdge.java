@@ -7,7 +7,7 @@ import ds.plato.player.IPlayer;
 public class SpellSelectEdge extends AbstractSpellSelect {
 
 	public SpellSelectEdge() {
-		super(Select.horizontalNoCorners);
+		super(Select.HORIZONTAL_NO_CORNERS);
 	}
 
 	@Override
