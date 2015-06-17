@@ -1,15 +1,18 @@
 package ds.plato.network;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
-import net.minecraft.util.Vec3i;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+
+import com.google.common.collect.Lists;
+
 import ds.plato.item.spell.Action;
 import ds.plato.item.spell.ISpell;
 import ds.plato.item.spell.Modifier;
@@ -145,7 +148,9 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 			break;
 		case COPY:
 			if (modifiers.isPressed(Modifier.CTRL)) {
+				BlockPos cursor = message.getCursorPos();
 				player.getClipboard().setSelections(selectionManager.getSelections());
+				player.getClipboard().setOrigin(cursor);
 				selectionManager.clearSelections(player);
 			}
 			break;
@@ -164,11 +169,16 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 				BlockPos cursor = message.getCursorPos();
 				BlockPos delta = cursor.subtract(player.getClipboard().getOrigin().down());
 				
+				List<BlockPos> reselects = Lists.newArrayList();
 				Transaction t = player.getUndoManager().newTransaction();
 				for (Selection s : selections) {
-					t.add(new UndoableSetBlock(world, s.getPos().add(delta), s.getState()));
+					BlockPos p = s.getPos().add(delta);
+					t.add(new UndoableSetBlock(world, p, s.getState()));
+					reselects.add(p);
 				}
 				t.commit();
+				//TODO Maybe commit can reselect.
+				selectionManager.select(player, reselects);
 			}
 			break;
 		default:

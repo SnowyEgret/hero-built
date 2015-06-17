@@ -39,11 +39,11 @@ public class PlayerProperties implements IExtendedEntityProperties {
 	}
 
 	@Override
-	public void saveNBTData(NBTTagCompound compound) {
+	public void saveNBTData(NBTTagCompound tag) {
 	}
 
 	@Override
-	public void loadNBTData(NBTTagCompound compound) {
+	public void loadNBTData(NBTTagCompound tag) {
 	}
 
 	@Override
