@@ -3,6 +3,8 @@ package ds.plato.event;
 import java.util.HashSet;
 import java.util.Set;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -35,7 +37,10 @@ public class KeyHandler {
 		if (KEYS_TO_TRACK.contains(Keyboard.getEventKey())) {
 			int keyCode = Keyboard.getEventKey();
 			System.out.println("keyCode=" + keyCode);
-			Plato.network.sendToServer(new KeyMessage(keyCode, Keyboard.getEventKeyState()));
+			// Pass the cursor position for Pasting
+			BlockPos cursorPos = Minecraft.getMinecraft().objectMouseOver.getBlockPos();
+			Plato.network.sendToServer(new KeyMessage(keyCode, Keyboard.getEventKeyState(), cursorPos));
+			
 		}
 	}
 }

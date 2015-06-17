@@ -5,6 +5,7 @@ import java.util.NoSuchElementException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.Vec3i;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -21,6 +22,9 @@ import ds.plato.pick.IPick;
 import ds.plato.player.IPlayer;
 import ds.plato.player.Player;
 import ds.plato.select.ISelect;
+import ds.plato.select.Selection;
+import ds.plato.undo.Transaction;
+import ds.plato.undo.UndoableSetBlock;
 import ds.plato.world.IWorld;
 
 public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> {
@@ -56,12 +60,12 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 		Modifier modifier = Modifier.fromKeyCode(keyCode);
 		if (modifier != null) {
 			modifiers.setPressed(modifier, keyState);
-			//System.out.println("modifiers=" + modifiers);
+			// System.out.println("modifiers=" + modifiers);
 		}
 
-		//System.out.println("keyCode=" + keyCode);
+		// System.out.println("keyCode=" + keyCode);
 		Action action = Action.fromKeyCode(keyCode);
-		//System.out.println("action=" + action);
+		// System.out.println("action=" + action);
 
 		if (action == null || !keyState) {
 			return;
@@ -139,7 +143,34 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 				copy(player, 0, 1);
 			}
 			break;
-
+		case COPY:
+			if (modifiers.isPressed(Modifier.CTRL)) {
+				player.getClipboard().setSelections(selectionManager.getSelections());
+				selectionManager.clearSelections(player);
+			}
+			break;
+		case CUT:
+			if (modifiers.isPressed(Modifier.CTRL)) {
+				// TODO getSelections returns a copy. Is there another way to make something immutable?
+				BlockPos cursor = message.getCursorPos();
+				player.getClipboard().setOrigin(cursor);
+				player.getClipboard().setSelections(selectionManager.getSelections());
+				new SpellDelete().invoke(player);
+			}
+			break;
+		case PASTE:
+			if (modifiers.isPressed(Modifier.CTRL)) {
+				Iterable<Selection> selections = player.getClipboard().getSelections();
+				BlockPos cursor = message.getCursorPos();
+				BlockPos delta = cursor.subtract(player.getClipboard().getOrigin().down());
+				
+				Transaction t = player.getUndoManager().newTransaction();
+				for (Selection s : selections) {
+					t.add(new UndoableSetBlock(world, s.getPos().add(delta), s.getState()));
+				}
+				t.commit();
+			}
+			break;
 		default:
 			return;
 		}

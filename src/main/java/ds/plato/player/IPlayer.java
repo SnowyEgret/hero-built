@@ -57,6 +57,8 @@ public interface IPlayer {
 
 	public abstract void playSoundAtPlayer(String sound);
 
+	public abstract Clipboard getClipboard();
+
 	// Thought I saw something like this somewhere in an interface
 	// public static IPlayer getPlayer(EntityPlayer player) {
 	// this.player = player;

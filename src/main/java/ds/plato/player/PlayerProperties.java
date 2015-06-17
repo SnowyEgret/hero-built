@@ -11,7 +11,7 @@ import ds.plato.pick.PickManager;
 import ds.plato.select.SelectionManager;
 import ds.plato.undo.UndoManager;
 
-public class PlayerProperies implements IExtendedEntityProperties {
+public class PlayerProperties implements IExtendedEntityProperties {
 
 	public final static String NAME = "PlayerProperties";
 
@@ -19,7 +19,7 @@ public class PlayerProperies implements IExtendedEntityProperties {
 	private SelectionManager selectionManager;
 	private PickManager pickManager;
 	private UndoManager undoManager;
-
+	private Clipboard clipboard;
 	private ISpell lastSpell;
 
 	public Modifiers getModifiers() {
@@ -52,6 +52,7 @@ public class PlayerProperies implements IExtendedEntityProperties {
 		selectionManager = new SelectionManager(Plato.blockSelected);
 		pickManager = new PickManager(Plato.blockPicked);
 		undoManager = new UndoManager();
+		clipboard = new Clipboard();
 	}
 
 	public void setLastSpell(ISpell spell) {
@@ -60,6 +61,10 @@ public class PlayerProperies implements IExtendedEntityProperties {
 
 	public ISpell getLastSpell() {
 		return lastSpell;
+	}
+
+	public Clipboard getClipboard() {
+		return clipboard;
 	}
 
 }

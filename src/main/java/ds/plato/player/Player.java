@@ -182,32 +182,38 @@ public class Player implements IPlayer {
 
 	@Override
 	public Modifiers getModifiers() {
-		IExtendedEntityProperties p = player.getExtendedProperties(PlayerProperies.NAME);
-		return ((PlayerProperies) p).getModifiers();
+		IExtendedEntityProperties p = player.getExtendedProperties(PlayerProperties.NAME);
+		return ((PlayerProperties) p).getModifiers();
 	}
 
 	@Override
 	public IUndo getUndoManager() {
-		IExtendedEntityProperties p = player.getExtendedProperties(PlayerProperies.NAME);
-		return ((PlayerProperies) p).getUndoManager();
+		IExtendedEntityProperties p = player.getExtendedProperties(PlayerProperties.NAME);
+		return ((PlayerProperties) p).getUndoManager();
 	}
 
 	@Override
 	public ISelect getSelectionManager() {
-		IExtendedEntityProperties p = player.getExtendedProperties(PlayerProperies.NAME);
-		return ((PlayerProperies) p).getSelectionManager();
+		IExtendedEntityProperties p = player.getExtendedProperties(PlayerProperties.NAME);
+		return ((PlayerProperties) p).getSelectionManager();
 	}
 
 	@Override
 	public IPick getPickManager() {
-		IExtendedEntityProperties p = player.getExtendedProperties(PlayerProperies.NAME);
-		return ((PlayerProperies) p).getPickManager();
+		IExtendedEntityProperties p = player.getExtendedProperties(PlayerProperties.NAME);
+		return ((PlayerProperties) p).getPickManager();
 	}
 
 	@Override
 	public void setLastSpell(ISpell spell) {
-		IExtendedEntityProperties p = player.getExtendedProperties(PlayerProperies.NAME);
-		((PlayerProperies) p).setLastSpell(spell);
+		IExtendedEntityProperties p = player.getExtendedProperties(PlayerProperties.NAME);
+		((PlayerProperties) p).setLastSpell(spell);
+	}
+
+	@Override
+	public Clipboard getClipboard() {
+		IExtendedEntityProperties p = player.getExtendedProperties(PlayerProperties.NAME);
+		return ((PlayerProperties) p).getClipboard();
 	}
 
 	@Override

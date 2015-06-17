@@ -1,11 +1,6 @@
 package ds.plato.item.spell;
 
-import net.minecraft.client.settings.KeyBinding;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
-
 import org.lwjgl.input.Keyboard;
-
-import ds.plato.Plato;
 
 public enum Action {
 
@@ -19,6 +14,9 @@ public enum Action {
 	RIGHT(Keyboard.KEY_RIGHT),
 	UP(Keyboard.KEY_UP),
 	DOWN(Keyboard.KEY_DOWN),
+	CUT(Keyboard.KEY_X),
+	COPY(Keyboard.KEY_C),
+	PASTE(Keyboard.KEY_V),
 	REINVOKE(Keyboard.KEY_PERIOD);
 
 	public int keyCode;

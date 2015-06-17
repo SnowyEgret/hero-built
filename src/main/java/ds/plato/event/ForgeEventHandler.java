@@ -46,7 +46,7 @@ import ds.plato.network.MyEvent;
 import ds.plato.pick.IPick;
 import ds.plato.player.IPlayer;
 import ds.plato.player.Player;
-import ds.plato.player.PlayerProperies;
+import ds.plato.player.PlayerProperties;
 import ds.plato.select.ISelect;
 import ds.plato.world.IWorld;
 
@@ -202,7 +202,7 @@ public class ForgeEventHandler {
 	@SubscribeEvent
 	public void onEntityConstructing(EntityConstructing event) {
 		if (event.entity instanceof EntityPlayer) {
-			event.entity.registerExtendedProperties(PlayerProperies.NAME, new PlayerProperies());
+			event.entity.registerExtendedProperties(PlayerProperties.NAME, new PlayerProperties());
 		}
 	}
 }
