@@ -78,9 +78,8 @@ public abstract class AbstractSpellDraw extends Spell {
 		// String sound = "plato:" + StringUtils.toCamelCase(getClass());
 		// TODO how to look up sound from state
 		String sound = "ambient.weather.thunder";
-		Block b;
+		//Block b;
 		player.playSoundAtPlayer(sound);
-		// player.playSoundAtPlayer(sound);
 	}
 
 }
