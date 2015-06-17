@@ -63,7 +63,7 @@ public class MouseHandler {
 				if (Plato.selectionInfo.getSize() != 0) {
 					isOrbiting = true;
 					// TODO method on selectionInfo for centroid;
-					 //BlockPos pos = Plato.selectionInfo.centroid();
+					// BlockPos pos = Plato.selectionInfo.centroid();
 					BlockPos pos = Plato.selectionInfo.getFirstPos();
 					centroid = new Vec3(pos.getX(), pos.getY(), pos.getZ());
 				}
@@ -75,7 +75,7 @@ public class MouseHandler {
 		}
 
 		Item heldItem = stack.getItem();
-		if (heldItem instanceof IStaff || heldItem instanceof ISpell) {
+		if (heldItem instanceof IStaff || heldItem instanceof ISpell || cursor.typeOfHit == MovingObjectType.MISS) {
 			if (e.buttonstate) {
 				if (e.button == 1 && cursor.typeOfHit == MovingObjectType.BLOCK) {
 					// Right clicking on a block handled by onItemUse
