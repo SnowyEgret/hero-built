@@ -33,7 +33,7 @@ public class SpellTrail extends Spell {
 		IBlockState firstBlock = player.getHotbar().firstBlock();
 		Transaction t = undoManager.newTransaction();
 		for (Selection s : selections) {
-			t.add(new UndoableSetBlock(player.getWorld(), selectionManager, s.getPos(), firstBlock));
+			t.add(new UndoableSetBlock(player.getWorld(), s.getPos(), firstBlock));
 		}
 		t.commit();
 	}

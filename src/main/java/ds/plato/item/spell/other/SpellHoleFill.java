@@ -55,9 +55,9 @@ public class SpellHoleFill extends Spell {
 				Block b = player.getWorld().getBlock(p);
 				if (b == Blocks.air || b == Blocks.water) {
 					if (useBlockInHotbar) {
-						setBlocks.add(new UndoableSetBlock(player.getWorld(), selectionManager, p, player.getHotbar().firstBlock()));
+						setBlocks.add(new UndoableSetBlock(player.getWorld(), p, player.getHotbar().firstBlock()));
 					} else {
-						setBlocks.add(new UndoableSetBlock(player.getWorld(), selectionManager, p, s.getState()));
+						setBlocks.add(new UndoableSetBlock(player.getWorld(), p, s.getState()));
 					}
 				}
 			}

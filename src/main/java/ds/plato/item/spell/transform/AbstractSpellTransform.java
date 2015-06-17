@@ -50,7 +50,7 @@ public abstract class AbstractSpellTransform extends Spell {
 					// }
 				}
 				jumper.setHeight(pos);
-				setBlocks.add(new UndoableSetBlock(player.getWorld(), selectionManager, pos, state));
+				setBlocks.add(new UndoableSetBlock(player.getWorld(), pos, state));
 				reselects.add(pos);
 			}
 		}

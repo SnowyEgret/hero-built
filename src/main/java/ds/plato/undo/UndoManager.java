@@ -97,7 +97,7 @@ public class UndoManager implements IUndo {
 	}
 
 	@Override
-	public IUndoable doIt() {
+	public IUndoable dO() {
 		// TODO Auto-generated method stub
 		return null;
 	}

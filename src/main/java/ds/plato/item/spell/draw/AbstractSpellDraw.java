@@ -65,7 +65,7 @@ public abstract class AbstractSpellDraw extends Spell {
 				pos = pos.up();
 			}
 			jumper.setHeight(pos);
-			setBlocks.add(new UndoableSetBlock(player.getWorld(), selectionManager, pos, state));
+			setBlocks.add(new UndoableSetBlock(player.getWorld(), pos, state));
 			reselects.add(pos);
 		}
 
@@ -74,9 +74,6 @@ public abstract class AbstractSpellDraw extends Spell {
 		// Set the blocks inside an undoManager transaction
 		Transaction t = undoManager.newTransaction();
 		t.addAll(setBlocks);
-//		for (UndoableSetBlock u : setBlocks) {
-//			t.add(u.doIt());
-//		}
 		t.commit();
 
 		// Select all transformed blocks

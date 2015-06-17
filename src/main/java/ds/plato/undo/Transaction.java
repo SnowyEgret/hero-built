@@ -37,7 +37,7 @@ public class Transaction implements IUndoable, Iterable {
 	}
 
 	@Override
-	public IUndoable doIt() {
+	public IUndoable dO() {
 		return this;
 	}
 
@@ -77,7 +77,7 @@ public class Transaction implements IUndoable, Iterable {
 			undoManager.addTransaction(this);
 		}
 		for (IUndoable u : undoables) {
-			u.doIt();
+			u.dO();
 		}
 		if (world != null) {
 			world.updateClient();

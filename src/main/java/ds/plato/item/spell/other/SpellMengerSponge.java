@@ -44,7 +44,7 @@ public class SpellMengerSponge extends Spell {
 		IBlockState air = Blocks.air.getDefaultState();
 		Transaction t = undoManager.newTransaction();
 		for (BlockPos pos : positionsToDelete) {
-			t.add(new UndoableSetBlock(player.getWorld(), selectionManager, pos, air));
+			t.add(new UndoableSetBlock(player.getWorld(), pos, air));
 		}
 		t.commit();
 	}

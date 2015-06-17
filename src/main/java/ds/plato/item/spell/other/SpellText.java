@@ -110,7 +110,7 @@ public class SpellText extends Spell implements ITextSetable {
 		pickManager.clearPicks(player);
 		Transaction t = undoManager.newTransaction();
 		for (BlockPos p : positions) {
-			t.add(new UndoableSetBlock(player.getWorld(), selectionManager, p, player.getHotbar().firstBlock()));
+			t.add(new UndoableSetBlock(player.getWorld(), p, player.getHotbar().firstBlock()));
 		}
 		t.commit();
 	}
