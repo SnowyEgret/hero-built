@@ -2,12 +2,16 @@ package ds.plato.item.spell.draw;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.vecmath.Point3i;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.BlockPos;
+
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+
 import ds.geom.IDrawable;
 import ds.geom.VoxelSet;
 import ds.geom.solid.Solid;
@@ -19,6 +23,7 @@ import ds.plato.player.IPlayer;
 import ds.plato.player.Jumper;
 import ds.plato.select.ISelect;
 import ds.plato.undo.IUndo;
+import ds.plato.undo.IUndoable;
 import ds.plato.undo.Transaction;
 import ds.plato.undo.UndoableSetBlock;
 
@@ -50,7 +55,8 @@ public abstract class AbstractSpellDraw extends Spell {
 
 		Jumper jumper = new Jumper(player);
 
-		List<UndoableSetBlock> setBlocks = new ArrayList<>();
+		//Set<IUndoable> setBlocks = Sets.newHashSet();
+		List<IUndoable> setBlocks = Lists.newArrayList();
 		List<BlockPos> reselects = new ArrayList<>();
 		IBlockState state = player.getHotbar().firstBlock();
 		for (Point3i p : voxels) {
@@ -67,9 +73,10 @@ public abstract class AbstractSpellDraw extends Spell {
 
 		// Set the blocks inside an undoManager transaction
 		Transaction t = undoManager.newTransaction();
-		for (UndoableSetBlock u : setBlocks) {
-			t.add(u.set());
-		}
+		t.addAll(setBlocks);
+//		for (UndoableSetBlock u : setBlocks) {
+//			t.add(u.doIt());
+//		}
 		t.commit();
 
 		// Select all transformed blocks

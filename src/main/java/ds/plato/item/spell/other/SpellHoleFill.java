@@ -1,6 +1,5 @@
 package ds.plato.item.spell.other;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import net.minecraft.block.Block;
@@ -8,7 +7,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.util.BlockPos;
 
-import org.lwjgl.input.Keyboard;
+import com.google.common.collect.Sets;
 
 import ds.plato.item.spell.Modifier;
 import ds.plato.item.spell.Modifiers;
@@ -19,6 +18,7 @@ import ds.plato.player.IPlayer;
 import ds.plato.select.ISelect;
 import ds.plato.select.Selection;
 import ds.plato.undo.IUndo;
+import ds.plato.undo.IUndoable;
 import ds.plato.undo.Transaction;
 import ds.plato.undo.UndoableSetBlock;
 
@@ -47,7 +47,7 @@ public class SpellHoleFill extends Spell {
 		Iterable<Selection> selections = selectionManager.getSelections();
 		selectionManager.clearSelections(player);
 		pickManager.clearPicks(player);
-		Set<UndoableSetBlock> setBlocks = new HashSet();
+		Set<IUndoable> setBlocks = Sets.newHashSet();
 		for (Selection s : selections) {
 			BlockPos[] pos = isHorizontal ? Select.HORIZONTAL : Select.BELOW_INCLUSIVE;
 			for (BlockPos p : pos) {
@@ -63,9 +63,7 @@ public class SpellHoleFill extends Spell {
 			}
 		}
 		Transaction t = undoManager.newTransaction();
-		for (UndoableSetBlock u : setBlocks) {
-			t.add(u.set());
-		}
+		t.addAll(setBlocks);
 		t.commit();
 	}
 	

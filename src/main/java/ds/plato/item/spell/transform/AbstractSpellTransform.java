@@ -1,16 +1,19 @@
 package ds.plato.item.spell.transform;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.BlockPos;
 import net.minecraftforge.common.IPlantable;
+
+import com.google.common.collect.Lists;
+
 import ds.plato.item.spell.Spell;
 import ds.plato.player.IPlayer;
 import ds.plato.player.Jumper;
 import ds.plato.select.ISelect;
 import ds.plato.select.Selection;
+import ds.plato.undo.IUndoable;
 import ds.plato.undo.Transaction;
 import ds.plato.undo.UndoableSetBlock;
 
@@ -30,8 +33,8 @@ public abstract class AbstractSpellTransform extends Spell {
 		Iterable<Selection> selections = selectionManager.getSelections();
 		selectionManager.clearSelections(player); 
 		player.getPickManager().clearPicks(player);
-		List<UndoableSetBlock> setBlocks = new ArrayList<>();
-		List<BlockPos> reselects = new ArrayList<>();
+		List<IUndoable> setBlocks = Lists.newArrayList();
+		List<BlockPos> reselects = Lists.newArrayList();
 		for (Selection s : selections) {
 			for (Selection sel : transformer.transform(s)) {
 				// s = transformer.transform(s);
@@ -55,9 +58,7 @@ public abstract class AbstractSpellTransform extends Spell {
 		jumper.jump();
 
 		Transaction t = player.getUndoManager().newTransaction();
-		for (UndoableSetBlock u : setBlocks) {
-			t.add(u.set());
-		}
+		t.addAll(setBlocks);
 		t.commit();
 
 		selectionManager.select(player, reselects);

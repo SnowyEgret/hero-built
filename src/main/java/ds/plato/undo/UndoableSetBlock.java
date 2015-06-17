@@ -16,11 +16,6 @@ public class UndoableSetBlock implements IUndoable {
 	BlockPos pos;
 	IBlockState state, prevState;
 
-	@Deprecated
-	public UndoableSetBlock(IWorld world, ISelect selectionManager, Selection s) {
-		this(world, selectionManager, s.getPos(), s.getState());
-	}
-
 	public UndoableSetBlock(IWorld world, ISelect selectionManager, BlockPos pos, IBlockState state) {
 		this.world = world;
 		this.selectionManager = selectionManager;
@@ -29,11 +24,9 @@ public class UndoableSetBlock implements IUndoable {
 		prevState = world.getState(pos);
 	}
 
-	public UndoableSetBlock set() {
+	public UndoableSetBlock doIt() {
 
 		Selection s = selectionManager.getSelection(pos);
-		//TODO 
-		//selectionManager.removeSelection(pos);
 		if (s != null) {
 			prevState = s.getState();
 		}

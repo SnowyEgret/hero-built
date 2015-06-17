@@ -11,7 +11,6 @@ import java.util.Set;
 
 import javax.vecmath.Vector3d;
 
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Items;
 import net.minecraft.util.BlockPos;
 import ds.plato.gui.GuiHandler;
@@ -25,7 +24,6 @@ import ds.plato.select.ISelect;
 import ds.plato.undo.IUndo;
 import ds.plato.undo.Transaction;
 import ds.plato.undo.UndoableSetBlock;
-import ds.plato.world.IWorld;
 
 public class SpellText extends Spell implements ITextSetable {
 
@@ -112,7 +110,7 @@ public class SpellText extends Spell implements ITextSetable {
 		pickManager.clearPicks(player);
 		Transaction t = undoManager.newTransaction();
 		for (BlockPos p : positions) {
-			t.add(new UndoableSetBlock(player.getWorld(), selectionManager, p, player.getHotbar().firstBlock()).set());
+			t.add(new UndoableSetBlock(player.getWorld(), selectionManager, p, player.getHotbar().firstBlock()));
 		}
 		t.commit();
 	}

@@ -5,6 +5,7 @@ import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.Vec3;
 
@@ -13,35 +14,31 @@ import org.lwjgl.input.Keyboard;
 import ds.geom.IntegerDomain;
 import ds.plato.item.spell.Modifier;
 import ds.plato.item.spell.Modifiers;
+import ds.plato.item.spell.Spell;
 import ds.plato.item.spell.select.Select;
-import ds.plato.item.spell.transform.AbstractSpellTransform;
-import ds.plato.pick.IPick;
 import ds.plato.player.IPlayer;
-import ds.plato.player.Player;
 import ds.plato.select.ISelect;
 import ds.plato.select.Selection;
-import ds.plato.undo.IUndo;
 import ds.plato.undo.Transaction;
 import ds.plato.undo.UndoableSetBlock;
 import ds.plato.world.IWorld;
 
-public class SpellThicken extends AbstractSpellTransform {
+public class SpellThicken extends Spell {
 
 	public SpellThicken() {
-		super();
+		super(1);
 		// ctrl-inward, shift-outward, alt-within plane
 		info.addModifiers(Modifier.CTRL, Modifier.SHIFT, Modifier.ALT);
 	}
 
 	@Override
 	public void invoke(IPlayer player) {
+		
 		Modifiers modifiers = player.getModifiers();
 		ISelect selectionManager = player.getSelectionManager();
-		IPick pickManager = player.getPickManager();
-		IUndo undoManager = player.getUndoManager();
 		
 		Set<BlockPos> positions = new HashSet<>();
-		Selection firstSelection = selectionManager.firstSelection();
+		IBlockState firstSelection = selectionManager.firstSelection().getState();
 		IntegerDomain domain = selectionManager.getDomain();
 		if (domain.isPlanar()) {
 			thickenPlane(positions, modifiers, selectionManager, domain, player.getWorld());
@@ -50,19 +47,21 @@ public class SpellThicken extends AbstractSpellTransform {
 		}
 
 		selectionManager.clearSelections(player);
-		pickManager.clearPicks(player);
+		player.getPickManager().clearPicks(player);
 
-		Transaction t = undoManager.newTransaction();
+		Transaction t = player.getUndoManager().newTransaction();
 		for (BlockPos p : positions) {
-			t.add(new UndoableSetBlock(player.getWorld(), selectionManager, p, firstSelection.getState()).set());
+			t.add(new UndoableSetBlock(player.getWorld(), selectionManager, p, firstSelection));
 		}
 		t.commit();
 	}
 
 	private void thicken(Set<BlockPos> positions, Modifiers modifiers, ISelect selectionManager, IWorld world) {
+		
 		boolean in = modifiers.isPressed(Modifier.CTRL);
 		boolean out = modifiers.isPressed(Modifier.SHIFT);
 		boolean noAir = Keyboard.isKeyDown(Keyboard.KEY_RSHIFT);
+		
 		final Vec3 c = selectionManager.getCentroid();
 		for (Selection s : selectionManager.getSelections()) {
 			double d = s.getPos().distanceSqToCenter(c.xCoord, c.yCoord, c.zCoord);

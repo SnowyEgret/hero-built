@@ -1,10 +1,6 @@
 package ds.plato.item.spell.other;
 
-import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
-
-import org.lwjgl.input.Keyboard;
-
+import net.minecraft.block.state.IBlockState;
 import ds.plato.item.spell.Modifiers;
 import ds.plato.item.spell.Spell;
 import ds.plato.pick.IPick;
@@ -31,14 +27,15 @@ public class SpellTrail extends Spell {
 		//On LivingUpdateEvent selections are added when SpellTrail is in hand
 		//boolean fill = modifiers.isPressed(Modifier.SHIFT);
 		//boolean deleteOriginal = modifiers.isPressed(Modifier.CTRL);
-		Transaction transaction = undoManager.newTransaction();
 		Iterable<Selection> selections = selectionManager.getSelections();
 		selectionManager.clearSelections(player);
 		pickManager.clearPicks(player);
+		IBlockState firstBlock = player.getHotbar().firstBlock();
+		Transaction t = undoManager.newTransaction();
 		for (Selection s : selections) {
-			player.getWorld().setState(s.getPos(), player.getHotbar().firstBlock());
+			t.add(new UndoableSetBlock(player.getWorld(), selectionManager, s.getPos(), firstBlock));
 		}
-		transaction.commit();
+		t.commit();
 	}
 
 }

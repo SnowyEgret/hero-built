@@ -19,25 +19,17 @@ public class UndoManager implements IUndo {
 
 	// Interface IUndo -------------------------------------
 
+	public Transaction newTransaction() {
+		return new Transaction(this);
+	}
+
 	public void addTransaction(Transaction transaction) {
-		// TODO
-		// Ernio's suggestion in my post: http://www.minecraftforge.net/forum/index.php/topic,30991
-		// if (transaction.getSize() > Transaction.MAX_SIZE) {
-		// CompressedStreamTools.writeCompressed(undoable.tooNBT(), new FileOutputStream(f));
-		// }
-		// Read it like this:
-		// NBTTagCompound nbt = CompressedStreamTools.readCompressed(new FileInputStream(f));
-		// Filename has position of node in it so that it is rewritten
 		Node node = new Node(transaction);
 		currentNode.right = node;
 		node.left = currentNode;
 		currentNode = node;
 		if (size() > maxLength)
 			removeLeftEnd();
-	}
-
-	public Transaction newTransaction() {
-		return new Transaction(this);
 	}
 
 	// Interface IUndoable -------------------------------------
@@ -102,5 +94,11 @@ public class UndoManager implements IUndo {
 		public Node() {
 			undoable = null;
 		}
+	}
+
+	@Override
+	public IUndoable doIt() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

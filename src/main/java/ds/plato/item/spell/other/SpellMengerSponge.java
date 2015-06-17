@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.vecmath.Point3i;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
 import ds.geom.IntegerDomain;
@@ -22,7 +23,7 @@ import ds.plato.undo.UndoableSetBlock;
 public class SpellMengerSponge extends Spell {
 
 	int level = 0;
-	List<BlockPos> pointsToDelete = new ArrayList<>();
+	List<BlockPos> positionsToDelete = new ArrayList<>();
 
 	public SpellMengerSponge() {
 		super(1);
@@ -37,12 +38,13 @@ public class SpellMengerSponge extends Spell {
 
 		//TODO use enclosing cube
 		recursivelySubtract(selectionManager.voxelSet());
-		System.out.println("pointsToDelete=" + pointsToDelete);
+		//System.out.println("positionsToDelete=" + positionsToDelete);
 		selectionManager.clearSelections(player);
 		pickManager.clearPicks(player);
+		IBlockState air = Blocks.air.getDefaultState();
 		Transaction t = undoManager.newTransaction();
-		for (BlockPos v : pointsToDelete) {
-			t.add(new UndoableSetBlock(player.getWorld(), selectionManager, v, Blocks.air.getDefaultState()).set());
+		for (BlockPos pos : positionsToDelete) {
+			t.add(new UndoableSetBlock(player.getWorld(), selectionManager, pos, air));
 		}
 		t.commit();
 	}
@@ -68,7 +70,7 @@ public class SpellMengerSponge extends Spell {
 				i++;
 			}
 			if (domainsToDelete.contains(domain.count)) {
-				pointsToDelete.add(new BlockPos(p.x, p.y, p.z));
+				positionsToDelete.add(new BlockPos(p.x, p.y, p.z));
 			}
 		}
 		
