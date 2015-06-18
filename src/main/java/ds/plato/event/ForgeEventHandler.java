@@ -1,7 +1,5 @@
 package ds.plato.event;
 
-import java.util.ArrayList;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.GuiIngameMenu;
@@ -25,9 +23,6 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import com.google.common.collect.Lists;
-
 import ds.plato.Plato;
 import ds.plato.block.BlockPicked;
 import ds.plato.block.BlockPickedModel;
@@ -35,14 +30,10 @@ import ds.plato.block.BlockSelected;
 import ds.plato.block.BlockSelectedModel;
 import ds.plato.gui.Overlay;
 import ds.plato.item.spell.ISpell;
-import ds.plato.item.spell.Modifier;
-import ds.plato.item.spell.Modifiers;
 import ds.plato.item.spell.other.SpellTrail;
 import ds.plato.item.spell.transform.SpellFill;
-import ds.plato.item.staff.IStaff;
 import ds.plato.item.staff.Staff;
 import ds.plato.network.ClearManagersMessage;
-import ds.plato.network.MyEvent;
 import ds.plato.pick.IPick;
 import ds.plato.player.IPlayer;
 import ds.plato.player.Player;

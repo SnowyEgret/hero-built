@@ -1,29 +1,31 @@
 package ds.plato.undo;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
+
+import net.minecraft.nbt.CompressedStreamTools;
+import net.minecraft.nbt.NBTTagCompound;
 
 import com.google.common.collect.Lists;
 
+import ds.plato.player.IPlayer;
 import ds.plato.world.IWorld;
 
 public class Transaction implements IUndoable, Iterable {
 
 	public static final int MAX_SIZE = 9999;
-	//protected Iterable<IUndoable> undoables = new HashSet<>();
 	protected List<IUndoable> undoables = Lists.newArrayList();
 	private final IUndo undoManager;
 	private IWorld world;
+	private boolean isCached = false;
+	private String filename;
 
-	protected Transaction(IUndo undoManager) {
-		this.world = null;
-		this.undoManager = undoManager;
-	}
-
-	public Transaction(IWorld world) {
-		this.world = world;
-		undoManager = null;
+	public Transaction(IPlayer player) {
+		world = player.getWorld();
+		undoManager = player.getUndoManager();
 	}
 
 	public void add(IUndoable undoable) {
@@ -32,17 +34,45 @@ public class Transaction implements IUndoable, Iterable {
 
 	public void addAll(Iterable<IUndoable> setBlocks) {
 		for (IUndoable u : setBlocks) {
-			this.undoables.add(u);
+			add(u);
+		}
+	}
+
+	public List<IUndoable> getTransactions() {
+		return undoables;
+	}
+
+	public boolean isEmpty() {
+		return (undoables.size() == 0);
+	}
+
+	// IUndoable-----------------------------------------------------------------
+
+	@Override
+	public IUndoable dO() {
+		commit();
+		return this;
+	}
+
+	public void commit() {
+		undoManager.addTransaction(this);
+		for (IUndoable u : undoables) {
+			u.dO();
+		}
+		if (world != null) {
+			world.updateClient();
+		}
+		// Ernio's suggestion in my post: http://www.minecraftforge.net/forum/index.php/topic,30991
+		if (undoables.size() > MAX_SIZE) {
+			cacheUndoables();
 		}
 	}
 
 	@Override
-	public IUndoable dO() {
-		return this;
-	}
-
-	@Override
 	public void undo() {
+		if (isCached) {
+			unCacheUndoables();
+		}
 		for (IUndoable undoable : undoables) {
 			undoable.undo();
 		}
@@ -50,52 +80,74 @@ public class Transaction implements IUndoable, Iterable {
 
 	@Override
 	public void redo() {
+		if (isCached) {
+			unCacheUndoables();
+		}
 		for (IUndoable undoable : undoables) {
 			undoable.redo();
 		}
 	}
 
 	@Override
+	public NBTTagCompound toNBT() {
+		NBTTagCompound tag = new NBTTagCompound();
+		for (IUndoable u : undoables) {
+			// UndoableSetBlock implements toNBT();
+			tag.setTag("u", u.toNBT());
+			u.toNBT();
+		}
+		return tag;
+	}
+
+	@Override
+	public IUndoable fromNBT(NBTTagCompound nbt) {
+		return null;
+	}
+
+	// Iterable------------------------------------------------------------------
+
+	@Override
 	public Iterator iterator() {
 		return undoables.iterator();
 	}
 
-	public boolean isEmpty() {
-		return (undoables.size() == 0);
-	}
-
-	public void commit() {
-		// TODO
-		// Ernio's suggestion in my post: http://www.minecraftforge.net/forum/index.php/topic,30991
-		// if (transaction.getSize() > Transaction.MAX_SIZE) {
-		// CompressedStreamTools.writeCompressed(undoable.tooNBT(), new FileOutputStream(f));
-		// }
-		// Read it like this:
-		// NBTTagCompound nbt = CompressedStreamTools.readCompressed(new FileInputStream(f));
-		// Filename has position of node in it so that it is rewritten
-		if (undoManager != null) {
-			undoManager.addTransaction(this);
-		}
-		for (IUndoable u : undoables) {
-			u.dO();
-		}
-		if (world != null) {
-			world.updateClient();
-		}
-	}
+	// Private------------------------------------------------------------------------
 
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Transaction [undoManager=");
-		builder.append(idOf(undoManager));
-		builder.append(", undoables=");
+		builder.append("Transaction [undoables=");
 		builder.append(undoables);
+		builder.append(", undoManager=");
+		builder.append(undoManager);
+		builder.append(", world=");
+		builder.append(world);
+		builder.append(", isCached=");
+		builder.append(isCached);
+		builder.append(", filename=");
+		builder.append(filename);
 		builder.append("]");
 		return builder.toString();
 	}
 
-	private String idOf(Object o) {
-		return o.getClass().getSimpleName() + "@" + Integer.toHexString(o.hashCode());
+	private void cacheUndoables() {
+		filename = "undo" + undoManager.indexOf(this) + ".foo";
+		try {
+			CompressedStreamTools.writeCompressed(toNBT(), new FileOutputStream(filename));
+			isCached = true;
+			undoables = null;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void unCacheUndoables() {
+		try {
+			NBTTagCompound nbt = CompressedStreamTools.readCompressed(new FileInputStream(filename));
+			Transaction t = (Transaction) fromNBT(nbt);
+			undoables = t.getTransactions();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

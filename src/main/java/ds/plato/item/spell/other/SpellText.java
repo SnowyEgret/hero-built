@@ -63,7 +63,6 @@ public class SpellText extends Spell implements ITextSetable {
 		
 		ISelect selectionManager = player.getSelectionManager();
 		IPick pickManager = player.getPickManager();
-		IUndo undoManager = player.getUndoManager();
 		
 		Vector3d d = new Vector3d();
 		d.sub(picks[0].point3d(), picks[1].point3d());
@@ -108,7 +107,8 @@ public class SpellText extends Spell implements ITextSetable {
 		System.out.println("size=" + positions.size());
 		selectionManager.clearSelections(player);
 		pickManager.clearPicks(player);
-		Transaction t = undoManager.newTransaction();
+		///Transaction t = undoManager.newTransaction();
+		Transaction t = new Transaction(player);
 		for (BlockPos p : positions) {
 			t.add(new UndoableSetBlock(player.getWorld(), p, player.getHotbar().firstBlock()));
 		}

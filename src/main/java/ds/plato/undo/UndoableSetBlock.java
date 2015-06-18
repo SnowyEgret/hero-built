@@ -1,12 +1,8 @@
 package ds.plato.undo;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockAir;
-import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.BlockPos;
-import ds.plato.select.ISelect;
-import ds.plato.select.Selection;
 import ds.plato.world.IWorld;
 
 public class UndoableSetBlock implements IUndoable {
@@ -23,6 +19,8 @@ public class UndoableSetBlock implements IUndoable {
 		this.state = state;
 		prevState = world.getState(pos);
 	}
+	
+	//IUndoable--------------------------------------------------------------------------
 
 	public UndoableSetBlock dO() {
 
@@ -44,6 +42,20 @@ public class UndoableSetBlock implements IUndoable {
 	public void redo() {
 		world.setState(pos, state);
 	}
+
+	@Override
+	public NBTTagCompound toNBT() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public IUndoable fromNBT(NBTTagCompound tag) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	//--------------------------------------------------------------------------
 
 	@Override
 	public int hashCode() {

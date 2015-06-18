@@ -39,7 +39,7 @@ public abstract class AbstractSpellDraw extends Spell {
 		Modifiers modifiers = player.getModifiers();
 		ISelect selectionManager = player.getSelectionManager();
 		IPick pickManager = player.getPickManager();
-		IUndo undoManager = player.getUndoManager();
+		//IUndo undoManager = player.getUndoManager();
 
 		selectionManager.clearSelections(player);
 		pickManager.clearPicks(player);
@@ -72,7 +72,8 @@ public abstract class AbstractSpellDraw extends Spell {
 		jumper.jump();
 
 		// Set the blocks inside an undoManager transaction
-		Transaction t = undoManager.newTransaction();
+		//Transaction t = undoManager.newTransaction();
+		Transaction t = new Transaction(player);
 		t.addAll(setBlocks);
 		t.commit();
 

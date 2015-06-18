@@ -49,7 +49,8 @@ public class SpellThicken extends Spell {
 		selectionManager.clearSelections(player);
 		player.getPickManager().clearPicks(player);
 
-		Transaction t = player.getUndoManager().newTransaction();
+		//Transaction t = player.getUndoManager().newTransaction();
+		Transaction t = new Transaction(player);
 		for (BlockPos p : positions) {
 			t.add(new UndoableSetBlock(player.getWorld(), p, firstSelection));
 		}

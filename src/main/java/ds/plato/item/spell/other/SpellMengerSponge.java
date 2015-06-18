@@ -34,7 +34,7 @@ public class SpellMengerSponge extends Spell {
 		Modifiers modifiers = player.getModifiers();
 		ISelect selectionManager = player.getSelectionManager();
 		IPick pickManager = player.getPickManager();
-		IUndo undoManager = player.getUndoManager();
+		//IUndo undoManager = player.getUndoManager();
 
 		//TODO use enclosing cube
 		recursivelySubtract(selectionManager.voxelSet());
@@ -42,7 +42,8 @@ public class SpellMengerSponge extends Spell {
 		selectionManager.clearSelections(player);
 		pickManager.clearPicks(player);
 		IBlockState air = Blocks.air.getDefaultState();
-		Transaction t = undoManager.newTransaction();
+		//Transaction t = undoManager.newTransaction();
+		Transaction t = new Transaction(player);
 		for (BlockPos pos : positionsToDelete) {
 			t.add(new UndoableSetBlock(player.getWorld(), pos, air));
 		}

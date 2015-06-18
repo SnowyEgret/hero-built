@@ -22,7 +22,7 @@ public class SpellTrail extends Spell {
 		Modifiers modifiers = player.getModifiers();
 		ISelect selectionManager = player.getSelectionManager();
 		IPick pickManager = player.getPickManager();
-		IUndo undoManager = player.getUndoManager();
+		//IUndo undoManager = player.getUndoManager();
 		
 		//On LivingUpdateEvent selections are added when SpellTrail is in hand
 		//boolean fill = modifiers.isPressed(Modifier.SHIFT);
@@ -31,7 +31,8 @@ public class SpellTrail extends Spell {
 		selectionManager.clearSelections(player);
 		pickManager.clearPicks(player);
 		IBlockState firstBlock = player.getHotbar().firstBlock();
-		Transaction t = undoManager.newTransaction();
+		//Transaction t = undoManager.newTransaction();
+		Transaction t = new Transaction(player);
 		for (Selection s : selections) {
 			t.add(new UndoableSetBlock(player.getWorld(), s.getPos(), firstBlock));
 		}

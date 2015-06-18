@@ -39,7 +39,7 @@ public class SpellHoleFill extends Spell {
 		Modifiers modifiers = player.getModifiers();
 		ISelect selectionManager = player.getSelectionManager();
 		IPick pickManager = player.getPickManager();
-		IUndo undoManager = player.getUndoManager();
+		//IUndo undoManager = player.getUndoManager();
 
 		boolean isHorizontal = modifiers.isPressed(Modifier.CTRL);
 		boolean useBlockInHotbar = modifiers.isPressed(Modifier.SHIFT);
@@ -62,7 +62,8 @@ public class SpellHoleFill extends Spell {
 				}
 			}
 		}
-		Transaction t = undoManager.newTransaction();
+		//Transaction t = undoManager.newTransaction();
+		Transaction t = new Transaction(player);
 		t.addAll(setBlocks);
 		t.commit();
 	}

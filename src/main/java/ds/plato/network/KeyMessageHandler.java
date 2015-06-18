@@ -170,7 +170,8 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 				BlockPos delta = cursor.subtract(player.getClipboard().getOrigin().down());
 				
 				List<BlockPos> reselects = Lists.newArrayList();
-				Transaction t = player.getUndoManager().newTransaction();
+				//Transaction t = player.getUndoManager().newTransaction();
+				Transaction t = new Transaction(player);
 				for (Selection s : selections) {
 					BlockPos p = s.getPos().add(delta);
 					t.add(new UndoableSetBlock(world, p, s.getState()));

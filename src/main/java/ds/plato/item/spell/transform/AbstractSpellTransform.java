@@ -57,7 +57,8 @@ public abstract class AbstractSpellTransform extends Spell {
 
 		jumper.jump();
 
-		Transaction t = player.getUndoManager().newTransaction();
+		//Transaction t = player.getUndoManager().newTransaction();
+		Transaction t = new Transaction(player);
 		t.addAll(setBlocks);
 		t.commit();
 
