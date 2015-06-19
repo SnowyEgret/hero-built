@@ -60,10 +60,10 @@ public class SpellText extends Spell implements ITextSetable {
 
 	@Override
 	public void setText(String text, IPlayer player) {
-		
+
 		ISelect selectionManager = player.getSelectionManager();
 		IPick pickManager = player.getPickManager();
-		
+
 		Vector3d d = new Vector3d();
 		d.sub(picks[0].point3d(), picks[1].point3d());
 		double angle = new Vector3d(-1, 0, 0).angle(d);
@@ -86,7 +86,7 @@ public class SpellText extends Spell implements ITextSetable {
 		g.setFont(font);
 		Graphics2D g2 = (Graphics2D) g;
 		// graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-		//g2.drawRect(0, 0, width - 1, height - 1);
+		// g2.drawRect(0, 0, width - 1, height - 1);
 		g.translate(width / 2, height / 2);
 		g2.rotate(angle);
 		g2.drawString(text, 0, 0);
@@ -107,12 +107,12 @@ public class SpellText extends Spell implements ITextSetable {
 		System.out.println("size=" + positions.size());
 		selectionManager.clearSelections(player);
 		pickManager.clearPicks(player);
-		///Transaction t = undoManager.newTransaction();
-		Transaction t = new Transaction(player);
+
+		Transaction t = new Transaction();
 		for (BlockPos p : positions) {
-			t.add(new UndoableSetBlock(player.getWorld(), p, player.getHotbar().firstBlock()));
+			t.add(new UndoableSetBlock(p, player.getWorld().getState(p), player.getHotbar().firstBlock()));
 		}
-		t.commit();
+		t.dO(player);
 	}
 
 	public void setFont(Font font) {

@@ -14,11 +14,6 @@ public class WorldWrapper implements IWorld {
 		this.world = world;
 	}
 
-	// @Override
-	// public Transaction newTransaction() {
-	// return new Transaction(this);
-	// }
-
 	@Override
 	public Block getBlock(BlockPos pos) {
 		IBlockState b = world.getBlockState(pos);
@@ -58,7 +53,9 @@ public class WorldWrapper implements IWorld {
 
 	@Override
 	public void updateClient() {
-		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+		//TODO Implement this
+		System.out.println("Not yet implemented");
+		//throw new UnsupportedOperationException("Not yet implemented");
 	}
 
 	@Override

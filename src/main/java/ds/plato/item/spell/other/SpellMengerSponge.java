@@ -42,12 +42,13 @@ public class SpellMengerSponge extends Spell {
 		selectionManager.clearSelections(player);
 		pickManager.clearPicks(player);
 		IBlockState air = Blocks.air.getDefaultState();
-		//Transaction t = undoManager.newTransaction();
-		Transaction t = new Transaction(player);
+
+		Transaction t = new Transaction();
 		for (BlockPos pos : positionsToDelete) {
-			t.add(new UndoableSetBlock(player.getWorld(), pos, air));
+			t.add(new UndoableSetBlock(pos, player.getWorld().getState(pos), air));
 		}
-		t.commit();
+		t.dO(player);
+		
 	}
 
 	private void recursivelySubtract(VoxelSet voxels) {

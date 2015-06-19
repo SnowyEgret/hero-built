@@ -81,10 +81,10 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 			try {
 				if (modifiers.isPressed(Modifier.CTRL)) {
 					if (modifiers.isPressed(Modifier.SHIFT)) {
-						player.getUndoManager().redo();
+						player.getUndoManager().redo(player);
 					} else {
 						selectionManager.clearSelections(player);
-						player.getUndoManager().undo();
+						player.getUndoManager().undo(player);
 					}
 				}
 				if (lastSpell != null && lastSpell.getSpell() instanceof SpellCopy) {
@@ -168,17 +168,17 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 				Iterable<Selection> selections = player.getClipboard().getSelections();
 				BlockPos cursor = message.getCursorPos();
 				BlockPos delta = cursor.subtract(player.getClipboard().getOrigin().down());
-				
+
 				List<BlockPos> reselects = Lists.newArrayList();
-				//Transaction t = player.getUndoManager().newTransaction();
-				Transaction t = new Transaction(player);
+				Transaction t = new Transaction();
 				for (Selection s : selections) {
 					BlockPos p = s.getPos().add(delta);
-					t.add(new UndoableSetBlock(world, p, s.getState()));
+					t.add(new UndoableSetBlock(p, player.getWorld().getState(p), s.getState()));
 					reselects.add(p);
 				}
-				t.commit();
-				//TODO Maybe commit can reselect.
+				t.dO(player);
+
+				// TODO Maybe dO can reselect.
 				selectionManager.select(player, reselects);
 			}
 			break;

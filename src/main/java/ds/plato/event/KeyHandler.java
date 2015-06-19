@@ -36,7 +36,7 @@ public class KeyHandler {
 
 		if (KEYS_TO_TRACK.contains(Keyboard.getEventKey())) {
 			int keyCode = Keyboard.getEventKey();
-			System.out.println("keyCode=" + keyCode);
+			//System.out.println("keyCode=" + keyCode);
 			// Pass the cursor position for Pasting
 			BlockPos cursorPos = Minecraft.getMinecraft().objectMouseOver.getBlockPos();
 			Plato.network.sendToServer(new KeyMessage(keyCode, Keyboard.getEventKeyState(), cursorPos));

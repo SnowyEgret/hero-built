@@ -2,13 +2,13 @@ package ds.plato.undo;
 
 import java.util.NoSuchElementException;
 
+import ds.plato.player.IPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class UndoManager implements IUndo {
 
 	private Node currentNode;
 	private int maxLength = 0;
-	private int size = 0;
 	final static int DEFAULT_MAX_LENGTH = 10;
 
 	public UndoManager(int maxLength) {
@@ -28,30 +28,53 @@ public class UndoManager implements IUndo {
 		currentNode.right = node;
 		node.left = currentNode;
 		currentNode = node;
-		if (size > maxLength) {
+		if (size() > maxLength) {
 			removeLeftEnd();
-		} else {
-			size++;
 		}
+		System.out.println("size=" + size());
 	}
 
-	@Override
-	public int indexOf(IUndoable node) {
-		int index = 0;
+	// Private ---------------------------------------------------------
+	
+	public int size() {
+		// return size;
+		int size = 0;
 		Node n = currentNode;
+		while (n.right != null) {
+			n = n.right;
+			size++;
+		}
+		n = currentNode;
 		while (n.left != null) {
 			n = n.left;
+			size++;
 		}
-		while (n.right != null) {
-			if (n.equals(node)) {
-				return index;
-			}
-			n = n.right;
-			index++;
-		}
-		return index;
+		return size;
 	}
-	
+
+//	@Override
+//	// FIXME
+//	public int indexOf(IUndoable undoable) {
+//		Node n = currentNode;
+//		//Move to left end
+//		while (n.left != null) {
+//			n = n.left;
+//		}
+//		int index = 1;
+//		if (n.undoable == undoable) {
+//			return index;
+//		}
+//		while (n.right != null) {
+//			n = n.right;
+//			index++;
+//			if (n.undoable == undoable) {
+//				System.out.println("Found undoable=" + undoable);
+//				return index;
+//			}
+//		}
+//		System.out.println("Could not find undoable=" + undoable);
+//		return -1;
+//	}
 
 	@Override
 	public void clear() {
@@ -61,46 +84,29 @@ public class UndoManager implements IUndo {
 	// Interface IUndoable -------------------------------------
 
 	@Override
-	public IUndoable dO() {
-		// TODO Auto-generated method stub
+	public IUndoable dO(IPlayer player) {
 		return null;
 	}
 
 	@Override
-	public void undo() throws NoSuchElementException {
+	public void undo(IPlayer player) throws NoSuchElementException {
+		System.out.println("size=" + size());
 		if (currentNode.left == null) {
 			throw new NoSuchElementException("Nothing left to undo.");
 		}
-		currentNode.undoable.undo();
+		currentNode.transaction.undo(player);
 		currentNode = currentNode.left;
 	}
 
 	@Override
-	public void redo() throws NoSuchElementException {
+	public void redo(IPlayer player) throws NoSuchElementException {
+		System.out.println("size=" + size());
 		if (currentNode.right == null) {
 			throw new NoSuchElementException("Nothing left to redo.");
 		}
 		currentNode = currentNode.right;
-		currentNode.undoable.redo();
+		currentNode.transaction.redo(player);
 	}
-	
-	// Default for testing -----------------------------------------------------------
-
-	// int size() {
-	// return size;
-	// // int size = 0;
-	// // Node n = currentNode;
-	// // while (n.right != null) {
-	// // n = n.right;
-	// // size++;
-	// // }
-	// // n = currentNode;
-	// // while (n.left != null) {
-	// // n = n.left;
-	// // size++;
-	// // }
-	// // return size;
-	// }
 
 	@Override
 	public NBTTagCompound toNBT() {
@@ -113,8 +119,6 @@ public class UndoManager implements IUndo {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	// Private ---------------------------------------------------------
 
 	private void removeLeftEnd() {
 		Node n = currentNode;
@@ -129,14 +133,18 @@ public class UndoManager implements IUndo {
 
 		private Node left = null;
 		private Node right = null;
-		private final IUndoable undoable;
+		private Transaction transaction;
 
-		public Node(IUndoable undoable) {
-			this.undoable = undoable;
+		public Node(Transaction transaction) {
+			this.transaction = transaction;
 		}
 
 		public Node() {
-			undoable = null;
+			transaction = null;
+		}
+		
+		public void finalize() { 
+			transaction.clearCache();
 		}
 	}
 }

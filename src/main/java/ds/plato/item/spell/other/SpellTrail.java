@@ -21,22 +21,21 @@ public class SpellTrail extends Spell {
 	public void invoke(IPlayer player) {
 		Modifiers modifiers = player.getModifiers();
 		ISelect selectionManager = player.getSelectionManager();
-		IPick pickManager = player.getPickManager();
-		//IUndo undoManager = player.getUndoManager();
-		
-		//On LivingUpdateEvent selections are added when SpellTrail is in hand
-		//boolean fill = modifiers.isPressed(Modifier.SHIFT);
-		//boolean deleteOriginal = modifiers.isPressed(Modifier.CTRL);
+
+		// On LivingUpdateEvent selections are added when SpellTrail is in hand
+		// boolean fill = modifiers.isPressed(Modifier.SHIFT);
+		// boolean deleteOriginal = modifiers.isPressed(Modifier.CTRL);
 		Iterable<Selection> selections = selectionManager.getSelections();
 		selectionManager.clearSelections(player);
-		pickManager.clearPicks(player);
+		player.getPickManager().clearPicks(player);
 		IBlockState firstBlock = player.getHotbar().firstBlock();
-		//Transaction t = undoManager.newTransaction();
-		Transaction t = new Transaction(player);
+
+		Transaction t = new Transaction();
 		for (Selection s : selections) {
-			t.add(new UndoableSetBlock(player.getWorld(), s.getPos(), firstBlock));
+			t.add(new UndoableSetBlock(s.getPos(), player.getWorld().getState(s.getPos()), firstBlock));
 		}
-		t.commit();
+		t.dO(player);
+
 	}
 
 }

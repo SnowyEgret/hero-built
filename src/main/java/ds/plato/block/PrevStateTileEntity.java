@@ -11,6 +11,7 @@ import net.minecraft.tileentity.TileEntity;
 public class PrevStateTileEntity extends TileEntity {
 
 	private IBlockState prevState;
+	private static final String PREV_STATE_KEY = "b";
 
 	public IBlockState getPrevState() {
 		return prevState;
@@ -22,8 +23,7 @@ public class PrevStateTileEntity extends TileEntity {
 
 	@Override
 	public void readFromNBT(NBTTagCompound tag) {
-		int id = tag.getInteger("id");
-		prevState = Block.getStateById(id);
+		prevState = Block.getStateById(tag.getInteger(PREV_STATE_KEY));
 	}
 
 	@Override
@@ -31,7 +31,7 @@ public class PrevStateTileEntity extends TileEntity {
 		if (prevState == null) {
 			System.out.println("prevState=" + prevState);
 		} else {
-			tag.setInteger("id", Block.getStateId(prevState));
+			tag.setInteger(PREV_STATE_KEY, Block.getStateId(prevState));
 		}
 	}
 

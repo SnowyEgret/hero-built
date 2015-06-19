@@ -10,7 +10,7 @@ import ds.plato.player.IPlayer;
 
 public interface ISelect {
 
-	// Methods that message server------------------------------------------------
+	// Methods that message player------------------------------------------------
 
 	public void select(IPlayer player, BlockPos pos);
 

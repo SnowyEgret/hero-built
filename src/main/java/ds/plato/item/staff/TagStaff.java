@@ -9,7 +9,7 @@ import ds.plato.item.spell.Spell;
 public class TagStaff {
 
 	private NBTTagCompound tag;
-	private final String INDEX = "index";
+	private final static String INDEX_KEY = "i";
 
 	public TagStaff(ItemStack stack) {
 		tag = stack.getTagCompound();
@@ -60,17 +60,17 @@ public class TagStaff {
 	}
 
 	public int getIndex() {
-		return tag.getInteger(INDEX);
+		return tag.getInteger(INDEX_KEY);
 	}
 
 	public void setIndex(int i) {
-		tag.setInteger(INDEX, i);
+		tag.setInteger(INDEX_KEY, i);
 	}
 
 	public void incrementIndex(int increment) {
-		int i = tag.getInteger(INDEX);
+		int i = tag.getInteger(INDEX_KEY);
 		i = i + increment;
-		tag.setInteger(INDEX, i);
+		tag.setInteger(INDEX_KEY, i);
 	}
 
 	@Override

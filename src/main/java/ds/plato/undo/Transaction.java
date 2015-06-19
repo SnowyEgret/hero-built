@@ -1,5 +1,6 @@
 package ds.plato.undo;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -12,21 +13,14 @@ import net.minecraft.nbt.NBTTagCompound;
 import com.google.common.collect.Lists;
 
 import ds.plato.player.IPlayer;
-import ds.plato.world.IWorld;
 
 public class Transaction implements IUndoable, Iterable {
 
-	public static final int MAX_SIZE = 9999;
+	public static final int MAX_SIZE = 99;
+	private static final String SIZE_KEY = "s";
 	protected List<IUndoable> undoables = Lists.newArrayList();
-	private final IUndo undoManager;
-	private IWorld world;
 	private boolean isCached = false;
-	private String filename;
-
-	public Transaction(IPlayer player) {
-		world = player.getWorld();
-		undoManager = player.getUndoManager();
-	}
+	private File cacheFile;
 
 	public void add(IUndoable undoable) {
 		undoables.add(undoable);
@@ -42,6 +36,11 @@ public class Transaction implements IUndoable, Iterable {
 		return undoables;
 	}
 
+	public void clearCache() {
+		// System.out.println("path=" + Paths.get(filename));
+		cacheFile.delete();
+	}
+
 	public boolean isEmpty() {
 		return (undoables.size() == 0);
 	}
@@ -49,59 +48,63 @@ public class Transaction implements IUndoable, Iterable {
 	// IUndoable-----------------------------------------------------------------
 
 	@Override
-	public IUndoable dO() {
-		commit();
-		return this;
-	}
-
-	public void commit() {
-		undoManager.addTransaction(this);
+	public IUndoable dO(IPlayer player) {
+		player.getUndoManager().addTransaction(this);
 		for (IUndoable u : undoables) {
-			u.dO();
+			u.dO(player);
 		}
-		if (world != null) {
-			world.updateClient();
-		}
+		player.getWorld().updateClient();
 		// Ernio's suggestion in my post: http://www.minecraftforge.net/forum/index.php/topic,30991
 		if (undoables.size() > MAX_SIZE) {
 			cacheUndoables();
 		}
+		return this;
 	}
 
 	@Override
-	public void undo() {
+	public void undo(IPlayer player) {
 		if (isCached) {
 			unCacheUndoables();
 		}
 		for (IUndoable undoable : undoables) {
-			undoable.undo();
+			undoable.undo(player);
 		}
 	}
 
 	@Override
-	public void redo() {
+	public void redo(IPlayer player) {
 		if (isCached) {
 			unCacheUndoables();
 		}
 		for (IUndoable undoable : undoables) {
-			undoable.redo();
+			undoable.redo(player);
 		}
 	}
 
 	@Override
 	public NBTTagCompound toNBT() {
 		NBTTagCompound tag = new NBTTagCompound();
+		tag.setInteger(SIZE_KEY, undoables.size());
+		int i = 0;
 		for (IUndoable u : undoables) {
 			// UndoableSetBlock implements toNBT();
-			tag.setTag("u", u.toNBT());
-			u.toNBT();
+			tag.setTag(String.valueOf(i), u.toNBT());
+			i++;
 		}
 		return tag;
 	}
 
 	@Override
-	public IUndoable fromNBT(NBTTagCompound nbt) {
-		return null;
+	public IUndoable fromNBT(NBTTagCompound tag) {
+		int size = tag.getInteger(SIZE_KEY);
+		for (int i = 0; i < size; i++) {
+			NBTTagCompound t = tag.getCompoundTag(String.valueOf(i));
+			// Can this be generic? So far we only have one type of IUndoable
+			IUndoable u = new UndoableSetBlock();
+			undoables = Lists.newArrayList();
+			undoables.add(u.fromNBT(t));
+		}
+		return this;
 	}
 
 	// Iterable------------------------------------------------------------------
@@ -111,29 +114,24 @@ public class Transaction implements IUndoable, Iterable {
 		return undoables.iterator();
 	}
 
-	// Private------------------------------------------------------------------------
-
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("Transaction [undoables=");
 		builder.append(undoables);
-		builder.append(", undoManager=");
-		builder.append(undoManager);
-		builder.append(", world=");
-		builder.append(world);
 		builder.append(", isCached=");
 		builder.append(isCached);
-		builder.append(", filename=");
-		builder.append(filename);
 		builder.append("]");
 		return builder.toString();
 	}
 
+	// Private------------------------------------------------------------------------
+
 	private void cacheUndoables() {
-		filename = "undo" + undoManager.indexOf(this) + ".foo";
 		try {
-			CompressedStreamTools.writeCompressed(toNBT(), new FileOutputStream(filename));
+			cacheFile = File.createTempFile(Integer.toHexString(hashCode()), ".undo");
+			cacheFile.deleteOnExit();
+			CompressedStreamTools.writeCompressed(toNBT(), new FileOutputStream(cacheFile));
 			isCached = true;
 			undoables = null;
 		} catch (IOException e) {
@@ -143,9 +141,9 @@ public class Transaction implements IUndoable, Iterable {
 
 	private void unCacheUndoables() {
 		try {
-			NBTTagCompound nbt = CompressedStreamTools.readCompressed(new FileInputStream(filename));
-			Transaction t = (Transaction) fromNBT(nbt);
-			undoables = t.getTransactions();
+			NBTTagCompound tag = CompressedStreamTools.readCompressed(new FileInputStream(cacheFile));
+			System.out.println("tag=" + tag);
+			fromNBT(tag);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

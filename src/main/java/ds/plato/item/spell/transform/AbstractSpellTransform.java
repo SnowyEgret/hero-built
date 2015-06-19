@@ -50,19 +50,19 @@ public abstract class AbstractSpellTransform extends Spell {
 					// }
 				}
 				jumper.setHeight(pos);
-				setBlocks.add(new UndoableSetBlock(player.getWorld(), pos, state));
+				setBlocks.add(new UndoableSetBlock(pos, player.getWorld().getState(pos), state));
 				reselects.add(pos);
 			}
 		}
 
 		jumper.jump();
 
-		//Transaction t = player.getUndoManager().newTransaction();
-		Transaction t = new Transaction(player);
+		Transaction t = new Transaction();
 		t.addAll(setBlocks);
-		t.commit();
+		t.dO(player);
 
 		selectionManager.select(player, reselects);
+		
 	}
 
 	@Override

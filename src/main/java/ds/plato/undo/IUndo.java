@@ -8,7 +8,9 @@ public interface IUndo extends IUndoable {
 	public void addTransaction(Transaction transaction);
 
 	public void clear();
+	
+	public int size();
 
-	int indexOf(IUndoable node);
+	//int indexOf(IUndoable node);
 
 }

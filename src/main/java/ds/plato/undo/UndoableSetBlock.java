@@ -1,61 +1,76 @@
 package ds.plato.undo;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.BlockPos;
+import ds.plato.player.IPlayer;
 import ds.plato.world.IWorld;
 
 public class UndoableSetBlock implements IUndoable {
 
-	IWorld world;
-	// ISelect selectionManager;
+	// TODO Remove this property. Pass player to do, undo, and redo
 	BlockPos pos;
-	IBlockState state, prevState;
+	IBlockState prevState, state;
+	private static final String POS_KEY = "a";
+	private static final String PREV_STATE_KEY = "b";
+	private static final String STATE_ID_KEY = "c";
 
+	// For Transaction.fromNBT
+	public UndoableSetBlock() {
+	}
+
+	@Deprecated
+	// TODO pass prevState instead of world
+	// public UndoableSetBlock(BlockPos pos, IBlockState prevState, IBlockState state) {
 	public UndoableSetBlock(IWorld world, BlockPos pos, IBlockState state) {
-		this.world = world;
-		// this.selectionManager = selectionManager;
+		//this.world = world;
 		this.pos = pos;
 		this.state = state;
 		prevState = world.getState(pos);
 	}
-	
-	//IUndoable--------------------------------------------------------------------------
 
-	public UndoableSetBlock dO() {
+	public UndoableSetBlock(BlockPos pos, IBlockState prevState, IBlockState state) {
+		this.pos = pos;
+		this.prevState = prevState;
+		this.state = state;
+	}
 
-		// Don't know why this was here. Removed SelectionManager argument from constructor
-		// Selection s = selectionManager.getSelection(pos);
-		// if (s != null) {
-		// prevState = s.getState();
-		// }
-		world.setState(pos, state);
+	// IUndoable--------------------------------------------------------------------------
+
+	public UndoableSetBlock dO(IPlayer player) {
+		player.getWorld().setState(pos, state);
 		return this;
 	}
 
 	@Override
-	public void undo() {
-		world.setState(pos, prevState);
+	public void undo(IPlayer player) {
+		player.getWorld().setState(pos, prevState);
 	}
 
 	@Override
-	public void redo() {
-		world.setState(pos, state);
+	public void redo(IPlayer player) {
+		player.getWorld().setState(pos, state);
 	}
 
 	@Override
 	public NBTTagCompound toNBT() {
-		// TODO Auto-generated method stub
-		return null;
+		NBTTagCompound tag = new NBTTagCompound();
+		tag.setLong(POS_KEY, pos.toLong());
+		tag.setInteger(PREV_STATE_KEY, Block.getStateId(prevState));
+		tag.setInteger(STATE_ID_KEY, Block.getStateId(state));
+		return tag;
 	}
 
 	@Override
 	public IUndoable fromNBT(NBTTagCompound tag) {
-		// TODO Auto-generated method stub
-		return null;
+		pos = BlockPos.fromLong(tag.getLong(POS_KEY));
+		prevState = Block.getStateById(tag.getInteger(PREV_STATE_KEY));
+		state = Block.getStateById(tag.getInteger(STATE_ID_KEY));
+		return new UndoableSetBlock(pos, prevState, state);
 	}
-	
-	//--------------------------------------------------------------------------
+
+	// --------------------------------------------------------------------------
 
 	@Override
 	public int hashCode() {
