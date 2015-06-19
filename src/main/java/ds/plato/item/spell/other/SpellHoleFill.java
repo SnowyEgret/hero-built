@@ -38,14 +38,14 @@ public class SpellHoleFill extends Spell {
 	public void invoke(IPlayer player) {
 		Modifiers modifiers = player.getModifiers();
 		ISelect selectionManager = player.getSelectionManager();
-		IPick pickManager = player.getPickManager();
 
 		boolean isHorizontal = modifiers.isPressed(Modifier.CTRL);
 		boolean useBlockInHotbar = modifiers.isPressed(Modifier.SHIFT);
 
 		Iterable<Selection> selections = selectionManager.getSelections();
 		selectionManager.clearSelections(player);
-		pickManager.clearPicks(player);
+		player.getPickManager().clearPicks(player);
+		
 		Set<IUndoable> setBlocks = Sets.newHashSet();
 		for (Selection s : selections) {
 			for (BlockPos p : isHorizontal ? Select.HORIZONTAL : Select.BELOW_INCLUSIVE) {

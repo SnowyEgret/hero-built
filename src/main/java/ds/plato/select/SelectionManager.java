@@ -42,7 +42,7 @@ public class SelectionManager implements ISelect {
 		for (BlockPos p : pos) {
 			select(player.getWorld(), p);
 		}
-		player.getWorld().updateClient();
+		player.getWorld().update();
 		Plato.network.sendTo(new SelectionMessage(this), (EntityPlayerMP) player.getPlayer());
 	}
 

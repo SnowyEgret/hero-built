@@ -144,7 +144,7 @@ public class UndoManager implements IUndo {
 		}
 		
 		public void finalize() { 
-			transaction.clearCache();
+			transaction.deleteCache();
 		}
 	}
 }

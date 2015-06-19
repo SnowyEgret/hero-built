@@ -7,6 +7,7 @@ import net.minecraft.util.Vec3;
 import ds.geom.IntegerDomain;
 import ds.geom.VoxelSet;
 import ds.plato.player.IPlayer;
+import ds.plato.undo.IUndoable;
 
 public interface ISelect {
 
@@ -15,6 +16,8 @@ public interface ISelect {
 	public void select(IPlayer player, BlockPos pos);
 
 	public void select(IPlayer player, Iterable<BlockPos> positions);
+
+	//public void select(IPlayer player, List<IUndoable> undoables);
 
 	public void clearSelections(IPlayer player);
 

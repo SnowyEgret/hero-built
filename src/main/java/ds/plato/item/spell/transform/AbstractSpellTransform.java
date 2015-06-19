@@ -34,7 +34,6 @@ public abstract class AbstractSpellTransform extends Spell {
 		selectionManager.clearSelections(player); 
 		player.getPickManager().clearPicks(player);
 		List<IUndoable> setBlocks = Lists.newArrayList();
-		List<BlockPos> reselects = Lists.newArrayList();
 		for (Selection s : selections) {
 			for (Selection sel : transformer.transform(s)) {
 				// s = transformer.transform(s);
@@ -51,7 +50,6 @@ public abstract class AbstractSpellTransform extends Spell {
 				}
 				jumper.setHeight(pos);
 				setBlocks.add(new UndoableSetBlock(pos, player.getWorld().getState(pos), state));
-				reselects.add(pos);
 			}
 		}
 
@@ -60,9 +58,6 @@ public abstract class AbstractSpellTransform extends Spell {
 		Transaction t = new Transaction();
 		t.addAll(setBlocks);
 		t.dO(player);
-
-		selectionManager.select(player, reselects);
-		
 	}
 
 	@Override

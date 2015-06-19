@@ -51,7 +51,6 @@ public class SpellText extends Spell implements ITextSetable {
 		Modifiers modifiers = player.getModifiers();
 		ISelect selectionManager = player.getSelectionManager();
 		IPick pickManager = player.getPickManager();
-		IUndo undoManager = player.getUndoManager();
 		player.openGui(GuiHandler.GUI_SPELL_TEXT);
 		picks = pickManager.getPicks();
 		// Clear the picks because player may have cancelled
@@ -62,7 +61,6 @@ public class SpellText extends Spell implements ITextSetable {
 	public void setText(String text, IPlayer player) {
 
 		ISelect selectionManager = player.getSelectionManager();
-		IPick pickManager = player.getPickManager();
 
 		Vector3d d = new Vector3d();
 		d.sub(picks[0].point3d(), picks[1].point3d());
@@ -106,7 +104,7 @@ public class SpellText extends Spell implements ITextSetable {
 
 		System.out.println("size=" + positions.size());
 		selectionManager.clearSelections(player);
-		pickManager.clearPicks(player);
+		player.getPickManager().clearPicks(player);
 
 		Transaction t = new Transaction();
 		for (BlockPos p : positions) {

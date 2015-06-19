@@ -9,10 +9,12 @@ import java.util.List;
 
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.BlockPos;
 
 import com.google.common.collect.Lists;
 
 import ds.plato.player.IPlayer;
+import ds.plato.select.ISelect;
 
 public class Transaction implements IUndoable, Iterable {
 
@@ -36,7 +38,7 @@ public class Transaction implements IUndoable, Iterable {
 		return undoables;
 	}
 
-	public void clearCache() {
+	public void deleteCache() {
 		// System.out.println("path=" + Paths.get(filename));
 		cacheFile.delete();
 	}
@@ -50,10 +52,15 @@ public class Transaction implements IUndoable, Iterable {
 	@Override
 	public IUndoable dO(IPlayer player) {
 		player.getUndoManager().addTransaction(this);
+		List<BlockPos> reselects = Lists.newArrayList();
 		for (IUndoable u : undoables) {
 			u.dO(player);
+			reselects.add(((UndoableSetBlock)u).pos);
 		}
-		player.getWorld().updateClient();
+		player.getSelectionManager().select(player, reselects);
+
+		// TODO So far, this is doing nothing
+		player.getWorld().update();
 		// Ernio's suggestion in my post: http://www.minecraftforge.net/forum/index.php/topic,30991
 		if (undoables.size() > MAX_SIZE) {
 			cacheUndoables();

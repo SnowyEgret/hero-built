@@ -9,25 +9,13 @@ import ds.plato.world.IWorld;
 
 public class UndoableSetBlock implements IUndoable {
 
-	// TODO Remove this property. Pass player to do, undo, and redo
 	BlockPos pos;
 	IBlockState prevState, state;
 	private static final String POS_KEY = "a";
 	private static final String PREV_STATE_KEY = "b";
 	private static final String STATE_ID_KEY = "c";
 
-	// For Transaction.fromNBT
 	public UndoableSetBlock() {
-	}
-
-	@Deprecated
-	// TODO pass prevState instead of world
-	// public UndoableSetBlock(BlockPos pos, IBlockState prevState, IBlockState state) {
-	public UndoableSetBlock(IWorld world, BlockPos pos, IBlockState state) {
-		//this.world = world;
-		this.pos = pos;
-		this.state = state;
-		prevState = world.getState(pos);
 	}
 
 	public UndoableSetBlock(BlockPos pos, IBlockState prevState, IBlockState state) {

@@ -34,12 +34,12 @@ public abstract class AbstractSpellMatrix extends Spell {
 
 		List<IUndoable> deletes = Lists.newArrayList();
 		List<IUndoable> setBlocks = Lists.newArrayList();
-		List<BlockPos> reselects = Lists.newArrayList();
 
 		Jumper jumper = new Jumper(player);
 		Iterable<Selection> selections = selectionManager.getSelections();
 		selectionManager.clearSelections(player);
 		player.getPickManager().clearPicks(player);
+		
 		IBlockState air = Blocks.air.getDefaultState();
 		for (Selection s : selections) {
 			Point3d p = s.point3d();
@@ -50,7 +50,6 @@ public abstract class AbstractSpellMatrix extends Spell {
 			BlockPos pos = new BlockPos(p.x, p.y, p.z);
 			jumper.setHeight(pos);
 			setBlocks.add(new UndoableSetBlock(pos, player.getWorld().getState(pos), s.getState()));
-			reselects.add(pos);
 		}
 
 		jumper.jump();
@@ -59,9 +58,6 @@ public abstract class AbstractSpellMatrix extends Spell {
 		t.addAll(deletes);
 		t.addAll(setBlocks);
 		t.dO(player);
-
-		selectionManager.select(player, reselects);
-		
 	}
 
 }

@@ -1,10 +1,17 @@
 package ds.plato.world;
 
+import java.util.List;
+import java.util.Set;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
+
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 public class WorldWrapper implements IWorld {
 
@@ -23,7 +30,8 @@ public class WorldWrapper implements IWorld {
 	@Override
 	public void setState(BlockPos pos, IBlockState state) {
 		// TODO Do not update client
-		world.setBlockState(pos, state, 3);
+		world.setBlockState(pos, state, 1);
+		world.markBlockForUpdate(pos);
 	}
 
 	@Override
@@ -52,10 +60,8 @@ public class WorldWrapper implements IWorld {
 	}
 
 	@Override
-	public void updateClient() {
-		//TODO Implement this
+	public void update() {
 		System.out.println("Not yet implemented");
-		//throw new UnsupportedOperationException("Not yet implemented");
 	}
 
 	@Override

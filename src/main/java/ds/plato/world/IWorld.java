@@ -18,7 +18,7 @@ public interface IWorld {
 
 	public void setState(BlockPos pos, IBlockState state);
 
-	public void updateClient();
+	public void update();
 
 	public TileEntity getTileEntity(BlockPos pos);
 	

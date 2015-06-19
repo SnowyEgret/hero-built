@@ -38,11 +38,9 @@ public abstract class AbstractSpellDraw extends Spell {
 
 		Modifiers modifiers = player.getModifiers();
 		ISelect selectionManager = player.getSelectionManager();
-		IPick pickManager = player.getPickManager();
-		//IUndo undoManager = player.getUndoManager();
 
 		selectionManager.clearSelections(player);
-		pickManager.clearPicks(player);
+		player.getPickManager().clearPicks(player);
 
 		boolean isHollow = modifiers.isPressed(Modifier.SHIFT);
 		boolean onSurface = modifiers.isPressed(Modifier.ALT);
@@ -55,9 +53,8 @@ public abstract class AbstractSpellDraw extends Spell {
 
 		Jumper jumper = new Jumper(player);
 
-		//Set<IUndoable> setBlocks = Sets.newHashSet();
 		List<IUndoable> setBlocks = Lists.newArrayList();
-		List<BlockPos> reselects = new ArrayList<>();
+		//List<BlockPos> reselects = new ArrayList<>();
 		IBlockState state = player.getHotbar().firstBlock();
 		for (Point3i p : voxels) {
 			BlockPos pos = new BlockPos(p.x, p.y, p.z);
@@ -66,25 +63,22 @@ public abstract class AbstractSpellDraw extends Spell {
 			}
 			jumper.setHeight(pos);
 			setBlocks.add(new UndoableSetBlock(pos, player.getWorld().getState(pos), state));
-			reselects.add(pos);
+			//reselects.add(pos);
 		}
 
 		jumper.jump();
 
-		// Set the blocks inside an undoManager transaction
 		Transaction t = new Transaction();
 		t.addAll(setBlocks);
-		t.dO(player);
-		
+		t.dO(player);		
 
-		// Select all transformed blocks
-		selectionManager.select(player, reselects);
+		//selectionManager.select(player, reselects);
 
 		// String sound = "plato:" + StringUtils.toCamelCase(getClass());
 		// TODO how to look up sound from state
 		String sound = "ambient.weather.thunder";
 		//Block b;
-		player.playSoundAtPlayer(sound);
+		//player.playSoundAtPlayer(sound);
 	}
 
 }

@@ -33,14 +33,12 @@ public class SpellMengerSponge extends Spell {
 	public void invoke(IPlayer player) {
 		Modifiers modifiers = player.getModifiers();
 		ISelect selectionManager = player.getSelectionManager();
-		IPick pickManager = player.getPickManager();
-		//IUndo undoManager = player.getUndoManager();
 
 		//TODO use enclosing cube
 		recursivelySubtract(selectionManager.voxelSet());
 		//System.out.println("positionsToDelete=" + positionsToDelete);
 		selectionManager.clearSelections(player);
-		pickManager.clearPicks(player);
+		player.getPickManager().clearPicks(player);
 		IBlockState air = Blocks.air.getDefaultState();
 
 		Transaction t = new Transaction();

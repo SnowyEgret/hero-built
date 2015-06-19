@@ -169,17 +169,12 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 				BlockPos cursor = message.getCursorPos();
 				BlockPos delta = cursor.subtract(player.getClipboard().getOrigin().down());
 
-				List<BlockPos> reselects = Lists.newArrayList();
 				Transaction t = new Transaction();
 				for (Selection s : selections) {
 					BlockPos p = s.getPos().add(delta);
 					t.add(new UndoableSetBlock(p, player.getWorld().getState(p), s.getState()));
-					reselects.add(p);
 				}
 				t.dO(player);
-
-				// TODO Maybe dO can reselect.
-				selectionManager.select(player, reselects);
 			}
 			break;
 		default:
