@@ -1,13 +1,17 @@
 package ds.plato.player;
 
+import java.util.List;
+
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.SoundRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.common.IExtendedEntityProperties;
+
+import com.google.common.collect.Lists;
+
 import ds.plato.Plato;
 import ds.plato.item.spell.ISpell;
 import ds.plato.item.spell.Modifiers;
@@ -51,19 +55,8 @@ public class Player implements IPlayer {
 		return player;
 	}
 
-	// Returns the integrated server if in single player
 	@Override
 	public IWorld getWorld() {
-
-		// World w = null;
-		// Minecraft mc = Minecraft.getMinecraft();
-		// IntegratedServer integratedServer = mc.getIntegratedServer();
-		// if (integratedServer != null) {
-		// w = integratedServer.worldServerForDimension(player.dimension);
-		// } else {
-		// w = mc.theWorld;
-		// }
-		// return new WorldWrapper(w);
 		return new WorldWrapper(player.worldObj);
 	}
 
@@ -177,7 +170,6 @@ public class Player implements IPlayer {
 	@Override
 	public void moveTo(BlockPos pos) {
 		player.moveEntity(pos.getX(), pos.getY(), pos.getZ());
-		// player.moveToBlockPosAndAngles(pos, player.rotationYaw, player.rotationPitch);
 	}
 
 	@Override
@@ -218,12 +210,15 @@ public class Player implements IPlayer {
 
 	@Override
 	public void playSoundAtPlayer(String sound) {
-		// On client
-		// /Minecraft.getMinecraft().getSoundHandler().playSound(sound);
-
-		// Only good on server when world is not remeote
-		
 		getWorld().getWorld().playSoundAtEntity(player, sound, 1f, 1f);
+	}
+
+	@Override
+	public List<BlockPos> getBounds() {
+		List<BlockPos> bounds = Lists.newArrayList();
+		bounds.add(player.getPosition());
+		bounds.add(player.getPosition().up());
+		return bounds;
 	}
 
 }

@@ -1,7 +1,7 @@
 package ds.plato.player;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
+import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -14,7 +14,6 @@ import ds.plato.pick.IPick;
 import ds.plato.player.Player.Direction;
 import ds.plato.select.ISelect;
 import ds.plato.undo.IUndo;
-import ds.plato.undo.Transaction;
 import ds.plato.world.IWorld;
 
 public interface IPlayer {
@@ -58,6 +57,8 @@ public interface IPlayer {
 	public abstract void playSoundAtPlayer(String sound);
 
 	public abstract Clipboard getClipboard();
+
+	public abstract List<BlockPos> getBounds();
 
 	// Thought I saw something like this somewhere in an interface
 	// public static IPlayer getPlayer(EntityPlayer player) {

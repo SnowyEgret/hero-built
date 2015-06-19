@@ -29,7 +29,6 @@ public abstract class AbstractSpellTransform extends Spell {
 			return;
 		}
 
-		Jumper jumper = new Jumper(player);
 		Iterable<Selection> selections = selectionManager.getSelections();
 		selectionManager.clearSelections(player); 
 		player.getPickManager().clearPicks(player);
@@ -48,12 +47,9 @@ public abstract class AbstractSpellTransform extends Spell {
 					// continue;
 					// }
 				}
-				jumper.setHeight(pos);
 				setBlocks.add(new UndoableSetBlock(pos, player.getWorld().getState(pos), state));
 			}
 		}
-
-		jumper.jump();
 
 		Transaction t = new Transaction();
 		t.addAll(setBlocks);

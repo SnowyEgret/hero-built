@@ -14,6 +14,7 @@ import net.minecraft.util.BlockPos;
 import com.google.common.collect.Lists;
 
 import ds.plato.player.IPlayer;
+import ds.plato.player.Jumper;
 import ds.plato.select.ISelect;
 
 public class Transaction implements IUndoable, Iterable {
@@ -52,11 +53,17 @@ public class Transaction implements IUndoable, Iterable {
 	@Override
 	public IUndoable dO(IPlayer player) {
 		player.getUndoManager().addTransaction(this);
+		//Jumper jumper = new Jumper(player);
 		List<BlockPos> reselects = Lists.newArrayList();
 		for (IUndoable u : undoables) {
-			u.dO(player);
-			reselects.add(((UndoableSetBlock)u).pos);
+			BlockPos pos = ((UndoableSetBlock) u).pos;
+			if (!player.getBounds().contains(pos)) {
+				u.dO(player);
+				reselects.add(pos);
+			}
+			//jumper.setHeight(pos);
 		}
+		//jumper.jump();
 		player.getSelectionManager().select(player, reselects);
 
 		// TODO So far, this is doing nothing
@@ -65,6 +72,12 @@ public class Transaction implements IUndoable, Iterable {
 		if (undoables.size() > MAX_SIZE) {
 			cacheUndoables();
 		}
+
+		// String sound = "plato:" + StringUtils.toCamelCase(getClass());
+		// TODO how to look up sound from state
+		String sound = "ambient.weather.thunder";
+		// Block b;
+		// player.playSoundAtPlayer(sound);
 		return this;
 	}
 

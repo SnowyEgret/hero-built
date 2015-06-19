@@ -51,34 +51,19 @@ public abstract class AbstractSpellDraw extends Spell {
 			voxels = voxels.shell();
 		}
 
-		Jumper jumper = new Jumper(player);
-
 		List<IUndoable> setBlocks = Lists.newArrayList();
-		//List<BlockPos> reselects = new ArrayList<>();
 		IBlockState state = player.getHotbar().firstBlock();
 		for (Point3i p : voxels) {
 			BlockPos pos = new BlockPos(p.x, p.y, p.z);
 			if (onSurface) {
 				pos = pos.up();
 			}
-			jumper.setHeight(pos);
 			setBlocks.add(new UndoableSetBlock(pos, player.getWorld().getState(pos), state));
-			//reselects.add(pos);
 		}
-
-		jumper.jump();
 
 		Transaction t = new Transaction();
 		t.addAll(setBlocks);
-		t.dO(player);		
-
-		//selectionManager.select(player, reselects);
-
-		// String sound = "plato:" + StringUtils.toCamelCase(getClass());
-		// TODO how to look up sound from state
-		String sound = "ambient.weather.thunder";
-		//Block b;
-		//player.playSoundAtPlayer(sound);
+		t.dO(player);
 	}
 
 }
