@@ -2,6 +2,7 @@ package ds.plato.item.spell;
 
 import ds.plato.player.IPlayer;
 
+@Deprecated
 public class SpellInvoker {
 
 	private ISpell spell;

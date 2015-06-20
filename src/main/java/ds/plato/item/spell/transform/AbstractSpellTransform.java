@@ -25,17 +25,13 @@ public abstract class AbstractSpellTransform extends Spell {
 
 	protected void transformSelections(IPlayer player, ITransform<Selection> transformer) {
 		ISelect selectionManager = player.getSelectionManager();
-		if (selectionManager.getSelectionList().size() == 0) {
-			return;
-		}
-
 		Iterable<Selection> selections = selectionManager.getSelections();
 		selectionManager.clearSelections(player); 
 		player.getPickManager().clearPicks(player);
+		
 		List<IUndoable> setBlocks = Lists.newArrayList();
 		for (Selection s : selections) {
 			for (Selection sel : transformer.transform(s)) {
-				// s = transformer.transform(s);
 				BlockPos pos = sel.getPos();
 				IBlockState state = sel.getState();
 				if (state.getBlock() instanceof IPlantable) {

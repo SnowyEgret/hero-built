@@ -6,7 +6,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import ds.plato.Plato;
-import ds.plato.event.ForgeEventHandler;
+import ds.plato.event.EventHandler;
 
 public class SelectionMessageHandler implements IMessageHandler<SelectionMessage, IMessage> {
 

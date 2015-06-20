@@ -1,6 +1,5 @@
 package ds.plato.item.spell.other;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -9,21 +8,22 @@ import javax.vecmath.Point3i;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
+
+import com.google.common.collect.Lists;
+
 import ds.geom.IntegerDomain;
 import ds.geom.VoxelSet;
 import ds.plato.item.spell.Modifiers;
 import ds.plato.item.spell.Spell;
-import ds.plato.pick.IPick;
 import ds.plato.player.IPlayer;
 import ds.plato.select.ISelect;
-import ds.plato.undo.IUndo;
 import ds.plato.undo.Transaction;
 import ds.plato.undo.UndoableSetBlock;
 
 public class SpellMengerSponge extends Spell {
 
-	int level = 0;
-	List<BlockPos> positionsToDelete = new ArrayList<>();
+	private int level = 0;
+	private List<BlockPos> deletes = Lists.newArrayList();
 
 	public SpellMengerSponge() {
 		super(1);
@@ -34,29 +34,26 @@ public class SpellMengerSponge extends Spell {
 		Modifiers modifiers = player.getModifiers();
 		ISelect selectionManager = player.getSelectionManager();
 
-		//TODO use enclosing cube
-		recursivelySubtract(selectionManager.voxelSet());
-		//System.out.println("positionsToDelete=" + positionsToDelete);
+		// TODO use enclosing cube
+		delete(selectionManager.voxelSet());
 		selectionManager.clearSelections(player);
 		player.getPickManager().clearPicks(player);
 		IBlockState air = Blocks.air.getDefaultState();
 
 		Transaction t = new Transaction();
-		for (BlockPos pos : positionsToDelete) {
+		for (BlockPos pos : deletes) {
 			t.add(new UndoableSetBlock(pos, player.getWorld().getState(pos), air));
 		}
 		t.dO(player);
-		
+
 	}
 
-	private void recursivelySubtract(VoxelSet voxels) {
-		
+	private void delete(VoxelSet voxels) {
+
 		// Run through this set testing for containment in each sub domain. Depending on which domain it is contained
 		// by, add it to the set of points to be set to air. Recurse on each sub voxel set.
 		level++;
-		System.out.println("level=" + level);
 		Iterable<IntegerDomain> domains = voxels.divideDomain(3);
-		System.out.println("domains=" + domains);
 		List<Integer> domainsToDelete = Arrays.asList(4, 10, 12, 13, 14, 16, 22);
 		for (Point3i p : voxels) {
 			IntegerDomain domain = null;
@@ -70,18 +67,17 @@ public class SpellMengerSponge extends Spell {
 				i++;
 			}
 			if (domainsToDelete.contains(domain.count)) {
-				positionsToDelete.add(new BlockPos(p.x, p.y, p.z));
+				deletes.add(new BlockPos(p.x, p.y, p.z));
 			}
 		}
-		
+
 		for (VoxelSet set : voxels.divide(3)) {
 			if (set.size() >= 9) {
-				recursivelySubtract(set);
+				delete(set);
 			}
 		}
-		
+
 		level--;
-		System.out.println("level=" + level);
 	}
 
 	@Override
@@ -89,5 +85,5 @@ public class SpellMengerSponge extends Spell {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 }

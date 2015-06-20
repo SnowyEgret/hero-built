@@ -16,8 +16,8 @@ public enum Action {
 	DOWN(Keyboard.KEY_DOWN),
 	CUT(Keyboard.KEY_X),
 	COPY(Keyboard.KEY_C),
-	PASTE(Keyboard.KEY_V),
-	REINVOKE(Keyboard.KEY_PERIOD);
+	PASTE(Keyboard.KEY_V);
+	//REINVOKE(Keyboard.KEY_PERIOD);
 
 	public int keyCode;
 

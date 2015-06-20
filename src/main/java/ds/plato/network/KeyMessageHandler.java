@@ -34,7 +34,8 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 
 	private ISelect selectionManager;
 	private IPick pickManager;
-	public static SpellInvoker lastSpell;
+
+	// public static SpellInvoker lastSpell;
 
 	@Override
 	public IMessage onMessage(final KeyMessage message, MessageContext ctx) {
@@ -87,9 +88,9 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 						player.getUndoManager().undo(player);
 					}
 				}
-				if (lastSpell != null && lastSpell.getSpell() instanceof SpellCopy) {
-					selectionManager.reselect(player);
-				}
+				// if (lastSpell != null && lastSpell.getSpell() instanceof SpellCopy) {
+				selectionManager.reselect(player);
+				// }
 			} catch (NoSuchElementException e) {
 				// TODO Log to overlay. Create info line in overlay
 				System.out.println(e.getMessage());
@@ -108,9 +109,9 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 			}
 			break;
 
-		case REINVOKE:
-			lastSpell.invoke();
-			break;
+		// case REINVOKE:
+		// lastSpell.invoke();
+		// break;
 
 		case DELETE:
 			new SpellDelete().invoke(player);
@@ -156,7 +157,6 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 			break;
 		case CUT:
 			if (modifiers.isPressed(Modifier.CTRL)) {
-				// TODO getSelections returns a copy. Is there another way to make something immutable?
 				BlockPos cursor = message.getCursorPos();
 				player.getClipboard().setOrigin(cursor);
 				player.getClipboard().setSelections(selectionManager.getSelections());
@@ -200,9 +200,8 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 			pickManager.pick(player, new BlockPos(upDown, 0, -leftRight), null);
 			break;
 		}
-		ISpell spell = new SpellCopy();
-		lastSpell = new SpellInvoker(player, spell);
-		spell.invoke(player);
+		// lastSpell = new SpellInvoker(player, spell);
+		new SpellCopy().invoke(player);
 	}
 
 	private void copyVertical(IPlayer player, int upDown) {
