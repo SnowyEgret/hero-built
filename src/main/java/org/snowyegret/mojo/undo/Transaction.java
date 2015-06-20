@@ -53,7 +53,6 @@ public class Transaction implements IUndoable, Iterable {
 	@Override
 	public IUndoable dO(IPlayer player) {
 		player.getUndoManager().addTransaction(this);
-		//Jumper jumper = new Jumper(player);
 		List<BlockPos> reselects = Lists.newArrayList();
 		for (IUndoable u : undoables) {
 			BlockPos pos = ((UndoableSetBlock) u).pos;
@@ -61,14 +60,13 @@ public class Transaction implements IUndoable, Iterable {
 				u.dO(player);
 				reselects.add(pos);
 			}
-			//jumper.setHeight(pos);
 		}
-		//jumper.jump();
 		player.getSelectionManager().select(player, reselects);
 
 		// TODO So far, this is doing nothing
-		player.getWorld().update();
-		// Ernio's suggestion in my post: http://www.minecraftforge.net/forum/index.php/topic,30991
+		// player.getWorld().update();
+		// Ernio's suggestion in my post:
+		// http://www.minecraftforge.net/forum/index.php/topic,30991
 		if (undoables.size() > MAX_SIZE) {
 			cacheUndoables();
 		}
@@ -149,9 +147,11 @@ public class Transaction implements IUndoable, Iterable {
 
 	private void cacheUndoables() {
 		try {
-			cacheFile = File.createTempFile(Integer.toHexString(hashCode()), ".undo");
+			cacheFile = File.createTempFile(Integer.toHexString(hashCode()),
+					".undo");
 			cacheFile.deleteOnExit();
-			CompressedStreamTools.writeCompressed(toNBT(), new FileOutputStream(cacheFile));
+			CompressedStreamTools.writeCompressed(toNBT(),
+					new FileOutputStream(cacheFile));
 			isCached = true;
 			undoables = null;
 		} catch (IOException e) {
@@ -161,7 +161,8 @@ public class Transaction implements IUndoable, Iterable {
 
 	private void unCacheUndoables() {
 		try {
-			NBTTagCompound tag = CompressedStreamTools.readCompressed(new FileInputStream(cacheFile));
+			NBTTagCompound tag = CompressedStreamTools
+					.readCompressed(new FileInputStream(cacheFile));
 			System.out.println("tag=" + tag);
 			fromNBT(tag);
 		} catch (IOException e) {
