@@ -1,6 +1,5 @@
 package ds.plato.network;
 
-import java.util.List;
 import java.util.NoSuchElementException;
 
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -10,18 +9,14 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-
-import com.google.common.collect.Lists;
-
 import ds.plato.item.spell.Action;
-import ds.plato.item.spell.ISpell;
 import ds.plato.item.spell.Modifier;
 import ds.plato.item.spell.Modifiers;
-import ds.plato.item.spell.SpellInvoker;
 import ds.plato.item.spell.matrix.SpellCopy;
 import ds.plato.item.spell.transform.SpellDelete;
 import ds.plato.item.staff.Staff;
 import ds.plato.pick.IPick;
+import ds.plato.pick.Pick;
 import ds.plato.player.IPlayer;
 import ds.plato.player.Player;
 import ds.plato.select.ISelect;
@@ -183,33 +178,26 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 	}
 
 	private void copy(IPlayer player, int leftRight, int upDown) {
-		pickManager.reset(2);
-		pickManager.clearPicks(player);
-		pickManager.pick(player, new BlockPos(0, 0, 0), null);
+		BlockPos to = null;
 		switch (player.getDirection()) {
 		case NORTH:
-			pickManager.pick(player, new BlockPos(leftRight, 0, upDown), null);
+			to = new BlockPos(leftRight, 0, upDown);
 			break;
 		case SOUTH:
-			pickManager.pick(player, new BlockPos(-leftRight, 0, -upDown), null);
+			to = new BlockPos(-leftRight, 0, -upDown);
 			break;
 		case EAST:
-			pickManager.pick(player, new BlockPos(-upDown, 0, leftRight), null);
+			to = new BlockPos(-upDown, 0, leftRight);
 			break;
 		case WEST:
-			pickManager.pick(player, new BlockPos(upDown, 0, -leftRight), null);
+			to = new BlockPos(upDown, 0, -leftRight);
 			break;
 		}
-		// lastSpell = new SpellInvoker(player, spell);
-		new SpellCopy().invoke(player);
+		new SpellCopy().invoke(player, new BlockPos(0,0,0), to);
 	}
 
 	private void copyVertical(IPlayer player, int upDown) {
-		pickManager.reset(2);
-		pickManager.clearPicks(player);
-		pickManager.pick(player, new BlockPos(0, 0, 0), null);
-		pickManager.pick(player, new BlockPos(0, upDown, 0), null);
-		new SpellCopy().invoke(player);
+		new SpellCopy().invoke(player, new BlockPos(0,0,0), new BlockPos(0, upDown, 0));
 	}
 
 }
