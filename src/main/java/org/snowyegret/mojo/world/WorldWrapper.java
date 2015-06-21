@@ -44,15 +44,6 @@ public class WorldWrapper implements IWorld {
 	}
 
 	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("WorldWrapper [world=");
-		builder.append(world);
-		builder.append("]");
-		return builder.toString();
-	}
-
-	@Override
 	public void update() {
 		System.out.println("Not yet implemented");
 	}
@@ -60,5 +51,14 @@ public class WorldWrapper implements IWorld {
 	@Override
 	public TileEntity getTileEntity(BlockPos pos) {
 		return world.getTileEntity(pos);
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("WorldWrapper [world=");
+		builder.append(world);
+		builder.append("]");
+		return builder.toString();
 	}
 }

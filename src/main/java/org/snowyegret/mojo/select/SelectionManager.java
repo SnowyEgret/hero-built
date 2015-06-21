@@ -29,7 +29,7 @@ import ds.geom.VoxelSet;
 
 public class SelectionManager implements ISelect {
 
-	private final Map<BlockPos, Selection> selections = new LinkedHashMap<>();
+	private final Map<BlockPos, Selection> selMap = new LinkedHashMap<>();
 	private Block blockSelected;
 	private List<BlockPos> reselects;
 	private List<BlockPos> grownSelections = new ArrayList<>();
@@ -84,14 +84,18 @@ public class SelectionManager implements ISelect {
 	// Returns a copy to avoid concurrent modification
 	@Override
 	public Iterable<Selection> getSelections() {
-		List<Selection> l = new ArrayList<>();
-		l.addAll(selections.values());
-		return l;
+		return Lists.newArrayList(selMap.values());
+	}
+
+	// Returns a copy to avoid concurrent modification
+	@Override
+	public List<Selection> getSelectionList() {
+		return Lists.newArrayList(selMap.values());
 	}
 
 	@Override
 	public Selection getSelection(BlockPos pos) {
-		return selections.get(pos);
+		return selMap.get(pos);
 	}
 
 	public void setReselects(List<BlockPos> reselects) {
@@ -100,36 +104,29 @@ public class SelectionManager implements ISelect {
 
 	@Override
 	public int size() {
-		return selections.size();
+		return selMap.size();
 	}
 
 	@Override
 	public boolean isSelected(BlockPos pos) {
-		return selections.containsKey(pos);
-	}
-
-	@Override
-	public List<Selection> getSelectionList() {
-		List<Selection> l = new ArrayList<>();
-		l.addAll(selections.values());
-		return l;
+		return selMap.containsKey(pos);
 	}
 
 	@Override
 	public Selection firstSelection() {
-		if (selections.isEmpty()) {
+		if (selMap.isEmpty()) {
 			return null;
 		}
 		// TODO ConcurrentModificationException here in MP
-		return selections.values().iterator().next();
+		return selMap.values().iterator().next();
 	}
 
 	@Override
 	public Selection lastSelection() {
-		if (selections.isEmpty()) {
+		if (selMap.isEmpty()) {
 			return null;
 		}
-		return getSelectionList().get(selections.size() - 1);
+		return getSelectionList().get(selMap.size() - 1);
 	}
 
 	@Override
@@ -140,7 +137,7 @@ public class SelectionManager implements ISelect {
 	@Override
 	public VoxelSet voxelSet() {
 		VoxelSet set = new VoxelSet();
-		for (BlockPos pos : selections.keySet()) {
+		for (BlockPos pos : selMap.keySet()) {
 			set.add(new Point3i(pos.getX(), pos.getY(), pos.getZ()));
 		}
 		return set;
@@ -149,7 +146,7 @@ public class SelectionManager implements ISelect {
 	@Override
 	public List<BlockPos> getGrownSelections() {
 		if (grownSelections.isEmpty()) {
-			grownSelections.addAll(selections.keySet());
+			grownSelections.addAll(selMap.keySet());
 		}
 		return grownSelections;
 	}
@@ -165,46 +162,45 @@ public class SelectionManager implements ISelect {
 	}
 
 	@Override
-	public String toString() {
-		return "SelectionManager [selections=" + selections.size() + "]";
-	}
-
-	@Override
 	public Vec3 getCentroid() {
 		Point3d c = voxelSet().centroid();
 		return new Vec3(c.x, c.y, c.z);
 	}
 
+	@Override
+	public String toString() {
+		return "SelectionManager [selections=" + selMap.size() + "]";
+	}
+
 	// Private-----------------------------------------------------------------------
 
 	private Selection select(IWorld world, BlockPos pos) {
+		Selection s = null;
 		IBlockState state = world.getActualState(pos);
 		Block b = (state.getBlock());
 		if (b instanceof BlockAir) {
-			System.out.println("Found BlockAir. Returning null.");
-			return null;
+			System.out.println("BlockAir. Returning null.");
+			return s;
 		}
 		if (b instanceof BlockSelected) {
-			// getSelection is already null so we have no way of knowing what the original block was
-			System.out.println("Found BlockSelected. Returning null.");
-			return getSelection(pos);
+			s = getSelection(pos);
+			System.out.println("Found BlockSelected. Returning "+s);
+			return s;
 		}
 
-		Selection selection = new Selection(pos, state);
-		selections.put(pos, selection);
+		s = new Selection(pos, state);
+		selMap.put(pos, s);
 
 		world.setState(pos, blockSelected.getDefaultState());
 		PrevStateTileEntity tileEntity = (PrevStateTileEntity) world.getTileEntity(pos);
 		tileEntity.setPrevState(state);
-		// Seems we don't have to do this
-		// world.getWorld().markBlockForUpdate(pos);
 
-		return selection;
+		return s;
 	}
 
 	private void deselect(IWorld world, Selection selection) {
 		world.setState(selection.getPos(), selection.getState());
-		selections.remove(selection.getPos());
+		selMap.remove(selection.getPos());
 	}
 
 	private void deselect(IWorld world, BlockPos pos) {
@@ -224,8 +220,8 @@ public class SelectionManager implements ISelect {
 	}
 
 	private void clearSelections(IWorld world) {
-		if (!selections.isEmpty()) {
-			reselects = Lists.newArrayList(selections.keySet());
+		if (!selMap.isEmpty()) {
+			reselects = Lists.newArrayList(selMap.keySet());
 			// getSelections returns a copy so that it is not modified by deselect
 			for (Selection s : getSelections()) {
 				deselect(world, s);

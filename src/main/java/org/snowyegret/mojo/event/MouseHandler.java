@@ -48,10 +48,10 @@ public class MouseHandler {
 
 		if (stack == null) {
 			// Clear selections or picks with nothing in hand
+			// Check for buttonstate prevents loop when breaking block against sky
 			if (e.buttonstate && cursor.typeOfHit == MovingObjectType.MISS) {
 				if (e.buttonstate) {
-					MoJo.network.sendToServer(new MouseClickMessage(e.button,
-							cursor.getBlockPos(), cursor.typeOfHit));
+					MoJo.network.sendToServer(new MouseClickMessage(e.button, cursor.getBlockPos(), cursor.typeOfHit));
 				}
 				e.setCanceled(true);
 			}
@@ -86,16 +86,14 @@ public class MouseHandler {
 		}
 
 		Item heldItem = stack.getItem();
-		if (heldItem instanceof IStaff || heldItem instanceof ISpell
-				|| cursor.typeOfHit == MovingObjectType.MISS) {
+		if (heldItem instanceof IStaff || heldItem instanceof ISpell || cursor.typeOfHit == MovingObjectType.MISS) {
 			if (e.buttonstate) {
 				if (e.button == 1 && cursor.typeOfHit == MovingObjectType.BLOCK) {
 					// Right click on a block handled by onItemUse. No cancel.
 					return;
 				}
 				// Message server to handle mouse clicks
-				MoJo.network.sendToServer(new MouseClickMessage(e.button,
-						cursor.getBlockPos(), cursor.typeOfHit));
+				MoJo.network.sendToServer(new MouseClickMessage(e.button, cursor.getBlockPos(), cursor.typeOfHit));
 				e.setCanceled(true);
 				return;
 			}

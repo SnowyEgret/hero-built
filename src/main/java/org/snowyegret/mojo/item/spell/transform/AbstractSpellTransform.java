@@ -31,18 +31,19 @@ public abstract class AbstractSpellTransform extends Spell {
 		
 		List<IUndoable> setBlocks = Lists.newArrayList();
 		for (Selection s : selections) {
-			for (Selection sel : transformer.transform(s)) {
-				BlockPos pos = sel.getPos();
-				IBlockState state = sel.getState();
-				if (state.getBlock() instanceof IPlantable) {
-					// TODO only plant if block beneath can sustain a plant
-					// if (world.getBlockState(pos).getBlock()
-					// .canSustainPlant(world.getWorld(), pos, EnumFacing.UP, (IPlantable) state.getBlock())) {
-					pos = pos.up();
-					// } else {
-					// continue;
-					// }
-				}
+			for (Selection ss : transformer.transform(s)) {
+				BlockPos pos = ss.getPos();
+				IBlockState state = ss.getState();
+				//TODO move to Transaction.dO
+				// if (state.getBlock() instanceof IPlantable) {
+				// // TODO only plant if block beneath can sustain a plant
+				// // if (world.getBlockState(pos).getBlock()
+				// // .canSustainPlant(world.getWorld(), pos, EnumFacing.UP, (IPlantable) state.getBlock())) {
+				// pos = pos.up();
+				// // } else {
+				// // continue;
+				// // }
+				// }
 				setBlocks.add(new UndoableSetBlock(pos, player.getWorld().getState(pos), state));
 			}
 		}

@@ -7,13 +7,15 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
-import org.snowyegret.mojo.player.IPlayer;
-import org.snowyegret.mojo.player.Jumper;
-import org.snowyegret.mojo.select.ISelect;
-
+import net.minecraft.block.Block;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.IPlantable;
+
+import org.snowyegret.mojo.item.spell.transform.AbstractSpellTransform;
+import org.snowyegret.mojo.player.IPlayer;
 
 import com.google.common.collect.Lists;
 
@@ -54,14 +56,40 @@ public class Transaction implements IUndoable, Iterable {
 	public IUndoable dO(IPlayer player) {
 		player.getUndoManager().addTransaction(this);
 		List<BlockPos> reselects = Lists.newArrayList();
+		// TODO undoables should be of type UndoableSetBlock. Parameterize Transaction constructor.
+		// Transaction t = new Transaction<UndoableSetBlock>();
+		// for (UndoableSetBlock u : undoables) {
 		for (IUndoable u : undoables) {
-			BlockPos pos = ((UndoableSetBlock) u).pos;
-			if (!player.getBounds().contains(pos)) {
-				u.dO(player);
-				reselects.add(pos);
+			UndoableSetBlock setBlock = (UndoableSetBlock) u;
+			BlockPos pos = setBlock.pos;
+
+			// Set plantables on block above.
+			// Do not set if the block below cannot sustain a plant
+			Block plantable = setBlock.state.getBlock();
+			if (plantable instanceof IPlantable) {
+				Block b = player.getWorld().getBlock(pos);
+				if (!b.canSustainPlant(player.getWorld().getWorld(), pos, EnumFacing.UP, (IPlantable) plantable)) {
+					continue;
+				}
+				pos = pos.up();
+				setBlock.pos = pos;
 			}
+
+			// Do not set blocks on top of player.
+			// Player is expected to break his way out.
+			// Because blocks are selected, when the player deselects the broken blocks will reappear.
+			if (player.getBounds().contains(pos)) {
+				continue;
+			}
+
+			reselects.add(pos);
+			u.dO(player);
 		}
-		player.getSelectionManager().select(player, reselects);
+		// FIXME not rendering properly for transform spells
+		// Temporary fix.
+		if (!(player.getSpell() instanceof AbstractSpellTransform)) {
+			player.getSelectionManager().select(player, reselects);
+		}
 
 		// TODO So far, this is doing nothing
 		// player.getWorld().update();
@@ -147,11 +175,9 @@ public class Transaction implements IUndoable, Iterable {
 
 	private void cacheUndoables() {
 		try {
-			cacheFile = File.createTempFile(Integer.toHexString(hashCode()),
-					".undo");
+			cacheFile = File.createTempFile(Integer.toHexString(hashCode()), ".undo");
 			cacheFile.deleteOnExit();
-			CompressedStreamTools.writeCompressed(toNBT(),
-					new FileOutputStream(cacheFile));
+			CompressedStreamTools.writeCompressed(toNBT(), new FileOutputStream(cacheFile));
 			isCached = true;
 			undoables = null;
 		} catch (IOException e) {
@@ -161,8 +187,7 @@ public class Transaction implements IUndoable, Iterable {
 
 	private void unCacheUndoables() {
 		try {
-			NBTTagCompound tag = CompressedStreamTools
-					.readCompressed(new FileInputStream(cacheFile));
+			NBTTagCompound tag = CompressedStreamTools.readCompressed(new FileInputStream(cacheFile));
 			System.out.println("tag=" + tag);
 			fromNBT(tag);
 		} catch (IOException e) {

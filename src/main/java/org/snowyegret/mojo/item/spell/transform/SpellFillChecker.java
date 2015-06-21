@@ -1,9 +1,9 @@
 package org.snowyegret.mojo.item.spell.transform;
 
+import net.minecraft.util.BlockPos;
+
 import org.snowyegret.mojo.player.IPlayer;
 import org.snowyegret.mojo.select.Selection;
-
-import net.minecraft.util.BlockPos;
 
 import com.google.common.collect.Lists;
 

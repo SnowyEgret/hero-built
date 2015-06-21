@@ -23,8 +23,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockSelected extends Block implements ITileEntityProvider {
 
 	public static final BlockSelectedProperty selectedBlockProperty = new BlockSelectedProperty();
-	//public static ModelResourceLocation modelResourceLocation = new ModelResourceLocation("plato:blockSelected");
-	public static ModelResourceLocation modelResourceLocation = new ModelResourceLocation(MoJo.ID+":blockSelected");
+	public static final ModelResourceLocation modelResourceLocation = new ModelResourceLocation(MoJo.ID+":blockSelected");
 
 	public BlockSelected() {
 		super(Material.clay);
@@ -60,7 +59,7 @@ public class BlockSelected extends Block implements ITileEntityProvider {
 		if (tileEntity != null) {
 			prevState = tileEntity.getPrevState();
 		} else {
-			System.out.println("No tile entity on Block");
+			System.out.println("No tile entity on BlockSelected");
 		}
 		extendedState = extendedState.withProperty(selectedBlockProperty, prevState);
 		return extendedState;

@@ -91,7 +91,7 @@ public class UndoManager implements IUndo {
 
 	@Override
 	public void undo(IPlayer player) throws NoSuchElementException {
-		System.out.println("size=" + size());
+		//System.out.println("size=" + size());
 		if (currentNode.left == null) {
 			throw new NoSuchElementException("Nothing left to undo.");
 		}

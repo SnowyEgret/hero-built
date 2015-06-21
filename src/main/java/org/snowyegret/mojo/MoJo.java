@@ -105,10 +105,10 @@ public class MoJo {
 		SpellLoader loader = new SpellLoader();
 		try {
 			List<Spell> drawSpells = loader.loadSpellsFromPackage(PACKAGE + ".item.spell.draw");
-			List<Spell> selectSpells = loader.loadSpellsFromPackage(PACKAGE + "item.spell.select");
-			List<Spell> transformSpells = loader.loadSpellsFromPackage(PACKAGE + "item.spell.transform");
-			List<Spell> matrixSpells = loader.loadSpellsFromPackage(PACKAGE + "item.spell.matrix");
-			List<Spell> otherSpells = loader.loadSpellsFromPackage(PACKAGE + "item.spell.other");
+			List<Spell> selectSpells = loader.loadSpellsFromPackage(PACKAGE + ".item.spell.select");
+			List<Spell> transformSpells = loader.loadSpellsFromPackage(PACKAGE + ".item.spell.transform");
+			List<Spell> matrixSpells = loader.loadSpellsFromPackage(PACKAGE + ".item.spell.matrix");
+			List<Spell> otherSpells = loader.loadSpellsFromPackage(PACKAGE + ".item.spell.other");
 			spells.addAll(drawSpells);
 			spells.addAll(selectSpells);
 			spells.addAll(matrixSpells);
