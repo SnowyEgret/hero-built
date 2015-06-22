@@ -8,13 +8,20 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockTorch;
+import net.minecraft.init.Blocks;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
 
-import org.snowyegret.mojo.item.spell.transform.AbstractSpellTransform;
+import org.snowyegret.mojo.item.spell.ISpell;
+import org.snowyegret.mojo.item.spell.transform.SpellDelete;
+import org.snowyegret.mojo.item.spell.transform.SpellFill;
+import org.snowyegret.mojo.item.spell.transform.SpellFillChecker;
+import org.snowyegret.mojo.item.spell.transform.SpellFillRandom;
 import org.snowyegret.mojo.player.IPlayer;
 
 import com.google.common.collect.Lists;
@@ -54,21 +61,42 @@ public class Transaction implements IUndoable, Iterable {
 
 	@Override
 	public IUndoable dO(IPlayer player) {
+		World world = player.getWorld().getWorld();
 		player.getUndoManager().addTransaction(this);
 		List<BlockPos> reselects = Lists.newArrayList();
+
+		// Parameterize transaction contructor for UndoableSetBlock #161
 		// TODO undoables should be of type UndoableSetBlock. Parameterize Transaction constructor.
 		// Transaction t = new Transaction<UndoableSetBlock>();
 		// for (UndoableSetBlock u : undoables) {
+
 		for (IUndoable u : undoables) {
 			UndoableSetBlock setBlock = (UndoableSetBlock) u;
 			BlockPos pos = setBlock.pos;
 
+			Block blockToBeSet = setBlock.state.getBlock();
+			Block block = player.getWorld().getBlock(pos);
+
+			// TODO Not the right place for this.
+			// If all spells shared a common base class we could do it there.
+
+			// Implementation of Issue #162: Only set IPlantable if block below can sustain plant
 			// Set plantables on block above.
 			// Do not set if the block below cannot sustain a plant
-			Block plantable = setBlock.state.getBlock();
-			if (plantable instanceof IPlantable) {
-				Block b = player.getWorld().getBlock(pos);
-				if (!b.canSustainPlant(player.getWorld().getWorld(), pos, EnumFacing.UP, (IPlantable) plantable)) {
+			if (blockToBeSet instanceof IPlantable) {
+				if (!block.canSustainPlant(world, pos, EnumFacing.UP, (IPlantable) blockToBeSet)) {
+					continue;
+				}
+				pos = pos.up();
+				setBlock.pos = pos;
+			}
+
+			// TODO Issue: Torches should be placed conditionally #164
+			// Not finished!
+			if (blockToBeSet instanceof BlockTorch) {
+				System.out.println("Got a torch");
+				// if (block == Blocks.air || !block.canPlaceBlockOnSide(w, pos, EnumFacing.UP)) {
+				if (block == Blocks.air) {
 					continue;
 				}
 				pos = pos.up();
@@ -83,16 +111,24 @@ public class Transaction implements IUndoable, Iterable {
 			}
 
 			reselects.add(pos);
+
 			u.dO(player);
 		}
+
+		// Issue #99: Transform spells not reselecting with proper state
 		// FIXME not rendering properly for transform spells
-		// Temporary fix.
-		if (!(player.getSpell() instanceof AbstractSpellTransform)) {
+		// Temporary fix. Player can relelect with Action.LAST key
+		ISpell s = player.getSpell();
+		if (!(s instanceof SpellFill || s instanceof SpellFillChecker || s instanceof SpellFillRandom)) {
 			player.getSelectionManager().select(player, reselects);
 		}
 
+		// TODO do not reselect after spellDelete or pressing delete key
+		// Can not test for SpellDelete on delete key press because player does not have DeleteSpell in hand
+
 		// TODO So far, this is doing nothing
 		// player.getWorld().update();
+
 		// Ernio's suggestion in my post:
 		// http://www.minecraftforge.net/forum/index.php/topic,30991
 		if (undoables.size() > MAX_SIZE) {

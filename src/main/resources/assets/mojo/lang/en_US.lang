@@ -98,7 +98,7 @@ item.spellSelectAbove.description=grows selection above selected blocks
 item.spellSelectAbove.modifier.ctrl=shrink
 item.spellSelectAbove.modifier.alt=select any block
 
-item.spellSelectAll.name=Select All spell
+item.spellSelectAll.name=Select All
 item.spellSelectAll.description=grows selection in all directions
 item.spellSelectAll.modifier.ctrl=shrink
 item.spellSelectAll.modifier.alt=select any block

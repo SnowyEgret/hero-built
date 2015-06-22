@@ -2,15 +2,15 @@ package org.snowyegret.mojo.undo;
 
 import java.util.NoSuchElementException;
 
-import org.snowyegret.mojo.player.IPlayer;
-
 import net.minecraft.nbt.NBTTagCompound;
+
+import org.snowyegret.mojo.player.IPlayer;
 
 public class UndoManager implements IUndo {
 
 	private Node currentNode;
 	private int maxLength = 0;
-	final static int DEFAULT_MAX_LENGTH = 10;
+	final static int DEFAULT_MAX_LENGTH = 30;
 
 	public UndoManager(int maxLength) {
 		currentNode = new Node();
@@ -35,8 +35,6 @@ public class UndoManager implements IUndo {
 		System.out.println("size=" + size());
 	}
 
-	// Private ---------------------------------------------------------
-	
 	public int size() {
 		// return size;
 		int size = 0;
@@ -53,30 +51,6 @@ public class UndoManager implements IUndo {
 		return size;
 	}
 
-//	@Override
-//	// FIXME
-//	public int indexOf(IUndoable undoable) {
-//		Node n = currentNode;
-//		//Move to left end
-//		while (n.left != null) {
-//			n = n.left;
-//		}
-//		int index = 1;
-//		if (n.undoable == undoable) {
-//			return index;
-//		}
-//		while (n.right != null) {
-//			n = n.right;
-//			index++;
-//			if (n.undoable == undoable) {
-//				System.out.println("Found undoable=" + undoable);
-//				return index;
-//			}
-//		}
-//		System.out.println("Could not find undoable=" + undoable);
-//		return -1;
-//	}
-
 	@Override
 	public void clear() {
 		currentNode = new Node();
@@ -91,7 +65,7 @@ public class UndoManager implements IUndo {
 
 	@Override
 	public void undo(IPlayer player) throws NoSuchElementException {
-		//System.out.println("size=" + size());
+		// System.out.println("size=" + size());
 		if (currentNode.left == null) {
 			throw new NoSuchElementException("Nothing left to undo.");
 		}
@@ -121,6 +95,8 @@ public class UndoManager implements IUndo {
 		return null;
 	}
 
+	// Private---------------------------------------------------------------------
+
 	private void removeLeftEnd() {
 		Node n = currentNode;
 		while (n.left != null) {
@@ -143,8 +119,8 @@ public class UndoManager implements IUndo {
 		public Node() {
 			transaction = null;
 		}
-		
-		public void finalize() { 
+
+		public void finalize() {
 			transaction.deleteCache();
 		}
 	}

@@ -1,12 +1,19 @@
 package org.snowyegret.mojo.select;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.vecmath.Point3d;
 import javax.vecmath.Point3i;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockAir;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.Vec3;
+import net.minecraft.world.IBlockAccess;
 
 import org.snowyegret.mojo.MoJo;
 import org.snowyegret.mojo.block.BlockSelected;
@@ -15,24 +22,19 @@ import org.snowyegret.mojo.network.SelectionMessage;
 import org.snowyegret.mojo.player.IPlayer;
 import org.snowyegret.mojo.world.IWorld;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockAir;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.Vec3;
-
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 
 import ds.geom.IntegerDomain;
 import ds.geom.VoxelSet;
 
 public class SelectionManager implements ISelect {
 
-	private final Map<BlockPos, Selection> selMap = new LinkedHashMap<>();
+	private final Map<BlockPos, Selection> selMap = Maps.newLinkedHashMap();
 	private Block blockSelected;
 	private List<BlockPos> reselects;
-	private List<BlockPos> grownSelections = new ArrayList<>();
+	private Set<BlockPos> grownSelections = Sets.newHashSet();
 
 	public SelectionManager(Block blockSelected) {
 		this.blockSelected = blockSelected;
@@ -43,7 +45,7 @@ public class SelectionManager implements ISelect {
 		for (BlockPos p : pos) {
 			select(player.getWorld(), p);
 		}
-		player.getWorld().update();
+		// player.getWorld().update();
 		MoJo.network.sendTo(new SelectionMessage(this), (EntityPlayerMP) player.getPlayer());
 	}
 
@@ -61,8 +63,8 @@ public class SelectionManager implements ISelect {
 
 	@Override
 	public void deselect(IPlayer player, Iterable<BlockPos> positions) {
-		for (BlockPos p : positions) {
-			deselect(player.getWorld(), p);
+		for (BlockPos pos : positions) {
+			deselect(player.getWorld(), pos);
 		}
 		MoJo.network.sendTo(new SelectionMessage(this), (EntityPlayerMP) player.getPlayer());
 	}
@@ -144,7 +146,8 @@ public class SelectionManager implements ISelect {
 	}
 
 	@Override
-	public List<BlockPos> getGrownSelections() {
+	// public List<BlockPos> getGrownSelections() {
+	public Set<BlockPos> getGrownSelections() {
 		if (grownSelections.isEmpty()) {
 			grownSelections.addAll(selMap.keySet());
 		}
@@ -152,8 +155,11 @@ public class SelectionManager implements ISelect {
 	}
 
 	@Override
-	public void setGrownSelections(List<BlockPos> points) {
-		grownSelections = points;
+	// public void setGrownSelections(List<BlockPos> points) {
+	public void setGrownSelections(Set<BlockPos> positions) {
+		grownSelections.clear();
+		grownSelections.addAll(positions);
+		// grownSelections = positions;
 	}
 
 	@Override
@@ -180,13 +186,20 @@ public class SelectionManager implements ISelect {
 		Block b = (state.getBlock());
 		if (b instanceof BlockAir) {
 			System.out.println("BlockAir. Returning null.");
-			return s;
+			return null;
 		}
-		if (b instanceof BlockSelected) {
-			s = getSelection(pos);
-			System.out.println("Found BlockSelected. Returning "+s);
-			return s;
-		}
+
+		// if (b instanceof BlockSelected) {
+		// //s = getSelection(pos);
+		// System.out.println("BlockSelected. Returning " + s);
+		// //return s;
+		// }
+
+		// if (isSelected(pos)) {
+		// //s = getSelection(pos);
+		// System.out.println("Position already selected. Returning " + s);
+		// //return s;
+		// }
 
 		s = new Selection(pos, state);
 		selMap.put(pos, s);
@@ -194,6 +207,8 @@ public class SelectionManager implements ISelect {
 		world.setState(pos, blockSelected.getDefaultState());
 		PrevStateTileEntity tileEntity = (PrevStateTileEntity) world.getTileEntity(pos);
 		tileEntity.setPrevState(state);
+		// Do I have to message client?
+		// No, because PrevStateTileEntity overrides getDescriptionPacket and onDataPacket
 
 		return s;
 	}

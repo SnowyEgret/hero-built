@@ -119,9 +119,17 @@ public class PickManager implements IPick {
 		IBlockState prevState = world.getActualState(pos);
 		PrevStateTileEntity tileEntity;
 		if (prevState.getBlock() instanceof BlockSelected) {
-			System.out.println("prevState=" + prevState);
+			// System.out.println("prevState=" + prevState);
 			tileEntity = (PrevStateTileEntity) world.getTileEntity(pos);
 			prevState = tileEntity.getPrevState();
+			// If the BlockSelected is left in the world after a crash, prevState will be null.
+			// When selecting these blocks with a selection spell to delete or fill them, the previous state
+			// can simply be BlockPick's default state
+			if (prevState == null) {
+				System.out
+						.println("When clearing BlockSelecteds left in world after a crash, tileEntity.getPrevState() is null. Setting to BlockSelected default state.");
+				prevState = MoJo.blockSelected.getDefaultState();
+			}
 		}
 		Pick pick = new Pick(pos, prevState, side);
 		picks.add(pick);
@@ -149,9 +157,11 @@ public class PickManager implements IPick {
 	// }
 
 	private void clearPicks(IWorld world) {
-		for (Pick p : getPicks()) {
-			IBlockState state = world.getActualState(p.getPos());
-			world.setState(p.getPos(), p.getState());
+		for (Pick pick : getPicks()) {
+			IBlockState state = world.getActualState(pick.getPos());
+			// When picking a BlockSelected in an AbstractSpellSelect when selecting BlockSelected left
+			// in world after a crash, there is no state on the tile entity.
+			world.setState(pick.getPos(), pick.getState());
 		}
 		lastPicks.clear();
 		lastPicks.addAll(picks);

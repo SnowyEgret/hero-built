@@ -26,12 +26,11 @@ public class SpellRotate90 extends AbstractSpellMatrix {
 	public void invoke(IPlayer player) {
 
 		Modifiers modifiers = player.getModifiers();
-		IPick pickManager = player.getPickManager();
 		ISelect selectionManager = player.getSelectionManager();
 
 		boolean deleteOriginal = modifiers.isPressed(Modifier.CTRL);
 		boolean rotateAboutCentroid = modifiers.isPressed(Modifier.SHIFT);
-		Pick[] picks = pickManager.getPicks();
+		Pick[] picks = player.getPickManager().getPicks();
 		Point3d center = null;
 		if (rotateAboutCentroid) {
 			Vec3 c = selectionManager.getCentroid();
@@ -42,17 +41,15 @@ public class SpellRotate90 extends AbstractSpellMatrix {
 
 		// TODO switch to RotationMatrix constructor with 2 vectors
 		Matrix4d matrix;
-		switch (Keyboard.getEventKey()) {
-		case (Keyboard.KEY_X):
+		if (modifiers.isPressed(Modifier.X)) {
 			matrix = GeomUtil.newRotX90Matrix(center);
-			break;
-		case (Keyboard.KEY_Y):
+		}
+		else if (modifiers.isPressed(Modifier.Y)) {
 			matrix = GeomUtil.newRotY90Matrix(center);
-			break;
-		case (Keyboard.KEY_Z):
+		}
+		else if (modifiers.isPressed(Modifier.Z)) {
 			matrix = GeomUtil.newRotZ90Matrix(center);
-			break;
-		default:
+		} else {
 			matrix = GeomUtil.newRotY90Matrix(center);
 		}
 

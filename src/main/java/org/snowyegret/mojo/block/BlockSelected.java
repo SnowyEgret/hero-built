@@ -1,7 +1,5 @@
 package org.snowyegret.mojo.block;
 
-import org.snowyegret.mojo.MoJo;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -19,6 +17,8 @@ import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import org.snowyegret.mojo.MoJo;
 
 public class BlockSelected extends Block implements ITileEntityProvider {
 
@@ -46,7 +46,6 @@ public class BlockSelected extends Block implements ITileEntityProvider {
 	protected BlockState createBlockState() {
 		ExtendedBlockState state = new ExtendedBlockState(this, new IProperty[0],
 				new IUnlistedProperty[] { selectedBlockProperty });
-		System.out.println(state);
 		return state;
 	}
 
@@ -55,14 +54,15 @@ public class BlockSelected extends Block implements ITileEntityProvider {
 		assert IExtendedBlockState.class.isAssignableFrom(state.getClass());
 		IExtendedBlockState extendedState = (IExtendedBlockState) state;
 		PrevStateTileEntity tileEntity = (PrevStateTileEntity) world.getTileEntity(pos);
+		// if (tileEntity == null) {
+		// System.out.println("No tile entity on BlockSelected");
+		// }
 		IBlockState prevState = null;
 		if (tileEntity != null) {
 			prevState = tileEntity.getPrevState();
-		} else {
-			System.out.println("No tile entity on BlockSelected");
 		}
-		extendedState = extendedState.withProperty(selectedBlockProperty, prevState);
-		return extendedState;
+		return extendedState.withProperty(selectedBlockProperty, prevState);
+		//return extendedState;
 	}
 
 	@Override

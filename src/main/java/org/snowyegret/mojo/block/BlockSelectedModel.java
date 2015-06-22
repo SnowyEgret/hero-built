@@ -4,12 +4,14 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.IBakedModel;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.client.model.ISmartBlockModel;
 import net.minecraftforge.common.property.IExtendedBlockState;
@@ -21,7 +23,7 @@ public class BlockSelectedModel implements ISmartBlockModel {
 
 	@Override
 	public IBakedModel handleBlockState(IBlockState state) {
-		assert IExtendedBlockState.class.isAssignableFrom(state.getClass());
+		//assert IExtendedBlockState.class.isAssignableFrom(state.getClass());
 		IBlockState s = ((IExtendedBlockState) state).getValue(BlockSelected.selectedBlockProperty);
 		model = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelForState(s);
 		return this;
@@ -50,7 +52,7 @@ public class BlockSelectedModel implements ISmartBlockModel {
 	@Override
 	public boolean isAmbientOcclusion() {
 		return model.isAmbientOcclusion();
-		//return false;
+		// return false;
 	}
 
 	@Override
