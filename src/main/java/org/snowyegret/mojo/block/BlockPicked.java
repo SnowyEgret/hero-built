@@ -33,10 +33,11 @@ public class BlockPicked extends Block implements ITileEntityProvider {
 		setStepSound(soundTypeGravel);
 	}
 
-	// Is this the default layer?
 	@SideOnly(Side.CLIENT)
 	public EnumWorldBlockLayer getBlockLayer() {
-		return EnumWorldBlockLayer.SOLID;
+		// Fix for Plants not rendering properly when selected #171
+		return EnumWorldBlockLayer.CUTOUT_MIPPED;
+		//return EnumWorldBlockLayer.SOLID;
 	}
 
 	@Override
@@ -59,8 +60,7 @@ public class BlockPicked extends Block implements ITileEntityProvider {
 		} else {
 			System.out.println("No tile entity on Block");
 		}
-		extendedState = extendedState.withProperty(pickedBlockProperty, prevState);
-		return extendedState;
+		return extendedState.withProperty(pickedBlockProperty, prevState);
 	}
 
 	@Override

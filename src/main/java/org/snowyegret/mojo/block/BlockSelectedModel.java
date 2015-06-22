@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.client.model.IFlexibleBakedModel;
 import net.minecraftforge.client.model.ISmartBlockModel;
 import net.minecraftforge.common.property.IExtendedBlockState;
 
@@ -23,8 +24,12 @@ public class BlockSelectedModel implements ISmartBlockModel {
 
 	@Override
 	public IBakedModel handleBlockState(IBlockState state) {
-		//assert IExtendedBlockState.class.isAssignableFrom(state.getClass());
 		IBlockState s = ((IExtendedBlockState) state).getValue(BlockSelected.selectedBlockProperty);
+		// Fix for Crash with infinite loop at BlockSelected/PickedModel.isAmbientOcclusion #172
+		// When selecting blocks left in world with a selection spell, sometimes s was BlockSelected instead of null
+		if (s != null && s.getBlock() instanceof BlockSelected) {
+			s = null;
+		}
 		model = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelForState(s);
 		return this;
 	}

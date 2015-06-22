@@ -21,8 +21,11 @@ public class BlockPickedModel implements ISmartBlockModel {
 
 	@Override
 	public IBakedModel handleBlockState(IBlockState state) {
-		assert IExtendedBlockState.class.isAssignableFrom(state.getClass());
 		IBlockState s = ((IExtendedBlockState) state).getValue(BlockPicked.pickedBlockProperty);
+		// Fix for Crash with infinite loop at BlockSelected/PickedModel.isAmbientOcclusion #172
+		if (s != null && s.getBlock() instanceof BlockPicked) {
+			s = null;
+		}
 		model = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelForState(s);
 		return this;
 	}

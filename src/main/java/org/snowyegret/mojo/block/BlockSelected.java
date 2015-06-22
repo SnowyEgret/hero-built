@@ -64,7 +64,6 @@ public class BlockSelected extends Block implements ITileEntityProvider {
 			prevState = tileEntity.getPrevState();
 		}
 		return extendedState.withProperty(selectedBlockProperty, prevState);
-		// return extendedState;
 	}
 
 	@Override
