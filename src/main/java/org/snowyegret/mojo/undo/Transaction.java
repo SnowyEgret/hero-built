@@ -121,6 +121,8 @@ public class Transaction implements IUndoable, Iterable {
 		ISpell s = player.getSpell();
 		if (!(s instanceof SpellFill || s instanceof SpellFillChecker || s instanceof SpellFillRandom)) {
 			player.getSelectionManager().select(player, reselects);
+		} else {
+			player.getSelectionManager().setReselects(reselects);
 		}
 
 		// TODO do not reselect after spellDelete or pressing delete key

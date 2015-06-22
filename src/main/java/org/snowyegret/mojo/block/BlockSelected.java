@@ -23,7 +23,8 @@ import org.snowyegret.mojo.MoJo;
 public class BlockSelected extends Block implements ITileEntityProvider {
 
 	public static final BlockSelectedProperty selectedBlockProperty = new BlockSelectedProperty();
-	public static final ModelResourceLocation modelResourceLocation = new ModelResourceLocation(MoJo.ID+":blockSelected");
+	public static final ModelResourceLocation modelResourceLocation = new ModelResourceLocation(MoJo.ID
+			+ ":blockSelected");
 
 	public BlockSelected() {
 		super(Material.clay);
@@ -36,10 +37,11 @@ public class BlockSelected extends Block implements ITileEntityProvider {
 		return false;
 	}
 
-	// Is this the default layer?
 	@SideOnly(Side.CLIENT)
 	public EnumWorldBlockLayer getBlockLayer() {
-		return EnumWorldBlockLayer.SOLID;
+		// Fix for Plants not rendering properly when selected #171
+		return EnumWorldBlockLayer.CUTOUT_MIPPED;
+		// return EnumWorldBlockLayer.SOLID;
 	}
 
 	@Override
@@ -62,7 +64,7 @@ public class BlockSelected extends Block implements ITileEntityProvider {
 			prevState = tileEntity.getPrevState();
 		}
 		return extendedState.withProperty(selectedBlockProperty, prevState);
-		//return extendedState;
+		// return extendedState;
 	}
 
 	@Override
