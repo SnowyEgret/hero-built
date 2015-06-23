@@ -186,6 +186,9 @@ public class SelectionManager implements ISelect {
 		Selection s = null;
 		IBlockState state = world.getActualState(pos);
 		Block b = (state.getBlock());
+		
+		// Should not happen.
+		// SpellDelete is reselecting on a delete key press
 		if (b instanceof BlockAir) {
 			System.out.println("BlockAir. Returning null.");
 			return null;
@@ -206,12 +209,10 @@ public class SelectionManager implements ISelect {
 				state = te.getPrevState();
 			}
 		}
-
-		// if (isSelected(pos)) {
-		// //s = getSelection(pos);
-		// System.out.println("Position already selected. Returning " + s);
-		// //return s;
-		// }
+		
+		if (isSelected(pos)) {
+			System.out.println("Position is seleted but not a BlockSelected. This should not happen.");
+		}
 
 		s = new Selection(pos, state);
 		selMap.put(pos, s);

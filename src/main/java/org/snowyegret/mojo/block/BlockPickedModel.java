@@ -21,7 +21,7 @@ public class BlockPickedModel implements ISmartBlockModel {
 
 	@Override
 	public IBakedModel handleBlockState(IBlockState state) {
-		IBlockState s = ((IExtendedBlockState) state).getValue(BlockPicked.pickedBlockProperty);
+		IBlockState s = ((IExtendedBlockState) state).getValue(BlockPicked.prevStateProperty);
 		// Fix for Crash with infinite loop at BlockSelected/PickedModel.isAmbientOcclusion #172
 		if (s != null && s.getBlock() instanceof BlockPicked) {
 			s = null;

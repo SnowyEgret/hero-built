@@ -85,6 +85,7 @@ public abstract class AbstractSpellSelect extends Spell {
 
 	private void growSelections(IPlayer player, boolean anyBlock, ISelect selectionManager, Block patternBlock) {
 		Set<BlockPos> grownSelections = Sets.newHashSet();
+		// Grown selections must be on selectionManager and not on this spell so that it belongs to a player
 		for (BlockPos center : selectionManager.getGrownSelections()) {
 			for (BlockPos p : growthPattern) {
 				p = p.add(center);

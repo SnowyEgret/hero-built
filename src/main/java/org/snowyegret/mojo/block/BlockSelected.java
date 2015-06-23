@@ -22,7 +22,7 @@ import org.snowyegret.mojo.MoJo;
 
 public class BlockSelected extends Block implements ITileEntityProvider {
 
-	public static final BlockSelectedProperty selectedBlockProperty = new BlockSelectedProperty();
+	public static final PrevStateProperty prevStateProperty = new PrevStateProperty();
 	public static final ModelResourceLocation modelResourceLocation = new ModelResourceLocation(MoJo.ID
 			+ ":blockSelected");
 
@@ -47,23 +47,23 @@ public class BlockSelected extends Block implements ITileEntityProvider {
 	@Override
 	protected BlockState createBlockState() {
 		ExtendedBlockState state = new ExtendedBlockState(this, new IProperty[0],
-				new IUnlistedProperty[] { selectedBlockProperty });
+				new IUnlistedProperty[] { prevStateProperty });
 		return state;
 	}
 
 	@Override
 	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-		assert IExtendedBlockState.class.isAssignableFrom(state.getClass());
-		IExtendedBlockState extendedState = (IExtendedBlockState) state;
 		PrevStateTileEntity tileEntity = (PrevStateTileEntity) world.getTileEntity(pos);
 		if (tileEntity == null) {
 			System.out.println("No tile entity on BlockSelected");
 		}
 		IBlockState prevState = null;
+		//If no tile entity is found at this position block will render black/magenta
 		if (tileEntity != null) {
 			prevState = tileEntity.getPrevState();
 		}
-		return extendedState.withProperty(selectedBlockProperty, prevState);
+		IExtendedBlockState extendedState = (IExtendedBlockState) state;
+		return extendedState.withProperty(prevStateProperty, prevState);
 	}
 
 	@Override

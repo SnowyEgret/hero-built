@@ -24,7 +24,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockPicked extends Block implements ITileEntityProvider {
 
-	public static final BlockPickedProperty pickedBlockProperty = new BlockPickedProperty();
+	public static final PrevStateProperty prevStateProperty = new PrevStateProperty();
 	public static final ModelResourceLocation modelResourceLocation = new ModelResourceLocation(MoJo.ID+":blockPicked");
 
 	public BlockPicked() {
@@ -42,7 +42,7 @@ public class BlockPicked extends Block implements ITileEntityProvider {
 
 	@Override
 	protected BlockState createBlockState() {
-		return new ExtendedBlockState(this, new IProperty[0], new IUnlistedProperty[] { pickedBlockProperty });
+		return new ExtendedBlockState(this, new IProperty[0], new IUnlistedProperty[] { prevStateProperty });
 	}
 
 	@Override
@@ -60,7 +60,7 @@ public class BlockPicked extends Block implements ITileEntityProvider {
 		} else {
 			System.out.println("No tile entity on Block");
 		}
-		return extendedState.withProperty(pickedBlockProperty, prevState);
+		return extendedState.withProperty(prevStateProperty, prevState);
 	}
 
 	@Override

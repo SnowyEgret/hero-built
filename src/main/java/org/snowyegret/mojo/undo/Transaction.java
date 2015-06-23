@@ -83,7 +83,7 @@ public class Transaction implements IUndoable, Iterable {
 			// Implementation of Issue #162: Only set IPlantable if block below can sustain plant
 			// Set plantables on block above.
 			// Do not set if the block below cannot sustain a plant
-			System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>blockToSet="+blockToSet);
+			//System.out.println("blockToSet=" + blockToSet);
 			if (blockToSet instanceof IPlantable) {
 				if (!block.canSustainPlant(world, pos, EnumFacing.UP, (IPlantable) blockToSet)) {
 					continue;
@@ -121,13 +121,14 @@ public class Transaction implements IUndoable, Iterable {
 		// Temporary fix. Player can relelect with Action.LAST key
 		ISpell s = player.getSpell();
 		if (!(s instanceof SpellFill || s instanceof SpellFillChecker || s instanceof SpellFillRandom)) {
-			player.getSelectionManager().select(player, reselects);
+			// TODO do not reselect after spellDelete or pressing delete key
+			// Can not test for SpellDelete on delete key press because player does not have DeleteSpell in hand
+			if (!(s instanceof SpellDelete)) {
+				player.getSelectionManager().select(player, reselects);
+			}
 		} else {
 			player.getSelectionManager().setReselects(reselects);
 		}
-
-		// TODO do not reselect after spellDelete or pressing delete key
-		// Can not test for SpellDelete on delete key press because player does not have DeleteSpell in hand
 
 		// TODO So far, this is doing nothing
 		// player.getWorld().update();

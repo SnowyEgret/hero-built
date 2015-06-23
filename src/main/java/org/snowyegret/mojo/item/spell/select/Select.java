@@ -12,37 +12,32 @@ import org.apache.commons.lang3.Range;
 
 public class Select {
 
-	public static final BlockPos[] ABOVE = pos(Range.between(-1, 1), Range.between(1, 1), Range.between(-1, 1));
-	public static final BlockPos[] ABOVE_NO_CORNERS = pos(Range.between(-1, 1), Range.between(1, 1),
-			Range.between(-1, 1), true);
-	public static final BlockPos[] ABOVE_INCLUSIVE = pos(Range.between(-1, 1), Range.between(0, 1),
-			Range.between(-1, 1));
-	public static final BlockPos[] HORIZONTAL = pos(Range.between(-1, 1), Range.between(0, 0), Range.between(-1, 1));
-	public static final BlockPos[] HORIZONTAL_NO_CORNERS = pos(Range.between(-1, 1), Range.between(0, 0),
-			Range.between(-1, 1), true);
-	public static final BlockPos[] BELOW = pos(Range.between(-1, 1), Range.between(-1, -1), Range.between(-1, 1));
-	public static final BlockPos[] BELOW_NO_CORNERS = pos(Range.between(-1, 1), Range.between(-1, -1),
-			Range.between(-1, 1), true);
-	public static final BlockPos[] BELOW_INCLUSIVE = pos(Range.between(-1, 1), Range.between(0, -1),
-			Range.between(-1, 1));
-	public static final BlockPos[] EAST_WEST = pos(Range.between(-1, 1), Range.between(-1, 1), Range.between(0, 0));
-	public static final BlockPos[] NORTH_SOUTH = pos(Range.between(0, 0), Range.between(-1, 1), Range.between(-1, 1));
-	public static final BlockPos[] UP = pos(Range.between(0, 0), Range.between(1, 1), Range.between(0, 0));
-	public static final BlockPos[] DOWN = pos(Range.between(0, 0), Range.between(-1, -1), Range.between(0, 0));
-	public static final BlockPos[] EAST = pos(Range.between(1, 1), Range.between(-1, 1), Range.between(-1, 1));
-	public static final BlockPos[] WEST = pos(Range.between(-1, -1), Range.between(-1, 1), Range.between(-1, 1));
-	public static final BlockPos[] NORTH = pos(Range.between(-1, 1), Range.between(-1, 1), Range.between(1, 1));
-	public static final BlockPos[] SOUTH = pos(Range.between(-1, 1), Range.between(-1, 1), Range.between(-1, -1));
-	public static final BlockPos[] ALL = concat(ABOVE, HORIZONTAL, BELOW);
+	public static final BlockPos[] ABOVE = pos(range(-1, 1), range(1, 1), range(-1, 1));
+	public static final BlockPos[] ABOVE_NO_CORNERS = pos(range(-1, 1), range(1, 1), range(-1, 1), true);
+	public static final BlockPos[] ABOVE_INCLUSIVE = pos(range(-1, 1), range(0, 1), range(-1, 1));
+	public static final BlockPos[] HORIZONTAL = pos(range(-1, 1), range(0, 0), range(-1, 1));
+	public static final BlockPos[] HORIZONTAL_NO_CORNERS = pos(range(-1, 1), range(0, 0), range(-1, 1), true);
+	public static final BlockPos[] BELOW = pos(range(-1, 1), range(-1, -1), range(-1, 1));
+	public static final BlockPos[] BELOW_NO_CORNERS = pos(range(-1, 1), range(-1, -1), range(-1, 1), true);
+	public static final BlockPos[] BELOW_INCLUSIVE = pos(range(-1, 1), range(0, -1), range(-1, 1));
+	public static final BlockPos[] EAST_WEST = pos(range(-1, 1), range(-1, 1), range(0, 0));
+	public static final BlockPos[] NORTH_SOUTH = pos(range(0, 0), range(-1, 1), range(-1, 1));
+	public static final BlockPos[] UP = pos(range(0, 0), range(1, 1), range(0, 0));
+	public static final BlockPos[] DOWN = pos(range(0, 0), range(-1, -1), range(0, 0));
+	public static final BlockPos[] EAST = pos(range(1, 1), range(-1, 1), range(-1, 1));
+	public static final BlockPos[] WEST = pos(range(-1, -1), range(-1, 1), range(-1, 1));
+	public static final BlockPos[] NORTH = pos(range(-1, 1), range(-1, 1), range(1, 1));
+	public static final BlockPos[] SOUTH = pos(range(-1, 1), range(-1, 1), range(-1, -1));
+	public static final BlockPos[] ALL = pos(range(-1, 1), range(-1, 1), range(-1, 1));
 	public static final BlockPos[] ALL_NO_CORNERS = concat(NORTH_SOUTH, EAST_WEST, HORIZONTAL);
 	public static final BlockPos[] UP_DOWN_NESW = concat(UP, DOWN, NORTH, EAST, SOUTH, WEST);
 
-	public static final BlockPos[] XY = pos(Range.between(-1, 1), Range.between(-1, 1), Range.between(0, 0));
-	public static final BlockPos[] Z = pos(Range.between(0, 0), Range.between(0, 0), Range.between(-1, 1));
-	public static final BlockPos[] XZ = pos(Range.between(-1, 1), Range.between(0, 0), Range.between(-1, 1));
-	public static final BlockPos[] Y = pos(Range.between(0, 0), Range.between(-1, 1), Range.between(0, 0));
-	public static final BlockPos[] YZ = pos(Range.between(0, 0), Range.between(-1, 1), Range.between(-1, 1));
-	public static final BlockPos[] X = pos(Range.between(-1, 1), Range.between(0, 0), Range.between(0, 0));
+	public static final BlockPos[] XY = pos(range(-1, 1), range(-1, 1), range(0, 0));
+	public static final BlockPos[] Z = pos(range(0, 0), range(0, 0), range(-1, 1));
+	public static final BlockPos[] XZ = pos(range(-1, 1), range(0, 0), range(-1, 1));
+	public static final BlockPos[] Y = pos(range(0, 0), range(-1, 1), range(0, 0));
+	public static final BlockPos[] YZ = pos(range(0, 0), range(-1, 1), range(-1, 1));
+	public static final BlockPos[] X = pos(range(-1, 1), range(0, 0), range(0, 0));
 
 	public static BlockPos[] toSideOfPlane(EnumFacing side) {
 		switch (side) {
@@ -86,6 +81,10 @@ public class Select {
 
 	// Private------------------------------------------------
 
+	private static Range<Integer> range(int from, int to) {
+		return Range.between(from, to);
+	}
+
 	private static BlockPos[] pos(Range<Integer> rx, Range<Integer> ry, Range<Integer> rz) {
 		return pos(rx, ry, rz, false);
 	}
@@ -101,10 +100,10 @@ public class Select {
 							continue;
 					}
 					// Exclude center
-					// TODO commented out for now.
-					// if (x == 0 && y == 0 && z == 0) {
-					// continue;
-					// }
+					// When excluded the picked block is not rendering as if it is not picked in a selection spell
+					if (x == 0 && y == 0 && z == 0) {
+						continue;
+					}
 					positions.add(new BlockPos(x, y, z));
 				}
 			}

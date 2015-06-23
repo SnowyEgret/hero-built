@@ -24,7 +24,7 @@ public class BlockSelectedModel implements ISmartBlockModel {
 
 	@Override
 	public IBakedModel handleBlockState(IBlockState state) {
-		IBlockState s = ((IExtendedBlockState) state).getValue(BlockSelected.selectedBlockProperty);
+		IBlockState s = ((IExtendedBlockState) state).getValue(BlockSelected.prevStateProperty);
 		// Fix for Crash with infinite loop at BlockSelected/PickedModel.isAmbientOcclusion #172
 		// When selecting blocks left in world with a selection spell, sometimes s was BlockSelected instead of null
 		if (s != null && s.getBlock() instanceof BlockSelected) {
