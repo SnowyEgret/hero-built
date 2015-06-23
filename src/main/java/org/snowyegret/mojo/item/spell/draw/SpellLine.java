@@ -25,7 +25,7 @@ public class SpellLine extends AbstractSpellDraw {
 		IPick pickManager = player.getPickManager();
 		Pick[] picks = pickManager.getPicks();
 		IDrawable d = new Line(picks[0].point3d(), picks[1].point3d());
-		draw(d, player);
+		draw(d, player, null);
 		if (modifiers.isPressed(Modifier.CTRL)) {
 			pickManager.reset(2);
 			pickManager.clearPicks(player);

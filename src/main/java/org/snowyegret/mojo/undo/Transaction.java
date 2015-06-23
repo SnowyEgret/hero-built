@@ -104,9 +104,10 @@ public class Transaction implements IUndoable, Iterable {
 				setBlock.pos = pos;
 			}
 
-			// Do not set blocks on top of player.
+			// Do not set blocks on player.
 			// Player is expected to break his way out.
 			// Because blocks are selected, when the player deselects the broken blocks will reappear.
+			// Doing this here, and not in spell, permits comment above.
 			if (player.getBounds().contains(pos)) {
 				continue;
 			}

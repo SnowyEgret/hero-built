@@ -44,7 +44,7 @@ public class SpellMeasure extends AbstractSpellDraw {
 			points.addPoints(p0, p1);
 		}
 		if (!points.isEmpty()) {
-			draw(points, player);
+			draw(points, player, null);
 			//selectionManager.clearSelections(world);
 		}
 		//pickManager.clearPicks();

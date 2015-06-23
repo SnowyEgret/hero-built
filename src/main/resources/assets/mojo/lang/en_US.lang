@@ -68,6 +68,7 @@ item.spellSphere.description=creates a sphere
 item.spellSphere.pick.0=center
 item.spellSphere.pick.1=radius
 item.spellSphere.modifier.shift=hemisphere
+item.spellSphere.modifier.alt=on surface
 
 # Transform spells ##########
 

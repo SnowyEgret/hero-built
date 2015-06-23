@@ -6,6 +6,7 @@ import java.util.Set;
 
 import javax.vecmath.Point3i;
 
+import org.snowyegret.mojo.geom.Plane;
 import org.snowyegret.mojo.item.spell.Modifier;
 import org.snowyegret.mojo.item.spell.Modifiers;
 import org.snowyegret.mojo.item.spell.Spell;
@@ -35,8 +36,8 @@ public abstract class AbstractSpellDraw extends Spell {
 		info.addModifiers(Modifier.SHIFT, Modifier.ALT);
 	}
 
-	protected void draw(IDrawable drawable, IPlayer player) {
-
+	protected void draw(IDrawable drawable, IPlayer player, Plane plane) {
+		
 		Modifiers modifiers = player.getModifiers();
 		ISelect selectionManager = player.getSelectionManager();
 
@@ -58,7 +59,8 @@ public abstract class AbstractSpellDraw extends Spell {
 			BlockPos pos = new BlockPos(p.x, p.y, p.z);
 			// TODO conditional on plane and side of plane the player is positioned at.
 			if (onSurface) {
-				pos = pos.up();
+				//pos = pos.up();
+				pos = pos.add(plane.normal());
 			}
 			setBlocks.add(new UndoableSetBlock(pos, player.getWorld().getState(pos), state));
 		}

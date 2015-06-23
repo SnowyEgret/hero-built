@@ -23,7 +23,7 @@ public class SpellCone extends AbstractSpellDraw {
 		IPick pickManager = player.getPickManager();
 		Pick[] picks = pickManager.getPicks();
 		IDrawable d = new Cone(picks[0].point3d(), picks[1].point3d(), picks[2].point3d());
-		draw(d, player);
+		draw(d, player, null);
 	}
 
 	@Override
