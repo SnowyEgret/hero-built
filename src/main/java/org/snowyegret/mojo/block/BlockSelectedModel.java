@@ -45,7 +45,7 @@ public class BlockSelectedModel implements ISmartBlockModel {
 	}
 
 	@Override
-	public List getGeneralQuads() {
+	public List getGeneralQuads() { 
 		List<BakedQuad> quads = new ArrayList<>();
 		List<BakedQuad> generalQuads = model.getGeneralQuads();
 		for (BakedQuad q : generalQuads) {

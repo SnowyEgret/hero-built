@@ -102,7 +102,8 @@ public class Player implements IPlayer {
 
 	@Override
 	public ItemStack getHeldItemStack() {
-		return player.getCurrentEquippedItem();
+		//return player.getCurrentEquippedItem();
+		return player.getHeldItem();
 	}
 
 	@Override

@@ -56,9 +56,9 @@ public class BlockSelected extends Block implements ITileEntityProvider {
 		assert IExtendedBlockState.class.isAssignableFrom(state.getClass());
 		IExtendedBlockState extendedState = (IExtendedBlockState) state;
 		PrevStateTileEntity tileEntity = (PrevStateTileEntity) world.getTileEntity(pos);
-		// if (tileEntity == null) {
-		// System.out.println("No tile entity on BlockSelected");
-		// }
+		if (tileEntity == null) {
+			System.out.println("No tile entity on BlockSelected");
+		}
 		IBlockState prevState = null;
 		if (tileEntity != null) {
 			prevState = tileEntity.getPrevState();

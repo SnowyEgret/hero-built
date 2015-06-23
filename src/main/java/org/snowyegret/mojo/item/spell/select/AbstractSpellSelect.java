@@ -92,15 +92,18 @@ public abstract class AbstractSpellSelect extends Spell {
 					continue;
 				}
 				Block block = player.getWorld().getState(p).getBlock();
+				// Do not select blocks if they are air
 				if (block instanceof BlockAir) {
 					continue;
 				}
+				// Do not select blocks if they are already selected
 				// Both of these tests perform equally
 				if (block instanceof BlockSelected) {
 					// if (selectionManager.isSelected(p)) {
 					// System.out.println("Position already selected");
 
-					// We only select previously selected blocks if they have been left in world after a crash
+					// Select previously selected blocks if they have been left in world after a crash
+					// Tile entity will be null and can not render
 					PrevStateTileEntity tileEntity = (PrevStateTileEntity) player.getWorld().getTileEntity(p);
 					if (tileEntity.getPrevState() != null) {
 						continue;

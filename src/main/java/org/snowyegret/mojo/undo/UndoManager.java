@@ -32,7 +32,7 @@ public class UndoManager implements IUndo {
 		if (size() > maxLength) {
 			removeLeftEnd();
 		}
-		System.out.println("size=" + size());
+		//System.out.println("size=" + size());
 	}
 
 	public int size() {

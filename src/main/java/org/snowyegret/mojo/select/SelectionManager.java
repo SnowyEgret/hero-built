@@ -11,6 +11,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
@@ -46,6 +47,7 @@ public class SelectionManager implements ISelect {
 			select(player.getWorld(), p);
 		}
 		// player.getWorld().update();
+		// Message client with selection info to display in overlay
 		MoJo.network.sendTo(new SelectionMessage(this), (EntityPlayerMP) player.getPlayer());
 	}
 
@@ -189,11 +191,21 @@ public class SelectionManager implements ISelect {
 			return null;
 		}
 
-		// if (b instanceof BlockSelected) {
-		// //s = getSelection(pos);
-		// System.out.println("BlockSelected. Returning " + s);
-		// //return s;
-		// }
+		if (b instanceof BlockSelected) {
+			// Implementation of: Find a way to restore selected blocks to their previous state when they are left in world after a crash #173
+			// PrevStateTileEntity must call super.writeToNBT
+			System.out.println("Selecting a BlockSelected");
+			System.out.println("This Should only occur when a selection is left in world after a crash.");
+			System.out.println("Looking for previous state on tile entity");
+			// This should only be the case when a selection is left in the world after a crash.
+			// If the BlockSelected has a tile entity it will render properly, if not as black/magenta block
+			// Try to get its state from its tile entity so that a player can select it and restore its
+			// previous state by clearing the selections.
+			PrevStateTileEntity te = (PrevStateTileEntity) world.getTileEntity(pos);
+			if (te != null) {
+				state = te.getPrevState();
+			}
+		}
 
 		// if (isSelected(pos)) {
 		// //s = getSelection(pos);

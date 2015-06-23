@@ -74,7 +74,7 @@ public class Transaction implements IUndoable, Iterable {
 			UndoableSetBlock setBlock = (UndoableSetBlock) u;
 			BlockPos pos = setBlock.pos;
 
-			Block blockToBeSet = setBlock.state.getBlock();
+			Block blockToSet = setBlock.state.getBlock();
 			Block block = player.getWorld().getBlock(pos);
 
 			// TODO Not the right place for this.
@@ -83,8 +83,9 @@ public class Transaction implements IUndoable, Iterable {
 			// Implementation of Issue #162: Only set IPlantable if block below can sustain plant
 			// Set plantables on block above.
 			// Do not set if the block below cannot sustain a plant
-			if (blockToBeSet instanceof IPlantable) {
-				if (!block.canSustainPlant(world, pos, EnumFacing.UP, (IPlantable) blockToBeSet)) {
+			System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>blockToSet="+blockToSet);
+			if (blockToSet instanceof IPlantable) {
+				if (!block.canSustainPlant(world, pos, EnumFacing.UP, (IPlantable) blockToSet)) {
 					continue;
 				}
 				pos = pos.up();
@@ -93,7 +94,7 @@ public class Transaction implements IUndoable, Iterable {
 
 			// TODO Issue: Torches should be placed conditionally #164
 			// Not finished!
-			if (blockToBeSet instanceof BlockTorch) {
+			if (blockToSet instanceof BlockTorch) {
 				System.out.println("Got a torch");
 				// if (block == Blocks.air || !block.canPlaceBlockOnSide(w, pos, EnumFacing.UP)) {
 				if (block == Blocks.air) {

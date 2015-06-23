@@ -25,7 +25,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockPicked extends Block implements ITileEntityProvider {
 
 	public static final BlockPickedProperty pickedBlockProperty = new BlockPickedProperty();
-	public static ModelResourceLocation modelResourceLocation = new ModelResourceLocation(MoJo.ID+":blockPicked");
+	public static final ModelResourceLocation modelResourceLocation = new ModelResourceLocation(MoJo.ID+":blockPicked");
 
 	public BlockPicked() {
 		super(Material.clay);

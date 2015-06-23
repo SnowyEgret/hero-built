@@ -1,5 +1,30 @@
 package org.snowyegret.mojo.event;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.gui.GuiIngameMenu;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemMultiTexture;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.IRegistry;
+import net.minecraft.util.Vec3;
+import net.minecraft.util.Vec3i;
+import net.minecraftforge.client.event.DrawBlockHighlightEvent;
+import net.minecraftforge.client.event.GuiScreenEvent;
+import net.minecraftforge.client.event.ModelBakeEvent;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
+import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
 import org.snowyegret.mojo.MoJo;
 import org.snowyegret.mojo.block.BlockPicked;
 import org.snowyegret.mojo.block.BlockPickedModel;
@@ -17,30 +42,6 @@ import org.snowyegret.mojo.player.Player;
 import org.snowyegret.mojo.player.PlayerProperties;
 import org.snowyegret.mojo.select.ISelect;
 import org.snowyegret.mojo.world.IWorld;
-
-import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.gui.GuiIngameMenu;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.IRegistry;
-import net.minecraft.util.Vec3;
-import net.minecraft.util.Vec3i;
-import net.minecraftforge.client.event.DrawBlockHighlightEvent;
-import net.minecraftforge.client.event.GuiScreenEvent;
-import net.minecraftforge.client.event.ModelBakeEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
-import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EventHandler {
 
@@ -80,13 +81,19 @@ public class EventHandler {
 		}
 	}
 
-	// World is never remote but we have subscribe on both sides
-	// @SideOnly(Side.SERVER)
 	@SubscribeEvent
 	public void onPlayerInteractEvent(PlayerInteractEvent e) {
 
+		// This is coming in twice, sometimes both on server, both on client, or one on each.
+		//System.out.println("world=" + e.world);
+		if (e.world.isRemote) {
+			return;
+		}
+
+		// TODO is this necessary? Remove if this println never comes up
 		if (e.action == null) {
-			//System.out.println("isRemote=" + e.world.isRemote);
+			System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+			System.out.println("e.action=" + e.action);
 			e.setCanceled(true);
 			return;
 		}
@@ -95,20 +102,33 @@ public class EventHandler {
 
 		// Return if player is holding nothing
 		ItemStack stack = player.getHeldItemStack();
+		//System.out.println("stack=" + stack);
 		if (stack == null) {
 			return;
 		}
-		
-		if (e.action == Action.RIGHT_CLICK_BLOCK) {
-			Item heldItem = stack.getItem();
-			if (heldItem instanceof ItemBlock && player.getSelectionManager().isSelected(e.pos)) {
-				// Fill selections
-				Block b = ((ItemBlock) heldItem).getBlock();
-				int meta = heldItem.getDamage(stack);
-				IBlockState state = b.getStateFromMeta(meta);
-				new SpellFill().invoke(player.getWorld(), player, state);
-				e.setCanceled(true);
-				return;
+
+		// Tried fixing Filling selections by right clicking with a plant does nothing (works with FillSpell) #169
+		// This has to be here and not in MouseClickMessageHandler, but I can't remember why.
+		// Right clicking with a flower results in Action.RIGHT_CLICK_AIR when block is not plantable
+		// System.out.println("action=" + e.action);
+		Item heldItem = stack.getItem();
+		//System.out.println("heldItem=" + heldItem);
+		if (e.action == Action.RIGHT_CLICK_BLOCK || e.action == Action.RIGHT_CLICK_AIR) {
+			// System.out.println("heldItem=" + heldItem);
+			// When clicking with a flower event comes in twice on client side, so selections are empty.
+			if (player.getSelectionManager().isSelected(e.pos)) {
+				// System.out.println("heldItem=" + heldItem);
+				// if (heldItem instanceof ItemBlock || heldItem instanceof IPlantable) {
+				if (heldItem instanceof ItemBlock) {
+					// Fill selections
+					Block b = ((ItemBlock) heldItem).getBlock();
+					// System.out.println("b=" + b);
+					int meta = heldItem.getDamage(stack);
+					IBlockState state = b.getStateFromMeta(meta);
+					new SpellFill().invoke(player, state);
+					e.setCanceled(true);
+					return;
+				}
 			}
 		}
 	}

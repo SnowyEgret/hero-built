@@ -2,7 +2,6 @@ package org.snowyegret.mojo.item.spell.transform;
 
 import org.snowyegret.mojo.player.IPlayer;
 import org.snowyegret.mojo.select.Selection;
-import org.snowyegret.mojo.world.IWorld;
 
 import net.minecraft.block.state.IBlockState;
 
@@ -22,7 +21,7 @@ public class SpellFill extends AbstractSpellTransform {
 		});
 	}
 
-	public void invoke(IWorld world, final IPlayer player, final IBlockState state) {
+	public void invoke(final IPlayer player, final IBlockState state) {
 		transformSelections(player, new ITransform() {
 			@Override
 			public Iterable<Selection> transform(Selection s) {
