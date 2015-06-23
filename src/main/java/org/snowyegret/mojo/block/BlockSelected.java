@@ -54,16 +54,14 @@ public class BlockSelected extends Block implements ITileEntityProvider {
 	@Override
 	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
 		PrevStateTileEntity tileEntity = (PrevStateTileEntity) world.getTileEntity(pos);
-		if (tileEntity == null) {
-			System.out.println("No tile entity on BlockSelected");
-		}
 		IBlockState prevState = null;
 		//If no tile entity is found at this position block will render black/magenta
 		if (tileEntity != null) {
 			prevState = tileEntity.getPrevState();
+		} else {
+			System.out.println("No tile entity on BlockSelected");
 		}
-		IExtendedBlockState extendedState = (IExtendedBlockState) state;
-		return extendedState.withProperty(prevStateProperty, prevState);
+		return ((IExtendedBlockState) state).withProperty(prevStateProperty, prevState);
 	}
 
 	@Override

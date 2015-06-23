@@ -29,8 +29,8 @@ public class BlockPicked extends Block implements ITileEntityProvider {
 
 	public BlockPicked() {
 		super(Material.clay);
-		setHardness(-1F);
-		setStepSound(soundTypeGravel);
+		//setHardness(-1F);
+		//setStepSound(soundTypeGravel);
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -52,15 +52,14 @@ public class BlockPicked extends Block implements ITileEntityProvider {
 
 	@Override
 	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-		IExtendedBlockState extendedState = (IExtendedBlockState) state;
 		PrevStateTileEntity tileEntity = (PrevStateTileEntity) world.getTileEntity(pos);
 		IBlockState prevState = null;
 		if (tileEntity != null) {
 			prevState = tileEntity.getPrevState();
 		} else {
-			System.out.println("No tile entity on Block");
+			System.out.println("No tile entity on BlockPicked");
 		}
-		return extendedState.withProperty(prevStateProperty, prevState);
+		return ((IExtendedBlockState) state).withProperty(prevStateProperty, prevState);
 	}
 
 	@Override
