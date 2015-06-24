@@ -59,10 +59,6 @@ public abstract class AbstractSpellDraw extends Spell {
 		}
 		
 		player.doTransaction(setBlocks);
-
-//		Transaction t = new Transaction();
-//		t.addAll(setBlocks);
-//		t.dO(player);
 	}
 
 }

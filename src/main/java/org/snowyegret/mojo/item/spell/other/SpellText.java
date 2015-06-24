@@ -7,10 +7,12 @@ import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.vecmath.Vector3d;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Items;
 import net.minecraft.util.BlockPos;
 
@@ -22,8 +24,11 @@ import org.snowyegret.mojo.pick.Pick;
 import org.snowyegret.mojo.pick.PickManager;
 import org.snowyegret.mojo.player.IPlayer;
 import org.snowyegret.mojo.select.SelectionManager;
+import org.snowyegret.mojo.undo.IUndoable;
 import org.snowyegret.mojo.undo.Transaction;
 import org.snowyegret.mojo.undo.UndoableSetBlock;
+
+import com.google.common.collect.Lists;
 
 public class SpellText extends Spell implements ITextSetable {
 
@@ -103,12 +108,13 @@ public class SpellText extends Spell implements ITextSetable {
 		System.out.println("size=" + positions.size());
 		player.getSelectionManager().clearSelections();
 		player.getPickManager().clearPicks();
-
-		Transaction t = new Transaction();
+		
+		IBlockState b = player.getHotbar().firstBlock();
+		List<IUndoable> undoables = Lists.newArrayList();
 		for (BlockPos p : positions) {
-			t.add(new UndoableSetBlock(p, player.getWorld().getState(p), player.getHotbar().firstBlock()));
+			undoables.add(new UndoableSetBlock(p, player.getWorld().getState(p), b));
 		}
-		t.dO(player);
+		player.getTransactionManager().doTransaction(undoables);
 	}
 
 	public void setFont(Font font) {

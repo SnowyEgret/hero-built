@@ -13,6 +13,7 @@ import org.snowyegret.mojo.item.spell.Modifiers;
 import org.snowyegret.mojo.item.spell.Spell;
 import org.snowyegret.mojo.player.IPlayer;
 import org.snowyegret.mojo.select.SelectionManager;
+import org.snowyegret.mojo.undo.IUndoable;
 import org.snowyegret.mojo.undo.Transaction;
 import org.snowyegret.mojo.undo.UndoableSetBlock;
 
@@ -41,11 +42,11 @@ public class SpellMengerSponge extends Spell {
 		player.getPickManager().clearPicks();
 		IBlockState air = Blocks.air.getDefaultState();
 
-		Transaction t = new Transaction();
+		List<IUndoable> undoables = Lists.newArrayList();
 		for (BlockPos pos : deletes) {
-			t.add(new UndoableSetBlock(pos, player.getWorld().getState(pos), air));
+			undoables.add(new UndoableSetBlock(pos, player.getWorld().getState(pos), air));
 		}
-		t.dO(player);
+		player.getTransactionManager().doTransaction(undoables);
 
 	}
 

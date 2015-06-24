@@ -126,9 +126,11 @@ public class TransactionManager implements IUndoable {
 		}
 	}
 
-	public void doTransaction(List<IUndoable> setBlocks) {
+	public void doTransaction(Iterable<IUndoable>... undoables) {
 		Transaction t = new Transaction();
-		t.addAll(setBlocks);
+		for (Iterable<IUndoable> iterable : undoables) {
+			t.addAll(iterable);
+		}
 		t.dO(player);
 	}
 

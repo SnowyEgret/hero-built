@@ -1,5 +1,7 @@
 package org.snowyegret.mojo.item.spell.other;
 
+import java.util.List;
+
 import net.minecraft.block.state.IBlockState;
 
 import org.snowyegret.mojo.item.spell.Modifiers;
@@ -7,8 +9,11 @@ import org.snowyegret.mojo.item.spell.Spell;
 import org.snowyegret.mojo.player.IPlayer;
 import org.snowyegret.mojo.select.Selection;
 import org.snowyegret.mojo.select.SelectionManager;
+import org.snowyegret.mojo.undo.IUndoable;
 import org.snowyegret.mojo.undo.Transaction;
 import org.snowyegret.mojo.undo.UndoableSetBlock;
+
+import com.google.common.collect.Lists;
 
 public class SpellTrail extends Spell {
 
@@ -29,11 +34,11 @@ public class SpellTrail extends Spell {
 		player.getPickManager().clearPicks();
 		IBlockState firstBlock = player.getHotbar().firstBlock();
 
-		Transaction t = new Transaction();
+		List<IUndoable> undoables = Lists.newArrayList();
 		for (Selection s : selections) {
-			t.add(new UndoableSetBlock(s.getPos(), player.getWorld().getState(s.getPos()), firstBlock));
+			undoables.add(new UndoableSetBlock(s.getPos(), player.getWorld().getState(s.getPos()), firstBlock));
 		}
-		t.dO(player);
+		player.getTransactionManager().doTransaction(undoables);
 
 	}
 

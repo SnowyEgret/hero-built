@@ -49,10 +49,7 @@ public abstract class AbstractSpellMatrix extends Spell {
 			setBlocks.add(new UndoableSetBlock(pos, player.getWorld().getState(pos), s.getState()));
 		}
 
-		Transaction t = new Transaction();
-		t.addAll(deletes);
-		t.addAll(setBlocks);
-		t.dO(player);
+		player.getTransactionManager().doTransaction(deletes, setBlocks);
 	}
 
 }

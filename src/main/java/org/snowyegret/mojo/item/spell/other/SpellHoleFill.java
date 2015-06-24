@@ -58,8 +58,6 @@ public class SpellHoleFill extends Spell {
 			}
 		}
 
-		Transaction t = new Transaction();
-		t.addAll(setBlocks);
-		t.dO(player);
+		player.getTransactionManager().doTransaction(setBlocks);
 	}
 }

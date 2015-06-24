@@ -1,6 +1,7 @@
 package org.snowyegret.mojo.item.spell.other;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import net.minecraft.block.Block;
@@ -17,9 +18,12 @@ import org.snowyegret.mojo.item.spell.select.Select;
 import org.snowyegret.mojo.player.IPlayer;
 import org.snowyegret.mojo.select.Selection;
 import org.snowyegret.mojo.select.SelectionManager;
+import org.snowyegret.mojo.undo.IUndoable;
 import org.snowyegret.mojo.undo.Transaction;
 import org.snowyegret.mojo.undo.UndoableSetBlock;
 import org.snowyegret.mojo.world.IWorld;
+
+import com.google.common.collect.Lists;
 
 import ds.geom.IntegerDomain;
 
@@ -38,7 +42,6 @@ public class SpellThicken extends Spell {
 		SelectionManager selectionManager = player.getSelectionManager();
 		
 		Set<BlockPos> positions = new HashSet<>();
-		IBlockState firstSelection = selectionManager.firstSelection().getState();
 		IntegerDomain domain = selectionManager.getDomain();
 		if (domain.isPlanar()) {
 			thickenPlane(positions, modifiers, selectionManager, domain, player.getWorld());
@@ -49,11 +52,12 @@ public class SpellThicken extends Spell {
 		selectionManager.clearSelections();
 		player.getPickManager().clearPicks();
 
-		Transaction t = new Transaction();
+		List<IUndoable> undoables = Lists.newArrayList();
+		IBlockState firstSelection = selectionManager.firstSelection().getState();
 		for (BlockPos p : positions) {
-			t.add(new UndoableSetBlock(p, player.getWorld().getState(p), firstSelection));
+			undoables.add(new UndoableSetBlock(p, player.getWorld().getState(p), firstSelection));
 		}
-		t.dO(player);
+		player.getTransactionManager().doTransaction(undoables);
 		
 	}
 
