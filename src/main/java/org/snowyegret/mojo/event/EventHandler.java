@@ -7,7 +7,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemMultiTexture;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.IRegistry;
@@ -36,11 +35,10 @@ import org.snowyegret.mojo.item.spell.other.SpellTrail;
 import org.snowyegret.mojo.item.spell.transform.SpellFill;
 import org.snowyegret.mojo.item.staff.Staff;
 import org.snowyegret.mojo.network.ClearManagersMessage;
-import org.snowyegret.mojo.pick.IPick;
 import org.snowyegret.mojo.player.IPlayer;
 import org.snowyegret.mojo.player.Player;
 import org.snowyegret.mojo.player.PlayerProperties;
-import org.snowyegret.mojo.select.ISelect;
+import org.snowyegret.mojo.select.SelectionManager;
 import org.snowyegret.mojo.world.IWorld;
 
 public class EventHandler {
@@ -147,8 +145,7 @@ public class EventHandler {
 
 		IPlayer player = Player.instance((EntityPlayer) e.entity);
 		IWorld world = player.getWorld();
-		ISelect selectionManager = player.getSelectionManager();
-		IPick pickManager = player.getPickManager();
+		SelectionManager selectionManager = player.getSelectionManager();
 		ISpell s = player.getSpell();
 
 		// The player may have changed spells on a staff. Reset picking on the spell.
@@ -166,7 +163,7 @@ public class EventHandler {
 		// Select blocks under foot for SpellTrail
 		if (s instanceof SpellTrail && !player.isFlying()) {
 			// if (s.isPicking()) {
-			if (pickManager.isPicking()) {
+			if (player.getPickManager().isPicking()) {
 				BlockPos pos = player.getPosition();
 				Block b = world.getBlock(pos.down());
 				// Try second block down when block underneath is air if the player is jumping or stepping on a plant

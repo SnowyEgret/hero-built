@@ -15,8 +15,8 @@ import org.snowyegret.mojo.item.spell.Modifiers;
 import org.snowyegret.mojo.item.spell.Spell;
 import org.snowyegret.mojo.item.spell.select.Select;
 import org.snowyegret.mojo.player.IPlayer;
-import org.snowyegret.mojo.select.ISelect;
 import org.snowyegret.mojo.select.Selection;
+import org.snowyegret.mojo.select.SelectionManager;
 import org.snowyegret.mojo.undo.Transaction;
 import org.snowyegret.mojo.undo.UndoableSetBlock;
 import org.snowyegret.mojo.world.IWorld;
@@ -35,7 +35,7 @@ public class SpellThicken extends Spell {
 	public void invoke(IPlayer player) {
 		
 		Modifiers modifiers = player.getModifiers();
-		ISelect selectionManager = player.getSelectionManager();
+		SelectionManager selectionManager = player.getSelectionManager();
 		
 		Set<BlockPos> positions = new HashSet<>();
 		IBlockState firstSelection = selectionManager.firstSelection().getState();
@@ -57,7 +57,7 @@ public class SpellThicken extends Spell {
 		
 	}
 
-	private void thicken(Set<BlockPos> positions, Modifiers modifiers, ISelect selectionManager, IWorld world) {
+	private void thicken(Set<BlockPos> positions, Modifiers modifiers, SelectionManager selectionManager, IWorld world) {
 		
 		boolean in = modifiers.isPressed(Modifier.CTRL);
 		boolean out = modifiers.isPressed(Modifier.SHIFT);
@@ -86,7 +86,7 @@ public class SpellThicken extends Spell {
 		}
 	}
 
-	private void thickenPlane(Set<BlockPos> points, Modifiers modifiers, ISelect selectionManager, IntegerDomain domain, IWorld world) {
+	private void thickenPlane(Set<BlockPos> points, Modifiers modifiers, SelectionManager selectionManager, IntegerDomain domain, IWorld world) {
 		boolean withinPlane = modifiers.isPressed(Modifier.SHIFT);
 		BlockPos[] select = null;
 		switch (domain.getPlane()) {

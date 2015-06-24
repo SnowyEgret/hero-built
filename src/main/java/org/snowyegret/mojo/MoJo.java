@@ -62,13 +62,10 @@ public class MoJo {
 	@SidedProxy(clientSide = PACKAGE + ".proxy.ClientProxy", serverSide = PACKAGE + ".proxy.CommonProxy")
 	public static CommonProxy proxy;
 	public static SimpleNetworkWrapper network;
-	// public static boolean forceMessaging = false;
 
 	public static BlockSelected blockSelected;
 	public static BlockPicked blockPicked;
 
-	// TODO Remove SetBlockStateDoneMessage and handler #122
-	public static boolean setBlockMessageDone = false;
 	public static SelectionInfo selectionInfo = new SelectionInfo();
 	public static PickInfo pickInfo = new PickInfo();
 

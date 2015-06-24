@@ -2,23 +2,22 @@ package org.snowyegret.mojo.item.spell.other;
 
 import java.util.Set;
 
-import org.snowyegret.mojo.item.spell.Modifier;
-import org.snowyegret.mojo.item.spell.Modifiers;
-import org.snowyegret.mojo.item.spell.Spell;
-import org.snowyegret.mojo.item.spell.select.Select;
-import org.snowyegret.mojo.pick.IPick;
-import org.snowyegret.mojo.player.IPlayer;
-import org.snowyegret.mojo.select.ISelect;
-import org.snowyegret.mojo.select.Selection;
-import org.snowyegret.mojo.undo.IUndoable;
-import org.snowyegret.mojo.undo.Transaction;
-import org.snowyegret.mojo.undo.UndoableSetBlock;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.util.BlockPos;
+
+import org.snowyegret.mojo.item.spell.Modifier;
+import org.snowyegret.mojo.item.spell.Modifiers;
+import org.snowyegret.mojo.item.spell.Spell;
+import org.snowyegret.mojo.item.spell.select.Select;
+import org.snowyegret.mojo.player.IPlayer;
+import org.snowyegret.mojo.select.Selection;
+import org.snowyegret.mojo.select.SelectionManager;
+import org.snowyegret.mojo.undo.IUndoable;
+import org.snowyegret.mojo.undo.Transaction;
+import org.snowyegret.mojo.undo.UndoableSetBlock;
 
 import com.google.common.collect.Sets;
 
@@ -37,7 +36,7 @@ public class SpellHoleFill extends Spell {
 	@Override
 	public void invoke(IPlayer player) {
 		Modifiers modifiers = player.getModifiers();
-		ISelect selectionManager = player.getSelectionManager();
+		SelectionManager selectionManager = player.getSelectionManager();
 
 		boolean isHorizontal = modifiers.isPressed(Modifier.CTRL);
 		boolean useBlockInHotbar = modifiers.isPressed(Modifier.SHIFT);

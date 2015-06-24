@@ -7,10 +7,8 @@ import javax.vecmath.Vector3d;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Vec3i;
 
-import org.lwjgl.input.Keyboard;
 import org.snowyegret.mojo.item.spell.Modifier;
 import org.snowyegret.mojo.item.spell.Modifiers;
-import org.snowyegret.mojo.pick.IPick;
 import org.snowyegret.mojo.pick.Pick;
 import org.snowyegret.mojo.player.IPlayer;
 
@@ -26,14 +24,13 @@ public class SpellMirror extends AbstractSpellMatrix {
 	@Override
 	public void invoke(IPlayer player) {
 		Modifiers modifiers = player.getModifiers();
-		IPick pickManager = player.getPickManager();
 
 		boolean deleteOriginal = modifiers.isPressed(Modifier.CTRL);
 		boolean mirrorAboutCentroid = modifiers.isPressed(Modifier.SHIFT);
 		// boolean mirrorAboutCentroid = Modifiers.isPressed(Modifier.ALT);
 		// Vec3 c = selectionManager.getCentroid();
 
-		Pick[] picks = pickManager.getPicks();
+		Pick[] picks = player.getPickManager().getPicks();
 		EnumFacing side = picks[0].getSide();
 		Vec3i d = side.getDirectionVec();
 		Point3d p = picks[0].point3d();

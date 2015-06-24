@@ -1,9 +1,5 @@
 package org.snowyegret.mojo.block;
 
-import org.snowyegret.mojo.MoJo;
-import org.snowyegret.mojo.pick.IPick;
-import org.snowyegret.mojo.pick.Pick;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -21,6 +17,8 @@ import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import org.snowyegret.mojo.MoJo;
 
 public class BlockPicked extends Block implements ITileEntityProvider {
 

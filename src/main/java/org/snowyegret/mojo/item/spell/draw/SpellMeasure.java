@@ -2,14 +2,10 @@ package org.snowyegret.mojo.item.spell.draw;
 
 import javax.vecmath.Point3d;
 
-import org.lwjgl.input.Keyboard;
 import org.snowyegret.mojo.item.spell.Modifier;
 import org.snowyegret.mojo.item.spell.Modifiers;
-import org.snowyegret.mojo.pick.IPick;
 import org.snowyegret.mojo.pick.Pick;
 import org.snowyegret.mojo.player.IPlayer;
-import org.snowyegret.mojo.select.ISelect;
-import org.snowyegret.mojo.undo.IUndo;
 
 import ds.geom.PointSet;
 
@@ -23,8 +19,7 @@ public class SpellMeasure extends AbstractSpellDraw {
 	@Override
 	public void invoke(IPlayer player) {
 		Modifiers modifiers = player.getModifiers();
-		IPick pickManager = player.getPickManager();
-		Pick[] picks = pickManager.getPicks();
+		Pick[] picks = player.getPickManager().getPicks();
 		Point3d p0 = picks[0].point3d();
 		Point3d p1 = picks[1].point3d();
 		message = String.format("Distance: %.1f", p0.distance(p1));
@@ -45,9 +40,7 @@ public class SpellMeasure extends AbstractSpellDraw {
 		}
 		if (!points.isEmpty()) {
 			draw(points, player, null);
-			//selectionManager.clearSelections(world);
 		}
-		//pickManager.clearPicks();
 	}
 
 	private Point3d interpolate(Point3d p0, Point3d p1, double d) {

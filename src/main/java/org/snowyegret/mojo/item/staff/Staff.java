@@ -9,14 +9,13 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
-import org.lwjgl.input.Keyboard;
 import org.snowyegret.mojo.gui.GuiHandler;
 import org.snowyegret.mojo.item.ItemBase;
 import org.snowyegret.mojo.item.spell.ISpell;
 import org.snowyegret.mojo.item.spell.Modifier;
 import org.snowyegret.mojo.item.spell.Modifiers;
 import org.snowyegret.mojo.item.spell.Spell;
-import org.snowyegret.mojo.pick.IPick;
+import org.snowyegret.mojo.pick.PickManager;
 import org.snowyegret.mojo.player.IPlayer;
 import org.snowyegret.mojo.player.Player;
 
@@ -47,9 +46,7 @@ public abstract class Staff extends ItemBase implements IStaff {
 		// To compare item stacks and their tags on both sides
 		//System.out.println("tag=" + stack.getTagCompound());
 		IPlayer player = Player.instance(playerIn);
-		Modifiers modifiers = player.getModifiers();
-		IPick pickManager = player.getPickManager();
-		
+		Modifiers modifiers = player.getModifiers();		
 
 		// Return if called from the client thread
 		if (world.isRemote) {
@@ -64,7 +61,7 @@ public abstract class Staff extends ItemBase implements IStaff {
 
 		// Get the current spell on this staff and use it
 		if (!isEmpty(stack)) {
-			Spell s = getSpell(stack, pickManager);
+			Spell s = getSpell(stack, player.getPickManager());
 			s.onItemUse(stack, playerIn, world, pos, side, sx, sy, sz);
 			return true;
 		}
@@ -75,7 +72,7 @@ public abstract class Staff extends ItemBase implements IStaff {
 	// IStaff ----------------------------------------------------------------------
 
 	@Override
-	public Spell getSpell(ItemStack stack, IPick pickManager) {
+	public Spell getSpell(ItemStack stack, PickManager pickManager) {
 		// System.out.println("tag=" + stack.getTagCompound());
 		// Throwable().printStackTrace();
 		if (isEmpty(stack)) {
@@ -90,7 +87,7 @@ public abstract class Staff extends ItemBase implements IStaff {
 	}
 
 	@Override
-	public Spell nextSpell(ItemStack stack, IPick pickManager) {
+	public Spell nextSpell(ItemStack stack, PickManager pickManager) {
 		TagStaff t = new TagStaff(stack);
 		Spell s = null;
 		for (int i = 0; i < MAX_NUM_SPELLS; i++) {
@@ -118,7 +115,7 @@ public abstract class Staff extends ItemBase implements IStaff {
 	}
 
 	@Override
-	public ISpell prevSpell(ItemStack stack, IPick pickManager) {
+	public ISpell prevSpell(ItemStack stack, PickManager pickManager) {
 		TagStaff t = new TagStaff(stack);
 		ISpell s = null;
 		for (int i = 0; i < MAX_NUM_SPELLS; i++) {

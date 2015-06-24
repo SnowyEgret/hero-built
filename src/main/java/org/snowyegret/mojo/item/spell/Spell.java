@@ -2,20 +2,19 @@ package org.snowyegret.mojo.item.spell;
 
 import java.util.List;
 
-import org.snowyegret.mojo.MoJo;
-import org.snowyegret.mojo.item.ItemBase;
-import org.snowyegret.mojo.network.PickMessage;
-import org.snowyegret.mojo.pick.IPick;
-import org.snowyegret.mojo.player.IPlayer;
-import org.snowyegret.mojo.player.Player;
-import org.snowyegret.mojo.world.IWorld;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
+
+import org.snowyegret.mojo.MoJo;
+import org.snowyegret.mojo.item.ItemBase;
+import org.snowyegret.mojo.network.PickMessage;
+import org.snowyegret.mojo.pick.PickManager;
+import org.snowyegret.mojo.player.IPlayer;
+import org.snowyegret.mojo.player.Player;
 
 public abstract class Spell extends ItemBase implements ISpell {
 
@@ -48,7 +47,7 @@ public abstract class Spell extends ItemBase implements ISpell {
 			return true;
 		}
 		IPlayer player = Player.instance(playerIn);
-		IPick pickManager = player.getPickManager();
+		PickManager pickManager = player.getPickManager();
 		pickManager.pick(player, pos, side);
 		MoJo.network.sendTo(new PickMessage(pickManager), (EntityPlayerMP) playerIn);
 		if (pickManager.isFinishedPicking()) {
@@ -85,7 +84,7 @@ public abstract class Spell extends ItemBase implements ISpell {
 
 	@Override
 	public void reset(IPlayer player) {
-		IPick pickManager = player.getPickManager();
+		PickManager pickManager = player.getPickManager();
 		pickManager.clearPicks(player);
 		pickManager.reset(numPicks);
 		message = null;

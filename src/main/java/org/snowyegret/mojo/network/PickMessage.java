@@ -1,13 +1,13 @@
 package org.snowyegret.mojo.network;
 
-import org.snowyegret.mojo.gui.PickInfo;
-import org.snowyegret.mojo.pick.IPick;
-import org.snowyegret.mojo.pick.Pick;
-
 import io.netty.buffer.ByteBuf;
 import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+
+import org.snowyegret.mojo.gui.PickInfo;
+import org.snowyegret.mojo.pick.Pick;
+import org.snowyegret.mojo.pick.PickManager;
 
 public class PickMessage implements IMessage {
 
@@ -17,7 +17,7 @@ public class PickMessage implements IMessage {
 	public PickMessage() {
 	}
 
-	public PickMessage(IPick pickManager) {
+	public PickMessage(PickManager pickManager) {
 		isFinishedPicking = pickManager.isFinishedPicking() ? 0 : 1;
 		Pick pick = pickManager.lastPick();
 		if (pick != null) {

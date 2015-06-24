@@ -5,16 +5,16 @@ import java.util.List;
 
 import javax.vecmath.Point3i;
 
-import org.snowyegret.mojo.item.spell.Modifiers;
-import org.snowyegret.mojo.item.spell.Spell;
-import org.snowyegret.mojo.player.IPlayer;
-import org.snowyegret.mojo.select.ISelect;
-import org.snowyegret.mojo.undo.Transaction;
-import org.snowyegret.mojo.undo.UndoableSetBlock;
-
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
+
+import org.snowyegret.mojo.item.spell.Modifiers;
+import org.snowyegret.mojo.item.spell.Spell;
+import org.snowyegret.mojo.player.IPlayer;
+import org.snowyegret.mojo.select.SelectionManager;
+import org.snowyegret.mojo.undo.Transaction;
+import org.snowyegret.mojo.undo.UndoableSetBlock;
 
 import com.google.common.collect.Lists;
 
@@ -33,7 +33,7 @@ public class SpellMengerSponge extends Spell {
 	@Override
 	public void invoke(IPlayer player) {
 		Modifiers modifiers = player.getModifiers();
-		ISelect selectionManager = player.getSelectionManager();
+		SelectionManager selectionManager = player.getSelectionManager();
 
 		// TODO use enclosing cube
 		delete(selectionManager.voxelSet());

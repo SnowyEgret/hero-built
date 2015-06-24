@@ -1,18 +1,7 @@
 package org.snowyegret.mojo.pick;
 
 import java.util.LinkedList;
-import java.util.List;
 import java.util.NoSuchElementException;
-
-import org.snowyegret.mojo.MoJo;
-import org.snowyegret.mojo.block.BlockPicked;
-import org.snowyegret.mojo.block.BlockSelected;
-import org.snowyegret.mojo.block.PrevStateTileEntity;
-import org.snowyegret.mojo.network.PickMessage;
-import org.snowyegret.mojo.network.SelectionMessage;
-import org.snowyegret.mojo.player.IPlayer;
-import org.snowyegret.mojo.select.ISelect;
-import org.snowyegret.mojo.world.IWorld;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -20,7 +9,14 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 
-public class PickManager implements IPick {
+import org.snowyegret.mojo.MoJo;
+import org.snowyegret.mojo.block.BlockSelected;
+import org.snowyegret.mojo.block.PrevStateTileEntity;
+import org.snowyegret.mojo.network.PickMessage;
+import org.snowyegret.mojo.player.IPlayer;
+import org.snowyegret.mojo.world.IWorld;
+
+public class PickManager {
 
 	private LinkedList<Pick> picks = new LinkedList<>();
 	private LinkedList<Pick> lastPicks = new LinkedList<>();
@@ -31,20 +27,17 @@ public class PickManager implements IPick {
 		this.blockPicked = blockPicked;
 	}
 
-	@Override
 	public Pick pick(IPlayer player, BlockPos pos, EnumFacing side) {
 		Pick pick = pick(player.getWorld(), pos, side);
 		MoJo.network.sendTo(new PickMessage(this), (EntityPlayerMP) player.getPlayer());
 		return pick;
 	}
 
-	@Override
 	public void clearPicks(IPlayer player) {
 		clearPicks(player.getWorld());
 		MoJo.network.sendTo(new PickMessage(this), (EntityPlayerMP) player.getPlayer());
 	}
 
-	@Override
 	public void repick(IPlayer player) {
 		repick(player.getWorld());
 		MoJo.network.sendTo(new PickMessage(this), (EntityPlayerMP) player.getPlayer());
@@ -52,13 +45,11 @@ public class PickManager implements IPick {
 
 	// -------------------------------------------------------------------------
 
-	@Override
 	public Pick[] getPicks() {
 		Pick[] array = new Pick[picks.size()];
 		return picks.toArray(array);
 	}
 
-	@Override
 	public Pick getPick(BlockPos pos) {
 		for (Pick p : picks) {
 			if (pos.equals(p.getPos())) {
@@ -68,27 +59,22 @@ public class PickManager implements IPick {
 		return null;
 	}
 
-	@Override
 	public boolean isPicking() {
 		return picks.size() > 0 && !isFinishedPicking();
 	}
 
-	@Override
 	public boolean isFinishedPicking() {
 		return (picks.size() == maxPicks);
 	}
 
-	@Override
 	public void reset(int maxPicks) {
 		this.maxPicks = maxPicks;
 	}
 
-	@Override
 	public Pick firstPick() {
 		return getPicks()[0];
 	}
 
-	@Override
 	public Pick lastPick() {
 		try {
 			return picks.getLast();

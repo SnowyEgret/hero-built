@@ -2,17 +2,6 @@ package org.snowyegret.mojo.player;
 
 import java.util.List;
 
-import org.snowyegret.mojo.MoJo;
-import org.snowyegret.mojo.item.spell.ISpell;
-import org.snowyegret.mojo.item.spell.Modifiers;
-import org.snowyegret.mojo.item.spell.Spell;
-import org.snowyegret.mojo.item.staff.Staff;
-import org.snowyegret.mojo.pick.IPick;
-import org.snowyegret.mojo.select.ISelect;
-import org.snowyegret.mojo.undo.IUndo;
-import org.snowyegret.mojo.world.IWorld;
-import org.snowyegret.mojo.world.WorldWrapper;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -20,6 +9,17 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.common.IExtendedEntityProperties;
+
+import org.snowyegret.mojo.MoJo;
+import org.snowyegret.mojo.item.spell.ISpell;
+import org.snowyegret.mojo.item.spell.Modifiers;
+import org.snowyegret.mojo.item.spell.Spell;
+import org.snowyegret.mojo.item.staff.Staff;
+import org.snowyegret.mojo.pick.PickManager;
+import org.snowyegret.mojo.select.SelectionManager;
+import org.snowyegret.mojo.undo.UndoManager;
+import org.snowyegret.mojo.world.IWorld;
+import org.snowyegret.mojo.world.WorldWrapper;
 
 import com.google.common.collect.Lists;
 
@@ -180,19 +180,19 @@ public class Player implements IPlayer {
 	}
 
 	@Override
-	public IUndo getUndoManager() {
+	public UndoManager getUndoManager() {
 		IExtendedEntityProperties p = player.getExtendedProperties(PlayerProperties.NAME);
 		return ((PlayerProperties) p).getUndoManager();
 	}
 
 	@Override
-	public ISelect getSelectionManager() {
+	public SelectionManager getSelectionManager() {
 		IExtendedEntityProperties p = player.getExtendedProperties(PlayerProperties.NAME);
 		return ((PlayerProperties) p).getSelectionManager();
 	}
 
 	@Override
-	public IPick getPickManager() {
+	public PickManager getPickManager() {
 		IExtendedEntityProperties p = player.getExtendedProperties(PlayerProperties.NAME);
 		return ((PlayerProperties) p).getPickManager();
 	}

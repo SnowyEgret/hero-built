@@ -2,18 +2,16 @@ package org.snowyegret.mojo.item.spell.transform;
 
 import java.util.List;
 
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.BlockPos;
+
 import org.snowyegret.mojo.item.spell.Spell;
 import org.snowyegret.mojo.player.IPlayer;
-import org.snowyegret.mojo.player.Jumper;
-import org.snowyegret.mojo.select.ISelect;
 import org.snowyegret.mojo.select.Selection;
+import org.snowyegret.mojo.select.SelectionManager;
 import org.snowyegret.mojo.undo.IUndoable;
 import org.snowyegret.mojo.undo.Transaction;
 import org.snowyegret.mojo.undo.UndoableSetBlock;
-
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.BlockPos;
-import net.minecraftforge.common.IPlantable;
 
 import com.google.common.collect.Lists;
 
@@ -24,7 +22,7 @@ public abstract class AbstractSpellTransform extends Spell {
 	}
 
 	protected void transformSelections(IPlayer player, ITransform<Selection> transformer) {
-		ISelect selectionManager = player.getSelectionManager();
+		SelectionManager selectionManager = player.getSelectionManager();
 		Iterable<Selection> selections = selectionManager.getSelections();
 		selectionManager.clearSelections(player); 
 		player.getPickManager().clearPicks(player);

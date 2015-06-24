@@ -92,16 +92,16 @@ public class Transaction implements IUndoable, Iterable {
 				setBlock.pos = pos;
 			}
 
-			// TODO Issue: Torches should be placed conditionally #164
+			// TODO Issue: Torches should be placed on block side (not replace the block) #164
 			// Not finished!
 			if (blockToSet instanceof BlockTorch) {
 				System.out.println("Got a torch");
 				// if (block == Blocks.air || !block.canPlaceBlockOnSide(w, pos, EnumFacing.UP)) {
-				if (block == Blocks.air) {
-					continue;
-				}
-				pos = pos.up();
-				setBlock.pos = pos;
+//				if (block == Blocks.air) {
+//					continue;
+//				}
+				// pos = pos.up();
+				// setBlock.pos = pos;
 			}
 
 			// Do not set blocks on player.

@@ -1,7 +1,5 @@
 package org.snowyegret.mojo.item.staff;
 
-import org.snowyegret.mojo.pick.IPick;
-
 import net.minecraft.init.Items;
 
 public class StaffOak extends Staff {

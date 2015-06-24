@@ -2,22 +2,6 @@ package org.snowyegret.mojo.network;
 
 import java.util.NoSuchElementException;
 
-import org.snowyegret.mojo.item.spell.Action;
-import org.snowyegret.mojo.item.spell.Modifier;
-import org.snowyegret.mojo.item.spell.Modifiers;
-import org.snowyegret.mojo.item.spell.matrix.SpellCopy;
-import org.snowyegret.mojo.item.spell.transform.SpellDelete;
-import org.snowyegret.mojo.item.staff.Staff;
-import org.snowyegret.mojo.pick.IPick;
-import org.snowyegret.mojo.pick.Pick;
-import org.snowyegret.mojo.player.IPlayer;
-import org.snowyegret.mojo.player.Player;
-import org.snowyegret.mojo.select.ISelect;
-import org.snowyegret.mojo.select.Selection;
-import org.snowyegret.mojo.undo.Transaction;
-import org.snowyegret.mojo.undo.UndoableSetBlock;
-import org.snowyegret.mojo.world.IWorld;
-
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
@@ -26,18 +10,27 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
+import org.snowyegret.mojo.item.spell.Action;
+import org.snowyegret.mojo.item.spell.Modifier;
+import org.snowyegret.mojo.item.spell.Modifiers;
+import org.snowyegret.mojo.item.spell.matrix.SpellCopy;
+import org.snowyegret.mojo.item.spell.transform.SpellDelete;
+import org.snowyegret.mojo.item.staff.Staff;
+import org.snowyegret.mojo.player.IPlayer;
+import org.snowyegret.mojo.player.Player;
+import org.snowyegret.mojo.select.Selection;
+import org.snowyegret.mojo.select.SelectionManager;
+import org.snowyegret.mojo.undo.Transaction;
+import org.snowyegret.mojo.undo.UndoableSetBlock;
+import org.snowyegret.mojo.world.IWorld;
+
 public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> {
-
-	private ISelect selectionManager;
-	private IPick pickManager;
-
-	// public static SpellInvoker lastSpell;
 
 	@Override
 	public IMessage onMessage(final KeyMessage message, MessageContext ctx) {
 		final EntityPlayerMP player = ctx.getServerHandler().playerEntity;
 		WorldServer server = player.getServerForPlayer();
-		server.addScheduledTask(new Runnable() {
+		server.addScheduledTask(new Runnable() { 
 			public void run() {
 				processMessage(message, player);
 			}
@@ -52,8 +45,7 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 		IPlayer player = Player.instance(playerIn);
 		IWorld world = player.getWorld();
 		Modifiers modifiers = player.getModifiers();
-		selectionManager = player.getSelectionManager();
-		pickManager = player.getPickManager();
+		SelectionManager selectionManager = player.getSelectionManager();
 		int keyCode = message.getKeyCode();
 		boolean keyState = message.getKeyState();
 
@@ -98,9 +90,9 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 			Staff staff = player.getStaff();
 			if (staff != null) {
 				if (modifiers.isPressed(Modifier.CTRL)) {
-					staff.prevSpell(stack, pickManager);
+					staff.prevSpell(stack, player.getPickManager());
 				} else {
-					staff.nextSpell(stack, pickManager);
+					staff.nextSpell(stack, player.getPickManager());
 				}
 			}
 			break;

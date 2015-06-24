@@ -5,13 +5,11 @@ import javax.vecmath.Point3d;
 
 import net.minecraft.util.Vec3;
 
-import org.lwjgl.input.Keyboard;
 import org.snowyegret.mojo.item.spell.Modifier;
 import org.snowyegret.mojo.item.spell.Modifiers;
-import org.snowyegret.mojo.pick.IPick;
 import org.snowyegret.mojo.pick.Pick;
 import org.snowyegret.mojo.player.IPlayer;
-import org.snowyegret.mojo.select.ISelect;
+import org.snowyegret.mojo.select.SelectionManager;
 
 import ds.geom.GeomUtil;
 
@@ -26,7 +24,7 @@ public class SpellRotate90 extends AbstractSpellMatrix {
 	public void invoke(IPlayer player) {
 
 		Modifiers modifiers = player.getModifiers();
-		ISelect selectionManager = player.getSelectionManager();
+		SelectionManager selectionManager = player.getSelectionManager();
 
 		boolean deleteOriginal = modifiers.isPressed(Modifier.CTRL);
 		boolean rotateAboutCentroid = modifiers.isPressed(Modifier.SHIFT);

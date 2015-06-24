@@ -1,6 +1,5 @@
 package org.snowyegret.mojo.item.spell;
 
-import org.snowyegret.mojo.pick.IPick;
 import org.snowyegret.mojo.player.IPlayer;
 
 public interface ISpell {

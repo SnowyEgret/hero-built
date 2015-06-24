@@ -12,7 +12,7 @@ import org.snowyegret.mojo.item.spell.Modifier;
 import org.snowyegret.mojo.item.spell.Modifiers;
 import org.snowyegret.mojo.item.spell.Spell;
 import org.snowyegret.mojo.player.IPlayer;
-import org.snowyegret.mojo.select.ISelect;
+import org.snowyegret.mojo.select.SelectionManager;
 import org.snowyegret.mojo.undo.IUndoable;
 import org.snowyegret.mojo.undo.Transaction;
 import org.snowyegret.mojo.undo.UndoableSetBlock;
@@ -33,7 +33,7 @@ public abstract class AbstractSpellDraw extends Spell {
 	protected void draw(IDrawable drawable, IPlayer player, EnumFacing side) {
 		
 		Modifiers modifiers = player.getModifiers();
-		ISelect selectionManager = player.getSelectionManager();
+		SelectionManager selectionManager = player.getSelectionManager();
 
 		selectionManager.clearSelections(player);
 		player.getPickManager().clearPicks(player);

@@ -5,13 +5,13 @@ import java.util.List;
 
 import javax.vecmath.Point3i;
 
-import org.snowyegret.mojo.player.IPlayer;
-import org.snowyegret.mojo.select.ISelect;
-import org.snowyegret.mojo.select.Selection;
-
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
+
+import org.snowyegret.mojo.player.IPlayer;
+import org.snowyegret.mojo.select.Selection;
+import org.snowyegret.mojo.select.SelectionManager;
 
 import com.google.common.collect.Lists;
 
@@ -21,7 +21,7 @@ public class SpellHollow extends AbstractSpellTransform {
 
 	@Override
 	public void invoke(IPlayer player) {
-		final ISelect selectionManager = player.getSelectionManager();
+		final SelectionManager selectionManager = player.getSelectionManager();
 		final IBlockState air = Blocks.air.getDefaultState();
 		transformSelections(player, new ITransform() {
 			VoxelSet voxels = selectionManager.voxelSet();

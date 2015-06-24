@@ -15,11 +15,11 @@ import org.snowyegret.mojo.item.spell.ICondition;
 import org.snowyegret.mojo.item.spell.Modifier;
 import org.snowyegret.mojo.item.spell.Modifiers;
 import org.snowyegret.mojo.item.spell.Spell;
-import org.snowyegret.mojo.pick.IPick;
 import org.snowyegret.mojo.pick.Pick;
+import org.snowyegret.mojo.pick.PickManager;
 import org.snowyegret.mojo.player.IPlayer;
-import org.snowyegret.mojo.select.ISelect;
 import org.snowyegret.mojo.select.Selection;
+import org.snowyegret.mojo.select.SelectionManager;
 import org.snowyegret.mojo.world.IWorld;
 
 import com.google.common.collect.Lists;
@@ -59,8 +59,8 @@ public abstract class AbstractSpellSelect extends Spell {
 	public void invoke(IPlayer player) {
 
 		Modifiers modifiers = player.getModifiers();
-		ISelect selectionManager = player.getSelectionManager();
-		IPick pickManager = player.getPickManager();
+		SelectionManager selectionManager = player.getSelectionManager();
+		PickManager pickManager = player.getPickManager();
 
 		// Select the pick if there are no selections.
 		// Either way the pickManager must be cleared.
@@ -83,7 +83,7 @@ public abstract class AbstractSpellSelect extends Spell {
 
 	// Private-------------------------------------------------------------------------------
 
-	private void growSelections(IPlayer player, boolean anyBlock, ISelect selectionManager, Block patternBlock) {
+	private void growSelections(IPlayer player, boolean anyBlock, SelectionManager selectionManager, Block patternBlock) {
 		Set<BlockPos> grownSelections = Sets.newHashSet();
 		// Grown selections must be on selectionManager and not on this spell so that it belongs to a player
 		for (BlockPos center : selectionManager.getGrownSelections()) {
@@ -124,7 +124,7 @@ public abstract class AbstractSpellSelect extends Spell {
 		selectionManager.setGrownSelections(grownSelections);
 	}
 
-	private void shrinkSelections(IPlayer player, ISelect selectionManager) {
+	private void shrinkSelections(IPlayer player, SelectionManager selectionManager) {
 		List<BlockPos> shrunkSelections = Lists.newArrayList();
 		for (Selection s : selectionManager.getSelections()) {
 			for (BlockPos p : growthPattern) {

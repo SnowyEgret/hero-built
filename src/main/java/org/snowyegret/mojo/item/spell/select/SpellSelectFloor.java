@@ -1,12 +1,8 @@
 package org.snowyegret.mojo.item.spell.select;
 
-import org.snowyegret.mojo.item.spell.Modifiers;
-import org.snowyegret.mojo.pick.IPick;
-import org.snowyegret.mojo.player.IPlayer;
-import org.snowyegret.mojo.select.ISelect;
-import org.snowyegret.mojo.undo.IUndo;
-
 import net.minecraft.util.EnumFacing;
+
+import org.snowyegret.mojo.player.IPlayer;
 
 public class SpellSelectFloor extends AbstractSpellSelect {
 
@@ -21,8 +17,7 @@ public class SpellSelectFloor extends AbstractSpellSelect {
 
 	@Override
 	public void invoke(IPlayer player) {
-		IPick pickManager = player.getPickManager();
-		EnumFacing side = pickManager.firstPick().side;
+		EnumFacing side = player.getPickManager().firstPick().side;
 		switch (side) {
 		case UP:
 			setConditions(new IsOnGround());

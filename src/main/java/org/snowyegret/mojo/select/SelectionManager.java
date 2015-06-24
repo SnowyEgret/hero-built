@@ -30,7 +30,7 @@ import com.google.common.collect.Sets;
 import ds.geom.IntegerDomain;
 import ds.geom.VoxelSet;
 
-public class SelectionManager implements ISelect {
+public class SelectionManager {
 
 	private final Map<BlockPos, Selection> selMap = Maps.newLinkedHashMap();
 	private Block blockSelected;
@@ -41,7 +41,6 @@ public class SelectionManager implements ISelect {
 		this.blockSelected = blockSelected;
 	}
 
-	@Override
 	public void select(IPlayer player, Iterable<BlockPos> pos) {
 		for (BlockPos p : pos) {
 			select(player.getWorld(), p);
@@ -51,19 +50,16 @@ public class SelectionManager implements ISelect {
 		MoJo.network.sendTo(new SelectionMessage(this), (EntityPlayerMP) player.getPlayer());
 	}
 
-	@Override
 	public void select(IPlayer player, BlockPos pos) {
 		select(player.getWorld(), pos);
 		MoJo.network.sendTo(new SelectionMessage(this), (EntityPlayerMP) player.getPlayer());
 	}
 
-	@Override
 	public void deselect(IPlayer player, BlockPos pos) {
 		deselect(player.getWorld(), pos);
 		MoJo.network.sendTo(new SelectionMessage(this), (EntityPlayerMP) player.getPlayer());
 	}
 
-	@Override
 	public void deselect(IPlayer player, Iterable<BlockPos> positions) {
 		for (BlockPos pos : positions) {
 			deselect(player.getWorld(), pos);
@@ -71,13 +67,11 @@ public class SelectionManager implements ISelect {
 		MoJo.network.sendTo(new SelectionMessage(this), (EntityPlayerMP) player.getPlayer());
 	}
 
-	@Override
 	public void reselect(IPlayer player) {
 		reselect(player.getWorld());
 		MoJo.network.sendTo(new SelectionMessage(this), (EntityPlayerMP) player.getPlayer());
 	}
 
-	@Override
 	public void clearSelections(IPlayer player) {
 		clearSelections(player.getWorld());
 		MoJo.network.sendTo(new SelectionMessage(this), (EntityPlayerMP) player.getPlayer());
@@ -86,18 +80,15 @@ public class SelectionManager implements ISelect {
 	// ----------------------------------------------------------------------------
 
 	// Returns a copy to avoid concurrent modification
-	@Override
 	public Iterable<Selection> getSelections() {
 		return Lists.newArrayList(selMap.values());
 	}
 
 	// Returns a copy to avoid concurrent modification
-	@Override
 	public List<Selection> getSelectionList() {
 		return Lists.newArrayList(selMap.values());
 	}
 
-	@Override
 	public Selection getSelection(BlockPos pos) {
 		return selMap.get(pos);
 	}
@@ -106,17 +97,14 @@ public class SelectionManager implements ISelect {
 		this.reselects = reselects;
 	}
 
-	@Override
 	public int size() {
 		return selMap.size();
 	}
 
-	@Override
 	public boolean isSelected(BlockPos pos) {
 		return selMap.containsKey(pos);
 	}
 
-	@Override
 	public Selection firstSelection() {
 		if (selMap.isEmpty()) {
 			return null;
@@ -125,7 +113,6 @@ public class SelectionManager implements ISelect {
 		return selMap.values().iterator().next();
 	}
 
-	@Override
 	public Selection lastSelection() {
 		if (selMap.isEmpty()) {
 			return null;
@@ -133,12 +120,10 @@ public class SelectionManager implements ISelect {
 		return getSelectionList().get(selMap.size() - 1);
 	}
 
-	@Override
 	public IntegerDomain getDomain() {
 		return voxelSet().getDomain();
 	}
 
-	@Override
 	public VoxelSet voxelSet() {
 		VoxelSet set = new VoxelSet();
 		for (BlockPos pos : selMap.keySet()) {
@@ -147,8 +132,6 @@ public class SelectionManager implements ISelect {
 		return set;
 	}
 
-	@Override
-	// public List<BlockPos> getGrownSelections() {
 	public Set<BlockPos> getGrownSelections() {
 		if (grownSelections.isEmpty()) {
 			grownSelections.addAll(selMap.keySet());
@@ -156,20 +139,16 @@ public class SelectionManager implements ISelect {
 		return grownSelections;
 	}
 
-	@Override
-	// public void setGrownSelections(List<BlockPos> points) {
 	public void setGrownSelections(Set<BlockPos> positions) {
 		grownSelections.clear();
 		grownSelections.addAll(positions);
 		// grownSelections = positions;
 	}
 
-	@Override
 	public void clearGrownSelections() {
 		grownSelections.clear();
 	}
 
-	@Override
 	public Vec3 getCentroid() {
 		Point3d c = voxelSet().centroid();
 		return new Vec3(c.x, c.y, c.z);

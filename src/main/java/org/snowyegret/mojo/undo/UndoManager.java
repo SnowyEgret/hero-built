@@ -6,7 +6,7 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import org.snowyegret.mojo.player.IPlayer;
 
-public class UndoManager implements IUndo {
+public class UndoManager implements IUndoable {
 
 	private Node currentNode;
 	private int maxLength = 0;
@@ -23,7 +23,6 @@ public class UndoManager implements IUndo {
 
 	// Interface IUndo -------------------------------------
 
-	@Override
 	public void addTransaction(Transaction transaction) {
 		Node node = new Node(transaction);
 		currentNode.right = node;
@@ -51,7 +50,6 @@ public class UndoManager implements IUndo {
 		return size;
 	}
 
-	@Override
 	public void clear() {
 		currentNode = new Node();
 	}

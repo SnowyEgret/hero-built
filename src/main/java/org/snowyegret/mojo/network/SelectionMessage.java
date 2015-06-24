@@ -1,13 +1,13 @@
 package org.snowyegret.mojo.network;
 
-import org.snowyegret.mojo.gui.SelectionInfo;
-import org.snowyegret.mojo.select.ISelect;
-import org.snowyegret.mojo.select.Selection;
-
 import io.netty.buffer.ByteBuf;
 import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+
+import org.snowyegret.mojo.gui.SelectionInfo;
+import org.snowyegret.mojo.select.Selection;
+import org.snowyegret.mojo.select.SelectionManager;
 
 public class SelectionMessage implements IMessage {
 
@@ -17,7 +17,7 @@ public class SelectionMessage implements IMessage {
 	public SelectionMessage() {
 	}
 
-	public SelectionMessage(ISelect selectionManager) {
+	public SelectionMessage(SelectionManager selectionManager) {
 		size = selectionManager.size();
 		Selection s = selectionManager.firstSelection();
 		if (s != null) {

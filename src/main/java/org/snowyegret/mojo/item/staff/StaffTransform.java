@@ -2,10 +2,9 @@ package org.snowyegret.mojo.item.staff;
 
 import java.util.List;
 
-import org.snowyegret.mojo.item.spell.Spell;
-import org.snowyegret.mojo.pick.IPick;
-
 import net.minecraft.init.Items;
+
+import org.snowyegret.mojo.item.spell.Spell;
 
 public class StaffTransform extends StaffPreset {
 

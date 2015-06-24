@@ -2,20 +2,20 @@ package org.snowyegret.mojo.player;
 
 import java.util.List;
 
-import org.snowyegret.mojo.item.spell.ISpell;
-import org.snowyegret.mojo.item.spell.Modifiers;
-import org.snowyegret.mojo.item.staff.Staff;
-import org.snowyegret.mojo.pick.IPick;
-import org.snowyegret.mojo.player.Player.Direction;
-import org.snowyegret.mojo.select.ISelect;
-import org.snowyegret.mojo.undo.IUndo;
-import org.snowyegret.mojo.world.IWorld;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.Vec3;
+
+import org.snowyegret.mojo.item.spell.ISpell;
+import org.snowyegret.mojo.item.spell.Modifiers;
+import org.snowyegret.mojo.item.staff.Staff;
+import org.snowyegret.mojo.pick.PickManager;
+import org.snowyegret.mojo.player.Player.Direction;
+import org.snowyegret.mojo.select.SelectionManager;
+import org.snowyegret.mojo.undo.UndoManager;
+import org.snowyegret.mojo.world.IWorld;
 
 public interface IPlayer {
 
@@ -47,11 +47,11 @@ public interface IPlayer {
 
 	public abstract Modifiers getModifiers();
 
-	public abstract IUndo getUndoManager();
+	public abstract UndoManager getUndoManager();
 
-	public abstract ISelect getSelectionManager();
+	public abstract SelectionManager getSelectionManager();
 
-	public abstract IPick getPickManager();
+	public abstract PickManager getPickManager();
 
 	public abstract void setLastSpell(ISpell spell);
 

@@ -3,17 +3,17 @@ package org.snowyegret.mojo.item.spell.transform;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.snowyegret.mojo.item.spell.Modifier;
-import org.snowyegret.mojo.item.spell.Modifiers;
-import org.snowyegret.mojo.player.IPlayer;
-import org.snowyegret.mojo.select.ISelect;
-import org.snowyegret.mojo.select.Selection;
-import org.snowyegret.mojo.world.IWorld;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
+
+import org.snowyegret.mojo.item.spell.Modifier;
+import org.snowyegret.mojo.item.spell.Modifiers;
+import org.snowyegret.mojo.player.IPlayer;
+import org.snowyegret.mojo.select.Selection;
+import org.snowyegret.mojo.select.SelectionManager;
+import org.snowyegret.mojo.world.IWorld;
 
 import com.google.common.collect.Lists;
 
@@ -27,7 +27,7 @@ public class SpellDrop extends AbstractSpellTransform {
 	public void invoke(final IPlayer player) {
 
 		Modifiers modifiers = player.getModifiers();
-		final ISelect selectionManager = player.getSelectionManager();
+		final SelectionManager selectionManager = player.getSelectionManager();
 		final boolean fill = modifiers.isPressed(Modifier.SHIFT);
 		final boolean raise = modifiers.isPressed(Modifier.ALT);
 		final boolean deleteOriginal = modifiers.isPressed(Modifier.CTRL) || raise;
@@ -50,7 +50,7 @@ public class SpellDrop extends AbstractSpellTransform {
 				return selections;
 			}
 
-			private List<Selection> drop(IWorld world, ISelect selectionManager, Selection s, boolean fill) {
+			private List<Selection> drop(IWorld world, SelectionManager selectionManager, Selection s, boolean fill) {
 				System.out.println("fill=" + fill);
 				List<Selection> selections = new ArrayList();
 				BlockPos pos = s.getPos();
@@ -70,7 +70,7 @@ public class SpellDrop extends AbstractSpellTransform {
 				return selections;
 			}
 
-			private List<Selection> raiseBurriedBlocks(IWorld world, ISelect selectionManager, Selection s) {
+			private List<Selection> raiseBurriedBlocks(IWorld world, SelectionManager selectionManager, Selection s) {
 				List<Selection> selections = new ArrayList();
 				BlockPos pos = s.getPos();
 				for (int distance = 1;; distance++) {

@@ -42,6 +42,7 @@ public class UndoableSetBlock implements IUndoable {
 		player.getWorld().setState(pos, state);
 	}
 
+	//Implemented to save a large transaction to disk.
 	@Override
 	public NBTTagCompound toNBT() {
 		NBTTagCompound tag = new NBTTagCompound();

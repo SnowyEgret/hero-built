@@ -8,19 +8,15 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.snowyegret.mojo.item.staff.Staff;
-import org.snowyegret.mojo.item.staff.StaffPreset;
-import org.snowyegret.mojo.pick.IPick;
-import org.snowyegret.mojo.select.ISelect;
-import org.snowyegret.mojo.undo.IUndo;
-import org.snowyegret.mojo.util.StringUtils;
-
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+
+import org.snowyegret.mojo.item.staff.Staff;
+import org.snowyegret.mojo.item.staff.StaffPreset;
+import org.snowyegret.mojo.util.StringUtils;
 
 import com.google.common.reflect.ClassPath;
 import com.google.common.reflect.ClassPath.ClassInfo;

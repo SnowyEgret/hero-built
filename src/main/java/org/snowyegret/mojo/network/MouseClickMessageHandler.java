@@ -2,13 +2,6 @@ package org.snowyegret.mojo.network;
 
 import java.util.ArrayList;
 
-import org.snowyegret.mojo.item.spell.Modifier;
-import org.snowyegret.mojo.item.spell.Modifiers;
-import org.snowyegret.mojo.pick.IPick;
-import org.snowyegret.mojo.player.IPlayer;
-import org.snowyegret.mojo.player.Player;
-import org.snowyegret.mojo.select.ISelect;
-
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.BlockPos;
@@ -17,6 +10,12 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+
+import org.snowyegret.mojo.item.spell.Modifier;
+import org.snowyegret.mojo.item.spell.Modifiers;
+import org.snowyegret.mojo.player.IPlayer;
+import org.snowyegret.mojo.player.Player;
+import org.snowyegret.mojo.select.SelectionManager;
 
 import com.google.common.collect.Lists;
 
@@ -38,8 +37,7 @@ public class MouseClickMessageHandler implements IMessageHandler<MouseClickMessa
 
 	private void processMessage(MouseClickMessage message, EntityPlayerMP playerIn) {
 		IPlayer player = Player.instance(playerIn);
-		ISelect selectionManager = player.getSelectionManager();
-		IPick pickManager = player.getPickManager();
+		SelectionManager selectionManager = player.getSelectionManager();
 		MovingObjectType typeOfHit = message.getTypeOfHit();
 		int button = message.getButton();
 		//System.out.println("button=" + button);
@@ -55,7 +53,7 @@ public class MouseClickMessageHandler implements IMessageHandler<MouseClickMessa
 			if (button == 0) {
 				selectionManager.clearSelections(player);
 			} else if (button == 1) {
-				pickManager.clearPicks(player);
+				player.getPickManager().clearPicks(player);
 			}
 			break;
 		default:
@@ -66,7 +64,7 @@ public class MouseClickMessageHandler implements IMessageHandler<MouseClickMessa
 	// Called by onPlayerInteractEvent on server side only.
 	private void select(BlockPos pos, IPlayer player) {
 
-		ISelect selectionManager = player.getSelectionManager();
+		SelectionManager selectionManager = player.getSelectionManager();
 
 		Modifiers modifiers = player.getModifiers();
 

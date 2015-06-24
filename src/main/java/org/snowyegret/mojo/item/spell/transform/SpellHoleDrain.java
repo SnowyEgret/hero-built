@@ -5,18 +5,16 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.snowyegret.mojo.item.spell.Modifiers;
-import org.snowyegret.mojo.item.spell.select.Select;
-import org.snowyegret.mojo.pick.IPick;
-import org.snowyegret.mojo.player.IPlayer;
-import org.snowyegret.mojo.select.Selection;
-import org.snowyegret.mojo.undo.Transaction;
-import org.snowyegret.mojo.world.IWorld;
-
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.util.BlockPos;
+
+import org.snowyegret.mojo.item.spell.select.Select;
+import org.snowyegret.mojo.player.IPlayer;
+import org.snowyegret.mojo.select.Selection;
+import org.snowyegret.mojo.undo.Transaction;
+import org.snowyegret.mojo.world.IWorld;
 
 import com.google.common.collect.Lists;
 
@@ -24,8 +22,6 @@ public class SpellHoleDrain extends AbstractSpellTransform {
 
 	@Override
 	public void invoke(final IPlayer player) {
-		Modifiers modifiers = player.getModifiers();
-		final IPick pickManager = player.getPickManager();
 
 		transformSelections(player, new ITransform() {
 
@@ -33,8 +29,8 @@ public class SpellHoleDrain extends AbstractSpellTransform {
 			public Iterable<Selection> transform(Selection selection) {
 				Set<BlockPos> positions = Collections.newSetFromMap(new ConcurrentHashMap<BlockPos, Boolean>());
 				int positionsSize = 0;
-				BlockPos pos = pickManager.firstPick().getPos();
-				pickManager.clearPicks(player);
+				BlockPos pos = player.getPickManager().firstPick().getPos();
+				player.getPickManager().clearPicks(player);
 				IWorld world = player.getWorld();
 
 				while (true) {

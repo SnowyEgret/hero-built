@@ -11,20 +11,19 @@ import java.util.Set;
 
 import javax.vecmath.Vector3d;
 
+import net.minecraft.init.Items;
+import net.minecraft.util.BlockPos;
+
 import org.snowyegret.mojo.gui.GuiHandler;
 import org.snowyegret.mojo.gui.ITextSetable;
 import org.snowyegret.mojo.item.spell.Modifiers;
 import org.snowyegret.mojo.item.spell.Spell;
-import org.snowyegret.mojo.pick.IPick;
 import org.snowyegret.mojo.pick.Pick;
+import org.snowyegret.mojo.pick.PickManager;
 import org.snowyegret.mojo.player.IPlayer;
-import org.snowyegret.mojo.select.ISelect;
-import org.snowyegret.mojo.undo.IUndo;
+import org.snowyegret.mojo.select.SelectionManager;
 import org.snowyegret.mojo.undo.Transaction;
 import org.snowyegret.mojo.undo.UndoableSetBlock;
-
-import net.minecraft.init.Items;
-import net.minecraft.util.BlockPos;
 
 public class SpellText extends Spell implements ITextSetable {
 
@@ -50,8 +49,8 @@ public class SpellText extends Spell implements ITextSetable {
 	@Override
 	public void invoke(IPlayer player) {
 		Modifiers modifiers = player.getModifiers();
-		ISelect selectionManager = player.getSelectionManager();
-		IPick pickManager = player.getPickManager();
+		SelectionManager selectionManager = player.getSelectionManager();
+		PickManager pickManager = player.getPickManager();
 		player.openGui(GuiHandler.GUI_SPELL_TEXT);
 		picks = pickManager.getPicks();
 		// Clear the picks because player may have cancelled
@@ -60,8 +59,6 @@ public class SpellText extends Spell implements ITextSetable {
 
 	@Override
 	public void setText(String text, IPlayer player) {
-
-		ISelect selectionManager = player.getSelectionManager();
 
 		Vector3d d = new Vector3d();
 		d.sub(picks[0].point3d(), picks[1].point3d());
@@ -104,7 +101,7 @@ public class SpellText extends Spell implements ITextSetable {
 		}
 
 		System.out.println("size=" + positions.size());
-		selectionManager.clearSelections(player);
+		player.getSelectionManager().clearSelections(player);
 		player.getPickManager().clearPicks(player);
 
 		Transaction t = new Transaction();
