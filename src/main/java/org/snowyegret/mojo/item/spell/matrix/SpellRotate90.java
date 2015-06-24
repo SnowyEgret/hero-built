@@ -24,14 +24,13 @@ public class SpellRotate90 extends AbstractSpellMatrix {
 	public void invoke(IPlayer player) {
 
 		Modifiers modifiers = player.getModifiers();
-		SelectionManager selectionManager = player.getSelectionManager();
-
 		boolean deleteOriginal = modifiers.isPressed(Modifier.CTRL);
 		boolean rotateAboutCentroid = modifiers.isPressed(Modifier.SHIFT);
-		Pick[] picks = player.getPickManager().getPicks();
+
+		Pick[] picks = player.getPicks();
 		Point3d center = null;
 		if (rotateAboutCentroid) {
-			Vec3 c = selectionManager.getCentroid();
+			Vec3 c = player.getSelectionManager().getCentroid();
 			center = new Point3d(c.xCoord, c.yCoord, c.zCoord);
 		} else {
 			center = picks[0].point3d();

@@ -16,7 +16,6 @@ import org.snowyegret.mojo.item.spell.Modifier;
 import org.snowyegret.mojo.item.spell.Modifiers;
 import org.snowyegret.mojo.item.spell.Spell;
 import org.snowyegret.mojo.pick.Pick;
-import org.snowyegret.mojo.pick.PickManager;
 import org.snowyegret.mojo.player.IPlayer;
 import org.snowyegret.mojo.select.Selection;
 import org.snowyegret.mojo.select.SelectionManager;
@@ -59,19 +58,18 @@ public abstract class AbstractSpellSelect extends Spell {
 	public void invoke(IPlayer player) {
 
 		Modifiers modifiers = player.getModifiers();
+		boolean shrink = modifiers.isPressed(Modifier.CTRL);
+		boolean anyBlock = modifiers.isPressed(Modifier.ALT);
+
 		SelectionManager selectionManager = player.getSelectionManager();
-		PickManager pickManager = player.getPickManager();
 
 		// Select the pick if there are no selections.
-		// Either way the pickManager must be cleared.
-		Pick firstPick = pickManager.firstPick();
-		pickManager.clearPicks();
+		// Either way the picks must be cleared.
+		Pick firstPick = player.getPickManager().firstPick();
+		player.clearPicks();
 		if (selectionManager.size() == 0) {
 			selectionManager.select(player, firstPick.getPos());
 		}
-
-		boolean shrink = modifiers.isPressed(Modifier.CTRL);
-		boolean anyBlock = modifiers.isPressed(Modifier.ALT);
 
 		if (shrink) {
 			shrinkSelections(player, selectionManager);

@@ -27,10 +27,11 @@ public class SpellDrop extends AbstractSpellTransform {
 	public void invoke(final IPlayer player) {
 
 		Modifiers modifiers = player.getModifiers();
-		final SelectionManager selectionManager = player.getSelectionManager();
 		final boolean fill = modifiers.isPressed(Modifier.SHIFT);
 		final boolean raise = modifiers.isPressed(Modifier.ALT);
 		final boolean deleteOriginal = modifiers.isPressed(Modifier.CTRL) || raise;
+		
+		final SelectionManager selectionManager = player.getSelectionManager();
 		final IBlockState air = Blocks.air.getDefaultState();
 
 		transformSelections(player, new ITransform() {
@@ -85,87 +86,3 @@ public class SpellDrop extends AbstractSpellTransform {
 		});
 	}
 }
-
-// extends Spell {
-//
-// public SpellDrop() {
-// super(1);
-// info.addModifiers(Modifier.CTRL, Modifier.ALT, Modifier.SHIFT);
-// }
-//
-// @Override
-// public void invoke(IPlayer player) {
-//
-// Modifiers modifiers = player.getModifiers();
-// ISelect selectionManager = player.getSelectionManager();
-// IPick pickManager = player.getPickManager();
-// IUndo undoManager = player.getUndoManager();
-//
-// boolean deleteOriginal = modifiers.isPressed(Modifier.CTRL);
-// boolean fill = modifiers.isPressed(Modifier.SHIFT);
-// // TODO check for all air or all non-air around block
-// boolean raise = modifiers.isPressed(Modifier.SHIFT);
-// if (raise) {
-// deleteOriginal = true;
-// }
-//
-// List<UndoableSetBlock> setBlocks = new ArrayList();
-// Iterable<Selection> selections = selectionManager.getSelections();
-// selectionManager.clearSelections(player);
-// pickManager.clearPicks(player);
-// for (Selection s : selections) {
-// if (raise) {
-// setBlocks.addAll(raiseBurriedBlocks(player.getWorld(), selectionManager, s));
-// } else {
-// setBlocks.addAll(drop(player.getWorld(), selectionManager, s, fill));
-// }
-// if (deleteOriginal) {
-// setBlocks.add(new UndoableSetBlock(player.getWorld(), selectionManager, s.getPos(), Blocks.air.getDefaultState()));
-// }
-// }
-//
-// Transaction t = undoManager.newTransaction();
-// for (UndoableSetBlock u : setBlocks) {
-// t.add(u.set());
-// }
-// t.commit();
-// }
-//
-// private List<UndoableSetBlock> drop(IWorld world, ISelect selectionManager, Selection s, boolean fill) {
-// List<UndoableSetBlock> setBlocks = new ArrayList();
-// BlockPos pos = s.getPos();
-// for (int distance = 1;; distance++) {
-// Block b = world.getBlock(pos.down(distance));
-// if (b == Blocks.air) {
-// if (world.getBlock(pos.down(distance + 1)) != Blocks.air) {
-// setBlocks.add(new UndoableSetBlock(world, selectionManager, pos.down(distance), s.getState()));
-// break;
-// } else {
-// if (fill) {
-// setBlocks.add(new UndoableSetBlock(world, selectionManager, pos.down(distance), s.getState()));
-// }
-// }
-// }
-// }
-// return setBlocks;
-// }
-//
-// private List<UndoableSetBlock> raiseBurriedBlocks(IWorld world, ISelect selectionManager, Selection s) {
-// List<UndoableSetBlock> setBlocks = new ArrayList();
-// BlockPos pos = s.getPos();
-// for (int distance = 1;; distance++) {
-// Block b = world.getBlock(pos.up(distance));
-// if (b == Blocks.air) {
-// setBlocks.add(new UndoableSetBlock(world, selectionManager, pos.up(distance), s.getState()));
-// break;
-// }
-// }
-// return setBlocks;
-// }
-//
-// @Override
-// public Object[] getRecipe() {
-// return null;
-// }
-//
-// }

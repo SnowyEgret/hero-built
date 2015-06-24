@@ -53,13 +53,10 @@ public class SpellText extends Spell implements ITextSetable {
 
 	@Override
 	public void invoke(IPlayer player) {
-		Modifiers modifiers = player.getModifiers();
-		SelectionManager selectionManager = player.getSelectionManager();
-		PickManager pickManager = player.getPickManager();
 		player.openGui(GuiHandler.GUI_SPELL_TEXT);
-		picks = pickManager.getPicks();
+		picks = player.getPicks();
 		// Clear the picks because player may have cancelled
-		pickManager.clearPicks();
+		player.clearPicks();
 	}
 
 	@Override
@@ -106,8 +103,8 @@ public class SpellText extends Spell implements ITextSetable {
 		}
 
 		System.out.println("size=" + positions.size());
-		player.getSelectionManager().clearSelections();
-		player.getPickManager().clearPicks();
+		player.clearSelections();
+		player.clearPicks();
 		
 		IBlockState b = player.getHotbar().firstBlock();
 		List<IUndoable> undoables = Lists.newArrayList();

@@ -12,9 +12,7 @@ import org.snowyegret.mojo.item.spell.Modifier;
 import org.snowyegret.mojo.item.spell.Modifiers;
 import org.snowyegret.mojo.item.spell.Spell;
 import org.snowyegret.mojo.player.IPlayer;
-import org.snowyegret.mojo.select.SelectionManager;
 import org.snowyegret.mojo.undo.IUndoable;
-import org.snowyegret.mojo.undo.Transaction;
 import org.snowyegret.mojo.undo.UndoableSetBlock;
 
 import com.google.common.collect.Lists;
@@ -31,15 +29,13 @@ public abstract class AbstractSpellDraw extends Spell {
 	}
 
 	protected void draw(IDrawable drawable, IPlayer player, EnumFacing side) {
-		
+
 		Modifiers modifiers = player.getModifiers();
-		SelectionManager selectionManager = player.getSelectionManager();
-
-		selectionManager.clearSelections();
-		player.getPickManager().clearPicks();
-
 		boolean isHollow = modifiers.isPressed(Modifier.SHIFT);
 		boolean onSurface = modifiers.isPressed(Modifier.ALT);
+
+		player.clearSelections();
+		player.clearPicks();
 
 		VoxelSet voxels = drawable.voxelize();
 
@@ -47,7 +43,7 @@ public abstract class AbstractSpellDraw extends Spell {
 			voxels = voxels.shell();
 		}
 
-		List<IUndoable> setBlocks = Lists.newArrayList();
+		List<IUndoable> undoables = Lists.newArrayList();
 		IBlockState state = player.getHotbar().firstBlock();
 		for (Point3i p : voxels) {
 			BlockPos pos = new BlockPos(p.x, p.y, p.z);
@@ -55,10 +51,10 @@ public abstract class AbstractSpellDraw extends Spell {
 			if (onSurface) {
 				pos = pos.add(side.getDirectionVec());
 			}
-			setBlocks.add(new UndoableSetBlock(pos, player.getWorld().getState(pos), state));
+			undoables.add(new UndoableSetBlock(pos, player.getWorld().getState(pos), state));
 		}
-		
-		player.doTransaction(setBlocks);
+
+		player.getTransactionManager().doTransaction(undoables);
 	}
 
 }

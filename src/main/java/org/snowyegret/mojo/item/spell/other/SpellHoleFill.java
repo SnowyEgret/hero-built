@@ -14,9 +14,7 @@ import org.snowyegret.mojo.item.spell.Spell;
 import org.snowyegret.mojo.item.spell.select.Select;
 import org.snowyegret.mojo.player.IPlayer;
 import org.snowyegret.mojo.select.Selection;
-import org.snowyegret.mojo.select.SelectionManager;
 import org.snowyegret.mojo.undo.IUndoable;
-import org.snowyegret.mojo.undo.Transaction;
 import org.snowyegret.mojo.undo.UndoableSetBlock;
 
 import com.google.common.collect.Sets;
@@ -36,14 +34,12 @@ public class SpellHoleFill extends Spell {
 	@Override
 	public void invoke(IPlayer player) {
 		Modifiers modifiers = player.getModifiers();
-		SelectionManager selectionManager = player.getSelectionManager();
-
 		boolean isHorizontal = modifiers.isPressed(Modifier.CTRL);
 		boolean useBlockInHotbar = modifiers.isPressed(Modifier.SHIFT);
 
-		Iterable<Selection> selections = selectionManager.getSelections();
-		selectionManager.clearSelections();
-		player.getPickManager().clearPicks();
+		Iterable<Selection> selections = player.getSelections();
+		player.clearSelections();
+		player.clearPicks();
 		
 		Set<IUndoable> setBlocks = Sets.newHashSet();
 		for (Selection s : selections) {

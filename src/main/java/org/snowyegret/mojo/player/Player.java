@@ -15,7 +15,9 @@ import org.snowyegret.mojo.item.spell.ISpell;
 import org.snowyegret.mojo.item.spell.Modifiers;
 import org.snowyegret.mojo.item.spell.Spell;
 import org.snowyegret.mojo.item.staff.Staff;
+import org.snowyegret.mojo.pick.Pick;
 import org.snowyegret.mojo.pick.PickManager;
+import org.snowyegret.mojo.select.Selection;
 import org.snowyegret.mojo.select.SelectionManager;
 import org.snowyegret.mojo.undo.IUndoable;
 import org.snowyegret.mojo.undo.Transaction;
@@ -104,7 +106,7 @@ public class Player implements IPlayer {
 
 	@Override
 	public ItemStack getHeldItemStack() {
-		//return player.getCurrentEquippedItem();
+		// return player.getCurrentEquippedItem();
 		return player.getHeldItem();
 	}
 
@@ -227,9 +229,29 @@ public class Player implements IPlayer {
 	@Override
 	public void doTransaction(List<IUndoable> setBlocks) {
 		getTransactionManager().doTransaction(setBlocks);
-//		Transaction t = new Transaction();
-//		t.addAll(setBlocks);
-//		t.dO(this);
+		// Transaction t = new Transaction();
+		// t.addAll(setBlocks);
+		// t.dO(this);
+	}
+
+	@Override
+	public void clearSelections() {
+		getSelectionManager().clearSelections();
+	}
+
+	@Override
+	public void clearPicks() {
+		getPickManager().clearPicks();
+	}
+
+	@Override
+	public Iterable<Selection> getSelections() {
+		return getSelectionManager().getSelections();
+	}
+
+	@Override
+	public Pick[] getPicks() {
+		return getPickManager().getPicks();
 	}
 
 }

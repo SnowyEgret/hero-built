@@ -14,7 +14,7 @@ public class SpellSeaShell extends AbstractSpellDraw {
 
 	@Override
 	public void invoke(IPlayer player) {
-		Pick[] picks = player.getPickManager().getPicks();
+		Pick[] picks = player.getPicks();
 		IDrawable d = new SeaShell(picks[0].point3d());
 		draw(d, player, null);
 	}

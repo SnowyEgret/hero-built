@@ -12,7 +12,6 @@ public class SpellFill extends AbstractSpellTransform {
 	@Override
 	public void invoke(final IPlayer player) {
 		final IBlockState firstBlock = player.getHotbar().firstBlock();
-		System.out.println("firstBlock=" + firstBlock);
 		transformSelections(player, new ITransform() {
 			@Override
 			public Iterable<Selection> transform(Selection s) {

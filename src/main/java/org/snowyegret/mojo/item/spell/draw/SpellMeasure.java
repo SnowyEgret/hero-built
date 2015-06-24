@@ -19,7 +19,7 @@ public class SpellMeasure extends AbstractSpellDraw {
 	@Override
 	public void invoke(IPlayer player) {
 		Modifiers modifiers = player.getModifiers();
-		Pick[] picks = player.getPickManager().getPicks();
+		Pick[] picks = player.getPicks();
 		Point3d p0 = picks[0].point3d();
 		Point3d p1 = picks[1].point3d();
 		message = String.format("Distance: %.1f", p0.distance(p1));

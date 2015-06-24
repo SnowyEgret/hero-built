@@ -11,8 +11,10 @@ import net.minecraft.util.Vec3;
 import org.snowyegret.mojo.item.spell.ISpell;
 import org.snowyegret.mojo.item.spell.Modifiers;
 import org.snowyegret.mojo.item.staff.Staff;
+import org.snowyegret.mojo.pick.Pick;
 import org.snowyegret.mojo.pick.PickManager;
 import org.snowyegret.mojo.player.Player.Direction;
+import org.snowyegret.mojo.select.Selection;
 import org.snowyegret.mojo.select.SelectionManager;
 import org.snowyegret.mojo.undo.IUndoable;
 import org.snowyegret.mojo.undo.TransactionManager;
@@ -63,6 +65,14 @@ public interface IPlayer {
 	public abstract List<BlockPos> getBounds();
 
 	public abstract void doTransaction(List<IUndoable> setBlocks);
+
+	public abstract void clearSelections();
+
+	public abstract void clearPicks();
+
+	public abstract Iterable<Selection> getSelections();
+
+	public abstract Pick[] getPicks();
 
 	// Thought I saw something like this somewhere in an interface
 	// public static IPlayer getPlayer(EntityPlayer player) {

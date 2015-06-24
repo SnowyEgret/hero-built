@@ -22,28 +22,24 @@ public abstract class AbstractSpellTransform extends Spell {
 	}
 
 	protected void transformSelections(IPlayer player, ITransform<Selection> transformer) {
-		SelectionManager selectionManager = player.getSelectionManager();
-		Iterable<Selection> selections = selectionManager.getSelections();
-		selectionManager.clearSelections(); 
-		player.getPickManager().clearPicks();
+		Iterable<Selection> selections = player.getSelections();
+		player.clearSelections(); 
+		player.clearPicks();
 		
-		List<IUndoable> setBlocks = Lists.newArrayList();
+		List<IUndoable> undoables = Lists.newArrayList();
 		for (Selection s : selections) {
 			for (Selection ss : transformer.transform(s)) {
 				BlockPos pos = ss.getPos();
 				IBlockState state = ss.getState();
-				setBlocks.add(new UndoableSetBlock(pos, player.getWorld().getState(pos), state));
+				undoables.add(new UndoableSetBlock(pos, player.getWorld().getState(pos), state));
 			}
 		}
 
-		Transaction t = new Transaction();
-		t.addAll(setBlocks);
-		t.dO(player);
+		player.getTransactionManager().doTransaction(undoables);
 	}
 
 	@Override
 	public Object[] getRecipe() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }

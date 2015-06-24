@@ -18,7 +18,7 @@ public class SpellRectangle extends AbstractSpellDraw {
 	@Override
 	public void invoke(IPlayer player) {
 		Modifiers modifiers = player.getModifiers();
-		Pick[] picks = player.getPickManager().getPicks();
+		Pick[] picks = player.getPicks();
 		boolean isSquare = modifiers.isPressed(Modifier.CTRL);
 		IDrawable d = new Rectangle(picks[0].point3d(), picks[1].point3d(), isSquare);
 		draw(d, player, null);

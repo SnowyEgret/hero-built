@@ -20,16 +20,8 @@ public class SpellCopy extends AbstractSpellMatrix {
 
 	@Override
 	public void invoke(IPlayer player) {
-		Pick[] picks = player.getPickManager().getPicks();
+		Pick[] picks = player.getPicks();
 		invoke(player, picks[0].getPos(), picks[1].getPos());
-		// Point3d from = picks[0].point3d();
-		// Point3d to = picks[1].point3d();
-		// Vector3d v = new Vector3d();
-		// v.sub(to, from);
-		// Matrix4d matrix = new TranslationMatrix(v);
-		// boolean deleteOriginal = modifiers.isPressed(Modifier.SHIFT);
-		// transformSelections(player, matrix, deleteOriginal);
-		// pickManager.repick(player);
 	}
 
 	public void invoke(IPlayer player, BlockPos from, BlockPos to) {

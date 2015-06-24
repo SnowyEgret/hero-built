@@ -9,12 +9,9 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
 
-import org.snowyegret.mojo.item.spell.Modifiers;
 import org.snowyegret.mojo.item.spell.Spell;
 import org.snowyegret.mojo.player.IPlayer;
-import org.snowyegret.mojo.select.SelectionManager;
 import org.snowyegret.mojo.undo.IUndoable;
-import org.snowyegret.mojo.undo.Transaction;
 import org.snowyegret.mojo.undo.UndoableSetBlock;
 
 import com.google.common.collect.Lists;
@@ -33,21 +30,18 @@ public class SpellMengerSponge extends Spell {
 
 	@Override
 	public void invoke(IPlayer player) {
-		Modifiers modifiers = player.getModifiers();
-		SelectionManager selectionManager = player.getSelectionManager();
-
 		// TODO use enclosing cube
-		delete(selectionManager.voxelSet());
-		selectionManager.clearSelections();
-		player.getPickManager().clearPicks();
-		IBlockState air = Blocks.air.getDefaultState();
+		delete(player.getSelectionManager().voxelSet());
 
+		player.clearSelections();
+		player.clearPicks();
+
+		IBlockState air = Blocks.air.getDefaultState();
 		List<IUndoable> undoables = Lists.newArrayList();
 		for (BlockPos pos : deletes) {
 			undoables.add(new UndoableSetBlock(pos, player.getWorld().getState(pos), air));
 		}
 		player.getTransactionManager().doTransaction(undoables);
-
 	}
 
 	private void delete(VoxelSet voxels) {

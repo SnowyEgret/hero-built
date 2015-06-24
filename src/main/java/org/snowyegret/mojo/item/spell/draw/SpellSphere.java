@@ -20,7 +20,7 @@ public class SpellSphere extends AbstractSpellDraw {
 	@Override
 	public void invoke(IPlayer player) {
 		Modifiers modifiers = player.getModifiers();
-		Pick[] picks = player.getPickManager().getPicks();
+		Pick[] picks = player.getPicks();
 		boolean isHemisphere = modifiers.isPressed(Modifier.SHIFT);
 		IDrawable d = new Sphere(picks[0].point3d(), picks[1].point3d(), isHemisphere);
 		draw(d, player, null);

@@ -24,13 +24,10 @@ public class SpellMirror extends AbstractSpellMatrix {
 	@Override
 	public void invoke(IPlayer player) {
 		Modifiers modifiers = player.getModifiers();
-
 		boolean deleteOriginal = modifiers.isPressed(Modifier.CTRL);
 		boolean mirrorAboutCentroid = modifiers.isPressed(Modifier.SHIFT);
-		// boolean mirrorAboutCentroid = Modifiers.isPressed(Modifier.ALT);
-		// Vec3 c = selectionManager.getCentroid();
 
-		Pick[] picks = player.getPickManager().getPicks();
+		Pick[] picks = player.getPicks();
 		EnumFacing side = picks[0].getSide();
 		Vec3i d = side.getDirectionVec();
 		Point3d p = picks[0].point3d();
