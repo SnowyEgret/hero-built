@@ -1,29 +1,23 @@
 package org.snowyegret.mojo.item.spell.draw;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import javax.vecmath.Point3i;
 
-import org.snowyegret.mojo.geom.Plane;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+
 import org.snowyegret.mojo.item.spell.Modifier;
 import org.snowyegret.mojo.item.spell.Modifiers;
 import org.snowyegret.mojo.item.spell.Spell;
-import org.snowyegret.mojo.pick.IPick;
 import org.snowyegret.mojo.player.IPlayer;
-import org.snowyegret.mojo.player.Jumper;
 import org.snowyegret.mojo.select.ISelect;
-import org.snowyegret.mojo.undo.IUndo;
 import org.snowyegret.mojo.undo.IUndoable;
 import org.snowyegret.mojo.undo.Transaction;
 import org.snowyegret.mojo.undo.UndoableSetBlock;
 
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.BlockPos;
-
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 
 import ds.geom.IDrawable;
 import ds.geom.VoxelSet;
@@ -36,7 +30,7 @@ public abstract class AbstractSpellDraw extends Spell {
 		info.addModifiers(Modifier.SHIFT, Modifier.ALT);
 	}
 
-	protected void draw(IDrawable drawable, IPlayer player, Plane plane) {
+	protected void draw(IDrawable drawable, IPlayer player, EnumFacing side) {
 		
 		Modifiers modifiers = player.getModifiers();
 		ISelect selectionManager = player.getSelectionManager();
@@ -59,8 +53,7 @@ public abstract class AbstractSpellDraw extends Spell {
 			BlockPos pos = new BlockPos(p.x, p.y, p.z);
 			// TODO conditional on plane and side of plane the player is positioned at.
 			if (onSurface) {
-				//pos = pos.up();
-				pos = pos.add(plane.normal());
+				pos = pos.add(side.getDirectionVec());
 			}
 			setBlocks.add(new UndoableSetBlock(pos, player.getWorld().getState(pos), state));
 		}

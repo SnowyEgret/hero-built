@@ -8,24 +8,40 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 
+import org.snowyegret.mojo.geom.EnumPlane;
+
 public class Pick {
 
 	BlockPos pos;
 	private Block block;
 	public EnumFacing side;
 	private IBlockState state;
-
-	@Deprecated
-	public Pick(BlockPos pos, Block block, EnumFacing side) {
-		this.pos=pos;
-		this.block = block;
-		this.side = side;
-	}
+	private EnumPlane plane;
 
 	public Pick(BlockPos pos, IBlockState state, EnumFacing side) {
 		this.pos=pos;
 		this.state = state;
 		this.side = side;
+		switch (side) {
+		case UP:
+			plane = EnumPlane.XZ;
+			break;
+		case DOWN:
+			plane = EnumPlane.XZ;
+			break;
+		case EAST:
+			plane = EnumPlane.YZ;
+			break;
+		case WEST:
+			plane = EnumPlane.YZ;
+			break;
+		case NORTH:
+			plane = EnumPlane.XY;
+			break;
+		case SOUTH:
+			plane = EnumPlane.XY;
+			break;
+		}
 	}
 
 	@Deprecated
@@ -108,5 +124,9 @@ public class Pick {
 		} else if (!state.equals(other.state))
 			return false;
 		return true;
+	}
+
+	public EnumPlane getPlane() {
+		return plane;
 	}
 }

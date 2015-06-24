@@ -12,39 +12,37 @@ import org.snowyegret.mojo.player.IPlayer;
 
 import com.google.common.collect.Lists;
 
+// Replaced by simply getting side of the pick.
+// Might be useful.
+@Deprecated
 public class Plane {
 
 	private int distanceFromOrigin;
 	private EnumFacing direction;
 	private EnumPlane plane;
 
-	public enum EnumPlane {
-		XZ,
-		XY,
-		YZ;
-	}
-
+	// This class is not necessary.
 	public Plane(int distanceFromOrigin, EnumFacing direction) {
 		this.distanceFromOrigin = distanceFromOrigin;
 		this.direction = direction;
 		switch (direction) {
 		case UP:
-			this.plane = EnumPlane.XZ;
+			plane = EnumPlane.XZ;
 			break;
 		case DOWN:
-			this.plane = EnumPlane.XZ;
+			plane = EnumPlane.XZ;
 			break;
 		case EAST:
-			this.plane = EnumPlane.YZ;
+			plane = EnumPlane.YZ;
 			break;
 		case WEST:
-			this.plane = EnumPlane.YZ;
+			plane = EnumPlane.YZ;
 			break;
 		case NORTH:
-			this.plane = EnumPlane.XY;
+			plane = EnumPlane.XY;
 			break;
 		case SOUTH:
-			this.plane = EnumPlane.XY;
+			plane = EnumPlane.XY;
 			break;
 		}
 	}
@@ -69,7 +67,7 @@ public class Plane {
 	public EnumFacing getDirection() {
 		return direction;
 	}
-	
+
 	public EnumPlane getPlane() {
 		return plane;
 	}
