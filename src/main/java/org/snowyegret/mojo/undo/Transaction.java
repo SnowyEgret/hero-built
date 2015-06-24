@@ -62,7 +62,7 @@ public class Transaction implements IUndoable, Iterable {
 	@Override
 	public IUndoable dO(IPlayer player) {
 		World world = player.getWorld().getWorld();
-		player.getUndoManager().addTransaction(this);
+		player.getTransactionManager().addTransaction(this);
 		List<BlockPos> reselects = Lists.newArrayList();
 
 		// Parameterize transaction contructor for UndoableSetBlock #161

@@ -70,10 +70,10 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 			try {
 				if (modifiers.isPressed(Modifier.CTRL)) {
 					if (modifiers.isPressed(Modifier.SHIFT)) {
-						player.getUndoManager().redo(player);
+						player.getTransactionManager().redo(player);
 					} else {
 						selectionManager.clearSelections(player);
-						player.getUndoManager().undo(player);
+						player.getTransactionManager().undo(player);
 					}
 				}
 				// if (lastSpell != null && lastSpell.getSpell() instanceof SpellCopy) {

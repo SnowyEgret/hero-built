@@ -14,7 +14,7 @@ import org.snowyegret.mojo.item.staff.Staff;
 import org.snowyegret.mojo.pick.PickManager;
 import org.snowyegret.mojo.player.Player.Direction;
 import org.snowyegret.mojo.select.SelectionManager;
-import org.snowyegret.mojo.undo.UndoManager;
+import org.snowyegret.mojo.undo.TransactionManager;
 import org.snowyegret.mojo.world.IWorld;
 
 public interface IPlayer {
@@ -47,7 +47,7 @@ public interface IPlayer {
 
 	public abstract Modifiers getModifiers();
 
-	public abstract UndoManager getUndoManager();
+	public abstract TransactionManager getTransactionManager();
 
 	public abstract SelectionManager getSelectionManager();
 

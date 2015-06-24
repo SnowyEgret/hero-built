@@ -5,7 +5,7 @@ import org.snowyegret.mojo.item.spell.ISpell;
 import org.snowyegret.mojo.item.spell.Modifiers;
 import org.snowyegret.mojo.pick.PickManager;
 import org.snowyegret.mojo.select.SelectionManager;
-import org.snowyegret.mojo.undo.UndoManager;
+import org.snowyegret.mojo.undo.TransactionManager;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
@@ -19,7 +19,7 @@ public class PlayerProperties implements IExtendedEntityProperties {
 	private Modifiers modifiers;
 	private SelectionManager selectionManager;
 	private PickManager pickManager;
-	private UndoManager undoManager;
+	private TransactionManager transactionManager;
 	private Clipboard clipboard;
 	private ISpell lastSpell;
 
@@ -27,8 +27,8 @@ public class PlayerProperties implements IExtendedEntityProperties {
 		return modifiers;
 	}
 
-	public UndoManager getUndoManager() {
-		return undoManager;
+	public TransactionManager getUndoManager() {
+		return transactionManager;
 	}
 
 	public SelectionManager getSelectionManager() {
@@ -52,7 +52,7 @@ public class PlayerProperties implements IExtendedEntityProperties {
 		modifiers = new Modifiers();
 		selectionManager = new SelectionManager(MoJo.blockSelected);
 		pickManager = new PickManager(MoJo.blockPicked);
-		undoManager = new UndoManager();
+		transactionManager = new TransactionManager();
 		clipboard = new Clipboard();
 	}
 

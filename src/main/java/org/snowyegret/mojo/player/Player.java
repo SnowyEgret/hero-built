@@ -17,7 +17,7 @@ import org.snowyegret.mojo.item.spell.Spell;
 import org.snowyegret.mojo.item.staff.Staff;
 import org.snowyegret.mojo.pick.PickManager;
 import org.snowyegret.mojo.select.SelectionManager;
-import org.snowyegret.mojo.undo.UndoManager;
+import org.snowyegret.mojo.undo.TransactionManager;
 import org.snowyegret.mojo.world.IWorld;
 import org.snowyegret.mojo.world.WorldWrapper;
 
@@ -180,7 +180,7 @@ public class Player implements IPlayer {
 	}
 
 	@Override
-	public UndoManager getUndoManager() {
+	public TransactionManager getTransactionManager() {
 		IExtendedEntityProperties p = player.getExtendedProperties(PlayerProperties.NAME);
 		return ((PlayerProperties) p).getUndoManager();
 	}
