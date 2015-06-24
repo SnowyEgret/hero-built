@@ -72,12 +72,12 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 					if (modifiers.isPressed(Modifier.SHIFT)) {
 						player.getTransactionManager().redo(player);
 					} else {
-						selectionManager.clearSelections(player);
-						player.getTransactionManager().undo(player);
+						selectionManager.clearSelections();
+						player.getTransactionManager().undo(null);
 					}
 				}
 				// if (lastSpell != null && lastSpell.getSpell() instanceof SpellCopy) {
-				selectionManager.reselect(player);
+				selectionManager.reselect();
 				// }
 			} catch (NoSuchElementException e) {
 				// TODO Log to overlay. Create info line in overlay
@@ -106,7 +106,7 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 			break;
 
 		case RESELECT:
-			selectionManager.reselect(player);
+			selectionManager.reselect();
 			break;
 
 		case LEFT:
@@ -140,7 +140,7 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 				BlockPos cursor = message.getCursorPos();
 				player.getClipboard().setSelections(selectionManager.getSelections());
 				player.getClipboard().setOrigin(cursor);
-				selectionManager.clearSelections(player);
+				selectionManager.clearSelections();
 			}
 			break;
 		case CUT:

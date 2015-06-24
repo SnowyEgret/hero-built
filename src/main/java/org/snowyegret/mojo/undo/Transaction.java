@@ -125,7 +125,7 @@ public class Transaction implements IUndoable, Iterable {
 			// TODO do not reselect after spellDelete or pressing delete key
 			// Can not test for SpellDelete on delete key press because player does not have DeleteSpell in hand
 			if (!(s instanceof SpellDelete)) {
-				player.getSelectionManager().select(player, reselects);
+				player.getSelectionManager().select(reselects);
 			}
 		} else {
 			player.getSelectionManager().setReselects(reselects);

@@ -18,7 +18,7 @@ public class SpellInvoker {
 			System.out.println("Spell is null");
 			return;
 		}
-		player.getPickManager().repick(player);
+		player.getPickManager().repick();
 		//TODO How to pass modifiers?
 		spell.invoke(player);		
 	}

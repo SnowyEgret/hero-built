@@ -51,9 +51,9 @@ public class MouseClickMessageHandler implements IMessageHandler<MouseClickMessa
 			break;
 		case MISS:
 			if (button == 0) {
-				selectionManager.clearSelections(player);
+				selectionManager.clearSelections();
 			} else if (button == 1) {
-				player.getPickManager().clearPicks(player);
+				player.getPickManager().clearPicks();
 			}
 			break;
 		default:
@@ -72,7 +72,7 @@ public class MouseClickMessageHandler implements IMessageHandler<MouseClickMessa
 		if (modifiers.isPressed(Modifier.SHIFT) && selectionManager.size() != 0) {
 			BlockPos lastPos = selectionManager.lastSelection().getPos();
 			IBlockState firstState = selectionManager.firstSelection().getState();
-			selectionManager.clearSelections(player);
+			selectionManager.clearSelections();
 
 			Iterable<BlockPos> allInBox = BlockPos.getAllInBox(lastPos, pos);
 			ArrayList<BlockPos> positions = Lists.newArrayList();
@@ -86,14 +86,14 @@ public class MouseClickMessageHandler implements IMessageHandler<MouseClickMessa
 					positions.add(p);
 				}
 			}
-			selectionManager.select(player, positions);
+			selectionManager.select(positions);
 			return;
 		}
 
 		// Control adds or subtracts a selection to the current selections
 		if (modifiers.isPressed(Modifier.CTRL)) {
 			if (selectionManager.isSelected(pos)) {
-				selectionManager.deselect(player, pos);
+				selectionManager.deselect(pos);
 			} else {
 				selectionManager.select(player, pos);
 			}
@@ -101,7 +101,7 @@ public class MouseClickMessageHandler implements IMessageHandler<MouseClickMessa
 		}
 
 		// No modifier replaces the current selections with a new selection
-		selectionManager.clearSelections(player);
+		selectionManager.clearSelections();
 		selectionManager.select(player, pos);
 	}
 

@@ -22,23 +22,25 @@ public class PickManager {
 	private LinkedList<Pick> lastPicks = new LinkedList<>();
 	private int maxPicks = 0;
 	private Block blockPicked;
+	private IPlayer player;
 
-	public PickManager(Block blockPicked) {
+	public PickManager(IPlayer player, Block blockPicked) {
+		this.player = player;
 		this.blockPicked = blockPicked;
 	}
 
-	public Pick pick(IPlayer player, BlockPos pos, EnumFacing side) {
+	public Pick pick(BlockPos pos, EnumFacing side) {
 		Pick pick = pick(player.getWorld(), pos, side);
 		MoJo.network.sendTo(new PickMessage(this), (EntityPlayerMP) player.getPlayer());
 		return pick;
 	}
 
-	public void clearPicks(IPlayer player) {
+	public void clearPicks() {
 		clearPicks(player.getWorld());
 		MoJo.network.sendTo(new PickMessage(this), (EntityPlayerMP) player.getPlayer());
 	}
 
-	public void repick(IPlayer player) {
+	public void repick() {
 		repick(player.getWorld());
 		MoJo.network.sendTo(new PickMessage(this), (EntityPlayerMP) player.getPlayer());
 	}

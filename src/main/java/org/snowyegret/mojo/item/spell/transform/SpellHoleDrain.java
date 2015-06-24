@@ -30,7 +30,7 @@ public class SpellHoleDrain extends AbstractSpellTransform {
 				Set<BlockPos> positions = Collections.newSetFromMap(new ConcurrentHashMap<BlockPos, Boolean>());
 				int positionsSize = 0;
 				BlockPos pos = player.getPickManager().firstPick().getPos();
-				player.getPickManager().clearPicks(player);
+				player.getPickManager().clearPicks();
 				IWorld world = player.getWorld();
 
 				while (true) {

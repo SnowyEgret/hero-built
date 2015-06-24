@@ -42,8 +42,8 @@ public class SpellHoleFill extends Spell {
 		boolean useBlockInHotbar = modifiers.isPressed(Modifier.SHIFT);
 
 		Iterable<Selection> selections = selectionManager.getSelections();
-		selectionManager.clearSelections(player);
-		player.getPickManager().clearPicks(player);
+		selectionManager.clearSelections();
+		player.getPickManager().clearPicks();
 		
 		Set<IUndoable> setBlocks = Sets.newHashSet();
 		for (Selection s : selections) {

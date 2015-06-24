@@ -25,8 +25,8 @@ public class SpellTrail extends Spell {
 		// boolean fill = modifiers.isPressed(Modifier.SHIFT);
 		// boolean deleteOriginal = modifiers.isPressed(Modifier.CTRL);
 		Iterable<Selection> selections = selectionManager.getSelections();
-		selectionManager.clearSelections(player);
-		player.getPickManager().clearPicks(player);
+		selectionManager.clearSelections();
+		player.getPickManager().clearPicks();
 		IBlockState firstBlock = player.getHotbar().firstBlock();
 
 		Transaction t = new Transaction();

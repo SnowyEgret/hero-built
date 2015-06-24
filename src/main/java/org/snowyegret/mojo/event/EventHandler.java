@@ -211,7 +211,7 @@ public class EventHandler {
 	@SubscribeEvent
 	public void onEntityConstructing(EntityConstructing event) {
 		if (event.entity instanceof EntityPlayer) {
-			event.entity.registerExtendedProperties(PlayerProperties.NAME, new PlayerProperties());
+			event.entity.registerExtendedProperties(PlayerProperties.NAME, new PlayerProperties((EntityPlayer) event.entity));
 		}
 	}
 }

@@ -14,6 +14,7 @@ import org.snowyegret.mojo.item.staff.Staff;
 import org.snowyegret.mojo.pick.PickManager;
 import org.snowyegret.mojo.player.Player.Direction;
 import org.snowyegret.mojo.select.SelectionManager;
+import org.snowyegret.mojo.undo.IUndoable;
 import org.snowyegret.mojo.undo.TransactionManager;
 import org.snowyegret.mojo.world.IWorld;
 
@@ -60,6 +61,8 @@ public interface IPlayer {
 	public abstract Clipboard getClipboard();
 
 	public abstract List<BlockPos> getBounds();
+
+	public abstract void doTransaction(List<IUndoable> setBlocks);
 
 	// Thought I saw something like this somewhere in an interface
 	// public static IPlayer getPlayer(EntityPlayer player) {

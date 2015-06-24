@@ -25,8 +25,8 @@ public class SpellLine extends AbstractSpellDraw {
 		draw(d, player, null);
 		if (modifiers.isPressed(Modifier.CTRL)) {
 			pickManager.reset(2);
-			pickManager.clearPicks(player);
-			pickManager.pick(player, picks[1].getPos(), null);
+			pickManager.clearPicks();
+			pickManager.pick(picks[1].getPos(), null);
 		}
 	}
 

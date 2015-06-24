@@ -1,5 +1,6 @@
 package org.snowyegret.mojo.undo;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import net.minecraft.nbt.NBTTagCompound;
@@ -10,18 +11,20 @@ public class TransactionManager implements IUndoable {
 
 	private Node currentNode;
 	private int maxLength = 0;
+	private IPlayer player;
 	final static int DEFAULT_MAX_LENGTH = 30;
 
-	public TransactionManager(int maxLength) {
+	public TransactionManager(IPlayer player, int maxLength) {
+		this.player = player;
 		currentNode = new Node();
 		this.maxLength = maxLength;
 	}
 
-	public TransactionManager() {
-		this(DEFAULT_MAX_LENGTH);
+	public TransactionManager(IPlayer player) {
+		this(player, DEFAULT_MAX_LENGTH);
 	}
 
-	// Interface IUndo -------------------------------------
+	//public void doTransaction()
 
 	public void addTransaction(Transaction transaction) {
 		Node node = new Node(transaction);
@@ -67,7 +70,7 @@ public class TransactionManager implements IUndoable {
 		if (currentNode.left == null) {
 			throw new NoSuchElementException("Nothing left to undo.");
 		}
-		currentNode.transaction.undo(player);
+		currentNode.transaction.undo(null);
 		currentNode = currentNode.left;
 	}
 
@@ -122,4 +125,11 @@ public class TransactionManager implements IUndoable {
 			transaction.deleteCache();
 		}
 	}
+
+	public void doTransaction(List<IUndoable> setBlocks) {
+		Transaction t = new Transaction();
+		t.addAll(setBlocks);
+		t.dO(player);
+	}
+
 }

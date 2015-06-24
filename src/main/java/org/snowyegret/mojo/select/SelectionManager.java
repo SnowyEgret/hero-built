@@ -36,12 +36,14 @@ public class SelectionManager {
 	private Block blockSelected;
 	private List<BlockPos> reselects;
 	private Set<BlockPos> grownSelections = Sets.newHashSet();
+	private IPlayer player;
 
-	public SelectionManager(Block blockSelected) {
+	public SelectionManager(IPlayer player, Block blockSelected) {
+		this.player = player;
 		this.blockSelected = blockSelected;
 	}
 
-	public void select(IPlayer player, Iterable<BlockPos> pos) {
+	public void select(Iterable<BlockPos> pos) {
 		for (BlockPos p : pos) {
 			select(player.getWorld(), p);
 		}
@@ -55,24 +57,24 @@ public class SelectionManager {
 		MoJo.network.sendTo(new SelectionMessage(this), (EntityPlayerMP) player.getPlayer());
 	}
 
-	public void deselect(IPlayer player, BlockPos pos) {
+	public void deselect(BlockPos pos) {
 		deselect(player.getWorld(), pos);
 		MoJo.network.sendTo(new SelectionMessage(this), (EntityPlayerMP) player.getPlayer());
 	}
 
-	public void deselect(IPlayer player, Iterable<BlockPos> positions) {
+	public void deselect(Iterable<BlockPos> positions) {
 		for (BlockPos pos : positions) {
 			deselect(player.getWorld(), pos);
 		}
 		MoJo.network.sendTo(new SelectionMessage(this), (EntityPlayerMP) player.getPlayer());
 	}
 
-	public void reselect(IPlayer player) {
+	public void reselect() {
 		reselect(player.getWorld());
 		MoJo.network.sendTo(new SelectionMessage(this), (EntityPlayerMP) player.getPlayer());
 	}
 
-	public void clearSelections(IPlayer player) {
+	public void clearSelections() {
 		clearSelections(player.getWorld());
 		MoJo.network.sendTo(new SelectionMessage(this), (EntityPlayerMP) player.getPlayer());
 	}

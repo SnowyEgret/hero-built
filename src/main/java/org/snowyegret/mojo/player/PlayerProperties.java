@@ -8,6 +8,7 @@ import org.snowyegret.mojo.select.SelectionManager;
 import org.snowyegret.mojo.undo.TransactionManager;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IExtendedEntityProperties;
@@ -22,6 +23,13 @@ public class PlayerProperties implements IExtendedEntityProperties {
 	private TransactionManager transactionManager;
 	private Clipboard clipboard;
 	private ISpell lastSpell;
+
+	private IPlayer player;
+
+	public PlayerProperties(EntityPlayer entity) {
+		player = Player.instance(entity);
+
+	}
 
 	public Modifiers getModifiers() {
 		return modifiers;
@@ -50,9 +58,9 @@ public class PlayerProperties implements IExtendedEntityProperties {
 	@Override
 	public void init(Entity entity, World world) {
 		modifiers = new Modifiers();
-		selectionManager = new SelectionManager(MoJo.blockSelected);
-		pickManager = new PickManager(MoJo.blockPicked);
-		transactionManager = new TransactionManager();
+		selectionManager = new SelectionManager(player, MoJo.blockSelected);
+		pickManager = new PickManager(player, MoJo.blockPicked);
+		transactionManager = new TransactionManager(player);
 		clipboard = new Clipboard();
 	}
 

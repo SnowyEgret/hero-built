@@ -46,8 +46,8 @@ public class SpellThicken extends Spell {
 			thicken(positions, modifiers, selectionManager, player.getWorld());
 		}
 
-		selectionManager.clearSelections(player);
-		player.getPickManager().clearPicks(player);
+		selectionManager.clearSelections();
+		player.getPickManager().clearPicks();
 
 		Transaction t = new Transaction();
 		for (BlockPos p : positions) {

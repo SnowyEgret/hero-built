@@ -48,7 +48,7 @@ public abstract class Spell extends ItemBase implements ISpell {
 		}
 		IPlayer player = Player.instance(playerIn);
 		PickManager pickManager = player.getPickManager();
-		pickManager.pick(player, pos, side);
+		pickManager.pick(pos, side);
 		MoJo.network.sendTo(new PickMessage(pickManager), (EntityPlayerMP) playerIn);
 		if (pickManager.isFinishedPicking()) {
 			invoke(Player.instance(playerIn));
@@ -85,7 +85,7 @@ public abstract class Spell extends ItemBase implements ISpell {
 	@Override
 	public void reset(IPlayer player) {
 		PickManager pickManager = player.getPickManager();
-		pickManager.clearPicks(player);
+		pickManager.clearPicks();
 		pickManager.reset(numPicks);
 		message = null;
 	}

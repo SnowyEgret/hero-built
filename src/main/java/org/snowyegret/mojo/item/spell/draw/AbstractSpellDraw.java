@@ -35,8 +35,8 @@ public abstract class AbstractSpellDraw extends Spell {
 		Modifiers modifiers = player.getModifiers();
 		SelectionManager selectionManager = player.getSelectionManager();
 
-		selectionManager.clearSelections(player);
-		player.getPickManager().clearPicks(player);
+		selectionManager.clearSelections();
+		player.getPickManager().clearPicks();
 
 		boolean isHollow = modifiers.isPressed(Modifier.SHIFT);
 		boolean onSurface = modifiers.isPressed(Modifier.ALT);
@@ -57,10 +57,12 @@ public abstract class AbstractSpellDraw extends Spell {
 			}
 			setBlocks.add(new UndoableSetBlock(pos, player.getWorld().getState(pos), state));
 		}
+		
+		player.doTransaction(setBlocks);
 
-		Transaction t = new Transaction();
-		t.addAll(setBlocks);
-		t.dO(player);
+//		Transaction t = new Transaction();
+//		t.addAll(setBlocks);
+//		t.dO(player);
 	}
 
 }

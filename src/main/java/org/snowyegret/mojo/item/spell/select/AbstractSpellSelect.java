@@ -65,7 +65,7 @@ public abstract class AbstractSpellSelect extends Spell {
 		// Select the pick if there are no selections.
 		// Either way the pickManager must be cleared.
 		Pick firstPick = pickManager.firstPick();
-		pickManager.clearPicks(player);
+		pickManager.clearPicks();
 		if (selectionManager.size() == 0) {
 			selectionManager.select(player, firstPick.getPos());
 		}
@@ -120,7 +120,7 @@ public abstract class AbstractSpellSelect extends Spell {
 
 			}
 		}
-		selectionManager.select(player, grownSelections);
+		selectionManager.select(grownSelections);
 		selectionManager.setGrownSelections(grownSelections);
 	}
 
@@ -136,7 +136,7 @@ public abstract class AbstractSpellSelect extends Spell {
 				}
 			}
 		}
-		selectionManager.deselect(player, shrunkSelections);
+		selectionManager.deselect(shrunkSelections);
 		selectionManager.clearGrownSelections();
 	}
 

@@ -24,8 +24,8 @@ public abstract class AbstractSpellTransform extends Spell {
 	protected void transformSelections(IPlayer player, ITransform<Selection> transformer) {
 		SelectionManager selectionManager = player.getSelectionManager();
 		Iterable<Selection> selections = selectionManager.getSelections();
-		selectionManager.clearSelections(player); 
-		player.getPickManager().clearPicks(player);
+		selectionManager.clearSelections(); 
+		player.getPickManager().clearPicks();
 		
 		List<IUndoable> setBlocks = Lists.newArrayList();
 		for (Selection s : selections) {

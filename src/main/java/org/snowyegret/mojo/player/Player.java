@@ -17,6 +17,8 @@ import org.snowyegret.mojo.item.spell.Spell;
 import org.snowyegret.mojo.item.staff.Staff;
 import org.snowyegret.mojo.pick.PickManager;
 import org.snowyegret.mojo.select.SelectionManager;
+import org.snowyegret.mojo.undo.IUndoable;
+import org.snowyegret.mojo.undo.Transaction;
 import org.snowyegret.mojo.undo.TransactionManager;
 import org.snowyegret.mojo.world.IWorld;
 import org.snowyegret.mojo.world.WorldWrapper;
@@ -220,6 +222,14 @@ public class Player implements IPlayer {
 		bounds.add(player.getPosition());
 		bounds.add(player.getPosition().up());
 		return bounds;
+	}
+
+	@Override
+	public void doTransaction(List<IUndoable> setBlocks) {
+		getTransactionManager().doTransaction(setBlocks);
+//		Transaction t = new Transaction();
+//		t.addAll(setBlocks);
+//		t.dO(this);
 	}
 
 }

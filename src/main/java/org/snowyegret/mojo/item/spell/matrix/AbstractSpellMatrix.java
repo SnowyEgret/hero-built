@@ -35,8 +35,8 @@ public abstract class AbstractSpellMatrix extends Spell {
 		List<IUndoable> setBlocks = Lists.newArrayList();
 
 		Iterable<Selection> selections = selectionManager.getSelections();
-		selectionManager.clearSelections(player);
-		player.getPickManager().clearPicks(player);
+		selectionManager.clearSelections();
+		player.getPickManager().clearPicks();
 		
 		IBlockState air = Blocks.air.getDefaultState();
 		for (Selection s : selections) {

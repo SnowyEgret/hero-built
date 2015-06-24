@@ -37,8 +37,8 @@ public class SpellMengerSponge extends Spell {
 
 		// TODO use enclosing cube
 		delete(selectionManager.voxelSet());
-		selectionManager.clearSelections(player);
-		player.getPickManager().clearPicks(player);
+		selectionManager.clearSelections();
+		player.getPickManager().clearPicks();
 		IBlockState air = Blocks.air.getDefaultState();
 
 		Transaction t = new Transaction();
