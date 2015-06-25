@@ -3,6 +3,8 @@ package org.snowyegret.mojo.event;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.GuiIngameMenu;
+import net.minecraft.client.resources.model.IBakedModel;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -30,10 +32,12 @@ import org.snowyegret.mojo.block.BlockPickedModel;
 import org.snowyegret.mojo.block.BlockSelected;
 import org.snowyegret.mojo.block.BlockSelectedModel;
 import org.snowyegret.mojo.gui.Overlay;
+import org.snowyegret.mojo.item.ModelResourceLocations;
 import org.snowyegret.mojo.item.spell.ISpell;
 import org.snowyegret.mojo.item.spell.other.SpellTrail;
 import org.snowyegret.mojo.item.spell.transform.SpellFill;
 import org.snowyegret.mojo.item.staff.Staff;
+import org.snowyegret.mojo.item.staff.StaffModel;
 import org.snowyegret.mojo.network.ClearManagersMessage;
 import org.snowyegret.mojo.player.IPlayer;
 import org.snowyegret.mojo.player.Player;
@@ -83,7 +87,7 @@ public class EventHandler {
 	public void onPlayerInteractEvent(PlayerInteractEvent e) {
 
 		// This is coming in twice, sometimes both on server, both on client, or one on each.
-		//System.out.println("world=" + e.world);
+		// System.out.println("world=" + e.world);
 		if (e.world.isRemote) {
 			return;
 		}
@@ -100,7 +104,7 @@ public class EventHandler {
 
 		// Return if player is holding nothing
 		ItemStack stack = player.getHeldItemStack();
-		//System.out.println("stack=" + stack);
+		// System.out.println("stack=" + stack);
 		if (stack == null) {
 			return;
 		}
@@ -110,7 +114,7 @@ public class EventHandler {
 		// Right clicking with a flower results in Action.RIGHT_CLICK_AIR when block is not plantable
 		// System.out.println("action=" + e.action);
 		Item heldItem = stack.getItem();
-		//System.out.println("heldItem=" + heldItem);
+		// System.out.println("heldItem=" + heldItem);
 		if (e.action == Action.RIGHT_CLICK_BLOCK || e.action == Action.RIGHT_CLICK_AIR) {
 			// System.out.println("heldItem=" + heldItem);
 			// When clicking with a flower event comes in twice on client side, so selections are empty.
@@ -195,8 +199,17 @@ public class EventHandler {
 	@SubscribeEvent
 	public void onModelBakeEvent(ModelBakeEvent event) {
 		IRegistry r = event.modelRegistry;
-		r.putObject(BlockSelected.modelResourceLocation, new BlockSelectedModel());
-		r.putObject(BlockPicked.modelResourceLocation, new BlockPickedModel());
+//		r.putObject(BlockSelected.modelResourceLocation, new BlockSelectedModel());
+//		r.putObject(BlockPicked.modelResourceLocation, new BlockPickedModel());
+		r.putObject(ModelResourceLocations.get(BlockSelected.class), new BlockSelectedModel());
+		r.putObject(ModelResourceLocations.get(BlockPicked.class), new BlockPickedModel());
+		
+		//Object m = event.modelRegistry.getObject(Staff.modelResourceLocation);
+		ModelResourceLocation location = ModelResourceLocations.get(Staff.class);
+		Object m = event.modelRegistry.getObject(location);
+		System.out.println("m=" + m);
+		r.putObject(location, new StaffModel((IBakedModel) m));
+		System.out.println("staff model=" + event.modelRegistry.getObject(location));
 	}
 
 	// Clears selections and picks when quitting game
@@ -211,7 +224,8 @@ public class EventHandler {
 	@SubscribeEvent
 	public void onEntityConstructing(EntityConstructing event) {
 		if (event.entity instanceof EntityPlayer) {
-			event.entity.registerExtendedProperties(PlayerProperties.NAME, new PlayerProperties((EntityPlayer) event.entity));
+			event.entity.registerExtendedProperties(PlayerProperties.NAME, new PlayerProperties(
+					(EntityPlayer) event.entity));
 		}
 	}
 }

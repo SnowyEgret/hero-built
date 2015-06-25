@@ -35,20 +35,23 @@ item.spellCone.pick.0=center
 item.spellCone.pick.1=radius
 item.spellCone.pick.2=height
 item.spellCone.modifier.shift=hollow
+item.spellCone.modifier.alt=on surface
 
 item.spellLine.name=Line
 item.spellLine.description=creates a line
 item.spellLine.pick.0=from
 item.spellLine.pick.1=to
 item.spellLine.modifier.ctrl=polyline
+item.spellLine.modifier.shift=
+item.spellLine.modifier.alt=on surface
 
 item.spellMeasure.name=Measure
 item.spellMeasure.description=measures distance between picks
 item.spellMeasure.pick.0=from
 item.spellMeasure.pick.1=to
 item.spellMeasure.modifier.ctrl=place markers at picks
-item.spellMeasure.modifier.shift=divides by 2
-item.spellMeasure.modifier.alt=divides by 3
+item.spellMeasure.modifier.shift=divide by 2
+item.spellMeasure.modifier.alt=divide by 3
 
 item.spellPyramid.name=Pyramid
 item.spellPyramid.description=creates a solid pyramid
@@ -69,6 +72,12 @@ item.spellSphere.pick.0=center
 item.spellSphere.pick.1=radius
 item.spellSphere.modifier.shift=hemisphere
 item.spellSphere.modifier.alt=on surface
+
+item.spellSeaShell.name=Shell
+item.spellSeaShell.description=creates a sea shell
+item.spellSeaShell.pick.0=center
+item.spellSeaShell.modifier.shift=
+item.spellSeaShell.modifier.alt=on surface
 
 # Transform spells ##########
 

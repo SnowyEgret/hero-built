@@ -18,28 +18,33 @@ public class SpellMeasure extends AbstractSpellDraw {
 
 	@Override
 	public void invoke(IPlayer player) {
+		
 		Modifiers modifiers = player.getModifiers();
+		boolean drawMarkers = modifiers.isPressed(Modifier.CTRL);
+		boolean divideByTwo = modifiers.isPressed(Modifier.SHIFT);
+		boolean divideByThree = modifiers.isPressed(Modifier.ALT);
+		
 		Pick[] picks = player.getPicks();
 		Point3d p0 = picks[0].point3d();
 		Point3d p1 = picks[1].point3d();
 		message = String.format("Distance: %.1f", p0.distance(p1));
 		PointSet points = new PointSet();
-		if (modifiers.isPressed(Modifier.SHIFT)) {
+		if (divideByTwo) {
 			// TODO if point is on border between two blocks, draw both blocks
 			points.addPoint(interpolate(p0, p1, .5d));
 		}
-		if (modifiers.isPressed(Modifier.SHIFT)) { // Alt
+		if (divideByThree) {
 			double d = 1 / 3d;
 			for (int i = 1; i < 3; i++) {
 				double dd = i * d;
 				points.addPoint(interpolate(p0, p1, i * d));
 			}
 		}
-		if (modifiers.isPressed(Modifier.CTRL)) {
+		if (drawMarkers) {
 			points.addPoints(p0, p1);
 		}
 		if (!points.isEmpty()) {
-			draw(points, player, null);
+			draw(points, player, picks[0].side);
 		}
 	}
 

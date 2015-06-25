@@ -47,7 +47,6 @@ public abstract class AbstractSpellDraw extends Spell {
 		IBlockState state = player.getHotbar().firstBlock();
 		for (Point3i p : voxels) {
 			BlockPos pos = new BlockPos(p.x, p.y, p.z);
-			// TODO conditional on plane and side of plane the player is positioned at.
 			if (onSurface) {
 				pos = pos.add(side.getDirectionVec());
 			}

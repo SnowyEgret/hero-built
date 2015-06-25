@@ -23,8 +23,8 @@ import org.snowyegret.mojo.MoJo;
 public class BlockSelected extends Block implements ITileEntityProvider {
 
 	public static final PrevStateProperty prevStateProperty = new PrevStateProperty();
-	public static final ModelResourceLocation modelResourceLocation = new ModelResourceLocation(MoJo.ID
-			+ ":blockSelected");
+	//public static final ModelResourceLocation modelResourceLocation = new ModelResourceLocation(MoJo.ID
+	//		+ ":blockSelected");
 
 	public BlockSelected() {
 		super(Material.clay);
@@ -59,7 +59,7 @@ public class BlockSelected extends Block implements ITileEntityProvider {
 		if (tileEntity != null) {
 			prevState = tileEntity.getPrevState();
 		} else {
-			System.out.println("No tile entity on BlockSelected");
+			//System.out.println("No tile entity on BlockSelected");
 		}
 		return ((IExtendedBlockState) state).withProperty(prevStateProperty, prevState);
 	}

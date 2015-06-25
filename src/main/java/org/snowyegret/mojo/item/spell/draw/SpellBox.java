@@ -25,7 +25,7 @@ public class SpellBox extends AbstractSpellDraw {
 		Point3d p0 = picks[0].point3d();
 		Point3d p1 = picks[1].point3d();
 		IDrawable d = new Box(p0, p1, isCube);
-		draw(d, player, null);
+		draw(d, player, picks[0].side);
 	}
 
 	@Override

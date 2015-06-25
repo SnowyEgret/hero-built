@@ -5,8 +5,10 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.item.Item;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -26,6 +28,7 @@ import org.snowyegret.mojo.block.BlockSelected;
 import org.snowyegret.mojo.gui.GuiHandler;
 import org.snowyegret.mojo.gui.PickInfo;
 import org.snowyegret.mojo.gui.SelectionInfo;
+import org.snowyegret.mojo.item.ModelResourceLocations;
 import org.snowyegret.mojo.item.spell.Spell;
 import org.snowyegret.mojo.item.spell.SpellLoader;
 import org.snowyegret.mojo.item.staff.Staff;
@@ -49,6 +52,8 @@ import org.snowyegret.mojo.network.SetBlockStateMessage;
 import org.snowyegret.mojo.network.SetBlockStateMessageHandler;
 import org.snowyegret.mojo.proxy.CommonProxy;
 
+import com.google.common.collect.Lists;
+
 @Mod(modid = MoJo.ID, name = MoJo.NAME, version = MoJo.VERSION)
 public class MoJo {
 
@@ -68,6 +73,8 @@ public class MoJo {
 
 	public static SelectionInfo selectionInfo = new SelectionInfo();
 	public static PickInfo pickInfo = new PickInfo();
+	private List<Item>  spells = Lists.newArrayList();
+	private List<Item>  staffs = Lists.newArrayList();
 
 	// private Configuration configuration;
 
@@ -82,25 +89,14 @@ public class MoJo {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 
-		List<Spell> spells = new ArrayList<>();
-		List<Staff> staffs = new ArrayList<>();
-
-		// String prop = System.getProperties().getProperty("plato.forceMessaging");
-		// if (prop != null) {
-		// if (prop.equals("true")) {
-		// forceMessaging = true;
-		// }
-		// }
-
-		// TODO BlockSelected and picked will have to have a tileEntity
 		System.out.println("Initializing blocks...");
 		blockSelected = (BlockSelected) initBlock(new BlockSelected());
 		blockPicked = (BlockPicked) initBlock(new BlockPicked());
 
-		System.out.println("Initializing spells and staffs...");
 		// configuration = new Configuration(event.getSuggestedConfigurationFile());
 		SpellLoader loader = new SpellLoader();
 		try {
+			System.out.println("Initializing spells...");
 			List<Spell> drawSpells = loader.loadSpellsFromPackage(PACKAGE + ".item.spell.draw");
 			List<Spell> selectSpells = loader.loadSpellsFromPackage(PACKAGE + ".item.spell.select");
 			List<Spell> transformSpells = loader.loadSpellsFromPackage(PACKAGE + ".item.spell.transform");
@@ -112,6 +108,7 @@ public class MoJo {
 			spells.addAll(transformSpells);
 			spells.addAll(otherSpells);
 
+			System.out.println("Initializing staffs...");
 			// Create some empty staffs. For now, they have a different base class.
 			staffs.add(loader.loadStaff(StaffOak.class));
 			staffs.add(loader.loadStaff(StaffBirch.class));
@@ -142,13 +139,15 @@ public class MoJo {
 		ModelLoader.setCustomStateMapper(blockSelected, new StateMapperBase() {
 			@Override
 			protected ModelResourceLocation getModelResourceLocation(IBlockState iBlockState) {
-				return BlockSelected.modelResourceLocation;
+				//return BlockSelected.modelResourceLocation;
+				return ModelResourceLocations.get(BlockSelected.class);
 			}
 		});
 		ModelLoader.setCustomStateMapper(blockPicked, new StateMapperBase() {
 			@Override
 			protected ModelResourceLocation getModelResourceLocation(IBlockState iBlockState) {
-				return BlockPicked.modelResourceLocation;
+				//return BlockPicked.modelResourceLocation;
+				return ModelResourceLocations.get(BlockPicked.class);
 			}
 		});
 	}
@@ -159,6 +158,9 @@ public class MoJo {
 		// proxy.registerNetworkMessages();
 		proxy.registerEventHandlers();
 		proxy.registerTileEntities();
+		proxy.registerItemModels(staffs);
+		
+		
 	}
 
 	@EventHandler

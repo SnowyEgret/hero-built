@@ -19,14 +19,15 @@ public class SpellLine extends AbstractSpellDraw {
 	@Override
 	public void invoke(IPlayer player) {
 		Modifiers modifiers = player.getModifiers();
+		boolean isPolyline = modifiers.isPressed(Modifier.CTRL);
 		PickManager pickManager = player.getPickManager();
 		Pick[] picks = pickManager.getPicks();
 		IDrawable d = new Line(picks[0].point3d(), picks[1].point3d());
-		draw(d, player, null);
-		if (modifiers.isPressed(Modifier.CTRL)) {
+		draw(d, player, picks[0].side);
+		if (isPolyline) {
 			pickManager.reset(2);
 			pickManager.clearPicks();
-			pickManager.pick(picks[1].getPos(), null);
+			pickManager.pick(picks[1].getPos(), picks[0].side);
 		}
 	}
 

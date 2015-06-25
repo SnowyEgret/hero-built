@@ -41,19 +41,20 @@ public class SpellHoleFill extends Spell {
 		player.clearSelections();
 		player.clearPicks();
 		
-		Set<IUndoable> setBlocks = Sets.newHashSet();
+		Set<IUndoable> undoables = Sets.newHashSet();
+		IBlockState firstBlock = player.getHotbar().firstBlock();
 		for (Selection s : selections) {
 			for (BlockPos p : isHorizontal ? Select.HORIZONTAL : Select.BELOW_INCLUSIVE) {
 				p = p.add(s.getPos());
 				Block b = player.getWorld().getBlock(p);
 				if (b == Blocks.air || b == Blocks.water) {
 					IBlockState prevState = player.getWorld().getState(p);
-					IBlockState state = useBlockInHotbar ? player.getHotbar().firstBlock() : s.getState();
-					setBlocks.add(new UndoableSetBlock(p, prevState, state));
+					IBlockState state = useBlockInHotbar ? firstBlock : s.getState();
+					undoables.add(new UndoableSetBlock(p, prevState, state));
 				}
 			}
 		}
 
-		player.getTransactionManager().doTransaction(setBlocks);
+		player.getTransactionManager().doTransaction(undoables);
 	}
 }

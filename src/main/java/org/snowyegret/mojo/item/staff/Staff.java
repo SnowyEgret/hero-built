@@ -2,6 +2,7 @@ package org.snowyegret.mojo.item.staff;
 
 import java.util.List;
 
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
@@ -9,6 +10,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
+import org.snowyegret.mojo.MoJo;
 import org.snowyegret.mojo.gui.GuiHandler;
 import org.snowyegret.mojo.item.ItemBase;
 import org.snowyegret.mojo.item.spell.ISpell;
@@ -22,6 +24,7 @@ import org.snowyegret.mojo.player.Player;
 public abstract class Staff extends ItemBase implements IStaff {
 
 	static final int MAX_NUM_SPELLS = 9;
+	//public static final ModelResourceLocation modelResourceLocation = new ModelResourceLocation(MoJo.ID+":staff", "inventory");
 
 	// Item--------------------------------------------------------
 
