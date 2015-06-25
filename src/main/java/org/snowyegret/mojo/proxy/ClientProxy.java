@@ -13,7 +13,6 @@ import org.snowyegret.mojo.event.EventHandler;
 import org.snowyegret.mojo.event.KeyHandler;
 import org.snowyegret.mojo.event.MouseHandler;
 import org.snowyegret.mojo.item.ModelResourceLocations;
-import org.snowyegret.mojo.item.staff.Staff;
 
 public class ClientProxy extends CommonProxy {
 
@@ -26,15 +25,19 @@ public class ClientProxy extends CommonProxy {
 
 	// https://github.com/TheGreyGhost/MinecraftByExample/blob/master/src/main/java/minecraftbyexample/mbe15_item_smartitemmodel/StartupClientOnly.java
 	@Override
-	public void registerItemModels(List<Item> items) {
+	public void registerItemModels(List<Item>... items) {
+
 		final int META = 0;
 		ItemModelMesher mesher = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
-		
-		for (Item i : items) {
-			ModelResourceLocation l = ModelResourceLocations.get(i.getClass());
-			mesher.register(i, META, l);
-			System.out.println("Registered model=" + mesher.getModelManager().getModel(l));
+
+		for (List<Item> list : items) {
+			for (Item i : list) {
+				ModelResourceLocation l = ModelResourceLocations.get(i.getClass());
+				mesher.register(i, META, l);
+				System.out.println(i.getUnlocalizedName() + " model=" + mesher.getModelManager().getModel(l));
+			}
 		}
+
 	}
 
 }

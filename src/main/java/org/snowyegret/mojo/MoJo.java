@@ -1,11 +1,9 @@
 package org.snowyegret.mojo;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.Item;
@@ -60,11 +58,11 @@ public class MoJo {
 	public static final String ID = "mojo";
 	public static final String NAME = "MoJo";
 	public static final String VERSION = "0.5";
-	public static final String PACKAGE = "org.snowyegret.mojo";
+	public static final String DOMAIN = "org.snowyegret.mojo";
 
 	@Instance(ID)
 	public static MoJo instance;
-	@SidedProxy(clientSide = PACKAGE + ".proxy.ClientProxy", serverSide = PACKAGE + ".proxy.CommonProxy")
+	@SidedProxy(clientSide = DOMAIN + ".proxy.ClientProxy", serverSide = DOMAIN + ".proxy.CommonProxy")
 	public static CommonProxy proxy;
 	public static SimpleNetworkWrapper network;
 
@@ -97,11 +95,14 @@ public class MoJo {
 		SpellLoader loader = new SpellLoader();
 		try {
 			System.out.println("Initializing spells...");
-			List<Spell> drawSpells = loader.loadSpellsFromPackage(PACKAGE + ".item.spell.draw");
-			List<Spell> selectSpells = loader.loadSpellsFromPackage(PACKAGE + ".item.spell.select");
-			List<Spell> transformSpells = loader.loadSpellsFromPackage(PACKAGE + ".item.spell.transform");
-			List<Spell> matrixSpells = loader.loadSpellsFromPackage(PACKAGE + ".item.spell.matrix");
-			List<Spell> otherSpells = loader.loadSpellsFromPackage(PACKAGE + ".item.spell.other");
+			List<Spell> drawSpells = loader.loadSpellsFromPackage(DOMAIN + ".item.spell.draw");
+			List<Spell> selectSpells = loader.loadSpellsFromPackage(DOMAIN + ".item.spell.select");
+			List<Spell> transformSpells = loader.loadSpellsFromPackage(DOMAIN + ".item.spell.transform");
+			List<Spell> matrixSpells = loader.loadSpellsFromPackage(DOMAIN + ".item.spell.matrix");
+			List<Spell> otherSpells = loader.loadSpellsFromPackage(DOMAIN + ".item.spell.other");
+			
+			//We are loading spell so that we can use its model as a base model
+			spells.add(loader.loadSpell(Spell.class));
 			spells.addAll(drawSpells);
 			spells.addAll(selectSpells);
 			spells.addAll(matrixSpells);
@@ -110,6 +111,8 @@ public class MoJo {
 
 			System.out.println("Initializing staffs...");
 			// Create some empty staffs. For now, they have a different base class.
+			// For base staff model
+			staffs.add(loader.loadStaff(Staff.class));
 			staffs.add(loader.loadStaff(StaffOak.class));
 			staffs.add(loader.loadStaff(StaffBirch.class));
 			staffs.add(loader.loadStaff(StaffAcacia.class));
@@ -139,14 +142,12 @@ public class MoJo {
 		ModelLoader.setCustomStateMapper(blockSelected, new StateMapperBase() {
 			@Override
 			protected ModelResourceLocation getModelResourceLocation(IBlockState iBlockState) {
-				//return BlockSelected.modelResourceLocation;
 				return ModelResourceLocations.get(BlockSelected.class);
 			}
 		});
 		ModelLoader.setCustomStateMapper(blockPicked, new StateMapperBase() {
 			@Override
 			protected ModelResourceLocation getModelResourceLocation(IBlockState iBlockState) {
-				//return BlockPicked.modelResourceLocation;
 				return ModelResourceLocations.get(BlockPicked.class);
 			}
 		});
@@ -158,9 +159,7 @@ public class MoJo {
 		// proxy.registerNetworkMessages();
 		proxy.registerEventHandlers();
 		proxy.registerTileEntities();
-		proxy.registerItemModels(staffs);
-		
-		
+		proxy.registerItemModels(staffs, spells);
 	}
 
 	@EventHandler

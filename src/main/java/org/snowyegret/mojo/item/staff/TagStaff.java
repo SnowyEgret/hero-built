@@ -2,6 +2,7 @@ package org.snowyegret.mojo.item.staff;
 
 import org.snowyegret.mojo.MoJo;
 import org.snowyegret.mojo.item.spell.Spell;
+import org.snowyegret.mojo.util.StringUtils;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -47,7 +48,7 @@ public class TagStaff {
 	}
 
 	public void setSpell(int i, Spell spell) {
-		String n = spell.getClass().getSimpleName();
+		String n = StringUtils.toCamelCase(spell.getClass());
 		tag.setString(String.valueOf(i), n);
 	}
 

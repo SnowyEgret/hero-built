@@ -43,7 +43,11 @@ public class SpellLoader {
 		Staff s = (Staff) c.newInstance();
 		s.setUnlocalizedName(name);
 		s.setMaxStackSize(1);
-		s.setCreativeTab(tabSpells);
+		// We are using this method to load class Staff to use it's model as a base model.
+		// We don't want it to be part of the game
+		if (s.getClass() != Staff.class) {
+			s.setCreativeTab(tabSpells);
+		}
 		GameRegistry.registerItem(s, name);
 		if (s.hasRecipe()) {
 			GameRegistry.addRecipe(new ItemStack(s), s.getRecipe());
@@ -64,7 +68,6 @@ public class SpellLoader {
 		s.setUnlocalizedName(name);
 		s.setMaxStackSize(1);
 		s.setCreativeTab(tabSpells);
-		// s.setTextureName(modId + ":staff");
 		GameRegistry.registerItem(s, name);
 		if (s.hasRecipe()) {
 			GameRegistry.addRecipe(new ItemStack(s), s.getRecipe());
@@ -85,7 +88,7 @@ public class SpellLoader {
 		return spells;
 	}
 
-	private Spell loadSpell(Class<? extends Spell> spellClass) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, ClassNotFoundException {
+	public Spell loadSpell(Class<? extends Spell> spellClass) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, ClassNotFoundException {
 
 		System.out.println("Loading spell " + spellClass.getSimpleName());
 		String name = StringUtils.toCamelCase(spellClass);
@@ -93,12 +96,13 @@ public class SpellLoader {
 		Spell s = c.newInstance();
 		s.setUnlocalizedName(name);
 		s.setMaxStackSize(1);
-		s.setCreativeTab(tabSpells);
-		// Can't remember why I did this. For SpellRestore?
-		GameRegistry.registerItem(s, s.getClass().getSimpleName());
-		// GameRegistry.registerItem(s, name);
+		// We are using this method to load class Spell to use it's model as a base model.
+		// We don't want it to be part of the game
+		if (s.getClass() != Spell.class) {
+			s.setCreativeTab(tabSpells);
+		}
+		GameRegistry.registerItem(s, name);
 		if (s.hasRecipe()) {
-			// System.out.println("[SpellLoader.loadSpell] s.getRecipe()=" + s.getRecipe());
 			GameRegistry.addRecipe(new ItemStack(s), s.getRecipe());
 		}
 		return s;

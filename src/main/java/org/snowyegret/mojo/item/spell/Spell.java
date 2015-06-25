@@ -16,7 +16,7 @@ import org.snowyegret.mojo.pick.PickManager;
 import org.snowyegret.mojo.player.IPlayer;
 import org.snowyegret.mojo.player.Player;
 
-public abstract class Spell extends ItemBase implements ISpell {
+public class Spell extends ItemBase implements ISpell {
 
 	protected String message;
 	protected SpellInfo info;
@@ -27,7 +27,12 @@ public abstract class Spell extends ItemBase implements ISpell {
 	protected final String Y = "Y,";
 	protected final String Z = "Z,";
 	private int numPicks;
+	
+	// For base spell model
+	public Spell() {
+	}
 
+	// No longer abstact because we a instantiating it so that we can use its model as a base model
 	public Spell(int numPicks) {
 		super();
 		this.numPicks = numPicks;
@@ -65,7 +70,9 @@ public abstract class Spell extends ItemBase implements ISpell {
 	// ISpell --------------------------------------------
 
 	@Override
-	public abstract void invoke(IPlayer player);
+	public void invoke(IPlayer player) {
+		
+	}
 
 	@Override
 	public String getMessage() {

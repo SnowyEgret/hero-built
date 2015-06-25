@@ -1,38 +1,46 @@
 package org.snowyegret.mojo.item.staff;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.IBakedModel;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.client.model.ISmartItemModel;
 
+import org.snowyegret.mojo.item.ModelResourceLocations;
+import org.snowyegret.mojo.item.spell.ISpell;
+
 public class StaffModel implements ISmartItemModel {
 
-	private IBakedModel model;
+	private IBakedModel baseStaffModel;
+	private IBakedModel spellModel;
 
 	public StaffModel(IBakedModel model) {
-		this.model = model;
+		this.baseStaffModel = model;
 	}
 
 	@Override
-	public List getFaceQuads(EnumFacing p_177551_1_) {
-		// TODO Auto-generated method stub
-		return null;
+	public List getFaceQuads(EnumFacing side) {
+		return baseStaffModel.getFaceQuads(side);
 	}
 
 	@Override
 	public List getGeneralQuads() {
-		// TODO Auto-generated method stub
-		return null;
+	    List<BakedQuad> combinedQuads = new ArrayList(baseStaffModel.getGeneralQuads());
+	    combinedQuads.addAll(spellModel.getGeneralQuads());
+	    return combinedQuads;
 	}
 
 	@Override
 	public boolean isAmbientOcclusion() {
-		return model.isAmbientOcclusion();
+		return baseStaffModel.isAmbientOcclusion();
 	}
 
 	@Override
@@ -42,25 +50,28 @@ public class StaffModel implements ISmartItemModel {
 
 	@Override
 	public boolean isBuiltInRenderer() {
-		return model.isBuiltInRenderer();
+		return baseStaffModel.isBuiltInRenderer();
 	}
 
 	@Override
 	public TextureAtlasSprite getTexture() {
-		return model.getTexture();
+		return baseStaffModel.getTexture();
 	}
 
 	@Override
 	public ItemCameraTransforms getItemCameraTransforms() {
-		return model.getItemCameraTransforms();
+		return baseStaffModel.getItemCameraTransforms();
 	}
 
 	@Override
 	public IBakedModel handleItemState(ItemStack stack) {
-		System.out.println("stack=" + stack);
 		if (stack != null) {
 			Item item = stack.getItem();
-			System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>item=" + item);
+			IStaff staff = (IStaff) item;
+			ISpell spell = staff.getSpell(stack, null);
+			ModelResourceLocation spellLocation = ModelResourceLocations.get(spell.getClass());
+			spellModel = Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getModelManager()
+					.getModel(spellLocation);
 		}
 		return this;
 	}

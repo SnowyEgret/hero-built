@@ -17,6 +17,6 @@ public class CommonProxy {
 		GameRegistry.registerTileEntity(PrevStateTileEntity.class, PrevStateTileEntity.class.getSimpleName()); 
 	}
 
-	public void registerItemModels(List<Item> items) {
+	public void registerItemModels(List<Item>... items) {
 	}
 }

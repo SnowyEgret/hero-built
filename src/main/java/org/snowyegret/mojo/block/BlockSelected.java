@@ -6,7 +6,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumWorldBlockLayer;
@@ -18,13 +17,9 @@ import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import org.snowyegret.mojo.MoJo;
-
 public class BlockSelected extends Block implements ITileEntityProvider {
 
 	public static final PrevStateProperty prevStateProperty = new PrevStateProperty();
-	//public static final ModelResourceLocation modelResourceLocation = new ModelResourceLocation(MoJo.ID
-	//		+ ":blockSelected");
 
 	public BlockSelected() {
 		super(Material.clay);
@@ -55,11 +50,10 @@ public class BlockSelected extends Block implements ITileEntityProvider {
 	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
 		PrevStateTileEntity tileEntity = (PrevStateTileEntity) world.getTileEntity(pos);
 		IBlockState prevState = null;
-		//If no tile entity is found at this position block will render black/magenta
 		if (tileEntity != null) {
 			prevState = tileEntity.getPrevState();
 		} else {
-			//System.out.println("No tile entity on BlockSelected");
+			// System.out.println("No tile entity on BlockSelected");
 		}
 		return ((IExtendedBlockState) state).withProperty(prevStateProperty, prevState);
 	}

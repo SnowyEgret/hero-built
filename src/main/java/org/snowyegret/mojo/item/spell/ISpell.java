@@ -4,7 +4,7 @@ import org.snowyegret.mojo.player.IPlayer;
 
 public interface ISpell {
 
-	public abstract void invoke(IPlayer player);
+	public void invoke(IPlayer player);
 
 	public abstract String getMessage();
 

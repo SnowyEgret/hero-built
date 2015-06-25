@@ -6,7 +6,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumWorldBlockLayer;
@@ -18,17 +17,12 @@ import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import org.snowyegret.mojo.MoJo;
-
 public class BlockPicked extends Block implements ITileEntityProvider {
 
 	public static final PrevStateProperty prevStateProperty = new PrevStateProperty();
-	//public static final ModelResourceLocation modelResourceLocation = new ModelResourceLocation(MoJo.ID+":blockPicked");
 
 	public BlockPicked() {
 		super(Material.clay);
-		//setHardness(-1F);
-		//setStepSound(soundTypeGravel);
 	}
 
 	@SideOnly(Side.CLIENT)

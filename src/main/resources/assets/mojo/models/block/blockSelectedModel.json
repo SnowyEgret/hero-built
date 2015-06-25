@@ -1,0 +1,12 @@
+{
+    "parent": "block/cube",
+    "textures": {
+        "down": "mojo:blocks/blockSelected",
+        "up": "mojo:blocks/blockSelected",
+        "north": "mojo:blocks/blockSelected",
+        "east": "mojo:blocks/blockSelected",
+        "south": "mojo:blocks/blockSelected",
+        "west": "mojo:blocks/blockSelected",
+        "particle": "blocks/lapis_block"
+    }
+}

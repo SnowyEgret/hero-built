@@ -13,7 +13,8 @@ public class ModelResourceLocations {
 		if (Item.class.isAssignableFrom(c)) {
 			return new ModelResourceLocation(MoJo.ID + ":" + StringUtils.toCamelCase(c), "inventory");
 		} else if (Block.class.isAssignableFrom(c)) {
-			return new ModelResourceLocation(MoJo.ID + ":" + StringUtils.toCamelCase(c));
+			ModelResourceLocation l = new ModelResourceLocation(MoJo.ID + ":" + StringUtils.toCamelCase(c));
+			return l;
 		} else {
 			throw new Error("Expected either an item or a block. Got a " + c);
 		}

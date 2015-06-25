@@ -2,7 +2,6 @@ package org.snowyegret.mojo.item.staff;
 
 import java.util.List;
 
-import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
@@ -10,7 +9,6 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
-import org.snowyegret.mojo.MoJo;
 import org.snowyegret.mojo.gui.GuiHandler;
 import org.snowyegret.mojo.item.ItemBase;
 import org.snowyegret.mojo.item.spell.ISpell;
@@ -21,10 +19,9 @@ import org.snowyegret.mojo.pick.PickManager;
 import org.snowyegret.mojo.player.IPlayer;
 import org.snowyegret.mojo.player.Player;
 
-public abstract class Staff extends ItemBase implements IStaff {
+public class Staff extends ItemBase implements IStaff {
 
 	static final int MAX_NUM_SPELLS = 9;
-	//public static final ModelResourceLocation modelResourceLocation = new ModelResourceLocation(MoJo.ID+":staff", "inventory");
 
 	// Item--------------------------------------------------------
 
@@ -47,9 +44,9 @@ public abstract class Staff extends ItemBase implements IStaff {
 	public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World world, BlockPos pos, EnumFacing side, float sx, float sy, float sz) {
 
 		// To compare item stacks and their tags on both sides
-		//System.out.println("tag=" + stack.getTagCompound());
+		// System.out.println("tag=" + stack.getTagCompound());
 		IPlayer player = Player.instance(playerIn);
-		Modifiers modifiers = player.getModifiers();		
+		Modifiers modifiers = player.getModifiers();
 
 		// Return if called from the client thread
 		if (world.isRemote) {
@@ -108,12 +105,6 @@ public abstract class Staff extends ItemBase implements IStaff {
 			}
 		}
 
-		// TODO ForgeEventHandler also runs on client side and onLivingUpdate calls player.getSpell -> staff.nextSpell
-		// KeyHandler runs on client side and calls next spell when key tab is pressed
-		// if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) {
-		// System.out.println("Sending NextSpellMessage to server.");
-		// Plato.network.sendToServer(new NextSpellMessage());
-		// }
 		return s;
 	}
 
@@ -136,11 +127,6 @@ public abstract class Staff extends ItemBase implements IStaff {
 			}
 		}
 
-		// KeyHandler runs on client side and calls previous spell when key ctrl-tab is pressed
-		// if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) {
-		// System.out.println("Sending PrevSpellMessage to server.");
-		// Plato.network.sendToServer(new PrevSpellMessage());
-		// }
 		return s;
 	}
 

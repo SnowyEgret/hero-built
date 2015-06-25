@@ -4,7 +4,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.GuiIngameMenu;
 import net.minecraft.client.resources.model.IBakedModel;
-import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -34,9 +33,13 @@ import org.snowyegret.mojo.block.BlockSelectedModel;
 import org.snowyegret.mojo.gui.Overlay;
 import org.snowyegret.mojo.item.ModelResourceLocations;
 import org.snowyegret.mojo.item.spell.ISpell;
+import org.snowyegret.mojo.item.spell.Spell;
+import org.snowyegret.mojo.item.spell.SpellModel;
+import org.snowyegret.mojo.item.spell.draw.SpellCircle;
 import org.snowyegret.mojo.item.spell.other.SpellTrail;
 import org.snowyegret.mojo.item.spell.transform.SpellFill;
 import org.snowyegret.mojo.item.staff.Staff;
+import org.snowyegret.mojo.item.staff.StaffDraw;
 import org.snowyegret.mojo.item.staff.StaffModel;
 import org.snowyegret.mojo.network.ClearManagersMessage;
 import org.snowyegret.mojo.player.IPlayer;
@@ -199,17 +202,14 @@ public class EventHandler {
 	@SubscribeEvent
 	public void onModelBakeEvent(ModelBakeEvent event) {
 		IRegistry r = event.modelRegistry;
-//		r.putObject(BlockSelected.modelResourceLocation, new BlockSelectedModel());
-//		r.putObject(BlockPicked.modelResourceLocation, new BlockPickedModel());
 		r.putObject(ModelResourceLocations.get(BlockSelected.class), new BlockSelectedModel());
 		r.putObject(ModelResourceLocations.get(BlockPicked.class), new BlockPickedModel());
-		
-		//Object m = event.modelRegistry.getObject(Staff.modelResourceLocation);
-		ModelResourceLocation location = ModelResourceLocations.get(Staff.class);
-		Object m = event.modelRegistry.getObject(location);
-		System.out.println("m=" + m);
-		r.putObject(location, new StaffModel((IBakedModel) m));
-		System.out.println("staff model=" + event.modelRegistry.getObject(location));
+
+		// Prepared in ClientProxy.registerItemModels
+		Object baseModel = event.modelRegistry.getObject(ModelResourceLocations.get(Staff.class));
+		r.putObject(ModelResourceLocations.get(StaffDraw.class), new StaffModel((IBakedModel) baseModel));
+		baseModel = event.modelRegistry.getObject(ModelResourceLocations.get(Spell.class));
+		r.putObject(ModelResourceLocations.get(SpellCircle.class), new SpellModel((IBakedModel) baseModel));
 	}
 
 	// Clears selections and picks when quitting game
