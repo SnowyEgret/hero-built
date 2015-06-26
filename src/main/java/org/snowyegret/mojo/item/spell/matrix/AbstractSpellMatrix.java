@@ -9,6 +9,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
 
+import org.snowyegret.mojo.item.spell.Modifier;
 import org.snowyegret.mojo.item.spell.Spell;
 import org.snowyegret.mojo.player.IPlayer;
 import org.snowyegret.mojo.select.Selection;
@@ -23,8 +24,9 @@ public abstract class AbstractSpellMatrix extends Spell {
 		super(numPicks);
 	}
 
-	protected void transformSelections(IPlayer player, Matrix4d matrix, boolean deleteInitialBlocks) {
+	protected void transformSelections(IPlayer player, Matrix4d matrix) {
 
+		boolean deleteInitialBlocks = player.getModifiers().isPressed(Modifier.CTRL);
 		//Deletes must be done first
 		List<IUndoable> deletes = Lists.newArrayList();
 		List<IUndoable> undoables = Lists.newArrayList();

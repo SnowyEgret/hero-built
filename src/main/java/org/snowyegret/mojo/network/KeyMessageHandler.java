@@ -73,7 +73,7 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 						player.getTransactionManager().redo(player);
 					} else {
 						selectionManager.clearSelections();
-						player.getTransactionManager().undo(null);
+						player.getTransactionManager().undo(player);
 					}
 				}
 				// if (lastSpell != null && lastSpell.getSpell() instanceof SpellCopy) {
@@ -118,8 +118,7 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 			break;
 
 		case UP:
-			// This should be alt so that control can be deleteOriginal
-			if (modifiers.isPressed(Modifier.CTRL)) {
+			if (modifiers.isPressed(Modifier.SHIFT)) {
 				copyVertical(player, 1);
 			} else {
 				copy(player, 0, -1);
@@ -127,9 +126,8 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 			break;
 
 		case DOWN:
-			// This should be alt so that control can be deleteOriginal
-			// TODO Modifier constructor with mulitple keys
-			if (modifiers.isPressed(Modifier.CTRL)) {
+			// TODO Modifier constructor with mulitple keys for right shift
+			if (modifiers.isPressed(Modifier.SHIFT)) {
 				copyVertical(player, -1);
 			} else {
 				copy(player, 0, 1);

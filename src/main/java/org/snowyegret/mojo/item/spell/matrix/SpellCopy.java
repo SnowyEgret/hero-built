@@ -28,8 +28,7 @@ public class SpellCopy extends AbstractSpellMatrix {
 		Vector3d v = new Vector3d();
 		v.sub(new Point3d(to.getX(), to.getY(), to.getZ()), new Point3d(from.getX(), from.getY(), from.getZ()));
 		Matrix4d matrix = new TranslationMatrix(v);
-		boolean deleteOriginal = player.getModifiers().isPressed(Modifier.SHIFT);
-		transformSelections(player, matrix, deleteOriginal);
+		transformSelections(player, matrix);
 		player.getPickManager().repick();
 	}
 

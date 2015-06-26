@@ -1,5 +1,5 @@
 # Mo'Jo
-A Minecraft mod for players who build with mojo.
+A Minecraft mod for builders who play with mojo.
 
 * Select.
 * Cut, copy, paste.

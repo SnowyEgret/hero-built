@@ -70,7 +70,7 @@ public class TransactionManager implements IUndoable {
 		if (currentNode.left == null) {
 			throw new NoSuchElementException("Nothing left to undo.");
 		}
-		currentNode.transaction.undo(null);
+		currentNode.transaction.undo(player);
 		currentNode = currentNode.left;
 	}
 

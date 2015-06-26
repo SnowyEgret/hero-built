@@ -24,7 +24,6 @@ public class SpellMirror extends AbstractSpellMatrix {
 	@Override
 	public void invoke(IPlayer player) {
 		Modifiers modifiers = player.getModifiers();
-		boolean deleteOriginal = modifiers.isPressed(Modifier.CTRL);
 		boolean mirrorAboutCentroid = modifiers.isPressed(Modifier.SHIFT);
 
 		Pick[] picks = player.getPicks();
@@ -71,7 +70,7 @@ public class SpellMirror extends AbstractSpellMatrix {
 			break;
 		}
 		Matrix4d matrix = new ReflectionMatrix(p, new Vector3d(d.getX(), d.getY(), d.getZ()));
-		transformSelections(player, matrix, deleteOriginal);
+		transformSelections(player, matrix);
 	}
 
 	@Override

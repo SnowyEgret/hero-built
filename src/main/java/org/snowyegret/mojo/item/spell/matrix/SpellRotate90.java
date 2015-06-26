@@ -24,7 +24,6 @@ public class SpellRotate90 extends AbstractSpellMatrix {
 	public void invoke(IPlayer player) {
 
 		Modifiers modifiers = player.getModifiers();
-		boolean deleteOriginal = modifiers.isPressed(Modifier.CTRL);
 		boolean rotateAboutCentroid = modifiers.isPressed(Modifier.SHIFT);
 
 		Pick[] picks = player.getPicks();
@@ -50,7 +49,7 @@ public class SpellRotate90 extends AbstractSpellMatrix {
 			matrix = GeomUtil.newRotY90Matrix(center);
 		}
 
-		transformSelections(player, matrix, deleteOriginal);
+		transformSelections(player, matrix);
 	}
 
 	@Override
