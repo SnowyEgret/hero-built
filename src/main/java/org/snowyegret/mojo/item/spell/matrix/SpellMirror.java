@@ -28,7 +28,6 @@ public class SpellMirror extends AbstractSpellMatrix {
 
 		Pick[] picks = player.getPicks();
 		EnumFacing side = picks[0].getSide();
-		Vec3i d = side.getDirectionVec();
 		Point3d p = picks[0].point3d();
 		Point3d offset = null;
 		//TODO Simplify this. Just trial and error. 
@@ -69,6 +68,7 @@ public class SpellMirror extends AbstractSpellMatrix {
 		default:
 			break;
 		}
+		Vec3i d = side.getDirectionVec();
 		Matrix4d matrix = new ReflectionMatrix(p, new Vector3d(d.getX(), d.getY(), d.getZ()));
 		transformSelections(player, matrix);
 	}

@@ -23,6 +23,9 @@ public class KeyHandler {
 	static {
 		for (Modifier m : Modifier.values()) {
 			KEYS_TO_TRACK.add(m.keyCode);
+			if (m.keyCodeRight != -1) {
+				KEYS_TO_TRACK.add(m.keyCodeRight);
+			}
 		}
 		for (Action a : Action.values()) {
 			KEYS_TO_TRACK.add(a.keyCode);
@@ -35,11 +38,13 @@ public class KeyHandler {
 
 		if (KEYS_TO_TRACK.contains(Keyboard.getEventKey())) {
 			int keyCode = Keyboard.getEventKey();
-			//System.out.println("keyCode=" + keyCode);
+			// TODO Find a way to track shift right. We are not getting events for right shift, ctrl, alt.
+			// int keyCodeRight = Keyboard.getNumKeyboardEvents();
+			// System.out.println("keyCode=" + keyCodeRight);
 			// Pass the cursor position for Pasting
 			BlockPos cursorPos = Minecraft.getMinecraft().objectMouseOver.getBlockPos();
 			MoJo.network.sendToServer(new KeyMessage(keyCode, Keyboard.getEventKeyState(), cursorPos));
-			
+
 		}
 	}
 }

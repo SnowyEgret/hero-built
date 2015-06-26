@@ -35,18 +35,29 @@ public class SpellRotate90 extends AbstractSpellMatrix {
 			center = picks[0].point3d();
 		}
 
-		// TODO switch to RotationMatrix constructor with 2 vectors
+		// First check for modifier keys, then use face to determine which plane to rotate in
 		Matrix4d matrix;
 		if (modifiers.isPressed(Modifier.X)) {
 			matrix = GeomUtil.newRotX90Matrix(center);
-		}
-		else if (modifiers.isPressed(Modifier.Y)) {
+		} else if (modifiers.isPressed(Modifier.Y)) {
 			matrix = GeomUtil.newRotY90Matrix(center);
-		}
-		else if (modifiers.isPressed(Modifier.Z)) {
+		} else if (modifiers.isPressed(Modifier.Z)) {
 			matrix = GeomUtil.newRotZ90Matrix(center);
 		} else {
-			matrix = GeomUtil.newRotY90Matrix(center);
+			switch (picks[0].getPlane()) {
+			case XY:
+				matrix = GeomUtil.newRotZ90Matrix(center);
+				break;
+			case XZ:
+				matrix = GeomUtil.newRotY90Matrix(center);
+				break;
+			case YZ:
+				matrix = GeomUtil.newRotX90Matrix(center);
+				break;
+			default:
+				matrix = GeomUtil.newRotY90Matrix(center);
+				break;
+			}
 		}
 
 		transformSelections(player, matrix);

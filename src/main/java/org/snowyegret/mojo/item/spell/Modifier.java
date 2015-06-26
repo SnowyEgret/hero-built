@@ -28,9 +28,16 @@ public enum Modifier {
 	SPACE(57);
 
 	public int keyCode;
+	public int keyCodeRight = -1;
 
 	private Modifier(int keyCode) {
 		this.keyCode = keyCode;
+	}
+
+	// No KeyInputEvent for right shift, ctl, alt
+	private Modifier(int keyCode, int keyCodeRight) {
+		this.keyCode = keyCode;
+		this.keyCodeRight = keyCodeRight;
 	}
 
 	public static Modifier fromKeyCode(int keyCode) {
