@@ -1,12 +1,15 @@
 # Mo'Jo
-A Minecraft mod for builders who want to play with more mojo.
+A Minecraft mod for players who build with mojo.
 
 * Select.
 * Cut, copy, paste.
 * Copy, move, rotate, mirror, delete.
-* Draw lines, rectangles, circles, boxes, spheres, cones, pyramids, trails.
+* Lines, rectangles, circles, boxes, spheres, cones, pyramids, trails.
 * Fill, write, hollow.
 * Undo, redo.
 * All in-game.
-* 1.8 (only)
+
+Uses package org.snowyegret.voxelgeom in repository voxel-geom.
+
+Minecraft version 1.8
 

@@ -14,8 +14,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.client.model.ISmartItemModel;
 
-import org.snowyegret.mojo.item.ModelResourceLocations;
 import org.snowyegret.mojo.item.spell.ISpell;
+import org.snowyegret.mojo.util.ModelResourceLocations;
 
 public class StaffModel implements ISmartItemModel {
 

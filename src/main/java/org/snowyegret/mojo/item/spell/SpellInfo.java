@@ -20,7 +20,7 @@ public class SpellInfo {
 	private Map<String, String> modifiers = new HashMap<>();
 
 	public SpellInfo(ISpell spell) {
-		root = "item." + StringUtils.toCamelCase(spell.getClass()) + ".";
+		root = "item." + StringUtils.nameFor(spell.getClass()) + ".";
 		name = format("name");
 		description = format("description");
 		addPicks(spell.getNumPicks());

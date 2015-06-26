@@ -31,7 +31,6 @@ import org.snowyegret.mojo.block.BlockPickedModel;
 import org.snowyegret.mojo.block.BlockSelected;
 import org.snowyegret.mojo.block.BlockSelectedModel;
 import org.snowyegret.mojo.gui.Overlay;
-import org.snowyegret.mojo.item.ModelResourceLocations;
 import org.snowyegret.mojo.item.spell.ISpell;
 import org.snowyegret.mojo.item.spell.Spell;
 import org.snowyegret.mojo.item.spell.SpellModel;
@@ -46,6 +45,7 @@ import org.snowyegret.mojo.player.IPlayer;
 import org.snowyegret.mojo.player.Player;
 import org.snowyegret.mojo.player.PlayerProperties;
 import org.snowyegret.mojo.select.SelectionManager;
+import org.snowyegret.mojo.util.ModelResourceLocations;
 import org.snowyegret.mojo.world.IWorld;
 
 public class EventHandler {

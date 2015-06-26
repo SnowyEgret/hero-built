@@ -7,8 +7,7 @@ public class StringUtils {
 		return tokens[tokens.length - 1];
 	}
 
-	//TODO use in SpellLoader
-	public static String toCamelCase(Class c) {
+	public static String nameFor(Class c) {
 		String n = c.getSimpleName();
 		return n.substring(0, 1).toLowerCase() + n.substring(1);
 	}

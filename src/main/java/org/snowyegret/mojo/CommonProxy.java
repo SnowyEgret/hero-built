@@ -1,10 +1,7 @@
 package org.snowyegret.mojo;
 
-import java.io.IOException;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,9 +17,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import org.snowyegret.mojo.block.BlockPicked;
 import org.snowyegret.mojo.block.BlockSelected;
 import org.snowyegret.mojo.block.PrevStateTileEntity;
-import org.snowyegret.mojo.gui.GuiHandler;
 import org.snowyegret.mojo.item.IItem;
-import org.snowyegret.mojo.item.ItemLoader;
 import org.snowyegret.mojo.item.spell.Spell;
 import org.snowyegret.mojo.item.staff.Staff;
 import org.snowyegret.mojo.item.staff.StaffAcacia;
@@ -58,6 +53,17 @@ public class CommonProxy {
 			public Item getTabIconItem() {
 				return Items.glass_bottle;
 			}
+
+			@Override
+			public String getTranslatedTabLabel() {
+				// TODO Auto-generated method stub
+				return super.getTranslatedTabLabel();
+			}
+
+			@Override
+			public String getTabLabel() {
+				return "MoJo spells";
+			}
 		};
 	}
 	protected List<Item> items = Lists.newArrayList();
@@ -79,19 +85,16 @@ public class CommonProxy {
 	}
 
 	public void registerItems() {
-		// configuration = new Configuration(event.getSuggestedConfigurationFile());
-		ItemLoader loader = new ItemLoader();
 		try {
 			System.out.println("Initializing spells...");
-			List<Spell> drawSpells = loader.loadSpellsFromPackage(MoJo.DOMAIN + ".item.spell.draw");
-			// List<Item> drawSpells = initSpellsFromPackage("draw");
-			List<Spell> selectSpells = loader.loadSpellsFromPackage(MoJo.DOMAIN + ".item.spell.select");
-			List<Spell> transformSpells = loader.loadSpellsFromPackage(MoJo.DOMAIN + ".item.spell.transform");
-			List<Spell> matrixSpells = loader.loadSpellsFromPackage(MoJo.DOMAIN + ".item.spell.matrix");
-			List<Spell> otherSpells = loader.loadSpellsFromPackage(MoJo.DOMAIN + ".item.spell.other");
+			List<Spell> drawSpells = initSpellsFromPackage("draw");
+			List<Spell> selectSpells = initSpellsFromPackage("select");
+			List<Spell> transformSpells = initSpellsFromPackage("transform");
+			List<Spell> matrixSpells = initSpellsFromPackage("matrix");
+			List<Spell> otherSpells = initSpellsFromPackage("other");
 
-			// We are loading spell so that we can use its model as a base model
-			items.add(loader.loadSpell(Spell.class));
+			// We are initializing Spell so that we can use its model as a base model
+			items.add(initItem(Spell.class));
 			items.addAll(drawSpells);
 			items.addAll(selectSpells);
 			items.addAll(matrixSpells);
@@ -99,16 +102,15 @@ public class CommonProxy {
 			items.addAll(otherSpells);
 
 			System.out.println("Initializing staffs...");
-			// Create some empty staffs. For now, they have a different base class.
-			// For base staff model
-			items.add(loader.loadStaff(Staff.class));
-			items.add(loader.loadStaff(StaffOak.class));
-			items.add(loader.loadStaff(StaffBirch.class));
-			items.add(loader.loadStaff(StaffAcacia.class));
+			// We are initializing Staff so that we can use its model as a base model
+			items.add(initItem(Staff.class));
+			items.add(initItem(StaffOak.class));
+			items.add(initItem(StaffBirch.class));
+			items.add(initItem(StaffAcacia.class));
 
-			items.add(loader.loadStaffPreset(StaffDraw.class, drawSpells));
-			items.add(loader.loadStaffPreset(StaffSelect.class, selectSpells));
-			items.add(loader.loadStaffPreset(StaffTransform.class, transformSpells, matrixSpells));
+			items.add(initItem(StaffDraw.class, drawSpells));
+			items.add(initItem(StaffSelect.class, selectSpells));
+			items.add(initItem(StaffTransform.class, transformSpells, matrixSpells));
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -130,24 +132,44 @@ public class CommonProxy {
 	public void setCustomStateMappers() {
 	}
 
+	public void registerGuiHandler() {
+	}
+
 	private Block initBlock(Block block) {
-		String classname = block.getClass().getSimpleName();
-		String name = classname.substring(0, 1).toLowerCase() + classname.substring(1);
+		// String classname = block.getClass().getSimpleName();
+		// String name = classname.substring(0, 1).toLowerCase() + classname.substring(1);
+		String name = StringUtils.nameFor(block.getClass());
+		System.out.println("Intitializing block " + name);
 		block.setUnlocalizedName(name);
 		GameRegistry.registerBlock(block, name);
 		return block;
 	}
 
-	private Item initItem(Class<? extends Item> itemClass) throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		System.out.println("Intitializing item " + itemClass.getSimpleName());
-		String name = StringUtils.toCamelCase(itemClass);
-		Constructor c = itemClass.getConstructor();
-		Item item = (Item) c.newInstance();
+	private Item initItem(Class<? extends Item> itemClass) throws Exception {
+		return initItem(itemClass, (List<Spell>[]) null);
+	}
+
+	private Item initItem(Class<? extends Item> itemClass, List<Spell>... spellsLists) throws Exception {
+		String name = StringUtils.nameFor(itemClass);
+		System.out.println("Intitializing item " + name);
+		Constructor constructor = null;
+		Item item = null;
+		if (spellsLists == null) {
+			constructor = itemClass.getConstructor();
+			item = (Item) constructor.newInstance();
+		} else {
+			List<Spell> allSpells = new ArrayList();
+			for (List<Spell> list : spellsLists) {
+				allSpells.addAll(list);
+			}
+			constructor = itemClass.getConstructor(List.class);
+			item = (Item) constructor.newInstance(allSpells);
+		}
 		item.setUnlocalizedName(name);
 		item.setMaxStackSize(1);
 		// We are using this method to load class Staff to use it's model as a base model.
 		// We don't want it to be part of the game
-		if (item.getClass() != Staff.class || item.getClass() != Spell.class) {
+		if (item.getClass() != Staff.class && item.getClass() != Spell.class) {
 			item.setCreativeTab(tabSpells);
 		}
 		GameRegistry.registerItem(item, name);
@@ -157,19 +179,16 @@ public class CommonProxy {
 		return item;
 	}
 
-	private List<Item> initSpellsFromPackage(String packageName) throws MalformedURLException, IOException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, ClassNotFoundException {
+	private List<Spell> initSpellsFromPackage(String packageName) throws Exception {
 
 		ClassPath path = ClassPath.from(this.getClass().getClassLoader());
-		List<Item> spells = new ArrayList<>();
+		List<Spell> spells = Lists.newArrayList();
 		for (ClassInfo i : path.getTopLevelClassesRecursive(MoJo.DOMAIN + ".item.spell." + packageName)) {
 			Class c = i.load();
 			if (Spell.class.isAssignableFrom(c) && !Modifier.isAbstract(c.getModifiers())) {
-				spells.add(initItem(c));
+				spells.add((Spell) initItem(c));
 			}
 		}
 		return spells;
-	}
-
-	public void registerGuiHandler() {
 	}
 }

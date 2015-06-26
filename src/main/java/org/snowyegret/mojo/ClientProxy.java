@@ -17,7 +17,7 @@ import org.snowyegret.mojo.event.EventHandler;
 import org.snowyegret.mojo.event.KeyHandler;
 import org.snowyegret.mojo.event.MouseHandler;
 import org.snowyegret.mojo.gui.GuiHandler;
-import org.snowyegret.mojo.item.ModelResourceLocations;
+import org.snowyegret.mojo.util.ModelResourceLocations;
 
 public class ClientProxy extends CommonProxy {
 
