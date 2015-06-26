@@ -1,9 +1,12 @@
 # Mo'Jo
-A Minecraft mod for players who want to build with more mojo.
+A Minecraft mod for builders who want to play with more mojo.
 
-* Select blocks.
-* Copy, move, rotate, mirror, delete them.
-* Draw lines, boxes, spheres, cones, pyramids, trails
-* Fill holes, write text, make hollow.
-* Undo whatever you do.
+* Select.
+* Cut, copy, paste.
+* Copy, move, rotate, mirror, delete.
+* Draw lines, rectangles, circles, boxes, spheres, cones, pyramids, trails.
+* Fill, write, hollow.
+* Undo, redo.
+* All in-game.
+* 1.8 (only)
 

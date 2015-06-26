@@ -1,4 +1,4 @@
-package org.snowyegret.mojo.item.spell;
+package org.snowyegret.mojo.item;
 
 import java.io.IOException;
 import java.lang.reflect.Constructor;
@@ -14,6 +14,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
+import org.snowyegret.mojo.item.spell.Spell;
 import org.snowyegret.mojo.item.staff.Staff;
 import org.snowyegret.mojo.item.staff.StaffPreset;
 import org.snowyegret.mojo.util.StringUtils;
@@ -21,11 +22,11 @@ import org.snowyegret.mojo.util.StringUtils;
 import com.google.common.reflect.ClassPath;
 import com.google.common.reflect.ClassPath.ClassInfo;
 
-public class SpellLoader {
+public class ItemLoader {
 
 	public static CreativeTabs tabSpells;
 
-	public SpellLoader() {
+	public ItemLoader() {
 
 		tabSpells = new CreativeTabs("tabSpells") {
 			@Override
@@ -35,7 +36,6 @@ public class SpellLoader {
 		};
 	}
 
-	// For now, duplicate method loadStaff()
 	public Staff loadStaff(Class<? extends Staff> staffClass) throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		System.out.println("Loading staff " + staffClass.getSimpleName());
 		String name = StringUtils.toCamelCase(staffClass);

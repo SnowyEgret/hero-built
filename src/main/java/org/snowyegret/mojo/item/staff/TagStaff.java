@@ -31,7 +31,7 @@ public class TagStaff {
 		Spell spell = null;
 		String name = tag.getString(String.valueOf(i));
 		if (name != null && !name.equals("")) {
-			spell = (Spell) GameRegistry.findItem(MoJo.ID, name);
+			spell = (Spell) GameRegistry.findItem(MoJo.MODID, name);
 			if (spell == null) {
 				throw new RuntimeException("Game registry could not find item. name=" + name);
 			}
