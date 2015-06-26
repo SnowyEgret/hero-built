@@ -15,7 +15,6 @@ import org.snowyegret.mojo.block.BlockSelected;
 import org.snowyegret.mojo.gui.GuiHandler;
 import org.snowyegret.mojo.gui.PickInfo;
 import org.snowyegret.mojo.gui.SelectionInfo;
-import org.snowyegret.mojo.proxy.CommonProxy;
 
 @Mod(modid = MoJo.MODID, name = MoJo.NAME, version = MoJo.VERSION)
 public class MoJo {
@@ -27,7 +26,7 @@ public class MoJo {
 
 	@Instance(MODID)
 	public static MoJo instance;
-	@SidedProxy(clientSide = DOMAIN + ".proxy.ClientProxy", serverSide = DOMAIN + ".proxy.CommonProxy")
+	@SidedProxy(clientSide = DOMAIN + ".ClientProxy", serverSide = DOMAIN + ".CommonProxy")
 	public static CommonProxy proxy;
 
 	public static SimpleNetworkWrapper network;
@@ -42,8 +41,8 @@ public class MoJo {
 		proxy.registerItems();
 		proxy.registerNetworkMessages();
 		proxy.setCustomStateMappers();
-		
-		//TODO move this to the appropriate place
+
+		// TODO move this to the appropriate place
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
 	}
 
@@ -52,10 +51,6 @@ public class MoJo {
 		proxy.registerEventHandlers();
 		proxy.registerTileEntities();
 		proxy.registerItemModels();
-	}
-
-	@EventHandler
-	public void postInit(FMLPostInitializationEvent event) {
 	}
 
 	public void setSelectionInfo(SelectionInfo selectionInfo) {

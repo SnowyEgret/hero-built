@@ -1,4 +1,4 @@
-package org.snowyegret.mojo.proxy;
+package org.snowyegret.mojo;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -10,7 +10,6 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
-import org.snowyegret.mojo.MoJo;
 import org.snowyegret.mojo.block.BlockPicked;
 import org.snowyegret.mojo.block.BlockSelected;
 import org.snowyegret.mojo.event.EventHandler;

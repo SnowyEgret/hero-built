@@ -1,4 +1,4 @@
-package org.snowyegret.mojo.proxy;
+package org.snowyegret.mojo;
 
 import java.io.IOException;
 import java.lang.reflect.Constructor;
@@ -17,7 +17,6 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
-import org.snowyegret.mojo.MoJo;
 import org.snowyegret.mojo.block.BlockPicked;
 import org.snowyegret.mojo.block.BlockSelected;
 import org.snowyegret.mojo.block.PrevStateTileEntity;
