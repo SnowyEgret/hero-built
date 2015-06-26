@@ -39,11 +39,11 @@ public abstract class AbstractSpellSelect extends Spell {
 		info.addModifiers(Modifier.CTRL, Modifier.ALT);
 	}
 
-	public BlockPos[] getGrowthPattern() {
+	public BlockPos[] getSelectionPattern() {
 		return growthPattern;
 	}
 
-	public void setGrowthPattern(BlockPos[] growthPattern) {
+	public void setSelectionPattern(BlockPos[] growthPattern) {
 		this.growthPattern = growthPattern;
 	}
 

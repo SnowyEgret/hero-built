@@ -53,7 +53,7 @@ public class BlockSelected extends Block implements ITileEntityProvider {
 		if (tileEntity != null) {
 			prevState = tileEntity.getPrevState();
 		} else {
-			// System.out.println("No tile entity on BlockSelected");
+			//prevState = state;
 		}
 		return ((IExtendedBlockState) state).withProperty(prevStateProperty, prevState);
 	}

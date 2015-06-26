@@ -14,7 +14,7 @@ public class SpellSelectVertical extends AbstractSpellSelect {
 	@Override
 	public void invoke(IPlayer player) {
 		boolean northSouth = player.getModifiers().isPressed(Modifier.SHIFT);
-		setGrowthPattern(northSouth ? Select.NORTH_SOUTH : Select.EAST_WEST);
+		setSelectionPattern(northSouth ? Select.NORTH_SOUTH : Select.EAST_WEST);
 		super.invoke(player);
 	}
 

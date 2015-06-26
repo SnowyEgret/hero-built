@@ -1,10 +1,22 @@
 package org.snowyegret.mojo.item.spell.select;
 
+import org.snowyegret.mojo.item.spell.Modifier;
+import org.snowyegret.mojo.player.IPlayer;
 
 public class SpellSelectBellow extends AbstractSpellSelect {
 
 	public SpellSelectBellow() {
 		super(Select.BELOW_INCLUSIVE);
+	}
+
+	@Override
+	public void invoke(IPlayer player) {
+		if (player.getModifiers().isPressed(Modifier.SHIFT)) {
+			setSelectionPattern(Select.BELOW);
+		} else {
+			setSelectionPattern(Select.BELOW_INCLUSIVE);
+		}
+		super.invoke(player);
 	}
 
 	@Override

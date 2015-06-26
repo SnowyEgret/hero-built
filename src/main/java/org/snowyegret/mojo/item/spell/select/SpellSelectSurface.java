@@ -22,7 +22,7 @@ public class SpellSelectSurface extends AbstractSpellSelect {
 	public void invoke(IPlayer player) {
 		EnumFacing side = player.getPickManager().firstPick().side;
 		boolean ignoreSide = player.getModifiers().isPressed(Modifier.SHIFT);
-		setGrowthPattern(ignoreSide ? Select.ALL : Select.planeForSide(side));
+		setSelectionPattern(ignoreSide ? Select.ALL : Select.planeForSide(side));
 		setConditions(new IsOnSurface(side, ignoreSide));	
 		super.invoke(player);
 	}
