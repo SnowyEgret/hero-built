@@ -27,7 +27,7 @@ public class PickMessageHandler implements IMessageHandler<PickMessage, IMessage
 	// Private------------------------------------------------------------
 
 	private void processMessage(WorldClient worldClient, PickMessage message) {
-		MoJo.instance.setPickInfo(message.getPickInfo()); 
+		MoJo.pickInfo = message.getPickInfo(); 
 	}
 
 }

@@ -41,23 +41,13 @@ public class MoJo {
 		proxy.registerItems();
 		proxy.registerNetworkMessages();
 		proxy.setCustomStateMappers();
-
-		// TODO move this to the appropriate place
-		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
 	}
 
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
+		proxy.registerGuiHandler();
 		proxy.registerEventHandlers();
 		proxy.registerTileEntities();
 		proxy.registerItemModels();
-	}
-
-	public void setSelectionInfo(SelectionInfo selectionInfo) {
-		this.selectionInfo = selectionInfo;
-	}
-
-	public void setPickInfo(PickInfo pickInfo) {
-		this.pickInfo = pickInfo;
 	}
 }

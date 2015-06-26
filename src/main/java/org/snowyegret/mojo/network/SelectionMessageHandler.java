@@ -28,7 +28,7 @@ public class SelectionMessageHandler implements IMessageHandler<SelectionMessage
 	// Private------------------------------------------------------------
 	
 	private void processMessage(WorldClient worldClient, SelectionMessage message) {
-		MoJo.instance.setSelectionInfo(message.getSelectionInfo());		
+		MoJo.selectionInfo = message.getSelectionInfo();		
 	}
 
 }

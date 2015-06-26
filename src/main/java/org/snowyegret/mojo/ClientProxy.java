@@ -9,12 +9,14 @@ import net.minecraft.item.Item;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 import org.snowyegret.mojo.block.BlockPicked;
 import org.snowyegret.mojo.block.BlockSelected;
 import org.snowyegret.mojo.event.EventHandler;
 import org.snowyegret.mojo.event.KeyHandler;
 import org.snowyegret.mojo.event.MouseHandler;
+import org.snowyegret.mojo.gui.GuiHandler;
 import org.snowyegret.mojo.item.ModelResourceLocations;
 
 public class ClientProxy extends CommonProxy {
@@ -33,14 +35,11 @@ public class ClientProxy extends CommonProxy {
 		final int META = 0;
 		ItemModelMesher mesher = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
 
-		// for (List<Item> list : items) {
 		for (Item i : items) {
 			ModelResourceLocation l = ModelResourceLocations.get(i.getClass());
 			mesher.register(i, META, l);
 			System.out.println(i.getUnlocalizedName() + " model=" + mesher.getModelManager().getModel(l));
 		}
-		// }
-
 	}
 
 	@Override
@@ -60,4 +59,8 @@ public class ClientProxy extends CommonProxy {
 		});
 	}
 
+	@Override
+	public void registerGuiHandler() {
+		NetworkRegistry.INSTANCE.registerGuiHandler(MoJo.instance, new GuiHandler());
+	}
 }

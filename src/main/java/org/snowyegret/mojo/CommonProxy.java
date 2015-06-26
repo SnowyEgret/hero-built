@@ -51,6 +51,15 @@ import com.google.common.reflect.ClassPath.ClassInfo;
 
 public class CommonProxy {
 
+	private static CreativeTabs tabSpells;
+	static {
+		tabSpells = new CreativeTabs("tabSpells") {
+			@Override
+			public Item getTabIconItem() {
+				return Items.glass_bottle;
+			}
+		};
+	}
 	protected List<Item> items = Lists.newArrayList();
 
 	public void registerEventHandlers() {
@@ -107,16 +116,18 @@ public class CommonProxy {
 		}
 	}
 
-	// Private---------------------------------------------------------------------
+	public void registerNetworkMessages() {
+		// http://www.minecraftforge.net/forum/index.php?topic=20135.0
+		MoJo.network = NetworkRegistry.INSTANCE.newSimpleChannel("plato");
+		MoJo.network.registerMessage(KeyMessageHandler.class, KeyMessage.class, 0, Side.SERVER);
+		MoJo.network.registerMessage(ClearManagersMessageHandler.class, ClearManagersMessage.class, 1, Side.SERVER);
+		MoJo.network.registerMessage(SelectionMessageHandler.class, SelectionMessage.class, 2, Side.CLIENT);
+		MoJo.network.registerMessage(PickMessageHandler.class, PickMessage.class, 3, Side.CLIENT);
+		MoJo.network.registerMessage(SetBlockStateMessageHandler.class, SetBlockStateMessage.class, 4, Side.SERVER);
+		MoJo.network.registerMessage(MouseClickMessageHandler.class, MouseClickMessage.class, 5, Side.SERVER);
+	}
 
-	private static CreativeTabs tabSpells;
-	static {
-		tabSpells = new CreativeTabs("tabSpells") {
-			@Override
-			public Item getTabIconItem() {
-				return Items.glass_bottle;
-			}
-		};
+	public void setCustomStateMappers() {
 	}
 
 	private Block initBlock(Block block) {
@@ -159,19 +170,6 @@ public class CommonProxy {
 		return spells;
 	}
 
-	public void registerNetworkMessages() {
-		// http://www.minecraftforge.net/forum/index.php?topic=20135.0
-		MoJo.network = NetworkRegistry.INSTANCE.newSimpleChannel("plato");
-		MoJo.network.registerMessage(KeyMessageHandler.class, KeyMessage.class, 0, Side.SERVER);
-		MoJo.network.registerMessage(ClearManagersMessageHandler.class, ClearManagersMessage.class, 1, Side.SERVER);
-		MoJo.network.registerMessage(SelectionMessageHandler.class, SelectionMessage.class, 2, Side.CLIENT);
-		MoJo.network.registerMessage(PickMessageHandler.class, PickMessage.class, 3, Side.CLIENT);
-		MoJo.network.registerMessage(SetBlockStateMessageHandler.class, SetBlockStateMessage.class, 4, Side.SERVER);
-		MoJo.network.registerMessage(MouseClickMessageHandler.class, MouseClickMessage.class, 5, Side.SERVER);
-	}
-
-	public void setCustomStateMappers() {
-		// TODO Auto-generated method stub
-		
+	public void registerGuiHandler() {
 	}
 }
