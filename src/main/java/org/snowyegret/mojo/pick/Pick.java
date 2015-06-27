@@ -3,7 +3,6 @@ package org.snowyegret.mojo.pick;
 import javax.vecmath.Point3d;
 import javax.vecmath.Point3i;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
@@ -12,8 +11,7 @@ import org.snowyegret.mojo.geom.EnumPlane;
 
 public class Pick {
 
-	BlockPos pos;
-	private Block block;
+	private BlockPos pos;
 	public EnumFacing side;
 	private IBlockState state;
 	private EnumPlane plane;
@@ -44,16 +42,6 @@ public class Pick {
 		}
 	}
 
-	@Deprecated
-	public Block getBlock() {
-		return block;
-	}
-
-	@Deprecated
-	public void setBlock(Block block) {
-		this.block = block;
-	}
-
 	public Point3d point3d() {
 		return new Point3d(pos.getX(),pos.getY(), pos.getZ());
 	}
@@ -79,6 +67,16 @@ public class Pick {
 	}
 
 	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((pos == null) ? 0 : pos.hashCode());
+		result = prime * result + ((side == null) ? 0 : side.hashCode());
+		result = prime * result + ((state == null) ? 0 : state.hashCode());
+		return result;
+	}
+
+	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("Pick [pos=");
@@ -87,18 +85,10 @@ public class Pick {
 		builder.append(side);
 		builder.append(", state=");
 		builder.append(state);
+		builder.append(", plane=");
+		builder.append(plane);
 		builder.append("]");
 		return builder.toString();
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((pos == null) ? 0 : pos.hashCode());
-		result = prime * result + ((side == null) ? 0 : side.hashCode());
-		result = prime * result + ((state == null) ? 0 : state.hashCode());
-		return result;
 	}
 
 	//TODO check state.equals (write a test case)

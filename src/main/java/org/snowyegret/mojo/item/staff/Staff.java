@@ -56,6 +56,8 @@ public class Staff extends ItemBase implements IStaff {
 		// We are on the server side. Open staff gui if space bar is down
 		if (modifiers.isPressed(Modifier.SPACE)) {
 			player.openGui(GuiHandler.GUI_STAFF);
+			// Fix for Picking with a spell on an oak staff opens the staff gui #187
+			player.getModifiers().setPressed(Modifier.SPACE, false);
 			return true;
 		}
 
