@@ -19,7 +19,7 @@ public class SpellInfo {
 	private List<String> picks = new ArrayList<>();
 	private Map<String, String> modifiers = new HashMap<>();
 
-	public SpellInfo(ISpell spell) {
+	public SpellInfo(Spell spell) {
 		root = "item." + StringUtils.nameFor(spell.getClass()) + ".";
 		name = format("name");
 		description = format("description");

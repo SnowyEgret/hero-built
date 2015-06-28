@@ -16,7 +16,7 @@ import org.snowyegret.mojo.pick.PickManager;
 import org.snowyegret.mojo.player.IPlayer;
 import org.snowyegret.mojo.player.Player;
 
-public class Spell extends ItemBase implements ISpell {
+public class Spell extends ItemBase {
 
 	protected String message;
 	protected SpellInfo info;
@@ -67,33 +67,25 @@ public class Spell extends ItemBase implements ISpell {
 		rollOver.add(info.getDescription());
 	}
 
-	// ISpell --------------------------------------------
-
-	@Override
-	public void invoke(IPlayer player) {
-		
+	public void invoke(IPlayer player) {		
 	}
 
-	@Override
 	public String getMessage() {
 		return message;
 	}
 
-	@Override
 	public SpellInfo getInfo() {
 		return info;
 	}
 
-	@Override
 	public int getNumPicks() {
 		return numPicks;
 	}
 
-	@Override
 	public void reset(IPlayer player) {
 		PickManager pickManager = player.getPickManager();
 		pickManager.clearPicks();
-		pickManager.reset(numPicks);
+		pickManager.setNumPicks(numPicks);
 		message = null;
 	}
 

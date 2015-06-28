@@ -9,7 +9,6 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockTorch;
-import net.minecraft.init.Blocks;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.BlockPos;
@@ -17,7 +16,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
 
-import org.snowyegret.mojo.item.spell.ISpell;
+import org.snowyegret.mojo.item.spell.Spell;
 import org.snowyegret.mojo.item.spell.transform.SpellDelete;
 import org.snowyegret.mojo.item.spell.transform.SpellFill;
 import org.snowyegret.mojo.item.spell.transform.SpellFillChecker;
@@ -120,7 +119,7 @@ public class Transaction implements IUndoable, Iterable {
 		// Issue #99: Transform spells not reselecting with proper state
 		// FIXME not rendering properly for transform spells
 		// Temporary fix. Player can relelect with Action.LAST key
-		ISpell s = player.getSpell();
+		Spell s = player.getSpell();
 		if (!(s instanceof SpellFill || s instanceof SpellFillChecker || s instanceof SpellFillRandom)) {
 			// TODO do not reselect after spellDelete or pressing delete key
 			// Can not test for SpellDelete on delete key press because player does not have DeleteSpell in hand

@@ -11,7 +11,6 @@ import net.minecraft.util.Vec3;
 import net.minecraftforge.common.IExtendedEntityProperties;
 
 import org.snowyegret.mojo.MoJo;
-import org.snowyegret.mojo.item.spell.ISpell;
 import org.snowyegret.mojo.item.spell.Modifiers;
 import org.snowyegret.mojo.item.spell.Spell;
 import org.snowyegret.mojo.item.staff.Staff;
@@ -20,7 +19,6 @@ import org.snowyegret.mojo.pick.PickManager;
 import org.snowyegret.mojo.select.Selection;
 import org.snowyegret.mojo.select.SelectionManager;
 import org.snowyegret.mojo.undo.IUndoable;
-import org.snowyegret.mojo.undo.Transaction;
 import org.snowyegret.mojo.undo.TransactionManager;
 import org.snowyegret.mojo.world.IWorld;
 import org.snowyegret.mojo.world.WorldWrapper;
@@ -116,15 +114,15 @@ public class Player implements IPlayer {
 	}
 
 	@Override
-	public ISpell getSpell() {
-		ISpell spell = null;
+	public Spell getSpell() {
+		Spell spell = null;
 		ItemStack stack = player.getHeldItem();
 		if (stack != null) {
 			Item item = stack.getItem();
 			if (item instanceof Spell) {
-				spell = (ISpell) item;
+				spell = (Spell) item;
 			} else if (item instanceof Staff) {
-				spell = ((Staff) item).getSpell(stack, getPickManager());
+				spell = ((Staff) item).getSpell(stack);
 			}
 		}
 		return spell;
@@ -202,7 +200,7 @@ public class Player implements IPlayer {
 	}
 
 	@Override
-	public void setLastSpell(ISpell spell) {
+	public void setLastSpell(Spell spell) {
 		IExtendedEntityProperties p = player.getExtendedProperties(PlayerProperties.NAME);
 		((PlayerProperties) p).setLastSpell(spell);
 	}
@@ -217,6 +215,7 @@ public class Player implements IPlayer {
 	public void playSoundAtPlayer(String sound) {
 		getWorld().getWorld().playSoundAtEntity(player, sound, 1f, 1f);
 	}
+	
 
 	@Override
 	public List<BlockPos> getBounds() {

@@ -38,4 +38,5 @@ public class SpellCopy extends AbstractSpellMatrix {
 		return null;
 	}
 
+	
 }

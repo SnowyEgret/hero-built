@@ -31,7 +31,6 @@ import org.snowyegret.mojo.block.BlockPickedModel;
 import org.snowyegret.mojo.block.BlockSelected;
 import org.snowyegret.mojo.block.BlockSelectedModel;
 import org.snowyegret.mojo.gui.Overlay;
-import org.snowyegret.mojo.item.spell.ISpell;
 import org.snowyegret.mojo.item.spell.Spell;
 import org.snowyegret.mojo.item.spell.SpellModel;
 import org.snowyegret.mojo.item.spell.draw.SpellCircle;
@@ -50,7 +49,7 @@ import org.snowyegret.mojo.world.IWorld;
 
 public class EventHandler {
 
-	private ISpell spell = null;
+	private Spell spell = null;
 	private Overlay overlay = new Overlay();
 
 	// http://jabelarminecraft.blogspot.ca/p/minecraft-forge-172-event-handling.html
@@ -153,7 +152,7 @@ public class EventHandler {
 		IPlayer player = Player.instance((EntityPlayer) e.entity);
 		IWorld world = player.getWorld();
 		SelectionManager selectionManager = player.getSelectionManager();
-		ISpell s = player.getSpell();
+		Spell s = player.getSpell();
 
 		// The player may have changed spells on a staff. Reset picking on the spell.
 		if (s == null) {
@@ -219,6 +218,7 @@ public class EventHandler {
 		if (event.gui instanceof GuiIngameMenu && event.button.id == 1) {
 			MoJo.network.sendToServer(new ClearManagersMessage());
 		}
+		//FIXME If the game is restarted, the 
 	}
 
 	@SubscribeEvent

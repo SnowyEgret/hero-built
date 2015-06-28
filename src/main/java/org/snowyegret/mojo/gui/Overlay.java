@@ -1,18 +1,18 @@
 package org.snowyegret.mojo.gui;
 
-import org.snowyegret.mojo.MoJo;
-import org.snowyegret.mojo.event.MouseHandler;
-import org.snowyegret.mojo.item.spell.ISpell;
-import org.snowyegret.mojo.item.spell.Modifier;
-import org.snowyegret.mojo.item.spell.SpellInfo;
-import org.snowyegret.mojo.item.spell.transform.SpellFillRandom;
-import org.snowyegret.mojo.item.staff.Staff;
-import org.snowyegret.mojo.player.IPlayer;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Vec3i;
+
+import org.snowyegret.mojo.MoJo;
+import org.snowyegret.mojo.event.MouseHandler;
+import org.snowyegret.mojo.item.spell.Modifier;
+import org.snowyegret.mojo.item.spell.Spell;
+import org.snowyegret.mojo.item.spell.SpellInfo;
+import org.snowyegret.mojo.item.spell.transform.SpellFillRandom;
+import org.snowyegret.mojo.item.staff.Staff;
+import org.snowyegret.mojo.player.IPlayer;
 
 public class Overlay {
 
@@ -31,7 +31,7 @@ public class Overlay {
 	}
 
 	// Called by ForgeEventHandler.onRenderGameOverlayEvent on the client side
-	public void drawSpell(ISpell spell, IPlayer player) {
+	public void drawSpell(Spell spell, IPlayer player) {
 
 		int x = 10;
 		int y = x;

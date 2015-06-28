@@ -59,4 +59,5 @@ public class SpellMeasure extends AbstractSpellDraw {
 		return null;
 	}
 
+	
 }

@@ -48,4 +48,5 @@ public abstract class StaffPreset extends Staff {
 		tag.setIndex(0);
 		stack.setTagCompound(tag.getTag());
 	}	
+	
 }

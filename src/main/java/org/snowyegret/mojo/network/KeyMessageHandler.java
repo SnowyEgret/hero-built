@@ -13,9 +13,11 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import org.snowyegret.mojo.item.spell.Action;
 import org.snowyegret.mojo.item.spell.Modifier;
 import org.snowyegret.mojo.item.spell.Modifiers;
+import org.snowyegret.mojo.item.spell.Spell;
 import org.snowyegret.mojo.item.spell.matrix.SpellCopy;
 import org.snowyegret.mojo.item.spell.transform.SpellDelete;
 import org.snowyegret.mojo.item.staff.Staff;
+import org.snowyegret.mojo.pick.PickManager;
 import org.snowyegret.mojo.player.IPlayer;
 import org.snowyegret.mojo.player.Player;
 import org.snowyegret.mojo.select.Selection;
@@ -46,6 +48,7 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 		IWorld world = player.getWorld();
 		Modifiers modifiers = player.getModifiers();
 		SelectionManager selectionManager = player.getSelectionManager();
+		PickManager pickManager = player.getPickManager();
 		int keyCode = message.getKeyCode();
 		boolean keyState = message.getKeyState();
 
@@ -89,11 +92,16 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 			stack = player.getHeldItemStack();
 			Staff staff = player.getStaff();
 			if (staff != null) {
+				Spell spell = null;
 				if (modifiers.isPressed(Modifier.CTRL)) {
-					staff.prevSpell(stack, player.getPickManager());
+					//staff.prevSpell(stack, player.getPickManager());
+					spell = staff.prevSpell(stack);
 				} else {
-					staff.nextSpell(stack, player.getPickManager());
+					spell = staff.nextSpell(stack);
 				}
+				spell.reset(player);
+				//pickManager.setNumPicks(spell.getNumPicks());
+				//pickManager.clearPicks();
 			}
 			break;
 

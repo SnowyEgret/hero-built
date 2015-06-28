@@ -6,8 +6,7 @@ public class StaffOak extends Staff {
 
 	@Override
 	public Object[] getRecipe() {
-		//TODO how to make recipe with oak?
-		return new Object[] { "#  ", " # ", "  #", '#', Items.apple};
+		// TODO how to make recipe with oak?
+		return new Object[] { "#  ", " # ", "  #", '#', Items.apple };
 	}
-
 }

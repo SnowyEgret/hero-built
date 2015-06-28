@@ -47,4 +47,5 @@ public class SpellCircle extends AbstractSpellDraw {
 	public Object[] getRecipe() {
 		return null;
 	}
+	
 }

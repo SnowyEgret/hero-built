@@ -11,15 +11,13 @@ import net.minecraft.world.World;
 
 import org.snowyegret.mojo.gui.GuiHandler;
 import org.snowyegret.mojo.item.ItemBase;
-import org.snowyegret.mojo.item.spell.ISpell;
 import org.snowyegret.mojo.item.spell.Modifier;
 import org.snowyegret.mojo.item.spell.Modifiers;
 import org.snowyegret.mojo.item.spell.Spell;
-import org.snowyegret.mojo.pick.PickManager;
 import org.snowyegret.mojo.player.IPlayer;
 import org.snowyegret.mojo.player.Player;
 
-public class Staff extends ItemBase implements IStaff {
+public class Staff extends ItemBase {
 
 	static final int MAX_NUM_SPELLS = 9;
 
@@ -57,13 +55,14 @@ public class Staff extends ItemBase implements IStaff {
 		if (modifiers.isPressed(Modifier.SPACE)) {
 			player.openGui(GuiHandler.GUI_STAFF);
 			// Fix for Picking with a spell on an oak staff opens the staff gui #187
+			// The key release was lost in the wash.
 			player.getModifiers().setPressed(Modifier.SPACE, false);
 			return true;
 		}
 
 		// Get the current spell on this staff and use it
 		if (!isEmpty(stack)) {
-			Spell s = getSpell(stack, player.getPickManager());
+			Spell s = getSpell(stack);
 			s.onItemUse(stack, playerIn, world, pos, side, sx, sy, sz);
 			return true;
 		}
@@ -71,10 +70,7 @@ public class Staff extends ItemBase implements IStaff {
 		return false;
 	}
 
-	// IStaff ----------------------------------------------------------------------
-
-	@Override
-	public Spell getSpell(ItemStack stack, PickManager pickManager) {
+	public Spell getSpell(ItemStack stack) {
 		// System.out.println("tag=" + stack.getTagCompound());
 		// Throwable().printStackTrace();
 		if (isEmpty(stack)) {
@@ -83,13 +79,12 @@ public class Staff extends ItemBase implements IStaff {
 		TagStaff t = new TagStaff(stack);
 		Spell s = t.getSpell();
 		if (s == null) {
-			s = nextSpell(stack, pickManager);
+			s = nextSpell(stack);
 		}
 		return s;
 	}
 
-	@Override
-	public Spell nextSpell(ItemStack stack, PickManager pickManager) {
+	public Spell nextSpell(ItemStack stack) {
 		TagStaff t = new TagStaff(stack);
 		Spell s = null;
 		for (int i = 0; i < MAX_NUM_SPELLS; i++) {
@@ -102,7 +97,6 @@ public class Staff extends ItemBase implements IStaff {
 			if (s == null) {
 				continue;
 			} else {
-				pickManager.reset(s.getNumPicks());
 				break;
 			}
 		}
@@ -110,10 +104,9 @@ public class Staff extends ItemBase implements IStaff {
 		return s;
 	}
 
-	@Override
-	public ISpell prevSpell(ItemStack stack, PickManager pickManager) {
+	public Spell prevSpell(ItemStack stack) {
 		TagStaff t = new TagStaff(stack);
-		ISpell s = null;
+		Spell s = null;
 		for (int i = 0; i < MAX_NUM_SPELLS; i++) {
 			if (t.getIndex() == 0) {
 				t.setIndex(MAX_NUM_SPELLS - 1);
@@ -124,7 +117,6 @@ public class Staff extends ItemBase implements IStaff {
 			if (s == null) {
 				continue;
 			} else {
-				pickManager.reset(s.getNumPicks());
 				break;
 			}
 		}
@@ -132,27 +124,26 @@ public class Staff extends ItemBase implements IStaff {
 		return s;
 	}
 
-	@Override
 	public int numSpells(ItemStack stack) {
 		TagStaff t = new TagStaff(stack);
 		int numSpells = 0;
 		for (int i = 0; i < MAX_NUM_SPELLS; i++) {
-			ISpell s = t.getSpell(i);
+			Spell s = t.getSpell(i);
 			if (s != null)
 				numSpells++;
 		}
 		return numSpells;
 	}
 
-	@Override
 	public boolean isEmpty(ItemStack stack) {
 		TagStaff t = new TagStaff(stack);
 		for (int i = 0; i < MAX_NUM_SPELLS; i++) {
-			ISpell s = t.getSpell(i);
+			Spell s = t.getSpell(i);
 			if (s != null) {
 				return false;
 			}
 		}
 		return true;
 	}
+
 }

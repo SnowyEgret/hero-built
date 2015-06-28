@@ -33,5 +33,4 @@ public class SpellBox extends AbstractSpellDraw {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 }

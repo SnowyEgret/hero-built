@@ -34,4 +34,5 @@ public class SpellPyramid extends AbstractSpellDraw {
 		return null;
 	}
 
+	
 }

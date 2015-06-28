@@ -15,9 +15,8 @@ public class SpellSpline extends AbstractSpellDraw {
 	@Override
 	public void invoke(IPlayer player) {
 		Pick[] picks = player.getPicks();
-		IDrawable d = new CubicSpline(picks);
-		draw(d, player, picks[0].side);
+		//IDrawable d = new CubicSpline(picks);
+		//draw(d, player, picks[0].side);
 	}
-
 
 }

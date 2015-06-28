@@ -33,8 +33,9 @@ public class PrevStateTileEntity extends TileEntity {
 			// for (Object name : prevState.getPropertyNames()) {
 			//
 			// }
-			
-			// Implementation of: Find a way to restore selected blocks to their previous state when they are left in world after a crash #173
+
+			// Implementation of: Find a way to restore selected blocks to their previous state when they are left in
+			// world after a crash #173
 			super.writeToNBT(tag);
 		}
 	}
@@ -48,15 +49,15 @@ public class PrevStateTileEntity extends TileEntity {
 	@Override
 	public Packet getDescriptionPacket() {
 		NBTTagCompound tag = new NBTTagCompound();
-		writeToNBT(tag);
 		//super.writeToNBT(tag);
+		writeToNBT(tag);
 		return new S35PacketUpdateTileEntity(pos, this.getBlockMetadata(), tag);
 	}
 
 	@Override
 	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-		readFromNBT(pkt.getNbtCompound());
 		//super.readFromNBT(pkt.getNbtCompound());
+		readFromNBT(pkt.getNbtCompound());
 	}
 
 	@Override

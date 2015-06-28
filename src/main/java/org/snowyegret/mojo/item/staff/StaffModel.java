@@ -14,7 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.client.model.ISmartItemModel;
 
-import org.snowyegret.mojo.item.spell.ISpell;
+import org.snowyegret.mojo.item.spell.Spell;
 import org.snowyegret.mojo.util.ModelResourceLocations;
 
 public class StaffModel implements ISmartItemModel {
@@ -33,9 +33,9 @@ public class StaffModel implements ISmartItemModel {
 
 	@Override
 	public List getGeneralQuads() {
-	    List<BakedQuad> combinedQuads = new ArrayList(baseStaffModel.getGeneralQuads());
-	    combinedQuads.addAll(spellModel.getGeneralQuads());
-	    return combinedQuads;
+		List<BakedQuad> combinedQuads = new ArrayList(baseStaffModel.getGeneralQuads());
+		combinedQuads.addAll(spellModel.getGeneralQuads());
+		return combinedQuads;
 	}
 
 	@Override
@@ -67,8 +67,8 @@ public class StaffModel implements ISmartItemModel {
 	public IBakedModel handleItemState(ItemStack stack) {
 		if (stack != null) {
 			Item item = stack.getItem();
-			IStaff staff = (IStaff) item;
-			ISpell spell = staff.getSpell(stack, null);
+			Staff staff = (Staff) item;
+			Spell spell = staff.getSpell(stack);
 			ModelResourceLocation spellLocation = ModelResourceLocations.get(spell.getClass());
 			spellModel = Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getModelManager()
 					.getModel(spellLocation);

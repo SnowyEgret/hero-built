@@ -25,7 +25,7 @@ public class SpellLine extends AbstractSpellDraw {
 		IDrawable d = new Line(picks[0].point3d(), picks[1].point3d());
 		draw(d, player, picks[0].side);
 		if (isPolyline) {
-			pickManager.reset(2);
+			pickManager.setNumPicks(2);
 			pickManager.clearPicks();
 			pickManager.pick(picks[1].getPos(), picks[0].side);
 		}
@@ -36,4 +36,5 @@ public class SpellLine extends AbstractSpellDraw {
 		return null;
 	}
 
+	
 }

@@ -57,7 +57,7 @@ public class SpellModel implements ISmartItemModel {
 	public IBakedModel handleItemState(ItemStack stack) {
 		if (stack != null) {
 			Item item = stack.getItem();
-			ISpell spell = (ISpell) item;
+			Spell spell = (Spell) item;
 		}
 		return this;
 	}

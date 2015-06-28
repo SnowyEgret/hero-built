@@ -29,4 +29,5 @@ public class SpellRectangle extends AbstractSpellDraw {
 		return null;
 	}
 
+	
 }

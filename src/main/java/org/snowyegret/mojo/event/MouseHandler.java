@@ -13,8 +13,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.snowyegret.mojo.MoJo;
-import org.snowyegret.mojo.item.spell.ISpell;
-import org.snowyegret.mojo.item.staff.IStaff;
+import org.snowyegret.mojo.item.spell.Spell;
+import org.snowyegret.mojo.item.staff.Staff;
 import org.snowyegret.mojo.network.MouseClickMessage;
 import org.snowyegret.mojo.player.IPlayer;
 import org.snowyegret.mojo.player.Player;
@@ -86,7 +86,7 @@ public class MouseHandler {
 		}
 
 		Item heldItem = stack.getItem();
-		if (heldItem instanceof IStaff || heldItem instanceof ISpell || cursor.typeOfHit == MovingObjectType.MISS) {
+		if (heldItem instanceof Staff || heldItem instanceof Spell || cursor.typeOfHit == MovingObjectType.MISS) {
 			if (e.buttonstate) {
 				if (e.button == 1 && cursor.typeOfHit == MovingObjectType.BLOCK) {
 					// Right click on a block handled by onItemUse. No cancel.
@@ -99,5 +99,4 @@ public class MouseHandler {
 			}
 		}
 	}
-
 }

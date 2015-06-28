@@ -15,4 +15,5 @@ public class StaffTransform extends StaffPreset {
 	public Object[] getRecipe() {
 		return new Object[] { "#  ", " # ", "  #", '#', Items.bone };
 	}
+	
 }

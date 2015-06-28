@@ -11,12 +11,11 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.Vec3;
-import net.minecraft.world.IBlockAccess;
 
 import org.snowyegret.mojo.MoJo;
+import org.snowyegret.mojo.block.BlockPicked;
 import org.snowyegret.mojo.block.BlockSelected;
 import org.snowyegret.mojo.block.PrevStateTileEntity;
 import org.snowyegret.mojo.network.SelectionMessage;
@@ -32,7 +31,7 @@ import ds.geom.VoxelSet;
 
 public class SelectionManager {
 
-	private final Map<BlockPos, Selection> selMap = Maps.newLinkedHashMap();
+	private Map<BlockPos, Selection> selMap = Maps.newLinkedHashMap();
 	private Block blockSelected;
 	private List<BlockPos> reselects;
 	private Set<BlockPos> grownSelections = Sets.newHashSet();
@@ -169,11 +168,18 @@ public class SelectionManager {
 		Block b = (state.getBlock());
 		
 		// Should not happen.
-		// SpellDelete is reselecting on a delete key press
+		// TODO Except that SpellDelete is reselecting on a delete key press
 		if (b instanceof BlockAir) {
 			System.out.println("BlockAir. Returning null.");
 			return null;
 		}
+		
+//		if (b instanceof BlockPicked) {
+//			PrevStateTileEntity te = (PrevStateTileEntity) world.getTileEntity(pos);
+//			if (te != null) {
+//				state = te.getPrevState();
+//			}
+//		}
 
 		if (b instanceof BlockSelected) {
 			// Implementation of: Find a way to restore selected blocks to their previous state when they are left in world after a crash #173
@@ -192,7 +198,7 @@ public class SelectionManager {
 		}
 		
 		if (isSelected(pos)) {
-			System.out.println("Position is seleted but not a BlockSelected. This should not happen.");
+			System.out.println("Position is selected but not a BlockSelected. This should not happen.");
 		}
 
 		s = new Selection(pos, state);

@@ -30,4 +30,5 @@ public class SpellSphere extends AbstractSpellDraw {
 	public Object[] getRecipe() {
 		return new Object[] { " A ", "A A", " A ", 'A', Items.bone };
 	}
+
 }

@@ -9,5 +9,4 @@ public class StaffBirch extends Staff {
 		//TODO how to make recipe with oak?
 		return new Object[] { "#  ", " # ", "  #", '#', Items.baked_potato};
 	}
-
 }

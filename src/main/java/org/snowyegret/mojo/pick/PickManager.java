@@ -20,7 +20,7 @@ public class PickManager {
 
 	private LinkedList<Pick> picks = new LinkedList<>();
 	private LinkedList<Pick> lastPicks = new LinkedList<>();
-	private int maxPicks = 0;
+	private int numPicks = 0;
 	private Block blockPicked;
 	private IPlayer player;
 
@@ -66,11 +66,11 @@ public class PickManager {
 	}
 
 	public boolean isFinishedPicking() {
-		return (picks.size() == maxPicks);
+		return (picks.size() == numPicks);
 	}
 
-	public void reset(int maxPicks) {
-		this.maxPicks = maxPicks;
+	public void setNumPicks(int numPicks) {
+		this.numPicks = numPicks;
 	}
 
 	public Pick firstPick() {
@@ -89,7 +89,7 @@ public class PickManager {
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("PickManager [maxPicks=");
-		builder.append(maxPicks);
+		builder.append(numPicks);
 		builder.append(", picks=");
 		builder.append(picks);
 		builder.append("]");
@@ -100,7 +100,7 @@ public class PickManager {
 
 	private Pick pick(IWorld world, BlockPos pos, EnumFacing side) {
 
-		if (picks.size() == maxPicks) {
+		if (picks.size() == numPicks) {
 			return null;
 		}
 

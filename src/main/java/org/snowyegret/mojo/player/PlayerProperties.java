@@ -1,17 +1,17 @@
 package org.snowyegret.mojo.player;
 
-import org.snowyegret.mojo.MoJo;
-import org.snowyegret.mojo.item.spell.ISpell;
-import org.snowyegret.mojo.item.spell.Modifiers;
-import org.snowyegret.mojo.pick.PickManager;
-import org.snowyegret.mojo.select.SelectionManager;
-import org.snowyegret.mojo.undo.TransactionManager;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IExtendedEntityProperties;
+
+import org.snowyegret.mojo.MoJo;
+import org.snowyegret.mojo.item.spell.Modifiers;
+import org.snowyegret.mojo.item.spell.Spell;
+import org.snowyegret.mojo.pick.PickManager;
+import org.snowyegret.mojo.select.SelectionManager;
+import org.snowyegret.mojo.undo.TransactionManager;
 
 public class PlayerProperties implements IExtendedEntityProperties {
 
@@ -22,7 +22,7 @@ public class PlayerProperties implements IExtendedEntityProperties {
 	private PickManager pickManager;
 	private TransactionManager transactionManager;
 	private Clipboard clipboard;
-	private ISpell lastSpell;
+	private Spell lastSpell;
 
 	private IPlayer player;
 
@@ -64,11 +64,11 @@ public class PlayerProperties implements IExtendedEntityProperties {
 		clipboard = new Clipboard();
 	}
 
-	public void setLastSpell(ISpell spell) {
+	public void setLastSpell(Spell spell) {
 		this.lastSpell = spell;
 	}
 
-	public ISpell getLastSpell() {
+	public Spell getLastSpell() {
 		return lastSpell;
 	}
 

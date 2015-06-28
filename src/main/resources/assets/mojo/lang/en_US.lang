@@ -27,6 +27,7 @@ item.spellCircle.name=Circle
 item.spellCircle.description=creates a circle
 item.spellCircle.pick.0=center
 item.spellCircle.pick.1=radius
+item.spellCircle.modifier.shift=
 item.spellCircle.modifier.alt=on surface
 
 item.spellCone.name=Cone

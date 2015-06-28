@@ -15,4 +15,5 @@ public class StaffDraw extends StaffPreset {
 	public Object[] getRecipe() {
 		return new Object[] { "#  ", " # ", "  #", '#', Items.bone };
 	}
+	
 }

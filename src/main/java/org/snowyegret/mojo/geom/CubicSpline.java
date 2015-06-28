@@ -23,11 +23,10 @@ public class CubicSpline extends Curve {
 	// rT = Range.between(0d, 1d);
 	// }
 
-	public CubicSpline(Pick[] picks) {
-		super(picks[0].point3d());
-		for (Pick p : picks) {
-			Point3d pt = picks[0].point3d();
-			cubics.add(new Cubic(Cubic.BEZIER, new double[]{pt.x, pt.y, pt.z, .5}));
+	public CubicSpline(Point3d... points) {
+		super(points[0]);
+		for (Point3d p : points) {
+			cubics.add(new Cubic(Cubic.BEZIER, new double[] { p.x, p.y, p.z, .5 }));
 		}
 		rT = Range.between(0d, 1d);
 	}

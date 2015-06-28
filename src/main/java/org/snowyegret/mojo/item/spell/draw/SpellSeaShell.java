@@ -18,4 +18,5 @@ public class SpellSeaShell extends AbstractSpellDraw {
 		IDrawable d = new SeaShell(picks[0].point3d());
 		draw(d, player, picks[0].side);
 	}
+	
 }

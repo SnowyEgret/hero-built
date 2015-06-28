@@ -23,6 +23,7 @@ public abstract class AbstractSpellMatrix extends Spell {
 	public AbstractSpellMatrix(int numPicks) {
 		super(numPicks);
 	}
+	
 
 	protected void transformSelections(IPlayer player, Matrix4d matrix) {
 

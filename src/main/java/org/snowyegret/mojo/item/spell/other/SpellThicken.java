@@ -40,7 +40,7 @@ public class SpellThicken extends Spell {
 		
 		Modifiers modifiers = player.getModifiers();
 		SelectionManager selectionManager = player.getSelectionManager();
-		
+		IBlockState firstSelection = selectionManager.firstSelection().getState();		
 		Set<BlockPos> positions = new HashSet<>();
 		IntegerDomain domain = selectionManager.getDomain();
 		if (domain.isPlanar()) {
@@ -50,10 +50,9 @@ public class SpellThicken extends Spell {
 		}
 
 		selectionManager.clearSelections();
-		player.getPickManager().clearPicks();
+		player.clearPicks();
 
 		List<IUndoable> undoables = Lists.newArrayList();
-		IBlockState firstSelection = selectionManager.firstSelection().getState();
 		for (BlockPos p : positions) {
 			undoables.add(new UndoableSetBlock(p, player.getWorld().getState(p), firstSelection));
 		}
@@ -91,7 +90,7 @@ public class SpellThicken extends Spell {
 	}
 
 	private void thickenPlane(Set<BlockPos> points, Modifiers modifiers, SelectionManager selectionManager, IntegerDomain domain, IWorld world) {
-		boolean withinPlane = modifiers.isPressed(Modifier.SHIFT);
+		boolean withinPlane = modifiers.isPressed(Modifier.ALT);
 		BlockPos[] select = null;
 		switch (domain.getPlane()) {
 		case XY:

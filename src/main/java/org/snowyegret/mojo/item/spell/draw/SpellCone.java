@@ -33,4 +33,5 @@ public class SpellCone extends AbstractSpellDraw {
 	public Object[] getRecipe() {
 		return null;
 	}
+	
 }

@@ -9,5 +9,4 @@ public class StaffAcacia extends Staff {
 		//TODO how to make recipe with acacia?
 		return new Object[] { "#  ", " # ", "  #", '#', Items.apple};
 	}
-
 }

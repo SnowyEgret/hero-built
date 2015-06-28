@@ -65,6 +65,9 @@ public abstract class AbstractSpellSelect extends Spell {
 
 		// Select the pick if there are no selections.
 		// Either way the picks must be cleared.
+		// FIXME Array out of bounds exception when picking with a selection spell after "Save and Quit to Title" but
+		// not not "Quit Game" #194
+		// Picks array is empty
 		Pick firstPick = player.getPickManager().firstPick();
 		player.clearPicks();
 		if (selectionManager.size() == 0) {
@@ -98,16 +101,29 @@ public abstract class AbstractSpellSelect extends Spell {
 				// Do not select blocks if they are already selected
 				// Both of these tests perform equally
 				if (block instanceof BlockSelected) {
-					// if (selectionManager.isSelected(p)) {
 					// System.out.println("Position already selected");
-
 					// Select previously selected blocks if they have been left in world after a crash
-					// Tile entity will be null and can not render
+					// TileEntity is saved to world and it not null.
+					// If the prevState is null, reselect it.
 					PrevStateTileEntity tileEntity = (PrevStateTileEntity) player.getWorld().getTileEntity(p);
 					if (tileEntity.getPrevState() != null) {
+						// System.out.println("While growing selections, found a BlockSelected.");
 						continue;
+					} else {
+						// TODO Why reselect it if state is null and when is state null?
+						// If this never prints, delete this test
+						System.out
+								.println(">>>>>>>>>>>>>>>>>While growing selections, found a BlockSelected with null state.");
 					}
+					// continue;
 				}
+
+				// Set takes care of this
+				// if (selectionManager.isSelected(p)) {
+				// System.out.println("Position already selected but is not a BlockSelected");
+				// continue;
+				// }
+
 				if (anyBlock) {
 					grownSelections.add(p);
 				} else {

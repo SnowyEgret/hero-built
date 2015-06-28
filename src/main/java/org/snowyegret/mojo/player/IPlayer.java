@@ -8,8 +8,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.Vec3;
 
-import org.snowyegret.mojo.item.spell.ISpell;
 import org.snowyegret.mojo.item.spell.Modifiers;
+import org.snowyegret.mojo.item.spell.Spell;
 import org.snowyegret.mojo.item.staff.Staff;
 import org.snowyegret.mojo.pick.Pick;
 import org.snowyegret.mojo.pick.PickManager;
@@ -34,7 +34,7 @@ public interface IPlayer {
 
 	public abstract Item getHeldItem();
 
-	public abstract ISpell getSpell();
+	public abstract Spell getSpell();
 
 	public abstract Staff getStaff();
 
@@ -56,7 +56,7 @@ public interface IPlayer {
 
 	public abstract PickManager getPickManager();
 
-	public abstract void setLastSpell(ISpell spell);
+	public abstract void setLastSpell(Spell spell);
 
 	public abstract void playSoundAtPlayer(String sound);
 
