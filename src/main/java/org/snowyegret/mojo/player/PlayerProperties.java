@@ -28,7 +28,6 @@ public class PlayerProperties implements IExtendedEntityProperties {
 
 	public PlayerProperties(EntityPlayer entity) {
 		player = Player.instance(entity);
-
 	}
 
 	public Modifiers getModifiers() {

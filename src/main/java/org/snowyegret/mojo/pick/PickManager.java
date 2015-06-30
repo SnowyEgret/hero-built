@@ -127,23 +127,6 @@ public class PickManager {
 		return pick;
 	}
 
-	// Pick pick = null;
-	// if (picks.size() < maxPicks) {
-	// pick = new Pick(pos, state, side);
-	// picks.add(pick);
-	// }
-	//
-	// //Pick pick = addPick(pos, state, side);
-	// if (pick != null) {
-	// world.setState(pos, blockPicked.getDefaultState());
-	// PrevStateTileEntity tileEntity = (PrevStateTileEntity) world.getTileEntity(pos);
-	// tileEntity.setPrevState(state);
-	// // Seems we don't have to do this
-	// // world.getWorld().markBlockForUpdate(pos);
-	// }
-	// return pick;
-	// }
-
 	private void clearPicks(IWorld world) {
 		for (Pick pick : getPicks()) {
 			IBlockState state = world.getActualState(pick.getPos());
@@ -163,16 +146,4 @@ public class PickManager {
 			}
 		}
 	}
-
-	// private Pick addPick(BlockPos pos, IBlockState state, EnumFacing side) {
-	// if (picks.size() < maxPicks) {
-	// Pick p = new Pick(pos, state, side);
-	// picks.add(p);
-	// return p;
-	// } else {
-	// System.out.println("Already reached maxPicks. Returning nulll");
-	// return null;
-	// }
-	// }
-
 }

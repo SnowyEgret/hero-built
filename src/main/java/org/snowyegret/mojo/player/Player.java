@@ -28,6 +28,7 @@ import com.google.common.collect.Lists;
 public class Player implements IPlayer {
 
 	private EntityPlayer player;
+	private PlayerProperties props;
 
 	public enum Direction {
 		NORTH,
@@ -38,10 +39,14 @@ public class Player implements IPlayer {
 
 	protected Player(EntityPlayer player) {
 		this.player = player;
+		props = (PlayerProperties) player.getExtendedProperties(PlayerProperties.NAME);
+		if (props == null) {
+			System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.");
+		}
 	}
 
 	protected Player() {
-		player = Minecraft.getMinecraft().thePlayer;
+		this(Minecraft.getMinecraft().thePlayer);
 	}
 
 	public static IPlayer instance(EntityPlayer player) {
@@ -177,51 +182,45 @@ public class Player implements IPlayer {
 
 	@Override
 	public Modifiers getModifiers() {
-		IExtendedEntityProperties p = player.getExtendedProperties(PlayerProperties.NAME);
-		return ((PlayerProperties) p).getModifiers();
+		return props.getModifiers();
 	}
 
 	@Override
 	public TransactionManager getTransactionManager() {
-		IExtendedEntityProperties p = player.getExtendedProperties(PlayerProperties.NAME);
-		return ((PlayerProperties) p).getUndoManager();
+		//This is null for some reason
+		props = (PlayerProperties) player.getExtendedProperties(PlayerProperties.NAME);
+		return props.getUndoManager();
 	}
 
 	@Override
 	public SelectionManager getSelectionManager() {
-		IExtendedEntityProperties p = player.getExtendedProperties(PlayerProperties.NAME);
-		return ((PlayerProperties) p).getSelectionManager();
+		return props.getSelectionManager();
 	}
 
 	@Override
 	public PickManager getPickManager() {
-		IExtendedEntityProperties p = player.getExtendedProperties(PlayerProperties.NAME);
-		return ((PlayerProperties) p).getPickManager();
+		return props.getPickManager();
 	}
 
 	@Override
 	public void setLastSpell(Spell spell) {
-		IExtendedEntityProperties p = player.getExtendedProperties(PlayerProperties.NAME);
-		((PlayerProperties) p).setLastSpell(spell);
+		props.setLastSpell(spell);
 	}
 
 	@Override
 	public Spell getLastSpell() {
-		IExtendedEntityProperties p = player.getExtendedProperties(PlayerProperties.NAME);
-		return ((PlayerProperties) p).getLastSpell();
+		return props.getLastSpell();
 	}
 
 	@Override
 	public Clipboard getClipboard() {
-		IExtendedEntityProperties p = player.getExtendedProperties(PlayerProperties.NAME);
-		return ((PlayerProperties) p).getClipboard();
+		return props.getClipboard();
 	}
 
 	@Override
 	public void playSoundAtPlayer(String sound) {
 		getWorld().getWorld().playSoundAtEntity(player, sound, 1f, 1f);
 	}
-	
 
 	@Override
 	public List<BlockPos> getBounds() {
@@ -234,9 +233,6 @@ public class Player implements IPlayer {
 	@Override
 	public void doTransaction(List<IUndoable> setBlocks) {
 		getTransactionManager().doTransaction(setBlocks);
-		// Transaction t = new Transaction();
-		// t.addAll(setBlocks);
-		// t.dO(this);
 	}
 
 	@Override

@@ -103,16 +103,13 @@ public class EventHandlerServer {
 		// The player may have changed spells on a staff or may have a spell in hand. Reset picking on the spell.
 		if (spell == null) {
 			player.setLastSpell(null);
-			// spell = null;
 			return;
 		} else {
 			// If the spell has changed reset it.
 			if (!spell.equals(lastSpell)) {
 				player.setLastSpell(spell);
-				//lastSpell = spell;
 				// TODO this is clearer
 				// player.resetPicks(spell);
-				System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.resetting");
 				spell.reset(player);
 			}
 		}
