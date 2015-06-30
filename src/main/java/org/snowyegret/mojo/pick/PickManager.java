@@ -88,7 +88,7 @@ public class PickManager {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("PickManager [maxPicks=");
+		builder.append("PickManager [numPicks=");
 		builder.append(numPicks);
 		builder.append(", picks=");
 		builder.append(picks);

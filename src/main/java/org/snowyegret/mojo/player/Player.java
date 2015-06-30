@@ -206,6 +206,12 @@ public class Player implements IPlayer {
 	}
 
 	@Override
+	public Spell getLastSpell() {
+		IExtendedEntityProperties p = player.getExtendedProperties(PlayerProperties.NAME);
+		return ((PlayerProperties) p).getLastSpell();
+	}
+
+	@Override
 	public Clipboard getClipboard() {
 		IExtendedEntityProperties p = player.getExtendedProperties(PlayerProperties.NAME);
 		return ((PlayerProperties) p).getClipboard();

@@ -1,7 +1,7 @@
 package org.snowyegret.mojo.network;
 
 import org.snowyegret.mojo.MoJo;
-import org.snowyegret.mojo.event.EventHandler;
+import org.snowyegret.mojo.event.EventHandlerServer;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;

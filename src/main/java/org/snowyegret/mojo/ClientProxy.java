@@ -13,20 +13,14 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 import org.snowyegret.mojo.block.BlockPicked;
 import org.snowyegret.mojo.block.BlockSelected;
-import org.snowyegret.mojo.event.EventHandler;
+import org.snowyegret.mojo.event.EventHandlerClient;
+import org.snowyegret.mojo.event.EventHandlerServer;
 import org.snowyegret.mojo.event.KeyHandler;
 import org.snowyegret.mojo.event.MouseHandler;
 import org.snowyegret.mojo.gui.GuiHandler;
 import org.snowyegret.mojo.util.ModelResourceLocations;
 
 public class ClientProxy extends CommonProxy {
-
-	@Override
-	public void registerEventHandlers() {
-		MinecraftForge.EVENT_BUS.register(new EventHandler());
-		MinecraftForge.EVENT_BUS.register(new MouseHandler());
-		FMLCommonHandler.instance().bus().register(new KeyHandler());
-	}
 
 	// https://github.com/TheGreyGhost/MinecraftByExample/blob/master/src/main/java/minecraftbyexample/mbe15_item_smartitemmodel/StartupClientOnly.java
 	@Override

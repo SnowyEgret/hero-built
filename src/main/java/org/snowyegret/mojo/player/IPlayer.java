@@ -58,6 +58,8 @@ public interface IPlayer {
 
 	public abstract void setLastSpell(Spell spell);
 
+	public abstract Spell getLastSpell();
+
 	public abstract void playSoundAtPlayer(String sound);
 
 	public abstract Clipboard getClipboard();

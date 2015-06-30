@@ -10,6 +10,8 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -17,6 +19,10 @@ import net.minecraftforge.fml.relauncher.Side;
 import org.snowyegret.mojo.block.BlockPicked;
 import org.snowyegret.mojo.block.BlockSelected;
 import org.snowyegret.mojo.block.PrevStateTileEntity;
+import org.snowyegret.mojo.event.EventHandlerClient;
+import org.snowyegret.mojo.event.EventHandlerServer;
+import org.snowyegret.mojo.event.KeyHandler;
+import org.snowyegret.mojo.event.MouseHandler;
 import org.snowyegret.mojo.item.IItem;
 import org.snowyegret.mojo.item.spell.Spell;
 import org.snowyegret.mojo.item.staff.Staff;
@@ -69,7 +75,12 @@ public class CommonProxy {
 	protected List<Item> items = Lists.newArrayList();
 
 	public void registerEventHandlers() {
+		MinecraftForge.EVENT_BUS.register(new EventHandlerServer());
+		MinecraftForge.EVENT_BUS.register(new EventHandlerClient());
+		MinecraftForge.EVENT_BUS.register(new MouseHandler());
+		FMLCommonHandler.instance().bus().register(new KeyHandler());
 	}
+
 
 	public void registerTileEntities() {
 		GameRegistry.registerTileEntity(PrevStateTileEntity.class, PrevStateTileEntity.class.getSimpleName());

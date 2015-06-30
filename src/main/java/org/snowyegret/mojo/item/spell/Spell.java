@@ -18,16 +18,11 @@ import org.snowyegret.mojo.player.Player;
 
 public class Spell extends ItemBase {
 
+	// TODO Move this property to the overlay.
 	protected String message;
 	protected SpellInfo info;
-	protected final String CTRL = "ctrl,";
-	protected final String ALT = "alt,";
-	protected final String SHIFT = "shift,";
-	protected final String X = "X,";
-	protected final String Y = "Y,";
-	protected final String Z = "Z,";
 	private int numPicks;
-	
+
 	// For base spell model
 	public Spell() {
 	}
@@ -53,10 +48,12 @@ public class Spell extends ItemBase {
 		}
 		IPlayer player = Player.instance(playerIn);
 		PickManager pickManager = player.getPickManager();
+		System.out.println("pickManager=" + pickManager);
 		pickManager.pick(pos, side);
-		MoJo.network.sendTo(new PickMessage(pickManager), (EntityPlayerMP) playerIn);
+		// This is done in method pick
+		//MoJo.network.sendTo(new PickMessage(pickManager), (EntityPlayerMP) playerIn);
 		if (pickManager.isFinishedPicking()) {
-			invoke(Player.instance(playerIn));
+			invoke(player);
 		}
 		return true;
 
@@ -67,7 +64,7 @@ public class Spell extends ItemBase {
 		rollOver.add(info.getDescription());
 	}
 
-	public void invoke(IPlayer player) {		
+	public void invoke(IPlayer player) {
 	}
 
 	public String getMessage() {
@@ -86,6 +83,7 @@ public class Spell extends ItemBase {
 		PickManager pickManager = player.getPickManager();
 		pickManager.clearPicks();
 		pickManager.setNumPicks(numPicks);
+		// TODO set this on the overlay
 		message = null;
 	}
 
@@ -94,8 +92,8 @@ public class Spell extends ItemBase {
 	// For Staff.addSpell(). Only one spell of each type on a staff
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
+//		if (this == obj)
+//			return true;
 		if (obj == null)
 			return false;
 		if (getClass() == obj.getClass())

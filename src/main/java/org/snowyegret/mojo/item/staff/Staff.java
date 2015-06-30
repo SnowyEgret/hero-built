@@ -21,8 +21,6 @@ public class Staff extends ItemBase {
 
 	static final int MAX_NUM_SPELLS = 9;
 
-	// Item--------------------------------------------------------
-
 	// Adds information to rollover in creative tab
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List rollOver, boolean par4) {

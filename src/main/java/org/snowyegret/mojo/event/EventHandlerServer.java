@@ -2,88 +2,32 @@ package org.snowyegret.mojo.event;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.gui.GuiIngameMenu;
-import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
-import net.minecraft.util.IRegistry;
-import net.minecraft.util.Vec3;
-import net.minecraft.util.Vec3i;
-import net.minecraftforge.client.event.DrawBlockHighlightEvent;
-import net.minecraftforge.client.event.GuiScreenEvent;
-import net.minecraftforge.client.event.ModelBakeEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
-import org.snowyegret.mojo.MoJo;
-import org.snowyegret.mojo.block.BlockPicked;
-import org.snowyegret.mojo.block.BlockPickedModel;
-import org.snowyegret.mojo.block.BlockSelected;
-import org.snowyegret.mojo.block.BlockSelectedModel;
-import org.snowyegret.mojo.gui.Overlay;
 import org.snowyegret.mojo.item.spell.Spell;
-import org.snowyegret.mojo.item.spell.SpellModel;
-import org.snowyegret.mojo.item.spell.draw.SpellCircle;
 import org.snowyegret.mojo.item.spell.other.SpellTrail;
 import org.snowyegret.mojo.item.spell.transform.SpellFill;
-import org.snowyegret.mojo.item.staff.Staff;
-import org.snowyegret.mojo.item.staff.StaffDraw;
-import org.snowyegret.mojo.item.staff.StaffModel;
-import org.snowyegret.mojo.network.ClearManagersMessage;
 import org.snowyegret.mojo.player.IPlayer;
 import org.snowyegret.mojo.player.Player;
 import org.snowyegret.mojo.player.PlayerProperties;
-import org.snowyegret.mojo.select.SelectionManager;
-import org.snowyegret.mojo.util.ModelResourceLocations;
 import org.snowyegret.mojo.world.IWorld;
 
-public class EventHandler {
-
-	private Spell spell = null;
-	private Overlay overlay = new Overlay();
+public class EventHandlerServer {
 
 	// http://jabelarminecraft.blogspot.ca/p/minecraft-forge-172-event-handling.html
 	// Due to the danger of other mods canceling events you might want to intercept, and also useful in some specific
 	// cases, you can force a subscribed method to still get events that have been canceled. This is by using the
 	// receiveCanceled=true parameter in the @Subscribe annotation.
-
-	// When the cursor falls on a new block update the overlay so that when it is rendered
-	// in onRenderGameOverlayEvent below it will show the distance from the first pick or selection.
-	@SideOnly(Side.CLIENT)
-	@SubscribeEvent
-	public void onDrawBlockHightlight(DrawBlockHighlightEvent e) {
-		if (spell != null) {
-			BlockPos pos = null;
-			// Pick pick = pickManager.lastPick();
-			BlockPos lastPickPos = MoJo.pickInfo.getLastPos();
-			if (lastPickPos != null) {
-				// pos = pick.getPos();
-				pos = lastPickPos;
-			}
-			if (pos == null) {
-				// Selection s = selectionManager.firstSelection();
-				BlockPos firstSelectionPos = MoJo.selectionInfo.getFirstPos();
-				if (firstSelectionPos != null) {
-					// p = s.getPos();
-					pos = firstSelectionPos;
-				}
-			}
-			if (pos != null) {
-				Vec3 d = e.target.hitVec;
-				overlay.setDisplacement(pos.subtract(new Vec3i(d.xCoord, d.yCoord, d.zCoord)));
-			}
-		}
-	}
 
 	@SubscribeEvent
 	public void onPlayerInteractEvent(PlayerInteractEvent e) {
@@ -145,30 +89,37 @@ public class EventHandler {
 		if (e.entity.worldObj.isRemote) {
 			return;
 		}
+
 		if (!(e.entity instanceof EntityPlayer)) {
 			return;
 		}
 
 		IPlayer player = Player.instance((EntityPlayer) e.entity);
 		IWorld world = player.getWorld();
-		SelectionManager selectionManager = player.getSelectionManager();
-		Spell s = player.getSpell();
+		// Get the last spell from the player instead of a field of this class
+		Spell lastSpell = player.getLastSpell();
+		Spell spell = player.getSpell();
 
-		// The player may have changed spells on a staff. Reset picking on the spell.
-		if (s == null) {
-			spell = null;
+		// The player may have changed spells on a staff or may have a spell in hand. Reset picking on the spell.
+		if (spell == null) {
+			player.setLastSpell(null);
+			// spell = null;
 			return;
 		} else {
 			// If the spell has changed reset it.
-			if (s != spell) {
-				spell = s;
-				s.reset(player);
+			if (!spell.equals(lastSpell)) {
+				player.setLastSpell(spell);
+				//lastSpell = spell;
+				// TODO this is clearer
+				// player.resetPicks(spell);
+				System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.resetting");
+				spell.reset(player);
 			}
 		}
 
 		// Select blocks under foot for SpellTrail
-		if (s instanceof SpellTrail && !player.isFlying()) {
-			// if (s.isPicking()) {
+		if (spell instanceof SpellTrail && !player.isFlying()) {
+			// if (player.isPicking()) {
 			if (player.getPickManager().isPicking()) {
 				BlockPos pos = player.getPosition();
 				Block b = world.getBlock(pos.down());
@@ -176,49 +127,9 @@ public class EventHandler {
 				if (b == Blocks.air || !b.isNormalCube()) {
 					pos = pos.down();
 				}
-				selectionManager.select(player, pos.down());
+				player.getSelectionManager().select(player, pos.down());
 			}
 		}
-	}
-
-	@SideOnly(Side.CLIENT)
-	@SubscribeEvent
-	public void onRenderGameOverlayEvent(RenderGameOverlayEvent event) {
-		IPlayer player = Player.instance();
-		if (event.type == RenderGameOverlayEvent.ElementType.TEXT) {
-			if (spell != null) {
-				overlay.drawSpell(spell, player);
-			} else {
-				Staff staff = player.getStaff();
-				if (staff != null) {
-					overlay.drawStaff(staff, player);
-					return;
-				}
-			}
-		}
-	}
-
-	@SubscribeEvent
-	public void onModelBakeEvent(ModelBakeEvent event) {
-		IRegistry r = event.modelRegistry;
-		r.putObject(ModelResourceLocations.get(BlockSelected.class), new BlockSelectedModel());
-		r.putObject(ModelResourceLocations.get(BlockPicked.class), new BlockPickedModel());
-
-		// Prepared in ClientProxy.registerItemModels
-		Object baseModel = event.modelRegistry.getObject(ModelResourceLocations.get(Staff.class));
-		r.putObject(ModelResourceLocations.get(StaffDraw.class), new StaffModel((IBakedModel) baseModel));
-		baseModel = event.modelRegistry.getObject(ModelResourceLocations.get(Spell.class));
-		r.putObject(ModelResourceLocations.get(SpellCircle.class), new SpellModel((IBakedModel) baseModel));
-	}
-
-	// Clears selections and picks when quitting game
-	// http://www.minecraftforge.net/forum/index.php/topic,30987.msg161224.html
-	@SubscribeEvent
-	public void onGuiIngameMenuQuit(GuiScreenEvent.ActionPerformedEvent event) {
-		if (event.gui instanceof GuiIngameMenu && event.button.id == 1) {
-			MoJo.network.sendToServer(new ClearManagersMessage());
-		}
-		//FIXME If the game is restarted, the 
 	}
 
 	@SubscribeEvent
