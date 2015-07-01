@@ -5,7 +5,7 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Vec3i;
 
-import org.snowyegret.mojo.MoJo;
+import org.snowyegret.mojo.event.EventHandlerClient;
 import org.snowyegret.mojo.event.MouseHandler;
 import org.snowyegret.mojo.item.spell.Modifier;
 import org.snowyegret.mojo.item.spell.Spell;
@@ -22,6 +22,7 @@ public class Overlay {
 	private static final int BLUE = 0xaaaaff;
 
 	private Vec3i displacement;
+	private double distance = -1;
 
 	public Overlay() {
 	}
@@ -46,7 +47,7 @@ public class Overlay {
 
 		// Display the dimensions of the impending volume if player is picking or shift selecting
 		// if (spell.isPicking() || (!spell.isPicking() && modifiers.isPressed(Modifier.SHIFT))) {
-		boolean isFinishedPicking = MoJo.pickInfo.isFinishedPicking();
+		boolean isFinishedPicking = EventHandlerClient.pickInfo.isFinishedPicking();
 		// if (pickManager.isPicking() || (!pickManager.isPicking() && modifiers.isPressed(Modifier.SHIFT))) {
 		if (!isFinishedPicking || (isFinishedPicking && Modifier.SHIFT.isPressed())) {
 			if (displacement != null) {
@@ -61,8 +62,7 @@ public class Overlay {
 			}
 		}
 
-		// r.drawStringWithShadow("Selection size: " + selectionManager.size(), x, y += rowHeight, RED);
-		r.drawStringWithShadow("Selection size: " + MoJo.selectionInfo.getSize(), x, y += rowHeight, RED);
+		r.drawStringWithShadow("Selection size: " + EventHandlerClient.selectionInfo.getSize(), x, y += rowHeight, RED);
 
 		// TODO SpellFillRandom should set message
 		if (spell instanceof SpellFillRandom) {
@@ -73,10 +73,14 @@ public class Overlay {
 			r.drawStringWithShadow(player.getDirection().toString().toLowerCase(), x, y += rowHeight, BLUE);
 		}
 
-		String message = spell.getMessage();
-		if (message != null) {
-			r.drawStringWithShadow(message, x, y += rowHeight, GREEN);
+		if (distance > 0) {
+			String s = String.format("Distance: %.1f", distance);
+			r.drawStringWithShadow(s, x, y += rowHeight, GREEN);
 		}
+	}
+
+	public void setDistance(double distance) {
+		this.distance = distance;
 	}
 
 	// Called by ForgeEventHandler.onRenderGameOverlayEvent on the client side

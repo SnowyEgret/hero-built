@@ -36,6 +36,7 @@ public class MouseClickMessageHandler implements IMessageHandler<MouseClickMessa
 	// Private------------------------------------------------------------
 
 	private void processMessage(MouseClickMessage message, EntityPlayerMP playerIn) {
+		System.out.println("message=" + message);
 		IPlayer player = Player.instance(playerIn);
 		SelectionManager selectionManager = player.getSelectionManager();
 		MovingObjectType typeOfHit = message.getTypeOfHit();
@@ -64,12 +65,15 @@ public class MouseClickMessageHandler implements IMessageHandler<MouseClickMessa
 	// Called by onPlayerInteractEvent on server side only.
 	private void select(BlockPos pos, IPlayer player) {
 
+		Modifiers modifiers = player.getModifiers();
+		boolean selectRegion = modifiers.isPressed(Modifier.SHIFT);
+		boolean matchFirstSelection = modifiers.isPressed(Modifier.ALT);
+		boolean addToSelection = modifiers.isPressed(Modifier.CTRL);
+		
 		SelectionManager selectionManager = player.getSelectionManager();
 
-		Modifiers modifiers = player.getModifiers();
-
 		// Shift replaces the current selections with a region.
-		if (modifiers.isPressed(Modifier.SHIFT) && selectionManager.size() != 0) {
+		if ( selectRegion && selectionManager.size() != 0) {
 			BlockPos lastPos = selectionManager.lastSelection().getPos();
 			IBlockState firstState = selectionManager.firstSelection().getState();
 			selectionManager.clearSelections();
@@ -77,7 +81,7 @@ public class MouseClickMessageHandler implements IMessageHandler<MouseClickMessa
 			Iterable<BlockPos> allInBox = BlockPos.getAllInBox(lastPos, pos);
 			ArrayList<BlockPos> positions = Lists.newArrayList();
 			for (BlockPos p : allInBox) {
-				if (modifiers.isPressed(Modifier.ALT)) {
+				if (matchFirstSelection) {
 					IBlockState state = player.getWorld().getActualState(p);
 					if (state == firstState) {
 						positions.add(p);
@@ -91,7 +95,7 @@ public class MouseClickMessageHandler implements IMessageHandler<MouseClickMessa
 		}
 
 		// Control adds or subtracts a selection to the current selections
-		if (modifiers.isPressed(Modifier.CTRL)) {
+		if (addToSelection) {
 			if (selectionManager.isSelected(pos)) {
 				selectionManager.deselect(pos);
 			} else {

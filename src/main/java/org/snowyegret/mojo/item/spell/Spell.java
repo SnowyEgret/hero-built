@@ -11,15 +11,13 @@ import net.minecraft.world.World;
 
 import org.snowyegret.mojo.MoJo;
 import org.snowyegret.mojo.item.ItemBase;
-import org.snowyegret.mojo.network.PickMessage;
+import org.snowyegret.mojo.network.SpellMessage;
 import org.snowyegret.mojo.pick.PickManager;
 import org.snowyegret.mojo.player.IPlayer;
 import org.snowyegret.mojo.player.Player;
 
 public class Spell extends ItemBase {
 
-	// TODO Move this property to the overlay.
-	protected String message;
 	protected SpellInfo info;
 	private int numPicks;
 
@@ -29,7 +27,6 @@ public class Spell extends ItemBase {
 
 	// No longer abstact because we a instantiating it so that we can use its model as a base model
 	public Spell(int numPicks) {
-		super();
 		this.numPicks = numPicks;
 		info = new SpellInfo(this);
 	}
@@ -48,7 +45,6 @@ public class Spell extends ItemBase {
 		}
 		IPlayer player = Player.instance(playerIn);
 		PickManager pickManager = player.getPickManager();
-		System.out.println("pickManager=" + pickManager);
 		pickManager.pick(pos, side);
 		// This is done in method pick
 		//MoJo.network.sendTo(new PickMessage(pickManager), (EntityPlayerMP) playerIn);
@@ -67,10 +63,6 @@ public class Spell extends ItemBase {
 	public void invoke(IPlayer player) {
 	}
 
-	public String getMessage() {
-		return message;
-	}
-
 	public SpellInfo getInfo() {
 		return info;
 	}
@@ -84,7 +76,9 @@ public class Spell extends ItemBase {
 		pickManager.clearPicks();
 		pickManager.setNumPicks(numPicks);
 		// TODO set this on the overlay
-		message = null;
+		// An empty spell message will set distance to -1
+		MoJo.network.sendTo(new SpellMessage(), (EntityPlayerMP) player.getPlayer());
+		//message = null;
 	}
 
 	// Object -------------------------------------------------------
@@ -92,8 +86,6 @@ public class Spell extends ItemBase {
 	// For Staff.addSpell(). Only one spell of each type on a staff
 	@Override
 	public boolean equals(Object obj) {
-//		if (this == obj)
-//			return true;
 		if (obj == null)
 			return false;
 		if (getClass() == obj.getClass())

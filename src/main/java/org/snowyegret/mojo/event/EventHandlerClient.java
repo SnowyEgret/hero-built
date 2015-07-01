@@ -20,6 +20,8 @@ import org.snowyegret.mojo.block.BlockPickedModel;
 import org.snowyegret.mojo.block.BlockSelected;
 import org.snowyegret.mojo.block.BlockSelectedModel;
 import org.snowyegret.mojo.gui.Overlay;
+import org.snowyegret.mojo.gui.PickInfo;
+import org.snowyegret.mojo.gui.SelectionInfo;
 import org.snowyegret.mojo.item.spell.Spell;
 import org.snowyegret.mojo.item.spell.SpellModel;
 import org.snowyegret.mojo.item.spell.draw.SpellCircle;
@@ -33,9 +35,9 @@ import org.snowyegret.mojo.util.ModelResourceLocations;
 
 public class EventHandlerClient {
 
-	// TODO Move this property to the player
-	// private Spell spell = null;
-	private Overlay overlay = new Overlay();
+	public static SelectionInfo selectionInfo = new SelectionInfo();
+	public static PickInfo pickInfo = new PickInfo();
+	public static Overlay overlay = new Overlay();
 
 	// When the cursor falls on a new block update the overlay so that when it is rendered
 	// in onRenderGameOverlayEvent below it will show the distance from the first pick or selection.
@@ -45,12 +47,12 @@ public class EventHandlerClient {
 		Spell spell = Player.instance().getSpell();
 		if (spell != null) {
 			BlockPos pos = null;
-			BlockPos lastPickPos = MoJo.pickInfo.getLastPos();
+			BlockPos lastPickPos = pickInfo.getLastPos();
 			if (lastPickPos != null) {
 				pos = lastPickPos;
 			}
 			if (pos == null) {
-				BlockPos firstSelectionPos = MoJo.selectionInfo.getFirstPos();
+				BlockPos firstSelectionPos = selectionInfo.getFirstPos();
 				if (firstSelectionPos != null) {
 					pos = firstSelectionPos;
 				}

@@ -41,20 +41,20 @@ public class Staff extends ItemBase {
 
 		// To compare item stacks and their tags on both sides
 		// System.out.println("tag=" + stack.getTagCompound());
-		IPlayer player = Player.instance(playerIn);
-		Modifiers modifiers = player.getModifiers();
-
 		// Return if called from the client thread
 		if (world.isRemote) {
 			return true;
-		}
+		}		
+		
+		IPlayer player = Player.instance(playerIn);
+		Modifiers modifiers = player.getModifiers();
 
 		// We are on the server side. Open staff gui if space bar is down
 		if (modifiers.isPressed(Modifier.SPACE)) {
 			player.openGui(GuiHandler.GUI_STAFF);
 			// Fix for Picking with a spell on an oak staff opens the staff gui #187
 			// The key release was lost in the wash.
-			player.getModifiers().setPressed(Modifier.SPACE, false);
+			modifiers.setPressed(Modifier.SPACE, false);
 			return true;
 		}
 
@@ -92,13 +92,15 @@ public class Staff extends ItemBase {
 				t.incrementIndex(1);
 			}
 			s = t.getSpell();
-			if (s == null) {
-				continue;
-			} else {
+			if (s != null) {
 				break;
 			}
+//			if (s == null) {
+//				continue;
+//			} else {
+//				break;
+//			}
 		}
-
 		return s;
 	}
 
@@ -112,13 +114,15 @@ public class Staff extends ItemBase {
 				t.incrementIndex(-1);
 			}
 			s = t.getSpell();
-			if (s == null) {
-				continue;
-			} else {
+			if (s != null) {
 				break;
 			}
+//			if (s == null) {
+//				continue;
+//			} else {
+//				break;
+//			}
 		}
-
 		return s;
 	}
 

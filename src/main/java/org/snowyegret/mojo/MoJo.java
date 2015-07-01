@@ -29,8 +29,6 @@ public class MoJo {
 	public static SimpleNetworkWrapper network;
 	public static BlockSelected blockSelected;
 	public static BlockPicked blockPicked;
-	public static SelectionInfo selectionInfo = new SelectionInfo();
-	public static PickInfo pickInfo = new PickInfo();
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {

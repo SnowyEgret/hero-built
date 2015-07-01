@@ -44,6 +44,8 @@ import org.snowyegret.mojo.network.SelectionMessage;
 import org.snowyegret.mojo.network.SelectionMessageHandler;
 import org.snowyegret.mojo.network.SetBlockStateMessage;
 import org.snowyegret.mojo.network.SetBlockStateMessageHandler;
+import org.snowyegret.mojo.network.SpellMessage;
+import org.snowyegret.mojo.network.SpellMessageHandler;
 import org.snowyegret.mojo.util.StringUtils;
 
 import com.google.common.collect.Lists;
@@ -72,15 +74,15 @@ public class CommonProxy {
 			}
 		};
 	}
+	
 	protected List<Item> items = Lists.newArrayList();
 
 	public void registerEventHandlers() {
-		MinecraftForge.EVENT_BUS.register(new EventHandlerServer());
 		MinecraftForge.EVENT_BUS.register(new EventHandlerClient());
+		MinecraftForge.EVENT_BUS.register(new EventHandlerServer());
 		MinecraftForge.EVENT_BUS.register(new MouseHandler());
 		FMLCommonHandler.instance().bus().register(new KeyHandler());
 	}
-
 
 	public void registerTileEntities() {
 		GameRegistry.registerTileEntity(PrevStateTileEntity.class, PrevStateTileEntity.class.getSimpleName());
@@ -138,10 +140,12 @@ public class CommonProxy {
 		MoJo.network.registerMessage(PickMessageHandler.class, PickMessage.class, 3, Side.CLIENT);
 		MoJo.network.registerMessage(SetBlockStateMessageHandler.class, SetBlockStateMessage.class, 4, Side.SERVER);
 		MoJo.network.registerMessage(MouseClickMessageHandler.class, MouseClickMessage.class, 5, Side.SERVER);
+		MoJo.network.registerMessage(SpellMessageHandler.class, SpellMessage.class, 6, Side.CLIENT);
 	}
 
 	public void setCustomStateMappers() {
 	}
+	
 
 	public void registerGuiHandler() {
 	}

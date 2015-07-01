@@ -27,7 +27,7 @@ public class PickManager {
 	public PickManager(IPlayer player, Block blockPicked) {
 		this.player = player;
 		this.blockPicked = blockPicked;
-	}
+	}  
 
 	public Pick pick(BlockPos pos, EnumFacing side) {
 		Pick pick = pick(player.getWorld(), pos, side);

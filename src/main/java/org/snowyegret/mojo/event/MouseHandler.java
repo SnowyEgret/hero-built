@@ -22,7 +22,6 @@ import org.snowyegret.mojo.world.IWorld;
 
 public class MouseHandler {
 
-	// For overlay
 	public static boolean isOrbiting;
 	private Vec3 centroid;
 
@@ -71,11 +70,11 @@ public class MouseHandler {
 		// Set orbiting and orbit centroid
 		if (e.button == 2) {
 			if (e.buttonstate) {
-				if (MoJo.selectionInfo.getSize() != 0) {
+				if (EventHandlerClient.selectionInfo.getSize() != 0) {
 					isOrbiting = true;
 					// TODO method on selectionInfo for centroid;
 					// BlockPos pos = Plato.selectionInfo.centroid();
-					BlockPos pos = MoJo.selectionInfo.getFirstPos();
+					BlockPos pos = EventHandlerClient.selectionInfo.getFirstPos();
 					centroid = new Vec3(pos.getX(), pos.getY(), pos.getZ());
 				}
 			} else {
