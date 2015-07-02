@@ -4,15 +4,17 @@ import net.minecraft.util.BlockPos;
 
 public class PickInfo {
 
-	private BlockPos lastPos;
+	private boolean isPicking = false;
 	private boolean isFinishedPicking = false;
-
-	public PickInfo(boolean isFinishedPicking, BlockPos lastPos) {
-		this.isFinishedPicking = isFinishedPicking;
-		this.lastPos = lastPos;
-	}
+	private BlockPos lastPos;
 
 	public PickInfo() {
+	}
+
+	public PickInfo(boolean isPicking, boolean isFinishedPicking, BlockPos lastPos) {
+		this.isPicking = isPicking;
+		this.isFinishedPicking = isFinishedPicking;
+		this.lastPos = lastPos.distanceSq(new BlockPos(0, 0, 0)) < .0001 ? null : lastPos;
 	}
 
 	public BlockPos getLastPos() {
@@ -21,6 +23,10 @@ public class PickInfo {
 
 	public boolean isFinishedPicking() {
 		return isFinishedPicking;
+	}
+
+	public boolean isPicking() {
+		return isPicking;
 	}
 
 }

@@ -38,7 +38,6 @@ public abstract class AbstractSpellDraw extends Spell {
 		player.clearPicks();
 
 		VoxelSet voxels = drawable.voxelize();
-
 		if (drawable instanceof Solid && isHollow) {
 			voxels = voxels.shell();
 		}

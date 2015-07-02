@@ -2,7 +2,6 @@ package org.snowyegret.mojo.network;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.util.BlockPos;
-import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 import org.snowyegret.mojo.gui.PickInfo;
@@ -11,43 +10,38 @@ import org.snowyegret.mojo.pick.PickManager;
 
 public class PickMessage implements IMessage {
 
-	private static final int SIZE = 5;
-	private int x, y, z, isFinishedPicking;
+	private boolean isPicking, isFinishedPicking;
+	// Must not be null or toBytes will crash
+	BlockPos lastPos = new BlockPos(0, 0, 0);
 
 	public PickMessage() {
 	}
 
 	public PickMessage(PickManager pickManager) {
-		isFinishedPicking = pickManager.isFinishedPicking() ? 0 : 1;
+		isPicking = pickManager.isPicking();
+		isFinishedPicking = pickManager.isFinishedPicking();
 		Pick pick = pickManager.lastPick();
 		if (pick != null) {
-			BlockPos p = pick.getPos();
-			x = p.getX();
-			y = p.getY();
-			z = p.getZ();
+			lastPos = pick.getPos();
 		}
 	}
 
 	public PickInfo getPickInfo() {
-		BlockPos lastPos = new BlockPos(x, y, z);
-		boolean finished = (isFinishedPicking == 0) ? true : false;
-		return new PickInfo(finished, lastPos);
+		return new PickInfo(isPicking, isFinishedPicking, lastPos);
 	}
 
 	@Override
 	public void toBytes(ByteBuf buf) {
-		ByteBufUtils.writeVarInt(buf, x, SIZE);
-		ByteBufUtils.writeVarInt(buf, y, SIZE);
-		ByteBufUtils.writeVarInt(buf, z, SIZE);
-		ByteBufUtils.writeVarInt(buf, isFinishedPicking, SIZE);
+		buf.writeBoolean(isPicking);
+		buf.writeBoolean(isFinishedPicking);
+		buf.writeLong(lastPos.toLong());
 	}
 
 	@Override
 	public void fromBytes(ByteBuf buf) {
-		x = ByteBufUtils.readVarInt(buf, SIZE);
-		y = ByteBufUtils.readVarInt(buf, SIZE);
-		z = ByteBufUtils.readVarInt(buf, SIZE);
-		isFinishedPicking = ByteBufUtils.readVarInt(buf, SIZE);
+		isPicking = buf.readBoolean();
+		isFinishedPicking = buf.readBoolean();
+		lastPos = BlockPos.fromLong(buf.readLong());
 	}
 
 }

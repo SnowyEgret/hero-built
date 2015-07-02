@@ -11,8 +11,8 @@ public class SelectionInfo {
 
 	public SelectionInfo(int size, BlockPos firstPos, BlockPos lastPos, BlockPos centroid) {
 		this.size = size;
-		this.firstPos = firstPos;
-		this.lastPos = lastPos;
+		this.firstPos = lastPos.distanceSq(new BlockPos(0,0,0)) < .0001 ? null: firstPos;
+		this.lastPos = lastPos.distanceSq(new BlockPos(0,0,0)) < .0001 ? null: lastPos;
 		this.centroid = centroid;
 	}
 

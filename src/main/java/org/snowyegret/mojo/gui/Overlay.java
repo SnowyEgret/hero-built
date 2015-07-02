@@ -46,10 +46,8 @@ public class Overlay {
 		r.drawStringWithShadow(info.getModifiers(), x, y += rowHeight, BLUE);
 
 		// Display the dimensions of the impending volume if player is picking or shift selecting
-		// if (spell.isPicking() || (!spell.isPicking() && modifiers.isPressed(Modifier.SHIFT))) {
-		boolean isFinishedPicking = EventHandlerClient.pickInfo.isFinishedPicking();
-		// if (pickManager.isPicking() || (!pickManager.isPicking() && modifiers.isPressed(Modifier.SHIFT))) {
-		if (!isFinishedPicking || (isFinishedPicking && Modifier.SHIFT.isPressed())) {
+		boolean isPicking = EventHandlerClient.pickInfo.isPicking();
+		if (isPicking || (!isPicking && Modifier.SHIFT.isPressed())) {
 			if (displacement != null) {
 				int dx = displacement.getX();
 				int dy = displacement.getY();
@@ -62,7 +60,9 @@ public class Overlay {
 			}
 		}
 
-		r.drawStringWithShadow("Selection size: " + EventHandlerClient.selectionInfo.getSize(), x, y += rowHeight, RED);
+		if (EventHandlerClient.selectionInfo.getSize() != 0) {
+			r.drawStringWithShadow("Selections: " + EventHandlerClient.selectionInfo.getSize(), x, y += rowHeight, RED);
+		}
 
 		// TODO SpellFillRandom should set message
 		if (spell instanceof SpellFillRandom) {

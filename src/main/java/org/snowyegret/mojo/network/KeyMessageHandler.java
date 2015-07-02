@@ -32,7 +32,7 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 	public IMessage onMessage(final KeyMessage message, MessageContext ctx) {
 		final EntityPlayerMP player = ctx.getServerHandler().playerEntity;
 		WorldServer server = player.getServerForPlayer();
-		server.addScheduledTask(new Runnable() { 
+		server.addScheduledTask(new Runnable() {
 			public void run() {
 				processMessage(message, player);
 			}
@@ -94,14 +94,14 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 			if (staff != null) {
 				Spell spell = null;
 				if (modifiers.isPressed(Modifier.CTRL)) {
-					//staff.prevSpell(stack, player.getPickManager());
+					// staff.prevSpell(stack, player.getPickManager());
 					spell = staff.prevSpell(stack);
 				} else {
 					spell = staff.nextSpell(stack);
 				}
 				spell.reset(player);
-				//pickManager.setNumPicks(spell.getNumPicks());
-				//pickManager.clearPicks();
+				// pickManager.setNumPicks(spell.getNumPicks());
+				// pickManager.clearPicks();
 			}
 			break;
 
@@ -193,14 +193,16 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 			break;
 		}
 		SpellCopy s = new SpellCopy();
+		// So far this is the only place this is being used
+		// Reslects will be selected in Transation.dO
 		player.setLastInvokedSpell(s);
-		s.invoke(player, new BlockPos(0,0,0), to);
+		s.invoke(player, new BlockPos(0, 0, 0), to);
 	}
 
 	private void copyVertical(IPlayer player, int upDown) {
 		SpellCopy s = new SpellCopy();
 		player.setLastInvokedSpell(s);
-		s.invoke(player, new BlockPos(0,0,0), new BlockPos(0, upDown, 0));
+		s.invoke(player, new BlockPos(0, 0, 0), new BlockPos(0, upDown, 0));
 	}
 
 }
