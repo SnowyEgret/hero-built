@@ -58,7 +58,10 @@ public class EventHandlerClient {
 				}
 			}
 			if (pos != null) {
-				overlay.setDisplacement(pos.subtract(e.target.getBlockPos()));
+				BlockPos p = e.target.getBlockPos();
+				if (p != null) {
+					overlay.setDisplacement(pos.subtract(p));
+				}
 			}
 		}
 	}

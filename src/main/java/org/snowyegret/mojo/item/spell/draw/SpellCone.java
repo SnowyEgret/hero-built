@@ -23,7 +23,7 @@ public class SpellCone extends AbstractSpellDraw {
 		// If the third pick is in the plane of the first set the height as
 		// the distance to the second pick. This distance can be read from the overlay.
 		if (Math.abs(p0.y - p2.y) < .00001) {
-			p2.y = p1.distance(p2);
+			p2.y = p2.y + p1.distance(p2);
 		}
 		IDrawable d = new Cone(p0, p1, p2);
 		draw(d, player, picks[0].side);
