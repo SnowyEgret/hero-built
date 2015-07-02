@@ -9,6 +9,7 @@ import net.minecraftforge.common.IExtendedEntityProperties;
 import org.snowyegret.mojo.MoJo;
 import org.snowyegret.mojo.item.spell.Modifiers;
 import org.snowyegret.mojo.item.spell.Spell;
+import org.snowyegret.mojo.item.spell.matrix.SpellCopy;
 import org.snowyegret.mojo.pick.PickManager;
 import org.snowyegret.mojo.select.SelectionManager;
 import org.snowyegret.mojo.undo.TransactionManager;
@@ -23,6 +24,7 @@ public class PlayerProperties implements IExtendedEntityProperties {
 	private TransactionManager transactionManager;
 	private Clipboard clipboard;
 	private Spell lastSpell;
+	private Spell lastInvokedSpell;
 
 	private IPlayer player;
 
@@ -69,6 +71,14 @@ public class PlayerProperties implements IExtendedEntityProperties {
 
 	public Spell getLastSpell() {
 		return lastSpell;
+	}
+
+	public void setLastInvokedSpell(Spell spell) {
+		this.lastInvokedSpell = spell;
+	}
+
+	public Spell getLastInvokedSpell() {
+		return lastInvokedSpell;
 	}
 
 	public Clipboard getClipboard() {

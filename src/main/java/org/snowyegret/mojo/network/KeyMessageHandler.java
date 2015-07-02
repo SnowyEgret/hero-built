@@ -192,11 +192,15 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 			to = new BlockPos(upDown, 0, -leftRight);
 			break;
 		}
-		new SpellCopy().invoke(player, new BlockPos(0,0,0), to);
+		SpellCopy s = new SpellCopy();
+		player.setLastInvokedSpell(s);
+		s.invoke(player, new BlockPos(0,0,0), to);
 	}
 
 	private void copyVertical(IPlayer player, int upDown) {
-		new SpellCopy().invoke(player, new BlockPos(0,0,0), new BlockPos(0, upDown, 0));
+		SpellCopy s = new SpellCopy();
+		player.setLastInvokedSpell(s);
+		s.invoke(player, new BlockPos(0,0,0), new BlockPos(0, upDown, 0));
 	}
 
 }

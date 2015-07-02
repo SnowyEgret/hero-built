@@ -10,6 +10,7 @@ import net.minecraft.util.Vec3;
 
 import org.snowyegret.mojo.item.spell.Modifiers;
 import org.snowyegret.mojo.item.spell.Spell;
+import org.snowyegret.mojo.item.spell.matrix.SpellCopy;
 import org.snowyegret.mojo.item.staff.Staff;
 import org.snowyegret.mojo.pick.Pick;
 import org.snowyegret.mojo.pick.PickManager;
@@ -59,6 +60,10 @@ public interface IPlayer {
 	public abstract void setLastSpell(Spell spell);
 
 	public abstract Spell getLastSpell();
+
+	public abstract void setLastInvokedSpell(Spell spell);
+
+	public abstract Spell getLastInvokedSpell();
 
 	public abstract void playSoundAtPlayer(String sound);
 

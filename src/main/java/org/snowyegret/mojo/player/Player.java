@@ -8,7 +8,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.Vec3;
-import net.minecraftforge.common.IExtendedEntityProperties;
 
 import org.snowyegret.mojo.MoJo;
 import org.snowyegret.mojo.item.spell.Modifiers;
@@ -210,6 +209,16 @@ public class Player implements IPlayer {
 	@Override
 	public Spell getLastSpell() {
 		return props.getLastSpell();
+	}
+
+	@Override
+	public void setLastInvokedSpell(Spell spell) {
+		props.setLastInvokedSpell(spell);
+	}
+
+	@Override
+	public Spell getLastInvokedSpell() {
+		return props.getLastInvokedSpell();
 	}
 
 	@Override

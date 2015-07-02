@@ -17,10 +17,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
 
 import org.snowyegret.mojo.item.spell.Spell;
-import org.snowyegret.mojo.item.spell.transform.SpellDelete;
-import org.snowyegret.mojo.item.spell.transform.SpellFill;
-import org.snowyegret.mojo.item.spell.transform.SpellFillChecker;
-import org.snowyegret.mojo.item.spell.transform.SpellFillRandom;
+import org.snowyegret.mojo.item.spell.matrix.SpellCopy;
 import org.snowyegret.mojo.player.IPlayer;
 
 import com.google.common.collect.Lists;
@@ -82,7 +79,7 @@ public class Transaction implements IUndoable, Iterable {
 			// Implementation of Issue #162: Only set IPlantable if block below can sustain plant
 			// Set plantables on block above.
 			// Do not set if the block below cannot sustain a plant
-			//System.out.println("blockToSet=" + blockToSet);
+			// System.out.println("blockToSet=" + blockToSet);
 			if (blockToSet instanceof IPlantable) {
 				if (!block.canSustainPlant(world, pos, EnumFacing.UP, (IPlantable) blockToSet)) {
 					continue;
@@ -96,9 +93,9 @@ public class Transaction implements IUndoable, Iterable {
 			if (blockToSet instanceof BlockTorch) {
 				System.out.println("Got a torch");
 				// if (block == Blocks.air || !block.canPlaceBlockOnSide(w, pos, EnumFacing.UP)) {
-//				if (block == Blocks.air) {
-//					continue;
-//				}
+				// if (block == Blocks.air) {
+				// continue;
+				// }
 				// pos = pos.up();
 				// setBlock.pos = pos;
 			}
@@ -120,12 +117,15 @@ public class Transaction implements IUndoable, Iterable {
 		// FIXME not rendering properly for transform spells
 		// Temporary fix. Player can relelect with Action.LAST key
 		Spell s = player.getSpell();
-		if (!(s instanceof SpellFill || s instanceof SpellFillChecker || s instanceof SpellFillRandom)) {
-			// TODO do not reselect after spellDelete or pressing delete key
-			// Can not test for SpellDelete on delete key press because player does not have DeleteSpell in hand
-			if (!(s instanceof SpellDelete)) {
-				player.getSelectionManager().select(reselects);
-			}
+		// if (!(s instanceof SpellFill || s instanceof SpellFillChecker || s instanceof SpellFillRandom)) {
+		// // TODO do not reselect after spellDelete or pressing delete key
+		// // Can not test for SpellDelete on delete key press because player does not have DeleteSpell in hand
+		// if (!(s instanceof SpellDelete)) {
+		// player.getSelectionManager().select(reselects);
+		// }
+		// System.out.println("lastInvokedSpell=" + player.getLastInvokedSpell());
+		if (s instanceof SpellCopy || player.getLastInvokedSpell() instanceof SpellCopy) {
+			player.getSelectionManager().select(reselects);
 		} else {
 			player.getSelectionManager().setReselects(reselects);
 		}

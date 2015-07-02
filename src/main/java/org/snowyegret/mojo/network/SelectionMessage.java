@@ -1,10 +1,14 @@
 package org.snowyegret.mojo.network;
 
 import io.netty.buffer.ByteBuf;
+import net.minecraft.client.Minecraft;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
+import org.snowyegret.mojo.event.EventHandlerClient;
 import org.snowyegret.mojo.gui.SelectionInfo;
 import org.snowyegret.mojo.select.Selection;
 import org.snowyegret.mojo.select.SelectionManager;
@@ -12,9 +16,9 @@ import org.snowyegret.mojo.select.SelectionManager;
 public class SelectionMessage implements IMessage {
 
 	private int size;
-	BlockPos firstPos = new BlockPos(0, 0, 0);
-	BlockPos lastPos = new BlockPos(0, 0, 0);
-	BlockPos centroid = new BlockPos(0, 0, 0);
+	private BlockPos firstPos = new BlockPos(0, 0, 0);
+	private BlockPos lastPos = new BlockPos(0, 0, 0);
+	private BlockPos centroid = new BlockPos(0, 0, 0);
 
 	public SelectionMessage() {
 	}
@@ -54,5 +58,4 @@ public class SelectionMessage implements IMessage {
 		lastPos = BlockPos.fromLong(buf.readLong());
 		centroid = BlockPos.fromLong(buf.readLong());
 	}
-
 }
