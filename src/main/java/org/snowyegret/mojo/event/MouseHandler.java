@@ -61,6 +61,11 @@ public class MouseHandler {
 		// Orbit if middle mouse button is down
 		if (e.button == -1) {
 			if (isOrbiting) {
+				// Check that there is not a default value which would teleport us to origin and get lost
+				if (centroid.distanceTo(new Vec3(0, 0, 0)) < .0001) {
+					System.out.println("Trying to orbit around origin");
+					return;
+				}
 				player.orbitAround(centroid, e.dx, e.dy);
 			}
 			// Do nothing. Do not cancel
@@ -72,10 +77,8 @@ public class MouseHandler {
 			if (e.buttonstate) {
 				if (EventHandlerClient.selectionInfo.getSize() != 0) {
 					isOrbiting = true;
-					// TODO method on selectionInfo for centroid;
-					// BlockPos pos = Plato.selectionInfo.centroid();
-					BlockPos pos = EventHandlerClient.selectionInfo.getFirstPos();
-					centroid = new Vec3(pos.getX(), pos.getY(), pos.getZ());
+					BlockPos c = EventHandlerClient.selectionInfo.getCentroid();
+					centroid = new Vec3(c.getX(), c.getY(), c.getZ());
 				}
 			} else {
 				isOrbiting = false;

@@ -42,8 +42,6 @@ import org.snowyegret.mojo.network.PickMessage;
 import org.snowyegret.mojo.network.PickMessageHandler;
 import org.snowyegret.mojo.network.SelectionMessage;
 import org.snowyegret.mojo.network.SelectionMessageHandler;
-import org.snowyegret.mojo.network.SetBlockStateMessage;
-import org.snowyegret.mojo.network.SetBlockStateMessageHandler;
 import org.snowyegret.mojo.network.SpellMessage;
 import org.snowyegret.mojo.network.SpellMessageHandler;
 import org.snowyegret.mojo.util.StringUtils;
@@ -74,7 +72,7 @@ public class CommonProxy {
 			}
 		};
 	}
-	
+
 	protected List<Item> items = Lists.newArrayList();
 
 	public void registerEventHandlers() {
@@ -132,27 +130,28 @@ public class CommonProxy {
 	}
 
 	public void registerNetworkMessages() {
-		// http://www.minecraftforge.net/forum/index.php?topic=20135.0
-		MoJo.network = NetworkRegistry.INSTANCE.newSimpleChannel("plato");
+		MoJo.network = NetworkRegistry.INSTANCE.newSimpleChannel(MoJo.MODID);
+
+		// Messages to server
 		MoJo.network.registerMessage(KeyMessageHandler.class, KeyMessage.class, 0, Side.SERVER);
 		MoJo.network.registerMessage(ClearManagersMessageHandler.class, ClearManagersMessage.class, 1, Side.SERVER);
-		MoJo.network.registerMessage(SelectionMessageHandler.class, SelectionMessage.class, 2, Side.CLIENT);
-		MoJo.network.registerMessage(PickMessageHandler.class, PickMessage.class, 3, Side.CLIENT);
-		MoJo.network.registerMessage(SetBlockStateMessageHandler.class, SetBlockStateMessage.class, 4, Side.SERVER);
-		MoJo.network.registerMessage(MouseClickMessageHandler.class, MouseClickMessage.class, 5, Side.SERVER);
-		MoJo.network.registerMessage(SpellMessageHandler.class, SpellMessage.class, 6, Side.CLIENT);
+		MoJo.network.registerMessage(MouseClickMessageHandler.class, MouseClickMessage.class, 2, Side.SERVER);
+
+		// Messages to client
+		MoJo.network.registerMessage(SelectionMessageHandler.class, SelectionMessage.class, 10, Side.CLIENT);
+		MoJo.network.registerMessage(PickMessageHandler.class, PickMessage.class, 11, Side.CLIENT);
+		MoJo.network.registerMessage(SpellMessageHandler.class, SpellMessage.class, 12, Side.CLIENT);
 	}
 
 	public void setCustomStateMappers() {
 	}
-	
 
 	public void registerGuiHandler() {
 	}
 
+	// Private------------------------------------------------------------------------------------
+
 	private Block initBlock(Block block) {
-		// String classname = block.getClass().getSimpleName();
-		// String name = classname.substring(0, 1).toLowerCase() + classname.substring(1);
 		String name = StringUtils.nameFor(block.getClass());
 		System.out.println("Intitializing block " + name);
 		block.setUnlocalizedName(name);

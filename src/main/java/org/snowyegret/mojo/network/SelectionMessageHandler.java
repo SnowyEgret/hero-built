@@ -13,6 +13,7 @@ public class SelectionMessageHandler implements IMessageHandler<SelectionMessage
 	public IMessage onMessage(final SelectionMessage message, MessageContext ctx) {
 		Minecraft.getMinecraft().addScheduledTask(new Runnable() {
 			public void run() {
+				System.out.println("selectionInfo=" + message.getSelectionInfo());
 				EventHandlerClient.selectionInfo = message.getSelectionInfo();
 			}
 

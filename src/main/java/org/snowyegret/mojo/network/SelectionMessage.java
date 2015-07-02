@@ -2,7 +2,7 @@ package org.snowyegret.mojo.network;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.util.BlockPos;
-import net.minecraftforge.fml.common.network.ByteBufUtils;
+import net.minecraft.util.Vec3;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 import org.snowyegret.mojo.gui.SelectionInfo;
@@ -11,8 +11,10 @@ import org.snowyegret.mojo.select.SelectionManager;
 
 public class SelectionMessage implements IMessage {
 
-	private static final int SIZE = 5;
-	private int size, fx, fy, fz, lx, ly, lz;
+	private int size;
+	BlockPos firstPos = new BlockPos(0, 0, 0);
+	BlockPos lastPos = new BlockPos(0, 0, 0);
+	BlockPos centroid = new BlockPos(0, 0, 0);
 
 	public SelectionMessage() {
 	}
@@ -21,46 +23,36 @@ public class SelectionMessage implements IMessage {
 		size = selectionManager.size();
 		Selection s = selectionManager.firstSelection();
 		if (s != null) {
-			BlockPos first = s.getPos();
-			fx = first.getX();
-			fy = first.getY();
-			fz = first.getZ();
+			firstPos = s.getPos();
 		}
 		s = selectionManager.lastSelection();
 		if (s != null) {
-			BlockPos last = s.getPos();
-			fx = last.getX();
-			fy = last.getY();
-			fz = last.getZ();
+			lastPos = s.getPos();
+		}
+		Vec3 c = selectionManager.getCentroid();
+		if (c != null) {
+			centroid = new BlockPos(c.xCoord, c.yCoord, c.zCoord);
 		}
 	}
 
 	public SelectionInfo getSelectionInfo() {
-		BlockPos firstPos = new BlockPos(fx, fy, fz);
-		BlockPos lastPos = new BlockPos(lx, ly, lz);
-		return new SelectionInfo(size, firstPos, lastPos);
+		return new SelectionInfo(size, firstPos, lastPos, centroid);
 	}
 
 	@Override
 	public void toBytes(ByteBuf buf) {
-		ByteBufUtils.writeVarInt(buf, size, SIZE);
-		ByteBufUtils.writeVarInt(buf, fx, SIZE);
-		ByteBufUtils.writeVarInt(buf, fy, SIZE);
-		ByteBufUtils.writeVarInt(buf, fz, SIZE);
-		ByteBufUtils.writeVarInt(buf, lx, SIZE);
-		ByteBufUtils.writeVarInt(buf, ly, SIZE);
-		ByteBufUtils.writeVarInt(buf, lz, SIZE);
+		buf.writeInt(size);
+		buf.writeLong(firstPos.toLong());
+		buf.writeLong(lastPos.toLong());
+		buf.writeLong(centroid.toLong());
 	}
 
 	@Override
 	public void fromBytes(ByteBuf buf) {
-		size = ByteBufUtils.readVarInt(buf, SIZE);
-		fx = ByteBufUtils.readVarInt(buf, SIZE);
-		fy = ByteBufUtils.readVarInt(buf, SIZE);
-		fz = ByteBufUtils.readVarInt(buf, SIZE);
-		lx = ByteBufUtils.readVarInt(buf, SIZE);
-		ly = ByteBufUtils.readVarInt(buf, SIZE);
-		lz = ByteBufUtils.readVarInt(buf, SIZE);
+		size = buf.readInt();
+		firstPos = BlockPos.fromLong(buf.readLong());
+		lastPos = BlockPos.fromLong(buf.readLong());
+		centroid = BlockPos.fromLong(buf.readLong());
 	}
 
 }
