@@ -58,8 +58,7 @@ public class EventHandlerClient {
 				}
 			}
 			if (pos != null) {
-				Vec3 d = e.target.hitVec;
-				overlay.setDisplacement(pos.subtract(new Vec3i(d.xCoord, d.yCoord, d.zCoord)));
+				overlay.setDisplacement(pos.subtract(e.target.getBlockPos()));
 			}
 		}
 	}

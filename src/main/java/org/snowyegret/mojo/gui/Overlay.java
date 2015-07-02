@@ -37,13 +37,13 @@ public class Overlay {
 		int x = 10;
 		int y = x;
 		FontRenderer r = Minecraft.getMinecraft().fontRendererObj;
-		int rowHeight = r.FONT_HEIGHT + 5;
+		int rh = r.FONT_HEIGHT + 5;
 
 		SpellInfo info = spell.getInfo();
 		r.drawStringWithShadow(info.getName().toUpperCase(), x, y, WHITE);
-		r.drawStringWithShadow(info.getDescription(), x, y += rowHeight, WHITE);
-		r.drawStringWithShadow(info.getPicks(), x, y += rowHeight, GREEN);
-		r.drawStringWithShadow(info.getModifiers(), x, y += rowHeight, BLUE);
+		r.drawStringWithShadow(info.getDescription(), x, y += rh, WHITE);
+		r.drawStringWithShadow(info.getPicks(), x, y += rh, GREEN);
+		r.drawStringWithShadow(info.getModifiers(), x, y += rh, BLUE);
 
 		// Display the dimensions of the impending volume if player is picking or shift selecting
 		boolean isPicking = EventHandlerClient.pickInfo.isPicking();
@@ -52,30 +52,34 @@ public class Overlay {
 				int dx = displacement.getX();
 				int dy = displacement.getY();
 				int dz = displacement.getZ();
-				// Add 1 to get distance instead of displacement
-				// FIXME height is broken after port to 1.8
-				r.drawStringWithShadow(((dx >= 0) ? "East" : "West") + ": " + (Math.abs(dx) + 1) + "  "
-						+ ((dz >= 0) ? "North" : "South") + ": " + (Math.abs(dz) + 1), x, y += rowHeight, RED);
-				r.drawStringWithShadow(((dy >= 0) ? "Down" : "Up") + ": " + (Math.abs(dy) + 1), x, y += rowHeight, RED);
+				if (dx != 0) {
+					r.drawStringWithShadow(((dx > 0) ? "East" : "West") + ": " + (Math.abs(dx)), x, y += rh, RED);
+				}
+				if (dz != 0) {
+					r.drawStringWithShadow(((dz > 0) ? "North" : "South") + ": " + (Math.abs(dz)), x, y += rh, RED);
+				}
+				if (dy != 0) {
+					r.drawStringWithShadow(((dy > 0) ? "Down" : "Up") + ": " + (Math.abs(dy)), x, y += rh, RED);
+				}
 			}
 		}
 
 		if (EventHandlerClient.selectionInfo.getSize() != 0) {
-			r.drawStringWithShadow("Selections: " + EventHandlerClient.selectionInfo.getSize(), x, y += rowHeight, RED);
+			r.drawStringWithShadow("Selections: " + EventHandlerClient.selectionInfo.getSize(), x, y += rh, RED);
 		}
 
 		// TODO SpellFillRandom should set message
 		if (spell instanceof SpellFillRandom) {
-			r.drawStringWithShadow(player.getHotbar().toString(), x, y += rowHeight, BLUE);
+			r.drawStringWithShadow(player.getHotbar().toString(), x, y += rh, BLUE);
 		}
 
 		if (MouseHandler.isOrbiting) {
-			r.drawStringWithShadow(player.getDirection().toString().toLowerCase(), x, y += rowHeight, BLUE);
+			r.drawStringWithShadow(player.getDirection().toString().toLowerCase(), x, y += rh, BLUE);
 		}
 
 		if (distance > 0) {
 			String s = String.format("Distance: %.1f", distance);
-			r.drawStringWithShadow(s, x, y += rowHeight, GREEN);
+			r.drawStringWithShadow(s, x, y += rh, GREEN);
 		}
 	}
 
