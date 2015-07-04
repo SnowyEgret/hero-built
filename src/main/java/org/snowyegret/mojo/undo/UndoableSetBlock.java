@@ -16,7 +16,7 @@ public class UndoableSetBlock implements IUndoable {
 	private static final String PREV_STATE_KEY = "b";
 	private static final String STATE_ID_KEY = "c";
 
-	public UndoableSetBlock() {
+	UndoableSetBlock() {
 	}
 
 	public UndoableSetBlock(BlockPos pos, IBlockState prevState, IBlockState state) {

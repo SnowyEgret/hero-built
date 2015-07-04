@@ -2,22 +2,13 @@ package org.snowyegret.mojo.select;
 
 import javax.vecmath.Point3d;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.BlockPos;
 
 public class Selection {
 
 	private BlockPos pos;
-	@Deprecated
-	private Block block;
 	private IBlockState state;
-
-	@Deprecated
-	public Selection(BlockPos pos, Block block) {
-		this.pos = pos;
-		this.block = block;
-	}
 
 	public Selection(BlockPos pos, IBlockState state) {
 		this.pos = pos;
@@ -30,16 +21,6 @@ public class Selection {
 
 	public BlockPos getPos() {
 		return pos;
-	}
-
-	@Deprecated
-	public void setBlock(Block block) {
-		this.block = block;
-	}
-
-	@Deprecated
-	public Block getBlock() {
-		return block;
 	}
 
 	public void setState(IBlockState state) {

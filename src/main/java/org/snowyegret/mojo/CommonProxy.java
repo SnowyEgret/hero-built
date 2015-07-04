@@ -44,6 +44,7 @@ import org.snowyegret.mojo.network.SelectionMessage;
 import org.snowyegret.mojo.network.SelectionMessageHandler;
 import org.snowyegret.mojo.network.SpellMessage;
 import org.snowyegret.mojo.network.SpellMessageHandler;
+import org.snowyegret.mojo.util.JSONGenerator;
 import org.snowyegret.mojo.util.StringUtils;
 
 import com.google.common.collect.Lists;
@@ -194,7 +195,7 @@ public class CommonProxy {
 	}
 
 	private List<Spell> initSpellsFromPackage(String packageName) throws Exception {
-
+	
 		ClassPath path = ClassPath.from(this.getClass().getClassLoader());
 		List<Spell> spells = Lists.newArrayList();
 		for (ClassInfo i : path.getTopLevelClassesRecursive(MoJo.DOMAIN + ".item.spell." + packageName)) {

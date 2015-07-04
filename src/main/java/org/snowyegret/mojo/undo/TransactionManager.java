@@ -24,8 +24,6 @@ public class TransactionManager implements IUndoable {
 		this(player, DEFAULT_MAX_LENGTH);
 	}
 
-	//public void doTransaction()
-
 	public void addTransaction(Transaction transaction) {
 		Node node = new Node(transaction);
 		currentNode.right = node;
@@ -38,7 +36,6 @@ public class TransactionManager implements IUndoable {
 	}
 
 	public int size() {
-		// return size;
 		int size = 0;
 		Node n = currentNode;
 		while (n.right != null) {
@@ -55,6 +52,14 @@ public class TransactionManager implements IUndoable {
 
 	public void clear() {
 		currentNode = new Node();
+	}
+
+	public void doTransaction(Iterable<IUndoable>... undoables) {
+		Transaction t = new Transaction();
+		for (Iterable<IUndoable> iterable : undoables) {
+			t.addAll(iterable);
+		}
+		t.dO(player);
 	}
 
 	// Interface IUndoable -------------------------------------
@@ -124,14 +129,6 @@ public class TransactionManager implements IUndoable {
 		public void finalize() {
 			transaction.deleteCache();
 		}
-	}
-
-	public void doTransaction(Iterable<IUndoable>... undoables) {
-		Transaction t = new Transaction();
-		for (Iterable<IUndoable> iterable : undoables) {
-			t.addAll(iterable);
-		}
-		t.dO(player);
 	}
 
 }
