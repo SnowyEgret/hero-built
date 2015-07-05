@@ -13,7 +13,7 @@ import org.snowyegret.mojo.MoJo;
 import org.snowyegret.mojo.item.ItemBase;
 import org.snowyegret.mojo.network.SpellMessage;
 import org.snowyegret.mojo.pick.PickManager;
-import org.snowyegret.mojo.player.IPlayer;
+import org.snowyegret.mojo.player.Player;
 import org.snowyegret.mojo.player.Player;
 
 public class Spell extends ItemBase {
@@ -43,7 +43,7 @@ public class Spell extends ItemBase {
 		if (world.isRemote) {
 			return true;
 		}
-		IPlayer player = Player.instance(playerIn);
+		Player player = Player.instance(playerIn);
 		PickManager pickManager = player.getPickManager();
 		pickManager.pick(pos, side);
 		// This is done in method pick
@@ -60,7 +60,7 @@ public class Spell extends ItemBase {
 		rollOver.add(info.getDescription());
 	}
 
-	public void invoke(IPlayer player) {
+	public void invoke(Player player) {
 	}
 
 	public SpellInfo getInfo() {
@@ -71,7 +71,7 @@ public class Spell extends ItemBase {
 		return numPicks;
 	}
 
-	public void reset(IPlayer player) {
+	public void reset(Player player) {
 		PickManager pickManager = player.getPickManager();
 		pickManager.clearPicks();
 		pickManager.setNumPicks(numPicks);

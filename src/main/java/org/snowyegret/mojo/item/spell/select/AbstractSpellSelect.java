@@ -16,7 +16,7 @@ import org.snowyegret.mojo.item.spell.Modifier;
 import org.snowyegret.mojo.item.spell.Modifiers;
 import org.snowyegret.mojo.item.spell.Spell;
 import org.snowyegret.mojo.pick.Pick;
-import org.snowyegret.mojo.player.IPlayer;
+import org.snowyegret.mojo.player.Player;
 import org.snowyegret.mojo.select.Selection;
 import org.snowyegret.mojo.select.SelectionManager;
 import org.snowyegret.mojo.world.IWorld;
@@ -55,7 +55,7 @@ public abstract class AbstractSpellSelect extends Spell {
 	}
 
 	@Override
-	public void invoke(IPlayer player) {
+	public void invoke(Player player) {
 
 		Modifiers modifiers = player.getModifiers();
 		boolean shrink = modifiers.isPressed(Modifier.CTRL);
@@ -84,7 +84,7 @@ public abstract class AbstractSpellSelect extends Spell {
 
 	// Private-------------------------------------------------------------------------------
 
-	private void growSelections(IPlayer player, boolean anyBlock, SelectionManager selectionManager, Block patternBlock) {
+	private void growSelections(Player player, boolean anyBlock, SelectionManager selectionManager, Block patternBlock) {
 		Set<BlockPos> grownSelections = Sets.newHashSet();
 		// Grown selections must be on selectionManager and not on this spell so that it belongs to a player
 		for (BlockPos center : selectionManager.getGrownSelections()) {
@@ -138,7 +138,7 @@ public abstract class AbstractSpellSelect extends Spell {
 		selectionManager.setGrownSelections(grownSelections);
 	}
 
-	private void shrinkSelections(IPlayer player, SelectionManager selectionManager) {
+	private void shrinkSelections(Player player, SelectionManager selectionManager) {
 		List<BlockPos> shrunkSelections = Lists.newArrayList();
 		for (Selection s : selectionManager.getSelections()) {
 			for (BlockPos p : growthPattern) {

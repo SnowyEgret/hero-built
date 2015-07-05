@@ -8,7 +8,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Vec3i;
 
 import org.snowyegret.mojo.item.spell.select.Select;
-import org.snowyegret.mojo.player.IPlayer;
+import org.snowyegret.mojo.player.Player;
 
 import com.google.common.collect.Lists;
 
@@ -72,7 +72,7 @@ public class Plane {
 		return plane;
 	}
 
-	public static Plane getPlane(IPlayer player, BlockPos p1, BlockPos p2) {
+	public static Plane getPlane(Player player, BlockPos p1, BlockPos p2) {
 
 		int dx = p1.getX() - p2.getX();
 		int dy = p1.getY() - p2.getY();

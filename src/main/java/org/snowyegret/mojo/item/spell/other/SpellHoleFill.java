@@ -12,7 +12,7 @@ import org.snowyegret.mojo.item.spell.Modifier;
 import org.snowyegret.mojo.item.spell.Modifiers;
 import org.snowyegret.mojo.item.spell.Spell;
 import org.snowyegret.mojo.item.spell.select.Select;
-import org.snowyegret.mojo.player.IPlayer;
+import org.snowyegret.mojo.player.Player;
 import org.snowyegret.mojo.select.Selection;
 import org.snowyegret.mojo.undo.IUndoable;
 import org.snowyegret.mojo.undo.UndoableSetBlock;
@@ -32,7 +32,7 @@ public class SpellHoleFill extends Spell {
 	}
 
 	@Override
-	public void invoke(IPlayer player) {
+	public void invoke(Player player) {
 		Modifiers modifiers = player.getModifiers();
 		boolean isHorizontal = modifiers.isPressed(Modifier.CTRL);
 		boolean useBlockInHotbar = modifiers.isPressed(Modifier.SHIFT);

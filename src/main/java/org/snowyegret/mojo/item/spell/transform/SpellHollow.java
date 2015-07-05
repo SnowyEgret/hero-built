@@ -9,7 +9,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
 
-import org.snowyegret.mojo.player.IPlayer;
+import org.snowyegret.mojo.player.Player;
 import org.snowyegret.mojo.select.Selection;
 import org.snowyegret.mojo.select.SelectionManager;
 
@@ -20,7 +20,7 @@ import ds.geom.VoxelSet;
 public class SpellHollow extends AbstractSpellTransform {
 
 	@Override
-	public void invoke(IPlayer player) {
+	public void invoke(Player player) {
 		final SelectionManager selectionManager = player.getSelectionManager();
 		final IBlockState air = Blocks.air.getDefaultState();
 		transformSelections(player, new ITransform() {

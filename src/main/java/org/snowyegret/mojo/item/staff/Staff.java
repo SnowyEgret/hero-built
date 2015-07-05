@@ -14,7 +14,7 @@ import org.snowyegret.mojo.item.ItemBase;
 import org.snowyegret.mojo.item.spell.Modifier;
 import org.snowyegret.mojo.item.spell.Modifiers;
 import org.snowyegret.mojo.item.spell.Spell;
-import org.snowyegret.mojo.player.IPlayer;
+import org.snowyegret.mojo.player.Player;
 import org.snowyegret.mojo.player.Player;
 
 public class Staff extends ItemBase {
@@ -46,7 +46,7 @@ public class Staff extends ItemBase {
 			return true;
 		}		
 		
-		IPlayer player = Player.instance(playerIn);
+		Player player = Player.instance(playerIn);
 		Modifiers modifiers = player.getModifiers();
 
 		// We are on the server side. Open staff gui if space bar is down

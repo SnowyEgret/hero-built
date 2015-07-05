@@ -10,7 +10,7 @@ import net.minecraft.util.Vec3i;
 import org.snowyegret.mojo.item.spell.Modifier;
 import org.snowyegret.mojo.item.spell.Modifiers;
 import org.snowyegret.mojo.pick.Pick;
-import org.snowyegret.mojo.player.IPlayer;
+import org.snowyegret.mojo.player.Player;
 
 import ds.geom.matrix.ReflectionMatrix;
 
@@ -22,7 +22,7 @@ public class SpellMirror extends AbstractSpellMatrix {
 	}
 
 	@Override
-	public void invoke(IPlayer player) {
+	public void invoke(Player player) {
 		Modifiers modifiers = player.getModifiers();
 		boolean mirrorAboutCentroid = modifiers.isPressed(Modifier.SHIFT);
 

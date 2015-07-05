@@ -10,7 +10,7 @@ import net.minecraft.util.BlockPos;
 
 import org.snowyegret.mojo.item.spell.Modifier;
 import org.snowyegret.mojo.item.spell.Modifiers;
-import org.snowyegret.mojo.player.IPlayer;
+import org.snowyegret.mojo.player.Player;
 import org.snowyegret.mojo.select.Selection;
 import org.snowyegret.mojo.select.SelectionManager;
 import org.snowyegret.mojo.world.IWorld;
@@ -24,7 +24,7 @@ public class SpellDrop extends AbstractSpellTransform {
 	}
 
 	@Override
-	public void invoke(final IPlayer player) {
+	public void invoke(final Player player) {
 
 		Modifiers modifiers = player.getModifiers();
 		final boolean fill = modifiers.isPressed(Modifier.SHIFT);

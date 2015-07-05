@@ -1,6 +1,6 @@
 package org.snowyegret.mojo.undo;
 
-import org.snowyegret.mojo.player.IPlayer;
+import org.snowyegret.mojo.player.Player;
 import org.snowyegret.mojo.world.IWorld;
 
 import net.minecraft.block.Block;
@@ -27,18 +27,18 @@ public class UndoableSetBlock implements IUndoable {
 
 	// IUndoable--------------------------------------------------------------------------
 
-	public UndoableSetBlock dO(IPlayer player) {
+	public UndoableSetBlock dO(Player player) {
 		player.getWorld().setState(pos, state);
 		return this;
 	}
 
 	@Override
-	public void undo(IPlayer player) {
+	public void undo(Player player) {
 		player.getWorld().setState(pos, prevState);
 	}
 
 	@Override
-	public void redo(IPlayer player) {
+	public void redo(Player player) {
 		player.getWorld().setState(pos, state);
 	}
 

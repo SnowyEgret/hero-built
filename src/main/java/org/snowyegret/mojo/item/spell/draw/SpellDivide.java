@@ -10,7 +10,7 @@ import org.snowyegret.mojo.item.spell.Modifiers;
 import org.snowyegret.mojo.network.SelectionMessage;
 import org.snowyegret.mojo.network.SpellMessage;
 import org.snowyegret.mojo.pick.Pick;
-import org.snowyegret.mojo.player.IPlayer;
+import org.snowyegret.mojo.player.Player;
 
 import ds.geom.PointSet;
 
@@ -22,7 +22,7 @@ public class SpellDivide extends AbstractSpellDraw {
 	}
 
 	@Override
-	public void invoke(IPlayer player) {
+	public void invoke(Player player) {
 		
 		Modifiers modifiers = player.getModifiers();
 		boolean drawMarkers = modifiers.isPressed(Modifier.CTRL);

@@ -3,7 +3,7 @@ package org.snowyegret.mojo.gui;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.snowyegret.mojo.player.IPlayer;
+import org.snowyegret.mojo.player.Player;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -15,12 +15,12 @@ public class GuiDialog extends GuiScreen {
 	private int buttonWidth = 60;
 	protected int buttonHeight = 20;
 	protected int padding = 10;
-	protected IPlayer player;
+	protected Player player;
 	protected List<String> buttonNames = new ArrayList<>();
 	private int dx = 0;
 	private int buttonCount = 0;
 
-	public GuiDialog(IPlayer player, String... buttonNames) {
+	public GuiDialog(Player player, String... buttonNames) {
 		this.player = player;
 		for (String b : buttonNames) {
 			this.buttonNames.add(b);

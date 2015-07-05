@@ -17,7 +17,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.snowyegret.mojo.item.spell.Spell;
 import org.snowyegret.mojo.item.spell.other.SpellTrail;
 import org.snowyegret.mojo.item.spell.transform.SpellFill;
-import org.snowyegret.mojo.player.IPlayer;
 import org.snowyegret.mojo.player.Player;
 import org.snowyegret.mojo.player.PlayerProperties;
 import org.snowyegret.mojo.world.IWorld;
@@ -46,7 +45,7 @@ public class EventHandlerServer {
 			return;
 		}
 
-		IPlayer player = Player.instance(e.entityPlayer);
+		Player player = Player.instance(e.entityPlayer);
 
 		// Return if player is holding nothing
 		ItemStack stack = player.getHeldItemStack();
@@ -94,7 +93,7 @@ public class EventHandlerServer {
 			return;
 		}
 
-		IPlayer player = Player.instance((EntityPlayer) e.entity);
+		Player player = Player.instance((EntityPlayer) e.entity);
 		IWorld world = player.getWorld();
 		// Get the last spell from the player instead of a field of this class
 		Spell lastSpell = player.getLastSpell();

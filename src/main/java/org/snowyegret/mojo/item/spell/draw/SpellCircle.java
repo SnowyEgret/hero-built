@@ -6,7 +6,7 @@ import org.snowyegret.mojo.geom.CircleXY;
 import org.snowyegret.mojo.geom.CircleYZ;
 import org.snowyegret.mojo.item.spell.Modifiers;
 import org.snowyegret.mojo.pick.Pick;
-import org.snowyegret.mojo.player.IPlayer;
+import org.snowyegret.mojo.player.Player;
 
 import ds.geom.IDrawable;
 import ds.geom.curve.CircleXZ;
@@ -18,7 +18,7 @@ public class SpellCircle extends AbstractSpellDraw {
 	}
 
 	@Override
-	public void invoke(IPlayer player) {
+	public void invoke(Player player) {
 		Modifiers modifiers = player.getModifiers();
 		Pick[] picks = player.getPicks();
 		Point3d p0 = picks[0].point3d();

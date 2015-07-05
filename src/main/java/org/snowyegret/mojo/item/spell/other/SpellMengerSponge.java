@@ -10,7 +10,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
 
 import org.snowyegret.mojo.item.spell.Spell;
-import org.snowyegret.mojo.player.IPlayer;
+import org.snowyegret.mojo.player.Player;
 import org.snowyegret.mojo.undo.IUndoable;
 import org.snowyegret.mojo.undo.UndoableSetBlock;
 
@@ -29,7 +29,7 @@ public class SpellMengerSponge extends Spell {
 	}
 
 	@Override
-	public void invoke(IPlayer player) {
+	public void invoke(Player player) {
 		// TODO use enclosing cube
 		delete(player.getSelectionManager().voxelSet());
 

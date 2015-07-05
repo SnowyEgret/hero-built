@@ -11,7 +11,7 @@ import net.minecraft.init.Items;
 import net.minecraft.util.BlockPos;
 
 import org.snowyegret.mojo.item.spell.select.Select;
-import org.snowyegret.mojo.player.IPlayer;
+import org.snowyegret.mojo.player.Player;
 import org.snowyegret.mojo.select.Selection;
 import org.snowyegret.mojo.undo.Transaction;
 import org.snowyegret.mojo.world.IWorld;
@@ -21,7 +21,7 @@ import com.google.common.collect.Lists;
 public class SpellHoleDrain extends AbstractSpellTransform {
 
 	@Override
-	public void invoke(final IPlayer player) {
+	public void invoke(final Player player) {
 
 		transformSelections(player, new ITransform() {
 
@@ -100,7 +100,7 @@ public class SpellHoleDrain extends AbstractSpellTransform {
 // }
 //
 // @Override
-// public void invoke(IPlayer player) {
+// public void invoke(Player player) {
 // Modifiers modifiers = player.getModifiers();
 // ISelect selectionManager = player.getSelectionManager();
 // IPick pickManager = player.getPickManager();

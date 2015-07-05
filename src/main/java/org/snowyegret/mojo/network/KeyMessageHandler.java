@@ -18,7 +18,7 @@ import org.snowyegret.mojo.item.spell.matrix.SpellCopy;
 import org.snowyegret.mojo.item.spell.transform.SpellDelete;
 import org.snowyegret.mojo.item.staff.Staff;
 import org.snowyegret.mojo.pick.PickManager;
-import org.snowyegret.mojo.player.IPlayer;
+import org.snowyegret.mojo.player.Player;
 import org.snowyegret.mojo.player.Player;
 import org.snowyegret.mojo.select.Selection;
 import org.snowyegret.mojo.select.SelectionManager;
@@ -44,7 +44,7 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 
 	private void processMessage(KeyMessage message, EntityPlayerMP playerIn) {
 
-		IPlayer player = Player.instance(playerIn);
+		Player player = Player.instance(playerIn);
 		IWorld world = player.getWorld();
 		Modifiers modifiers = player.getModifiers();
 		SelectionManager selectionManager = player.getSelectionManager();
@@ -176,7 +176,7 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 		}
 	}
 
-	private void copy(IPlayer player, int leftRight, int upDown) {
+	private void copy(Player player, int leftRight, int upDown) {
 		BlockPos to = null;
 		switch (player.getDirection()) {
 		case NORTH:
@@ -199,7 +199,7 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 		s.invoke(player, new BlockPos(0, 0, 0), to);
 	}
 
-	private void copyVertical(IPlayer player, int upDown) {
+	private void copyVertical(Player player, int upDown) {
 		SpellCopy s = new SpellCopy();
 		player.setLastInvokedSpell(s);
 		s.invoke(player, new BlockPos(0, 0, 0), new BlockPos(0, upDown, 0));

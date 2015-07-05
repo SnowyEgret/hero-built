@@ -1,6 +1,6 @@
 package org.snowyegret.mojo.network;
 
-import org.snowyegret.mojo.player.IPlayer;
+import org.snowyegret.mojo.player.Player;
 import org.snowyegret.mojo.player.Player;
 
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -26,7 +26,7 @@ public class ClearManagersMessageHandler implements IMessageHandler<ClearManager
 	// Private------------------------------------------------------------
 
 	private void processMessage(ClearManagersMessage message, EntityPlayerMP playerIn) {
-		IPlayer player = Player.instance(playerIn);
+		Player player = Player.instance(playerIn);
 		player.clearSelections();
 		player.clearPicks();
 	}

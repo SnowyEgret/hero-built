@@ -4,7 +4,7 @@ import net.minecraft.util.EnumFacing;
 
 import org.snowyegret.mojo.item.spell.Modifier;
 import org.snowyegret.mojo.item.spell.Modifiers;
-import org.snowyegret.mojo.player.IPlayer;
+import org.snowyegret.mojo.player.Player;
 
 
 public class SpellSelectAbove extends AbstractSpellSelect {
@@ -14,7 +14,7 @@ public class SpellSelectAbove extends AbstractSpellSelect {
 	}
 
 	@Override
-	public void invoke(IPlayer player) {
+	public void invoke(Player player) {
 		if (player.getModifiers().isPressed(Modifier.SHIFT)) {
 			setSelectionPattern(Select.ABOVE);
 		} else {

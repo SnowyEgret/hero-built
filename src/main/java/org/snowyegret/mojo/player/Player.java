@@ -24,7 +24,7 @@ import org.snowyegret.mojo.world.WorldWrapper;
 
 import com.google.common.collect.Lists;
 
-public class Player implements IPlayer {
+public class Player {
 
 	private EntityPlayer player;
 	private PlayerProperties props;
@@ -48,30 +48,26 @@ public class Player implements IPlayer {
 		this(Minecraft.getMinecraft().thePlayer);
 	}
 
-	public static IPlayer instance(EntityPlayer player) {
+	public static Player instance(EntityPlayer player) {
 		return new Player(player);
 	}
 
-	public static IPlayer instance() {
+	public static Player instance() {
 		return new Player();
 	}
 
-	@Override
 	public EntityPlayer getPlayer() {
 		return player;
 	}
 
-	@Override
 	public IWorld getWorld() {
 		return new WorldWrapper(player.worldObj);
 	}
 
-	@Override
 	public Hotbar getHotbar() {
 		return new Hotbar(player.inventory);
 	}
 
-	@Override
 	public Direction getDirection() {
 		int yaw = (int) (player.rotationYawHead);
 		yaw += (yaw >= 0) ? 45 : -45;
@@ -106,18 +102,15 @@ public class Player implements IPlayer {
 		return direction;
 	}
 
-	@Override
 	public ItemStack getHeldItemStack() {
 		// return player.getCurrentEquippedItem();
 		return player.getHeldItem();
 	}
 
-	@Override
 	public Item getHeldItem() {
 		return getHeldItemStack().getItem();
 	}
 
-	@Override
 	public Spell getSpell() {
 		Spell spell = null;
 		ItemStack stack = player.getHeldItem();
@@ -132,7 +125,6 @@ public class Player implements IPlayer {
 		return spell;
 	}
 
-	@Override
 	public Staff getStaff() {
 		Staff staff = null;
 		ItemStack is = player.getHeldItem();
@@ -145,7 +137,6 @@ public class Player implements IPlayer {
 		return staff;
 	}
 
-	@Override
 	public void orbitAround(Vec3 pos, int dx, int dy) {
 		pos = pos.add(new Vec3(.5, .5, .5));
 		Vec3 v = player.getPositionVector();
@@ -158,80 +149,65 @@ public class Player implements IPlayer {
 		player.setLocationAndAngles(v.xCoord, v.yCoord, v.zCoord, (float) yaw, player.rotationPitch);
 	}
 
-	@Override
 	public BlockPos getPosition() {
 		return player.getPosition();
 	}
 
-	@Override
 	public boolean isFlying() {
 		return player.capabilities.isFlying;
 	}
 
-	@Override
 	public void openGui(int id) {
 		player.openGui(MoJo.instance, id, getWorld().getWorld(), (int) player.posX, (int) player.posY,
 				(int) player.posZ);
 	}
 
-	@Override
 	public void moveTo(BlockPos pos) {
 		player.moveEntity(pos.getX(), pos.getY(), pos.getZ());
 	}
 
-	@Override
 	public Modifiers getModifiers() {
 		return props.getModifiers();
 	}
 
-	@Override
 	public TransactionManager getTransactionManager() {
 		//This is null for some reason
 		props = (PlayerProperties) player.getExtendedProperties(PlayerProperties.NAME);
 		return props.getUndoManager();
 	}
 
-	@Override
 	public SelectionManager getSelectionManager() {
 		return props.getSelectionManager();
 	}
 
-	@Override
 	public PickManager getPickManager() {
 		return props.getPickManager();
 	}
 
-	@Override
 	public void setLastSpell(Spell spell) {
 		props.setLastSpell(spell);
 	}
 
-	@Override
 	public Spell getLastSpell() {
 		return props.getLastSpell();
 	}
 
-	@Override
 	public void setLastInvokedSpell(Spell spell) {
 		props.setLastInvokedSpell(spell);
 	}
 
-	@Override
 	public Spell getLastInvokedSpell() {
 		return props.getLastInvokedSpell();
 	}
 
-	@Override
 	public Clipboard getClipboard() {
 		return props.getClipboard();
 	}
 
-	@Override
 	public void playSoundAtPlayer(String sound) {
 		getWorld().getWorld().playSoundAtEntity(player, sound, 1f, 1f);
 	}
 
-	@Override
 	public List<BlockPos> getBounds() {
 		List<BlockPos> bounds = Lists.newArrayList();
 		bounds.add(player.getPosition());
@@ -239,27 +215,22 @@ public class Player implements IPlayer {
 		return bounds;
 	}
 
-	@Override
 	public void doTransaction(List<IUndoable> setBlocks) {
 		getTransactionManager().doTransaction(setBlocks);
 	}
 
-	@Override
 	public void clearSelections() {
 		getSelectionManager().clearSelections();
 	}
 
-	@Override
 	public void clearPicks() {
 		getPickManager().clearPicks();
 	}
 
-	@Override
 	public Iterable<Selection> getSelections() {
 		return getSelectionManager().getSelections();
 	}
 
-	@Override
 	public Pick[] getPicks() {
 		return getPickManager().getPicks();
 	}

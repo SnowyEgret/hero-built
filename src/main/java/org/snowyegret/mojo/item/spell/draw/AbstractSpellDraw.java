@@ -14,7 +14,7 @@ import net.minecraft.util.Vec3i;
 import org.snowyegret.mojo.item.spell.Modifier;
 import org.snowyegret.mojo.item.spell.Modifiers;
 import org.snowyegret.mojo.item.spell.Spell;
-import org.snowyegret.mojo.player.IPlayer;
+import org.snowyegret.mojo.player.Player;
 import org.snowyegret.mojo.undo.IUndoable;
 import org.snowyegret.mojo.undo.UndoableSetBlock;
 
@@ -32,7 +32,7 @@ public abstract class AbstractSpellDraw extends Spell {
 		info.addModifiers(Modifier.SHIFT, Modifier.ALT);
 	}
 
-	protected void draw(IDrawable drawable, IPlayer player, EnumFacing side) {
+	protected void draw(IDrawable drawable, Player player, EnumFacing side) {
 
 		Modifiers modifiers = player.getModifiers();
 		boolean isHollow = modifiers.isPressed(Modifier.SHIFT);

@@ -2,7 +2,7 @@ package org.snowyegret.mojo.gui;
 
 import java.io.IOException;
 
-import org.snowyegret.mojo.player.IPlayer;
+import org.snowyegret.mojo.player.Player;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
@@ -13,7 +13,7 @@ public class GuiTextInputDialog extends GuiDialog {
 	private String text;
 	private int margin = 20;
 
-	public GuiTextInputDialog(IPlayer player, String...buttons) {
+	public GuiTextInputDialog(Player player, String...buttons) {
 		super(player, "Ok", "Cancel");
 		if (buttons != null) {
 			for (String b : buttons) {

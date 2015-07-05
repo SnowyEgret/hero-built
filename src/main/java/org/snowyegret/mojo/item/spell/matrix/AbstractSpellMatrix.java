@@ -11,7 +11,7 @@ import net.minecraft.util.BlockPos;
 
 import org.snowyegret.mojo.item.spell.Modifier;
 import org.snowyegret.mojo.item.spell.Spell;
-import org.snowyegret.mojo.player.IPlayer;
+import org.snowyegret.mojo.player.Player;
 import org.snowyegret.mojo.select.Selection;
 import org.snowyegret.mojo.undo.IUndoable;
 import org.snowyegret.mojo.undo.UndoableSetBlock;
@@ -25,7 +25,7 @@ public abstract class AbstractSpellMatrix extends Spell {
 	}
 	
 
-	protected void transformSelections(IPlayer player, Matrix4d matrix) {
+	protected void transformSelections(Player player, Matrix4d matrix) {
 
 		boolean deleteInitialBlocks = player.getModifiers().isPressed(Modifier.CTRL);
 		//Deletes must be done first

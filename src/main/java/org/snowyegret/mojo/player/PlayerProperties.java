@@ -26,7 +26,7 @@ public class PlayerProperties implements IExtendedEntityProperties {
 	private Spell lastSpell;
 	private Spell lastInvokedSpell;
 
-	private IPlayer player;
+	private Player player;
 
 	public PlayerProperties(EntityPlayer entity) {
 		player = Player.instance(entity);

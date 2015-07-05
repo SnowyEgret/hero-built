@@ -6,7 +6,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.BlockPos;
 
 import org.snowyegret.mojo.item.spell.Spell;
-import org.snowyegret.mojo.player.IPlayer;
+import org.snowyegret.mojo.player.Player;
 import org.snowyegret.mojo.select.Selection;
 import org.snowyegret.mojo.select.SelectionManager;
 import org.snowyegret.mojo.undo.IUndoable;
@@ -21,7 +21,7 @@ public abstract class AbstractSpellTransform extends Spell {
 		super(1);
 	}
 
-	protected void transformSelections(IPlayer player, ITransform<Selection> transformer) {
+	protected void transformSelections(Player player, ITransform<Selection> transformer) {
 		Iterable<Selection> selections = player.getSelections();
 		player.clearSelections(); 
 		player.clearPicks();

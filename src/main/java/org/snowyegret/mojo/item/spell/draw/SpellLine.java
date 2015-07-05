@@ -4,7 +4,7 @@ import org.snowyegret.mojo.item.spell.Modifier;
 import org.snowyegret.mojo.item.spell.Modifiers;
 import org.snowyegret.mojo.pick.Pick;
 import org.snowyegret.mojo.pick.PickManager;
-import org.snowyegret.mojo.player.IPlayer;
+import org.snowyegret.mojo.player.Player;
 
 import ds.geom.IDrawable;
 import ds.geom.curve.Line;
@@ -17,7 +17,7 @@ public class SpellLine extends AbstractSpellDraw {
 	}
 
 	@Override
-	public void invoke(IPlayer player) {
+	public void invoke(Player player) {
 		Modifiers modifiers = player.getModifiers();
 		boolean isPolyline = modifiers.isPressed(Modifier.CTRL);
 		PickManager pickManager = player.getPickManager();

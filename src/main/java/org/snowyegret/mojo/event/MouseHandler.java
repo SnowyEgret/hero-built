@@ -16,7 +16,7 @@ import org.snowyegret.mojo.MoJo;
 import org.snowyegret.mojo.item.spell.Spell;
 import org.snowyegret.mojo.item.staff.Staff;
 import org.snowyegret.mojo.network.MouseClickMessage;
-import org.snowyegret.mojo.player.IPlayer;
+import org.snowyegret.mojo.player.Player;
 import org.snowyegret.mojo.player.Player;
 import org.snowyegret.mojo.world.IWorld;
 
@@ -35,7 +35,7 @@ public class MouseHandler {
 			return;
 		}
 
-		IPlayer player = Player.instance();
+		Player player = Player.instance();
 		IWorld world = player.getWorld();
 		MovingObjectPosition cursor = Minecraft.getMinecraft().objectMouseOver;
 		// Do nothing if player clicks on a mob

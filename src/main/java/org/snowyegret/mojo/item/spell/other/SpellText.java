@@ -22,7 +22,7 @@ import org.snowyegret.mojo.item.spell.Modifiers;
 import org.snowyegret.mojo.item.spell.Spell;
 import org.snowyegret.mojo.pick.Pick;
 import org.snowyegret.mojo.pick.PickManager;
-import org.snowyegret.mojo.player.IPlayer;
+import org.snowyegret.mojo.player.Player;
 import org.snowyegret.mojo.select.SelectionManager;
 import org.snowyegret.mojo.undo.IUndoable;
 import org.snowyegret.mojo.undo.Transaction;
@@ -52,7 +52,7 @@ public class SpellText extends Spell implements ITextSetable {
 	}
 
 	@Override
-	public void invoke(IPlayer player) {
+	public void invoke(Player player) {
 		player.openGui(GuiHandler.GUI_SPELL_TEXT);
 		picks = player.getPicks();
 		// Clear the picks because player may have cancelled
@@ -60,7 +60,7 @@ public class SpellText extends Spell implements ITextSetable {
 	}
 
 	@Override
-	public void setText(String text, IPlayer player) {
+	public void setText(String text, Player player) {
 
 		Vector3d d = new Vector3d();
 		d.sub(picks[0].point3d(), picks[1].point3d());

@@ -1,6 +1,6 @@
 package org.snowyegret.mojo.item.spell.transform;
 
-import org.snowyegret.mojo.player.IPlayer;
+import org.snowyegret.mojo.player.Player;
 import org.snowyegret.mojo.select.Selection;
 
 import net.minecraft.init.Blocks;
@@ -10,7 +10,7 @@ import com.google.common.collect.Lists;
 public class SpellDelete extends AbstractSpellTransform {
 
 	@Override
-	public void invoke(IPlayer player) {
+	public void invoke(Player player) {
 		transformSelections(player, new ITransform() {
 			@Override
 			public Iterable<Selection> transform(Selection s) {

@@ -13,7 +13,7 @@ import org.snowyegret.mojo.MoJo;
 import org.snowyegret.mojo.block.BlockSelected;
 import org.snowyegret.mojo.block.PrevStateTileEntity;
 import org.snowyegret.mojo.network.PickMessage;
-import org.snowyegret.mojo.player.IPlayer;
+import org.snowyegret.mojo.player.Player;
 import org.snowyegret.mojo.world.IWorld;
 
 public class PickManager {
@@ -22,9 +22,9 @@ public class PickManager {
 	private LinkedList<Pick> lastPicks = new LinkedList<>();
 	private int numPicks = 0;
 	private Block blockPicked;
-	private IPlayer player;
+	private Player player;
 
-	public PickManager(IPlayer player, Block blockPicked) {
+	public PickManager(Player player, Block blockPicked) {
 		this.player = player;
 		this.blockPicked = blockPicked;
 	}  

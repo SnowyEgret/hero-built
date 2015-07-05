@@ -18,7 +18,7 @@ import net.minecraftforge.common.IPlantable;
 
 import org.snowyegret.mojo.item.spell.Spell;
 import org.snowyegret.mojo.item.spell.matrix.SpellCopy;
-import org.snowyegret.mojo.player.IPlayer;
+import org.snowyegret.mojo.player.Player;
 
 import com.google.common.collect.Lists;
 
@@ -56,7 +56,7 @@ public class Transaction implements IUndoable, Iterable {
 	// IUndoable-----------------------------------------------------------------
 
 	@Override
-	public IUndoable dO(IPlayer player) {
+	public IUndoable dO(Player player) {
 		World world = player.getWorld().getWorld();
 		player.getTransactionManager().addTransaction(this);
 		List<BlockPos> reselects = Lists.newArrayList();
@@ -148,7 +148,7 @@ public class Transaction implements IUndoable, Iterable {
 	}
 
 	@Override
-	public void undo(IPlayer player) {
+	public void undo(Player player) {
 		if (isCached) {
 			unCacheUndoables();
 		}
@@ -158,7 +158,7 @@ public class Transaction implements IUndoable, Iterable {
 	}
 
 	@Override
-	public void redo(IPlayer player) {
+	public void redo(Player player) {
 		if (isCached) {
 			unCacheUndoables();
 		}

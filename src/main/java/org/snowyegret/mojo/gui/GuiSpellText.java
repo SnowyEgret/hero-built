@@ -3,14 +3,14 @@ package org.snowyegret.mojo.gui;
 import java.awt.Font;
 
 import org.snowyegret.mojo.item.spell.other.SpellText;
-import org.snowyegret.mojo.player.IPlayer;
+import org.snowyegret.mojo.player.Player;
 
 import net.minecraft.client.gui.GuiButton;
 import say.swing.JFontChooser;
 
 public class GuiSpellText extends GuiTextInputDialog {
 
-	public GuiSpellText(IPlayer player) {
+	public GuiSpellText(Player player) {
 		super(player, "Font");
 	}
 

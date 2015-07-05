@@ -12,7 +12,7 @@ import org.snowyegret.mojo.item.spell.Spell;
 import org.snowyegret.mojo.item.spell.SpellInfo;
 import org.snowyegret.mojo.item.spell.transform.SpellFillRandom;
 import org.snowyegret.mojo.item.staff.Staff;
-import org.snowyegret.mojo.player.IPlayer;
+import org.snowyegret.mojo.player.Player;
 
 public class Overlay {
 
@@ -32,7 +32,7 @@ public class Overlay {
 	}
 
 	// Called by ForgeEventHandler.onRenderGameOverlayEvent on the client side
-	public void drawSpell(Spell spell, IPlayer player) {
+	public void drawSpell(Spell spell, Player player) {
 
 		int x = 10;
 		int y = x;
@@ -88,7 +88,7 @@ public class Overlay {
 	}
 
 	// Called by ForgeEventHandler.onRenderGameOverlayEvent on the client side
-	public void drawStaff(Staff staff, IPlayer player) {
+	public void drawStaff(Staff staff, Player player) {
 		ItemStack stack = player.getHeldItemStack();
 		int x = 10;
 		int y = x;

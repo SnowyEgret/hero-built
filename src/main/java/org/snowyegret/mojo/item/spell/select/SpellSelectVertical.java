@@ -2,7 +2,7 @@ package org.snowyegret.mojo.item.spell.select;
 
 import org.lwjgl.input.Keyboard;
 import org.snowyegret.mojo.item.spell.Modifier;
-import org.snowyegret.mojo.player.IPlayer;
+import org.snowyegret.mojo.player.Player;
 
 public class SpellSelectVertical extends AbstractSpellSelect {
 
@@ -12,7 +12,7 @@ public class SpellSelectVertical extends AbstractSpellSelect {
 	}
 
 	@Override
-	public void invoke(IPlayer player) {
+	public void invoke(Player player) {
 		boolean northSouth = player.getModifiers().isPressed(Modifier.SHIFT);
 		setSelectionPattern(northSouth ? Select.NORTH_SOUTH : Select.EAST_WEST);
 		super.invoke(player);

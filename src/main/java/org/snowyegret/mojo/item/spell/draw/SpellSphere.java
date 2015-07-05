@@ -5,7 +5,7 @@ import net.minecraft.init.Items;
 import org.snowyegret.mojo.item.spell.Modifier;
 import org.snowyegret.mojo.item.spell.Modifiers;
 import org.snowyegret.mojo.pick.Pick;
-import org.snowyegret.mojo.player.IPlayer;
+import org.snowyegret.mojo.player.Player;
 
 import ds.geom.IDrawable;
 import ds.geom.surface.Sphere;
@@ -18,7 +18,7 @@ public class SpellSphere extends AbstractSpellDraw {
 	}
 
 	@Override
-	public void invoke(IPlayer player) {
+	public void invoke(Player player) {
 		Modifiers modifiers = player.getModifiers();
 		Pick[] picks = player.getPicks();
 		boolean isHemisphere = modifiers.isPressed(Modifier.SHIFT);

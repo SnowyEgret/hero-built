@@ -1,7 +1,7 @@
 package org.snowyegret.mojo.item.spell.select;
 
 import org.snowyegret.mojo.item.spell.Modifier;
-import org.snowyegret.mojo.player.IPlayer;
+import org.snowyegret.mojo.player.Player;
 
 public class SpellSelectBellow extends AbstractSpellSelect {
 
@@ -10,7 +10,7 @@ public class SpellSelectBellow extends AbstractSpellSelect {
 	}
 
 	@Override
-	public void invoke(IPlayer player) {
+	public void invoke(Player player) {
 		if (player.getModifiers().isPressed(Modifier.SHIFT)) {
 			setSelectionPattern(Select.BELOW);
 		} else {

@@ -2,7 +2,7 @@ package org.snowyegret.mojo.item.spell.transform;
 
 import net.minecraft.util.BlockPos;
 
-import org.snowyegret.mojo.player.IPlayer;
+import org.snowyegret.mojo.player.Player;
 import org.snowyegret.mojo.select.Selection;
 
 import com.google.common.collect.Lists;
@@ -10,7 +10,7 @@ import com.google.common.collect.Lists;
 public class SpellFillChecker extends AbstractSpellTransform {
 
 	@Override
-	public void invoke(final IPlayer player) {
+	public void invoke(final Player player) {
 		transformSelections(player, new ITransform() {
 			@Override
 			public Iterable<Selection> transform(Selection s) {

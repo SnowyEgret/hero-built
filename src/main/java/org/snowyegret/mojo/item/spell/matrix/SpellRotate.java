@@ -8,7 +8,7 @@ import net.minecraft.util.Vec3;
 import org.snowyegret.mojo.item.spell.Modifier;
 import org.snowyegret.mojo.item.spell.Modifiers;
 import org.snowyegret.mojo.pick.Pick;
-import org.snowyegret.mojo.player.IPlayer;
+import org.snowyegret.mojo.player.Player;
 import org.snowyegret.mojo.select.SelectionManager;
 
 import ds.geom.GeomUtil;
@@ -21,7 +21,7 @@ public class SpellRotate extends AbstractSpellMatrix {
 	}
 
 	@Override
-	public void invoke(IPlayer player) {
+	public void invoke(Player player) {
 
 		Modifiers modifiers = player.getModifiers();
 		boolean rotateAboutCentroid = modifiers.isPressed(Modifier.SHIFT);

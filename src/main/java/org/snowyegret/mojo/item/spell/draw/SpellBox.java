@@ -5,7 +5,7 @@ import javax.vecmath.Point3d;
 import org.snowyegret.mojo.item.spell.Modifier;
 import org.snowyegret.mojo.item.spell.Modifiers;
 import org.snowyegret.mojo.pick.Pick;
-import org.snowyegret.mojo.player.IPlayer;
+import org.snowyegret.mojo.player.Player;
 
 import ds.geom.IDrawable;
 import ds.geom.solid.Box;
@@ -18,7 +18,7 @@ public class SpellBox extends AbstractSpellDraw {
 	}
 
 	@Override
-	public void invoke(IPlayer player) {
+	public void invoke(Player player) {
 		Modifiers modifiers = player.getModifiers();
 		boolean isCube = modifiers.isPressed(Modifier.CTRL);
 		Pick[] picks = player.getPicks();

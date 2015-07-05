@@ -2,7 +2,7 @@ package org.snowyegret.mojo.item.spell.select;
 
 import net.minecraft.util.EnumFacing;
 
-import org.snowyegret.mojo.player.IPlayer;
+import org.snowyegret.mojo.player.Player;
 
 public class SpellSelectFloor extends AbstractSpellSelect {
 
@@ -16,7 +16,7 @@ public class SpellSelectFloor extends AbstractSpellSelect {
 	}
 
 	@Override
-	public void invoke(IPlayer player) {
+	public void invoke(Player player) {
 		EnumFacing side = player.getPickManager().firstPick().side;
 		switch (side) {
 		case UP:

@@ -3,7 +3,7 @@ package org.snowyegret.mojo.item.spell.draw;
 import javax.vecmath.Point3d;
 
 import org.snowyegret.mojo.pick.Pick;
-import org.snowyegret.mojo.player.IPlayer;
+import org.snowyegret.mojo.player.Player;
 
 import ds.geom.IDrawable;
 import ds.geom.surface.Cone;
@@ -15,7 +15,7 @@ public class SpellCone extends AbstractSpellDraw {
 	}
 
 	@Override
-	public void invoke(IPlayer player) {
+	public void invoke(Player player) {
 		Pick[] picks = player.getPicks();
 		Point3d p0 = picks[0].point3d();
 		Point3d p1 = picks[1].point3d();

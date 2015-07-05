@@ -6,7 +6,7 @@ import javax.vecmath.Vector3d;
 
 import org.snowyegret.mojo.item.spell.Modifier;
 import org.snowyegret.mojo.pick.Pick;
-import org.snowyegret.mojo.player.IPlayer;
+import org.snowyegret.mojo.player.Player;
 
 import net.minecraft.util.BlockPos;
 import ds.geom.matrix.TranslationMatrix;
@@ -19,12 +19,12 @@ public class SpellCopy extends AbstractSpellMatrix {
 	}
 
 	@Override
-	public void invoke(IPlayer player) {
+	public void invoke(Player player) {
 		Pick[] picks = player.getPicks();
 		invoke(player, picks[0].getPos(), picks[1].getPos());
 	}
 
-	public void invoke(IPlayer player, BlockPos from, BlockPos to) {
+	public void invoke(Player player, BlockPos from, BlockPos to) {
 		Vector3d v = new Vector3d();
 		v.sub(new Point3d(to.getX(), to.getY(), to.getZ()), new Point3d(from.getX(), from.getY(), from.getZ()));
 		Matrix4d matrix = new TranslationMatrix(v);

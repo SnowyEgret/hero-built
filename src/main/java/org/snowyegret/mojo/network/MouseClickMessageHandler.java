@@ -13,7 +13,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 import org.snowyegret.mojo.item.spell.Modifier;
 import org.snowyegret.mojo.item.spell.Modifiers;
-import org.snowyegret.mojo.player.IPlayer;
+import org.snowyegret.mojo.player.Player;
 import org.snowyegret.mojo.player.Player;
 import org.snowyegret.mojo.select.SelectionManager;
 
@@ -37,7 +37,7 @@ public class MouseClickMessageHandler implements IMessageHandler<MouseClickMessa
 
 	private void processMessage(MouseClickMessage message, EntityPlayerMP playerIn) {
 		System.out.println("message=" + message);
-		IPlayer player = Player.instance(playerIn);
+		Player player = Player.instance(playerIn);
 		SelectionManager selectionManager = player.getSelectionManager();
 		MovingObjectType typeOfHit = message.getTypeOfHit();
 		int button = message.getButton();
@@ -63,7 +63,7 @@ public class MouseClickMessageHandler implements IMessageHandler<MouseClickMessa
 	}
 
 	// Called by onPlayerInteractEvent on server side only.
-	private void select(BlockPos pos, IPlayer player) {
+	private void select(BlockPos pos, Player player) {
 
 		Modifiers modifiers = player.getModifiers();
 		boolean selectRegion = modifiers.isPressed(Modifier.SHIFT);

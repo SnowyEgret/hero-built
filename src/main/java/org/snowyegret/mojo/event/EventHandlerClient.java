@@ -30,7 +30,7 @@ import org.snowyegret.mojo.item.staff.StaffOak;
 import org.snowyegret.mojo.item.staff.StaffSelect;
 import org.snowyegret.mojo.item.staff.StaffTransform;
 import org.snowyegret.mojo.network.ClearManagersMessage;
-import org.snowyegret.mojo.player.IPlayer;
+import org.snowyegret.mojo.player.Player;
 import org.snowyegret.mojo.player.Player;
 import org.snowyegret.mojo.util.ModelResourceLocations;
 
@@ -70,7 +70,7 @@ public class EventHandlerClient {
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void onRenderGameOverlayEvent(RenderGameOverlayEvent event) {
-		IPlayer player = Player.instance();
+		Player player = Player.instance();
 		if (event.type == RenderGameOverlayEvent.ElementType.TEXT) {
 			Spell spell = player.getSpell();
 			if (spell != null) {

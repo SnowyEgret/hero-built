@@ -19,7 +19,7 @@ import org.snowyegret.mojo.block.BlockPicked;
 import org.snowyegret.mojo.block.BlockSelected;
 import org.snowyegret.mojo.block.PrevStateTileEntity;
 import org.snowyegret.mojo.network.SelectionMessage;
-import org.snowyegret.mojo.player.IPlayer;
+import org.snowyegret.mojo.player.Player;
 import org.snowyegret.mojo.world.IWorld;
 
 import com.google.common.collect.Lists;
@@ -35,9 +35,9 @@ public class SelectionManager {
 	private Block blockSelected;
 	private List<BlockPos> reselects;
 	private Set<BlockPos> grownSelections = Sets.newHashSet();
-	private IPlayer player;
+	private Player player;
 
-	public SelectionManager(IPlayer player, Block blockSelected) {
+	public SelectionManager(Player player, Block blockSelected) {
 		this.player = player;
 		this.blockSelected = blockSelected;
 	}
@@ -51,7 +51,7 @@ public class SelectionManager {
 		MoJo.network.sendTo(new SelectionMessage(this), (EntityPlayerMP) player.getPlayer());
 	}
 
-	public void select(IPlayer player, BlockPos pos) {
+	public void select(Player player, BlockPos pos) {
 		select(player.getWorld(), pos);
 		MoJo.network.sendTo(new SelectionMessage(this), (EntityPlayerMP) player.getPlayer());
 	}
