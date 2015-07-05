@@ -1,23 +1,30 @@
 package org.snowyegret.mojo.item.spell;
 
-import org.lwjgl.input.Keyboard;
-
 public enum Action {
 
-	// TODO hardcode these
-	UNDO(Keyboard.KEY_Z),
-	NEXT(Keyboard.KEY_TAB),
-	DELETE(Keyboard.KEY_DELETE),
-	//DELETE(221),
-	RESELECT(Keyboard.KEY_L),
-	LEFT(Keyboard.KEY_LEFT),
-	RIGHT(Keyboard.KEY_RIGHT),
-	UP(Keyboard.KEY_UP),
-	DOWN(Keyboard.KEY_DOWN),
-	CUT(Keyboard.KEY_X),
-	COPY(Keyboard.KEY_C),
-	PASTE(Keyboard.KEY_V);
-	//REINVOKE(Keyboard.KEY_PERIOD);
+	// UNDO(Keyboard.KEY_Z),
+	// NEXT(Keyboard.KEY_TAB),
+	// DELETE(Keyboard.KEY_DELETE),
+	// RESELECT(Keyboard.KEY_L),
+	// LEFT(Keyboard.KEY_LEFT),
+	// RIGHT(Keyboard.KEY_RIGHT),
+	// UP(Keyboard.KEY_UP),
+	// DOWN(Keyboard.KEY_DOWN),
+	// CUT(Keyboard.KEY_X),
+	// COPY(Keyboard.KEY_C),
+	// PASTE(Keyboard.KEY_V);
+
+	UNDO(44),
+	NEXT(15),
+	DELETE(211),
+	RESELECT(38),
+	LEFT(203),
+	RIGHT(205),
+	UP(200),
+	DOWN(208),
+	CUT(45),
+	COPY(46),
+	PASTE(47);
 
 	public int keyCode;
 
