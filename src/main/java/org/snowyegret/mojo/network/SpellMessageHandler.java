@@ -15,6 +15,7 @@ public class SpellMessageHandler implements IMessageHandler<SpellMessage, IMessa
 			public void run() {
 				// TODO static field SpellInfo on EventHandlerClient
 				EventHandlerClient.overlay.setDistance(message.getDistance());
+				EventHandlerClient.overlay.setMessage(message.getMessage());
 			}
 
 		});

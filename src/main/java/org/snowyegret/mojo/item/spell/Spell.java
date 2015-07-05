@@ -46,8 +46,6 @@ public class Spell extends ItemBase {
 		Player player = Player.instance(playerIn);
 		PickManager pickManager = player.getPickManager();
 		pickManager.pick(pos, side);
-		// This is done in method pick
-		// MoJo.network.sendTo(new PickMessage(pickManager), (EntityPlayerMP) playerIn);
 		if (pickManager.isFinishedPicking()) {
 			invoke(player);
 		}

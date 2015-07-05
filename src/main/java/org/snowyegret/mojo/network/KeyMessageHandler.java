@@ -82,9 +82,9 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 				}
 				selectionManager.reselect();
 			} catch (NoSuchElementException e) {
-				// TODO Log to overlay. Create info line in overlay
-				//MoJo.network.sendTo(new SpellMessage(p0.distance(p1)), (EntityPlayerMP) player.getPlayer());
-				System.out.println(e.getMessage());
+				MoJo.network.sendTo(new SpellMessage(e.getMessage()), (EntityPlayerMP) player.getPlayer());
+				// Return so that the overlay is not reset at end of switch
+				return;
 			}
 			break;
 
@@ -167,6 +167,9 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 		default:
 			return;
 		}
+
+		// Clear any messages in the overlay
+		MoJo.network.sendTo(new SpellMessage(), (EntityPlayerMP) player.getPlayer());
 	}
 
 	private void copy(Player player, int leftRight, int upDown) {
