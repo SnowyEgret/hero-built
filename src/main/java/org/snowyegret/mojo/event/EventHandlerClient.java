@@ -4,8 +4,6 @@ import net.minecraft.client.gui.GuiIngameMenu;
 import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.IRegistry;
-import net.minecraft.util.Vec3;
-import net.minecraft.util.Vec3i;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.ModelBakeEvent;
@@ -23,11 +21,14 @@ import org.snowyegret.mojo.gui.Overlay;
 import org.snowyegret.mojo.gui.PickInfo;
 import org.snowyegret.mojo.gui.SelectionInfo;
 import org.snowyegret.mojo.item.spell.Spell;
-import org.snowyegret.mojo.item.spell.SpellModel;
-import org.snowyegret.mojo.item.spell.draw.SpellCircle;
 import org.snowyegret.mojo.item.staff.Staff;
+import org.snowyegret.mojo.item.staff.StaffAcacia;
+import org.snowyegret.mojo.item.staff.StaffBirch;
 import org.snowyegret.mojo.item.staff.StaffDraw;
 import org.snowyegret.mojo.item.staff.StaffModel;
+import org.snowyegret.mojo.item.staff.StaffOak;
+import org.snowyegret.mojo.item.staff.StaffSelect;
+import org.snowyegret.mojo.item.staff.StaffTransform;
 import org.snowyegret.mojo.network.ClearManagersMessage;
 import org.snowyegret.mojo.player.IPlayer;
 import org.snowyegret.mojo.player.Player;
@@ -93,8 +94,13 @@ public class EventHandlerClient {
 		// Prepared in ClientProxy.registerItemModels
 		Object baseModel = event.modelRegistry.getObject(ModelResourceLocations.get(Staff.class));
 		r.putObject(ModelResourceLocations.get(StaffDraw.class), new StaffModel((IBakedModel) baseModel));
-		baseModel = event.modelRegistry.getObject(ModelResourceLocations.get(Spell.class));
-		r.putObject(ModelResourceLocations.get(SpellCircle.class), new SpellModel((IBakedModel) baseModel));
+		r.putObject(ModelResourceLocations.get(StaffSelect.class), new StaffModel((IBakedModel) baseModel));
+		r.putObject(ModelResourceLocations.get(StaffTransform.class), new StaffModel((IBakedModel) baseModel));
+		r.putObject(ModelResourceLocations.get(StaffOak.class), new StaffModel((IBakedModel) baseModel));
+		r.putObject(ModelResourceLocations.get(StaffBirch.class), new StaffModel((IBakedModel) baseModel));
+		r.putObject(ModelResourceLocations.get(StaffAcacia.class), new StaffModel((IBakedModel) baseModel));
+//		baseModel = event.modelRegistry.getObject(ModelResourceLocations.get(Spell.class));
+//		r.putObject(ModelResourceLocations.get(SpellCircle.class), new SpellModel((IBakedModel) baseModel));
 	}
 
 	// Clears selections and picks when quitting game

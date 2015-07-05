@@ -8,6 +8,7 @@ item.staffSelect.name=Select Staff
 item.staffTransform.name=Edit Staff
 item.staffOak.name=Oak Staff
 item.staffBirch.name=Birch Staff
+item.staffAcacia.name=Acacia Staff
 
 #s ##########
 
@@ -46,13 +47,13 @@ item.spellLine.modifier.ctrl=polyline
 item.spellLine.modifier.shift=
 item.spellLine.modifier.alt=on surface
 
-item.spellMeasure.name=Measure
-item.spellMeasure.description=measures distance between picks
-item.spellMeasure.pick.0=from
-item.spellMeasure.pick.1=to
-item.spellMeasure.modifier.ctrl=place markers at picks
-item.spellMeasure.modifier.shift=divide by 2
-item.spellMeasure.modifier.alt=divide by 3
+item.spellDivide.name=Divide
+item.spellDivide.description=Divides distance between picks
+item.spellDivide.pick.0=from
+item.spellDivide.pick.1=to
+item.spellDivide.modifier.ctrl=place markers at picks
+item.spellDivide.modifier.shift=divide by 2
+item.spellDivide.modifier.alt=divide by 3
 
 item.spellPyramid.name=Pyramid
 item.spellPyramid.description=creates a solid pyramid
@@ -94,13 +95,13 @@ item.spellMirror.pick.0=a face
 item.spellMirror.modifier.ctrl=delete original
 item.spellMirror.modifier.alt=mirror about center of picked block
 
-item.spellRotate90.name=Rotate
-item.spellRotate90.description=rotates selection 90 degrees around specified axis
-item.spellRotate90.pick.0=center of rotation
-item.spellRotate90.modifier.alt=rotate around centroid
-item.spellRotate90.modifier.x=x axis
-item.spellRotate90.modifier.y=y axis (default)
-item.spellRotate90.modifier.z=z axis
+item.spellRotate.name=Rotate
+item.spellRotate.description=rotates selection 90 degrees around specified axis
+item.spellRotate.pick.0=center of rotation
+item.spellRotate.modifier.alt=rotate around centroid
+item.spellRotate.modifier.x=x axis
+item.spellRotate.modifier.y=y axis (default)
+item.spellRotate.modifier.z=z axis
 
 # Select spells ##########
 

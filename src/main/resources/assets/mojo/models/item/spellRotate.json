@@ -1,7 +1,7 @@
 {
     "parent": "builtin/generated",
     "textures": {
-        "layer0": "mojo:items/spellRotate90"
+        "layer0": "mojo:items/spellRotate"
     },
     "display": {
         "thirdperson": {

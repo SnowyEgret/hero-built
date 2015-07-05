@@ -24,7 +24,11 @@ import org.snowyegret.mojo.event.EventHandlerServer;
 import org.snowyegret.mojo.event.KeyHandler;
 import org.snowyegret.mojo.event.MouseHandler;
 import org.snowyegret.mojo.item.IItem;
+import org.snowyegret.mojo.item.ItemBase;
 import org.snowyegret.mojo.item.spell.Spell;
+import org.snowyegret.mojo.item.spell.draw.SpellDivide;
+import org.snowyegret.mojo.item.spell.draw.SpellSpline;
+import org.snowyegret.mojo.item.spell.transform.SpellDelete;
 import org.snowyegret.mojo.item.staff.Staff;
 import org.snowyegret.mojo.item.staff.StaffAcacia;
 import org.snowyegret.mojo.item.staff.StaffBirch;
@@ -44,7 +48,6 @@ import org.snowyegret.mojo.network.SelectionMessage;
 import org.snowyegret.mojo.network.SelectionMessageHandler;
 import org.snowyegret.mojo.network.SpellMessage;
 import org.snowyegret.mojo.network.SpellMessageHandler;
-import org.snowyegret.mojo.util.JSONGenerator;
 import org.snowyegret.mojo.util.StringUtils;
 
 import com.google.common.collect.Lists;
@@ -69,12 +72,15 @@ public class CommonProxy {
 
 			@Override
 			public String getTabLabel() {
-				return "MoJo spells";
+				return "Mo'Jo";
 			}
 		};
 	}
 
 	protected List<Item> items = Lists.newArrayList();
+
+	private final List<Class<? extends ItemBase>> itemsExcluded = Lists.newArrayList(Spell.class, Staff.class,
+			SpellDelete.class, SpellDivide.class, SpellSpline.class, SpellDivide.class);
 
 	public void registerEventHandlers() {
 		MinecraftForge.EVENT_BUS.register(new EventHandlerClient());
@@ -175,7 +181,13 @@ public class CommonProxy {
 		} else {
 			List<Spell> allSpells = new ArrayList();
 			for (List<Spell> list : spellsLists) {
-				allSpells.addAll(list);
+				for (Spell spell : list) {
+					if (!itemsExcluded.contains(spell.getClass())) {
+						allSpells.add(spell);
+					} else {
+						System.out.println("Excluded " + spell + " from staff " + name);
+					}
+				}
 			}
 			constructor = itemClass.getConstructor(List.class);
 			item = (Item) constructor.newInstance(allSpells);
@@ -184,8 +196,10 @@ public class CommonProxy {
 		item.setMaxStackSize(1);
 		// We are using this method to load class Staff to use it's model as a base model.
 		// We don't want it to be part of the game
-		if (item.getClass() != Staff.class && item.getClass() != Spell.class) {
+		if (!itemsExcluded.contains(item.getClass())) {
 			item.setCreativeTab(tabSpells);
+		} else {
+			System.out.println("Excluded " + name + " from creative tabs");
 		}
 		GameRegistry.registerItem(item, name);
 		if (((IItem) item).hasRecipe()) {
@@ -195,7 +209,7 @@ public class CommonProxy {
 	}
 
 	private List<Spell> initSpellsFromPackage(String packageName) throws Exception {
-	
+
 		ClassPath path = ClassPath.from(this.getClass().getClassLoader());
 		List<Spell> spells = Lists.newArrayList();
 		for (ClassInfo i : path.getTopLevelClassesRecursive(MoJo.DOMAIN + ".item.spell." + packageName)) {

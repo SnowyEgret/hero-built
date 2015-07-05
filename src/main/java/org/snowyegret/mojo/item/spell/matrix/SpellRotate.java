@@ -13,9 +13,9 @@ import org.snowyegret.mojo.select.SelectionManager;
 
 import ds.geom.GeomUtil;
 
-public class SpellRotate90 extends AbstractSpellMatrix {
+public class SpellRotate extends AbstractSpellMatrix {
 
-	public SpellRotate90() {
+	public SpellRotate() {
 		super(1);
 		info.addModifiers(Modifier.ALT, Modifier.X, Modifier.Y, Modifier.Z);
 	}
