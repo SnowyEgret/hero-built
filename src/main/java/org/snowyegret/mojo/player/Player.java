@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
@@ -13,6 +14,7 @@ import org.snowyegret.mojo.MoJo;
 import org.snowyegret.mojo.item.spell.Modifiers;
 import org.snowyegret.mojo.item.spell.Spell;
 import org.snowyegret.mojo.item.staff.Staff;
+import org.snowyegret.mojo.network.SpellMessage;
 import org.snowyegret.mojo.pick.Pick;
 import org.snowyegret.mojo.pick.PickManager;
 import org.snowyegret.mojo.select.Selection;
@@ -233,6 +235,13 @@ public class Player {
 
 	public Pick[] getPicks() {
 		return getPickManager().getPicks();
+	}
+
+	public void resetPicks(Spell spell) {
+		PickManager pickManager = getPickManager();
+		pickManager.clearPicks();
+		pickManager.setNumPicks(spell.getNumPicks());
+		MoJo.network.sendTo(new SpellMessage(), (EntityPlayerMP) player);
 	}
 
 }

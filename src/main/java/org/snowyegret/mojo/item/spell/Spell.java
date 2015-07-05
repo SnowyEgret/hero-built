@@ -47,7 +47,7 @@ public class Spell extends ItemBase {
 		PickManager pickManager = player.getPickManager();
 		pickManager.pick(pos, side);
 		// This is done in method pick
-		//MoJo.network.sendTo(new PickMessage(pickManager), (EntityPlayerMP) playerIn);
+		// MoJo.network.sendTo(new PickMessage(pickManager), (EntityPlayerMP) playerIn);
 		if (pickManager.isFinishedPicking()) {
 			invoke(player);
 		}
@@ -69,16 +69,6 @@ public class Spell extends ItemBase {
 
 	public int getNumPicks() {
 		return numPicks;
-	}
-
-	public void reset(Player player) {
-		PickManager pickManager = player.getPickManager();
-		pickManager.clearPicks();
-		pickManager.setNumPicks(numPicks);
-		// TODO set this on the overlay
-		// An empty spell message will set distance to -1
-		MoJo.network.sendTo(new SpellMessage(), (EntityPlayerMP) player.getPlayer());
-		//message = null;
 	}
 
 	// Object -------------------------------------------------------

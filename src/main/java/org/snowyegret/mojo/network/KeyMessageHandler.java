@@ -10,6 +10,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
+import org.snowyegret.mojo.MoJo;
 import org.snowyegret.mojo.item.spell.Action;
 import org.snowyegret.mojo.item.spell.Modifier;
 import org.snowyegret.mojo.item.spell.Modifiers;
@@ -79,11 +80,10 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 						player.getTransactionManager().undo(player);
 					}
 				}
-				// if (lastSpell != null && lastSpell.getSpell() instanceof SpellCopy) {
 				selectionManager.reselect();
-				// }
 			} catch (NoSuchElementException e) {
 				// TODO Log to overlay. Create info line in overlay
+				//MoJo.network.sendTo(new SpellMessage(p0.distance(p1)), (EntityPlayerMP) player.getPlayer());
 				System.out.println(e.getMessage());
 			}
 			break;
@@ -94,20 +94,13 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 			if (staff != null) {
 				Spell spell = null;
 				if (modifiers.isPressed(Modifier.CTRL)) {
-					// staff.prevSpell(stack, player.getPickManager());
 					spell = staff.prevSpell(stack);
 				} else {
 					spell = staff.nextSpell(stack);
 				}
-				spell.reset(player);
-				// pickManager.setNumPicks(spell.getNumPicks());
-				// pickManager.clearPicks();
+				player.resetPicks(spell);
 			}
 			break;
-
-		// case REINVOKE:
-		// lastSpell.invoke();
-		// break;
 
 		case DELETE:
 			new SpellDelete().invoke(player);

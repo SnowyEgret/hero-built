@@ -94,8 +94,6 @@ public class EventHandlerServer {
 		}
 
 		Player player = Player.instance((EntityPlayer) e.entity);
-		IWorld world = player.getWorld();
-		// Get the last spell from the player instead of a field of this class
 		Spell lastSpell = player.getLastSpell();
 		Spell spell = player.getSpell();
 
@@ -107,9 +105,7 @@ public class EventHandlerServer {
 			// If the spell has changed reset it.
 			if (!spell.equals(lastSpell)) {
 				player.setLastSpell(spell);
-				// TODO this is clearer
-				// player.resetPicks(spell);
-				spell.reset(player);
+				player.resetPicks(spell);
 			}
 		}
 
@@ -118,7 +114,7 @@ public class EventHandlerServer {
 			// if (player.isPicking()) {
 			if (player.getPickManager().isPicking()) {
 				BlockPos pos = player.getPosition();
-				Block b = world.getBlock(pos.down());
+				Block b = player.getWorld().getBlock(pos.down());
 				// Try second block down when block underneath is air if the player is jumping or stepping on a plant
 				if (b == Blocks.air || !b.isNormalCube()) {
 					pos = pos.down();

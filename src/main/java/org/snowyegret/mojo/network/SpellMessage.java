@@ -5,11 +5,14 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 public class SpellMessage implements IMessage {
 
+	// TODO
+	// private Double distance = null;
 	private double distance = -1;
 
 	public SpellMessage() {
 	}
 
+	// public SpellMessage(Double distance) {
 	public SpellMessage(double distance) {
 		this.distance = distance;
 	}

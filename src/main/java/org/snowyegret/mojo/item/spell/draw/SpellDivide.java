@@ -34,9 +34,6 @@ public class SpellDivide extends AbstractSpellDraw {
 		Point3d p1 = picks[1].point3d();
 		player.clearPicks();
 		
-		//message = String.format("Distance: %.1f", p0.distance(p1));
-//		SpellMessage m = new SpellMessage();
-//		m.setDistance(());
 		MoJo.network.sendTo(new SpellMessage(p0.distance(p1)), (EntityPlayerMP) player.getPlayer());
 		PointSet points = new PointSet();
 		if (divideByTwo) {
