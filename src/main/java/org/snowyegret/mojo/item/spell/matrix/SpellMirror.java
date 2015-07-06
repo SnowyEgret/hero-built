@@ -11,6 +11,7 @@ import org.snowyegret.mojo.item.spell.Modifier;
 import org.snowyegret.mojo.item.spell.Modifiers;
 import org.snowyegret.mojo.pick.Pick;
 import org.snowyegret.mojo.player.Player;
+import org.snowyegret.mojo.select.SelectionManager;
 
 import ds.geom.matrix.ReflectionMatrix;
 
@@ -27,6 +28,16 @@ public class SpellMirror extends AbstractSpellMatrix {
 		boolean mirrorAboutCentroid = modifiers.isPressed(Modifier.SHIFT);
 
 		Pick[] picks = player.getPicks();
+		player.clearPicks();
+		SelectionManager selectionManager = player.getSelectionManager();
+		//TODO
+		// if (!player.hasSelections()) {
+		// player.select(picks[0].getPos());
+		// }
+		if (selectionManager.size() == 0) {
+			selectionManager.select(player, picks[0].getPos());
+		}
+
 		EnumFacing side = picks[0].getSide();
 		Point3d p = picks[0].point3d();
 		Point3d offset = null;

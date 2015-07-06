@@ -51,6 +51,8 @@ public class SelectionManager {
 		MoJo.network.sendTo(new SelectionMessage(this), (EntityPlayerMP) player.getPlayer());
 	}
 
+	// TODO
+	// public void select(BlockPos pos) {
 	public void select(Player player, BlockPos pos) {
 		select(player.getWorld(), pos);
 		MoJo.network.sendTo(new SelectionMessage(this), (EntityPlayerMP) player.getPlayer());
@@ -166,23 +168,24 @@ public class SelectionManager {
 		Selection s = null;
 		IBlockState state = world.getActualState(pos);
 		Block b = (state.getBlock());
-		
+
 		// Should not happen.
 		// TODO Except that SpellDelete is reselecting on a delete key press
 		if (b instanceof BlockAir) {
 			System.out.println("BlockAir. Returning null.");
 			return null;
 		}
-		
-//		if (b instanceof BlockPicked) {
-//			PrevStateTileEntity te = (PrevStateTileEntity) world.getTileEntity(pos);
-//			if (te != null) {
-//				state = te.getPrevState();
-//			}
-//		}
+
+		// if (b instanceof BlockPicked) {
+		// PrevStateTileEntity te = (PrevStateTileEntity) world.getTileEntity(pos);
+		// if (te != null) {
+		// state = te.getPrevState();
+		// }
+		// }
 
 		if (b instanceof BlockSelected) {
-			// Implementation of: Find a way to restore selected blocks to their previous state when they are left in world after a crash #173
+			// Implementation of: Find a way to restore selected blocks to their previous state when they are left in
+			// world after a crash #173
 			// PrevStateTileEntity must call super.writeToNBT
 			System.out.println("Selecting a BlockSelected");
 			System.out.println("This Should only occur when a selection is left in world after a crash.");
@@ -196,7 +199,7 @@ public class SelectionManager {
 				state = te.getPrevState();
 			}
 		}
-		
+
 		if (isSelected(pos)) {
 			System.out.println("Position is selected but not a BlockSelected. This should not happen.");
 		}
