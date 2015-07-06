@@ -38,7 +38,7 @@ public class Player {
 		WEST;
 	}
 
-	protected Player(EntityPlayer player) {
+	public Player(EntityPlayer player) {
 		this.player = player;
 		props = (PlayerProperties) player.getExtendedProperties(PlayerProperties.NAME);
 		if (props == null) {
@@ -46,16 +46,8 @@ public class Player {
 		}
 	}
 
-	protected Player() {
+	public Player() {
 		this(Minecraft.getMinecraft().thePlayer);
-	}
-
-	public static Player instance(EntityPlayer player) {
-		return new Player(player);
-	}
-
-	public static Player instance() {
-		return new Player();
 	}
 
 	public EntityPlayer getPlayer() {

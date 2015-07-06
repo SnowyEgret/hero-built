@@ -43,7 +43,7 @@ public class Spell extends ItemBase {
 		if (world.isRemote) {
 			return true;
 		}
-		Player player = Player.instance(playerIn);
+		Player player = new Player(playerIn);
 		PickManager pickManager = player.getPickManager();
 		pickManager.pick(pos, side);
 		if (pickManager.isFinishedPicking()) {

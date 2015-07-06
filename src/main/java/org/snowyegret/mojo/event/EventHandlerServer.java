@@ -45,7 +45,7 @@ public class EventHandlerServer {
 			return;
 		}
 
-		Player player = Player.instance(e.entityPlayer);
+		Player player = new Player(e.entityPlayer);
 
 		// Return if player is holding nothing
 		ItemStack stack = player.getHeldItemStack();
@@ -93,7 +93,7 @@ public class EventHandlerServer {
 			return;
 		}
 
-		Player player = Player.instance((EntityPlayer) e.entity);
+		Player player = new Player((EntityPlayer) e.entity);
 		Spell lastSpell = player.getLastSpell();
 		Spell spell = player.getSpell();
 

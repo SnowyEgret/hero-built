@@ -30,11 +30,11 @@ public class GuiHandler implements IGuiHandler {
 	public Object getClientGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
 		switch (id) {
 		case GUI_DIALOG:
-			return new GuiDialog(Player.instance(player), "Ok", "Cancel");
+			return new GuiDialog(new Player(player), "Ok", "Cancel");
 		case GUI_TEXT_INPUT_DIALOG:
-			return new GuiTextInputDialog(Player.instance(player));
+			return new GuiTextInputDialog(new Player(player));
 		case GUI_SPELL_TEXT:
-			return new GuiSpellText(Player.instance(player));
+			return new GuiSpellText(new Player(player));
 		case GUI_STAFF:
 			 return new GuiStaff(new GuiStaffContainer(player.inventory, new InventoryStaff(player.inventory,
 			 player.inventory.currentItem)));

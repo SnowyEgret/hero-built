@@ -46,7 +46,7 @@ public class Staff extends ItemBase {
 			return true;
 		}		
 		
-		Player player = Player.instance(playerIn);
+		Player player = new Player(playerIn);
 		Modifiers modifiers = player.getModifiers();
 
 		// We are on the server side. Open staff gui if space bar is down

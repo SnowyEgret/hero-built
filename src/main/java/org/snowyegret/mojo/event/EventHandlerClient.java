@@ -44,7 +44,7 @@ public class EventHandlerClient {
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void onDrawBlockHightlight(DrawBlockHighlightEvent e) {
-		Spell spell = Player.instance().getSpell();
+		Spell spell = new Player().getSpell();
 		if (spell != null) {
 			BlockPos pos = null;
 			BlockPos lastPickPos = pickInfo.getLastPos();
@@ -69,7 +69,7 @@ public class EventHandlerClient {
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void onRenderGameOverlayEvent(RenderGameOverlayEvent event) {
-		Player player = Player.instance();
+		Player player = new Player();
 		if (event.type == RenderGameOverlayEvent.ElementType.TEXT) {
 			Spell spell = player.getSpell();
 			if (spell != null) {

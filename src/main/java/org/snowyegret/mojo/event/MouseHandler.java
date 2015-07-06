@@ -35,7 +35,7 @@ public class MouseHandler {
 			return;
 		}
 
-		Player player = Player.instance();
+		Player player = new Player();
 		IWorld world = player.getWorld();
 		MovingObjectPosition cursor = Minecraft.getMinecraft().objectMouseOver;
 		// Do nothing if player clicks on a mob

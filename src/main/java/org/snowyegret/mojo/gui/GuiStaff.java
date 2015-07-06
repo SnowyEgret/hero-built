@@ -21,7 +21,7 @@ public class GuiStaff extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int p1, int p2) {
-		ItemStack stack = Player.instance().getHeldItemStack();
+		ItemStack stack = new Player().getHeldItemStack();
 		if (stack == null) {
 			return;
 		}

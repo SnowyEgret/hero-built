@@ -17,17 +17,11 @@ public class ClearManagersMessageHandler implements IMessageHandler<ClearManager
 		WorldServer server = player.getServerForPlayer();
 		server.addScheduledTask(new Runnable() {
 			public void run() {
-				processMessage(message, player);
+				Player p = new Player(player);
+				p.clearSelections();
+				p.clearPicks();
 			}
 		});
 		return null;
-	}
-
-	// Private------------------------------------------------------------
-
-	private void processMessage(ClearManagersMessage message, EntityPlayerMP playerIn) {
-		Player player = Player.instance(playerIn);
-		player.clearSelections();
-		player.clearPicks();
 	}
 }

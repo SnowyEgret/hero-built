@@ -45,7 +45,7 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 
 	private void processMessage(KeyMessage message, EntityPlayerMP playerIn) {
 
-		Player player = Player.instance(playerIn);
+		Player player = new Player(playerIn);
 		IWorld world = player.getWorld();
 		Modifiers modifiers = player.getModifiers();
 		SelectionManager selectionManager = player.getSelectionManager();
