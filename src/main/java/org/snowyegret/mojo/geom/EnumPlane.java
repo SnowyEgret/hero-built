@@ -1,7 +1,7 @@
 package org.snowyegret.mojo.geom;
 
 public enum EnumPlane {
-	XZ,
-	XY,
-	YZ;
+	HORIZONTAL_XZ,
+	VERTICAL_XY,
+	VERTICAL_YZ;
 }

@@ -22,22 +22,22 @@ public class Pick {
 		this.side = side;
 		switch (side) {
 		case UP:
-			plane = EnumPlane.XZ;
+			plane = EnumPlane.HORIZONTAL_XZ;
 			break;
 		case DOWN:
-			plane = EnumPlane.XZ;
+			plane = EnumPlane.HORIZONTAL_XZ;
 			break;
 		case EAST:
-			plane = EnumPlane.YZ;
+			plane = EnumPlane.VERTICAL_YZ;
 			break;
 		case WEST:
-			plane = EnumPlane.YZ;
+			plane = EnumPlane.VERTICAL_YZ;
 			break;
 		case NORTH:
-			plane = EnumPlane.XY;
+			plane = EnumPlane.VERTICAL_XY;
 			break;
 		case SOUTH:
-			plane = EnumPlane.XY;
+			plane = EnumPlane.VERTICAL_XY;
 			break;
 		}
 	}

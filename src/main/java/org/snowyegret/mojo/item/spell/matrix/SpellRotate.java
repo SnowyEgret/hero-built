@@ -45,13 +45,13 @@ public class SpellRotate extends AbstractSpellMatrix {
 			matrix = GeomUtil.newRotZ90Matrix(center);
 		} else {
 			switch (picks[0].getPlane()) {
-			case XY:
+			case VERTICAL_XY:
 				matrix = GeomUtil.newRotZ90Matrix(center);
 				break;
-			case XZ:
+			case HORIZONTAL_XZ:
 				matrix = GeomUtil.newRotY90Matrix(center);
 				break;
-			case YZ:
+			case VERTICAL_YZ:
 				matrix = GeomUtil.newRotX90Matrix(center);
 				break;
 			default:
@@ -60,7 +60,7 @@ public class SpellRotate extends AbstractSpellMatrix {
 			}
 		}
 
-		transformSelections(player, matrix);
+		transformSelections(player, matrix, picks[0].getPlane());
 	}
 
 	@Override

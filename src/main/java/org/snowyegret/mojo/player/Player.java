@@ -42,7 +42,7 @@ public class Player {
 		this.player = player;
 		props = (PlayerProperties) player.getExtendedProperties(PlayerProperties.NAME);
 		if (props == null) {
-			System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.");
+			System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>props=" + props);
 		}
 	}
 
@@ -165,7 +165,7 @@ public class Player {
 	}
 
 	public TransactionManager getTransactionManager() {
-		//This is null for some reason
+		// This is null for some reason
 		props = (PlayerProperties) player.getExtendedProperties(PlayerProperties.NAME);
 		return props.getUndoManager();
 	}

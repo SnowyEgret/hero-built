@@ -27,33 +27,33 @@ public class Plane {
 		this.direction = direction;
 		switch (direction) {
 		case UP:
-			plane = EnumPlane.XZ;
+			plane = EnumPlane.HORIZONTAL_XZ;
 			break;
 		case DOWN:
-			plane = EnumPlane.XZ;
+			plane = EnumPlane.HORIZONTAL_XZ;
 			break;
 		case EAST:
-			plane = EnumPlane.YZ;
+			plane = EnumPlane.VERTICAL_YZ;
 			break;
 		case WEST:
-			plane = EnumPlane.YZ;
+			plane = EnumPlane.VERTICAL_YZ;
 			break;
 		case NORTH:
-			plane = EnumPlane.XY;
+			plane = EnumPlane.VERTICAL_XY;
 			break;
 		case SOUTH:
-			plane = EnumPlane.XY;
+			plane = EnumPlane.VERTICAL_XY;
 			break;
 		}
 	}
 
 	public boolean contains(BlockPos p) {
 		switch (plane) {
-		case XY:
+		case VERTICAL_XY:
 			return p.getZ() == distanceFromOrigin;
-		case XZ:
+		case HORIZONTAL_XZ:
 			return p.getY() == distanceFromOrigin;
-		case YZ:
+		case VERTICAL_YZ:
 			return p.getX() == distanceFromOrigin;
 		default:
 			return false;

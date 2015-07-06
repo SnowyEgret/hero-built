@@ -34,6 +34,7 @@ public class SpellMirror extends AbstractSpellMatrix {
 		// if (!player.hasSelections()) {
 		// player.select(picks[0].getPos());
 		// }
+		// Use pick if no selection. PickManager must be cleared
 		if (selectionManager.size() == 0) {
 			selectionManager.select(picks[0].getPos());
 		}
@@ -81,7 +82,7 @@ public class SpellMirror extends AbstractSpellMatrix {
 		}
 		Vec3i d = side.getDirectionVec();
 		Matrix4d matrix = new ReflectionMatrix(p, new Vector3d(d.getX(), d.getY(), d.getZ()));
-		transformSelections(player, matrix);
+		transformSelections(player, matrix, picks[0].getPlane());
 	}
 
 	@Override

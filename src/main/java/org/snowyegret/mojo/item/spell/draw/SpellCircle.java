@@ -26,13 +26,13 @@ public class SpellCircle extends AbstractSpellDraw {
 
 		IDrawable d = null;
 		switch (picks[0].getPlane()) {
-		case XY:
+		case VERTICAL_XY:
 			d = new CircleXY(p0, p1);
 			break;
-		case XZ:
+		case HORIZONTAL_XZ:
 			d = new CircleXZ(p0, p1);
 			break;
-		case YZ:
+		case VERTICAL_YZ:
 			d = new CircleYZ(p0, p1);
 			break;
 		default:
