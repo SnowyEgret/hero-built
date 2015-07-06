@@ -71,7 +71,7 @@ public abstract class AbstractSpellSelect extends Spell {
 		Pick firstPick = player.getPickManager().firstPick();
 		player.clearPicks();
 		if (selectionManager.size() == 0) {
-			selectionManager.select(player, firstPick.getPos());
+			selectionManager.select(firstPick.getPos());
 		}
 
 		if (shrink) {
@@ -99,7 +99,7 @@ public abstract class AbstractSpellSelect extends Spell {
 					continue;
 				}
 				// Do not select blocks if they are already selected
-				// Both of these tests perform equally
+				// Testing for BlockSelected and isSelected seems to perform equally
 				if (block instanceof BlockSelected) {
 					// System.out.println("Position already selected");
 					// Select previously selected blocks if they have been left in world after a crash

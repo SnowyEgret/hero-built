@@ -119,7 +119,7 @@ public class EventHandlerServer {
 				if (b == Blocks.air || !b.isNormalCube()) {
 					pos = pos.down();
 				}
-				player.getSelectionManager().select(player, pos.down());
+				player.getSelectionManager().select(pos.down());
 			}
 		}
 	}

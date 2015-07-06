@@ -99,14 +99,14 @@ public class MouseClickMessageHandler implements IMessageHandler<MouseClickMessa
 			if (selectionManager.isSelected(pos)) {
 				selectionManager.deselect(pos);
 			} else {
-				selectionManager.select(player, pos);
+				selectionManager.select(pos);
 			}
 			return;
 		}
 
 		// No modifier replaces the current selections with a new selection
 		selectionManager.clearSelections();
-		selectionManager.select(player, pos);
+		selectionManager.select(pos);
 	}
 
 }

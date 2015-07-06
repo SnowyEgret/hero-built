@@ -52,8 +52,7 @@ public class SelectionManager {
 	}
 
 	// TODO
-	// public void select(BlockPos pos) {
-	public void select(Player player, BlockPos pos) {
+	public void select(BlockPos pos) {
 		select(player.getWorld(), pos);
 		MoJo.network.sendTo(new SelectionMessage(this), (EntityPlayerMP) player.getPlayer());
 	}

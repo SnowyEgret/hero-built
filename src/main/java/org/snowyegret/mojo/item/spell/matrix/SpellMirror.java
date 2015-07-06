@@ -35,7 +35,7 @@ public class SpellMirror extends AbstractSpellMatrix {
 		// player.select(picks[0].getPos());
 		// }
 		if (selectionManager.size() == 0) {
-			selectionManager.select(player, picks[0].getPos());
+			selectionManager.select(picks[0].getPos());
 		}
 
 		EnumFacing side = picks[0].getSide();
