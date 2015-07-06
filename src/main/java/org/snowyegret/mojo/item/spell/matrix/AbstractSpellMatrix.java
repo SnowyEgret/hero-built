@@ -53,10 +53,10 @@ public abstract class AbstractSpellMatrix extends Spell {
 				if (k instanceof PropertyDirection) {
 					PropertyDirection prop = (PropertyDirection) k;
 					EnumFacing facing = (EnumFacing) props.get(prop);
-					//System.out.println("facing=" + facing);
+					// System.out.println("facing=" + facing);
 					EnumFacing newFacing = null;
 					// if (plane == EnumFacing.EAST || plane == EnumFacing.WEST) {
-					if (plane == EnumPlane.VERTICAL_YZ) {
+					if (plane == EnumPlane.VERTICAL_YZ && this instanceof SpellMirror) {
 						if (facing == EnumFacing.EAST) {
 							newFacing = EnumFacing.WEST;
 						}
@@ -65,7 +65,7 @@ public abstract class AbstractSpellMatrix extends Spell {
 						}
 					}
 					// if (plane == EnumFacing.NORTH || plane == EnumFacing.SOUTH) {
-					if (plane == EnumPlane.VERTICAL_XY) {
+					if (plane == EnumPlane.VERTICAL_XY && this instanceof SpellMirror) {
 						if (facing == EnumFacing.NORTH) {
 							newFacing = EnumFacing.SOUTH;
 						}
@@ -73,7 +73,21 @@ public abstract class AbstractSpellMatrix extends Spell {
 							newFacing = EnumFacing.NORTH;
 						}
 					}
-					//System.out.println("newFacing=" + newFacing);
+					if (plane == EnumPlane.HORIZONTAL_XZ && this instanceof SpellRotate) {
+						if (facing == EnumFacing.NORTH) {
+							newFacing = EnumFacing.EAST;
+						}
+						if (facing == EnumFacing.EAST) {
+							newFacing = EnumFacing.SOUTH;
+						}
+						if (facing == EnumFacing.SOUTH) {
+							newFacing = EnumFacing.WEST;
+						}
+						if (facing == EnumFacing.WEST) {
+							newFacing = EnumFacing.NORTH;
+						}
+					}
+					// System.out.println("newFacing=" + newFacing);
 					if (newFacing != null) {
 						state = state.withProperty(prop, newFacing);
 					}

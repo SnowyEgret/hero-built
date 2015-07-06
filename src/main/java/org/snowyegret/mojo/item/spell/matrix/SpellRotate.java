@@ -26,7 +26,13 @@ public class SpellRotate extends AbstractSpellMatrix {
 		Modifiers modifiers = player.getModifiers();
 		boolean rotateAboutCentroid = modifiers.isPressed(Modifier.SHIFT);
 
+		SelectionManager selectionManager = player.getSelectionManager();
 		Pick[] picks = player.getPicks();
+		player.clearPicks();
+		if (selectionManager.size() == 0) {
+			selectionManager.select(picks[0].getPos());
+		}
+		
 		Point3d center = null;
 		if (rotateAboutCentroid) {
 			Vec3 c = player.getSelectionManager().getCentroid();
