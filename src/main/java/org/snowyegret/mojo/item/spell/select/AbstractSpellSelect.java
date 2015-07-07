@@ -90,7 +90,7 @@ public abstract class AbstractSpellSelect extends Spell {
 		for (BlockPos center : selectionManager.getGrownSelections()) {
 			for (BlockPos p : growthPattern) {
 				p = p.add(center);
-				if (!applyConditions(player.getWorld(), p)) {
+				if (!applyConditions(player.getWorld(), p, patternBlock)) {
 					continue;
 				}
 				Block block = player.getWorld().getState(p).getBlock();
@@ -154,9 +154,9 @@ public abstract class AbstractSpellSelect extends Spell {
 		selectionManager.clearGrownSelections();
 	}
 
-	private boolean applyConditions(IWorld world, BlockPos pos) {
+	private boolean applyConditions(IWorld world, BlockPos pos, Block patternBlock) {
 		for (ICondition c : conditions) {
-			if (!c.test(world, pos)) {
+			if (!c.test(world, pos, patternBlock)) {
 				return false;
 			}
 		}
