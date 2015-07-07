@@ -8,6 +8,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.snowyegret.mojo.MoJo;
 import org.snowyegret.mojo.item.ItemBase;
@@ -61,7 +63,9 @@ public class Spell extends ItemBase {
 	public void invoke(Player player) {
 	}
 
+	@SideOnly(Side.CLIENT)
 	public SpellInfo getInfo() {
+		//return new SpellInfo(this);
 		return info;
 	}
 

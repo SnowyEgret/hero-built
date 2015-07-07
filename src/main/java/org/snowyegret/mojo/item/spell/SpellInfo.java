@@ -5,17 +5,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.snowyegret.mojo.util.StringUtils;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-import net.minecraft.client.resources.I18n;
+import org.snowyegret.mojo.util.StringUtils;
 
 import com.google.common.base.Joiner;
 
 public class SpellInfo {
 
+	private String root;
 	private String name;
 	private String description;
-	private String root;
 	private List<String> picks = new ArrayList<>();
 	private Map<String, String> modifiers = new HashMap<>();
 
@@ -24,22 +25,6 @@ public class SpellInfo {
 		name = format("name");
 		description = format("description");
 		addPicks(spell.getNumPicks());
-	}
-
-	private String format(String string) {
-		return I18n.format(root + string);
-	}
-
-	private void addPicks(int numPicks) {
-		for (int i = 0; i < numPicks; i++) {
-			String s = format("pick." + picks.size());
-			//To avoid repeating [].pick.0=anywhere in the lang file it can be left out
-			//
-			if (s.startsWith("item.")) {
-				s = I18n.format("pick.anywhere");
-			}
-			picks.add(s);
-		}
 	}
 
 	public void addModifiers(Modifier... modifiers) {
@@ -72,27 +57,31 @@ public class SpellInfo {
 		}
 	}
 
+	@SideOnly(Side.CLIENT)
 	public String getName() {
-		return name;
+		return net.minecraft.client.resources.I18n.format(name);
 	}
 
+	@SideOnly(Side.CLIENT)
 	public String getDescription() {
-		return description;
+		return net.minecraft.client.resources.I18n.format(description);
 	}
 
+	@SideOnly(Side.CLIENT)
 	public String getPicks() {
 		List l = new ArrayList();
 		int i = 0;
 		for (String p : picks) {
-			l.add(String.format("<pick%d> %s", ++i, p));
+			l.add(String.format("<pick%d> %s", ++i, net.minecraft.client.resources.I18n.format(p)));
 		}
 		return Joiner.on(", ").join(l);
 	}
 
+	@SideOnly(Side.CLIENT)
 	public String getModifiers() {
 		List<String> l = new ArrayList();
-		for (Map.Entry p : modifiers.entrySet()) {
-			l.add(String.format("<%s>", p.getKey()) + " " + p.getValue());
+		for (Map.Entry<String, String> p : modifiers.entrySet()) {
+			l.add(String.format("<%s>", p.getKey()) + " " + net.minecraft.client.resources.I18n.format(p.getValue()));
 		}
 		return Joiner.on(", ").join(l);
 	}
@@ -110,6 +99,23 @@ public class SpellInfo {
 		builder.append(getModifiers());
 		builder.append("]");
 		return builder.toString();
+	}
+
+	private String format(String string) {
+		// return I18n.format(root + string);
+		return root + string;
+	}
+
+	private void addPicks(int numPicks) {
+		for (int i = 0; i < numPicks; i++) {
+			String s = format("pick." + picks.size());
+			// To avoid repeating [].pick.0=anywhere in the lang file it can be left out
+			//
+			// if (s.startsWith("item.")) {
+			// s = I18n.format("pick.anywhere");
+			// }
+			picks.add(s);
+		}
 	}
 
 }

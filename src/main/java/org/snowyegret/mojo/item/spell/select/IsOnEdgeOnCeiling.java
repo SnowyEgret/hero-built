@@ -20,6 +20,14 @@ public class IsOnEdgeOnCeiling implements ICondition {
 				return true;
 			}
 		}
+		// Test for edge of plane
+		for (BlockPos p : Select.HORIZONTAL_NO_CORNERS) {
+			p = p.add(pos);
+			if (world.getBlock(p) == Blocks.air) {
+				// if (world.getBlock(p) != patternBlock) {
+				return true;
+			}
+		}
 		return false;
 	}
 

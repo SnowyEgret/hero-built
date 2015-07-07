@@ -12,7 +12,7 @@ item.staffAcacia.name=Acacia Staff
 
 #s ##########
 
-pick.anywhere=anywhere
+#pick.anywhere=anywhere
 
 # Draw spells ##########
 
@@ -91,7 +91,7 @@ item.spellCopy.modifier.shift=delete original
 
 item.spellMirror.name=Mirror
 item.spellMirror.description=mirrors selection about picked face
-item.spellMirror.pick.0=a face
+item.spellMirror.pick.0=face
 item.spellMirror.modifier.ctrl=delete original
 item.spellMirror.modifier.alt=mirror about center of picked block
 
@@ -109,52 +109,62 @@ item.spellRotate.modifier.z=z axis
 
 item.spellSelectAbove.name=Select Above
 item.spellSelectAbove.description=grows selection above selected blocks
+item.spellSelectAbove.pick.0=
 item.spellSelectAbove.modifier.ctrl=shrink
 item.spellSelectAbove.modifier.alt=select any block
 
 item.spellSelectAll.name=Select All
 item.spellSelectAll.description=grows selection in all directions
+item.spellSelectAll.pick.0=
 item.spellSelectAll.modifier.ctrl=shrink
 item.spellSelectAll.modifier.alt=select any block
 
 item.spellSelectBellow.name=Select Bellow
 item.spellSelectBellow.description=grows selection bellow selected blocks
+item.spellSelectBellow.pick.0=
 item.spellSelectBellow.modifier.ctrl=shrink
 item.spellSelectBellow.modifier.alt=select any block
 
 item.spellSelectDown.name=Select Down
 item.spellSelectDown.description=grows selection downwards
+item.spellSelectDown.pick.0=
 item.spellSelectDown.modifier.ctrl=shrink
 item.spellSelectDown.modifier.alt=select any block
 
 item.spellSelectEdge.name=Select Edge
 item.spellSelectEdge.description=selects an edge
+item.spellSelectEdge.pick.0=block on edge
 item.spellSelectEdge.modifier.ctrl=shrink
 item.spellSelectEdge.modifier.alt=select any block
 
 item.spellSelectFloor.name=Select Floor
 item.spellSelectFloor.description=selects floor or ceiling
+item.spellSelectFloor.pick.0=block on floor
 item.spellSelectFloor.modifier.ctrl=shrink
 item.spellSelectFloor.modifier.alt=select any block
 
 item.spellSelectHorizontal.name=Select Horizontal
 item.spellSelectHorizontal.description=grows selection horizontally
+item.spellSelectHorizontal.pick.0=
 item.spellSelectHorizontal.modifier.ctrl=shrink
 item.spellSelectHorizontal.modifier.alt=select any block
 
 item.spellSelectSurface.name=Select Surface
 item.spellSelectSurface.description=selects blocks on surface
+item.spellSelectSurface.pick.0=
 item.spellSelectSurface.modifier.ctrl=shrink
 item.spellSelectSurface.modifier.alt=select any block
 item.spellSelectSurface.modifier.shift=ignore plane
 
 item.spellSelectUp.name=Select Up
 item.spellSelectUp.description=grows selection upwards
+item.spellSelectUp.pick.0=
 item.spellSelectUp.modifier.ctrl=shrink
 item.spellSelectUp.modifier.alt=select any block
 
 item.spellSelectVertical.name=Select Vertical Plane
 item.spellSelectVertical.description=grows selection in the vertical EW (default) or NS plane
+item.spellSelectVertical.pick.0=
 item.spellSelectVertical.modifier.ctrl=shrink
 item.spellSelectVertical.modifier.alt=select any block
 item.spellSelectVertical.modifier.shift=NS plane
