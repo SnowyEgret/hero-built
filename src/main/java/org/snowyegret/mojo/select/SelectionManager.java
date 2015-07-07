@@ -26,8 +26,8 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
-import ds.geom.IntegerDomain;
-import ds.geom.VoxelSet;
+import org.snowyegret.geom.IntegerDomain;
+import org.snowyegret.geom.VoxelSet;
 
 public class SelectionManager {
 

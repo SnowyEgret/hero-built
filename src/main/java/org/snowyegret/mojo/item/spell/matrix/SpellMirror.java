@@ -13,7 +13,7 @@ import org.snowyegret.mojo.pick.Pick;
 import org.snowyegret.mojo.player.Player;
 import org.snowyegret.mojo.select.SelectionManager;
 
-import ds.geom.matrix.ReflectionMatrix;
+import org.snowyegret.geom.matrix.ReflectionMatrix;
 
 public class SpellMirror extends AbstractSpellMatrix {
 
@@ -82,7 +82,7 @@ public class SpellMirror extends AbstractSpellMatrix {
 		}
 		Vec3i d = side.getDirectionVec();
 		Matrix4d matrix = new ReflectionMatrix(p, new Vector3d(d.getX(), d.getY(), d.getZ()));
-		transformSelections(player, matrix, picks[0].getPlane());
+		transformSelections(player, matrix, picks[0].side);
 	}
 
 	@Override

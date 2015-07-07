@@ -25,7 +25,7 @@ import org.snowyegret.mojo.world.IWorld;
 
 import com.google.common.collect.Lists;
 
-import ds.geom.IntegerDomain;
+import org.snowyegret.geom.IntegerDomain;
 
 public class SpellThicken extends Spell {
 

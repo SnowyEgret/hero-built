@@ -7,8 +7,8 @@ import org.snowyegret.mojo.item.spell.Modifiers;
 import org.snowyegret.mojo.pick.Pick;
 import org.snowyegret.mojo.player.Player;
 
-import ds.geom.IDrawable;
-import ds.geom.solid.Box;
+import org.snowyegret.geom.IDrawable;
+import org.snowyegret.geom.solid.Box;
 
 public class SpellBox extends AbstractSpellDraw {
 

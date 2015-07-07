@@ -9,7 +9,7 @@ import org.snowyegret.mojo.pick.Pick;
 
 import com.google.common.collect.Lists;
 
-import ds.geom.curve.Curve;
+import org.snowyegret.geom.curve.Curve;
 
 public class CubicSpline extends Curve {
 

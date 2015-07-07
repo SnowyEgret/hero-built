@@ -20,10 +20,10 @@ import org.snowyegret.mojo.undo.UndoableSetBlock;
 
 import com.google.common.collect.Lists;
 
-import ds.geom.IDrawable;
-import ds.geom.VoxelSet;
-import ds.geom.matrix.RotationMatrix;
-import ds.geom.solid.Solid;
+import org.snowyegret.geom.IDrawable;
+import org.snowyegret.geom.VoxelSet;
+import org.snowyegret.geom.matrix.RotationMatrix;
+import org.snowyegret.geom.solid.Solid;
 
 public abstract class AbstractSpellDraw extends Spell {
 

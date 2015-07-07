@@ -9,7 +9,7 @@ import org.snowyegret.mojo.pick.Pick;
 import org.snowyegret.mojo.player.Player;
 
 import net.minecraft.util.BlockPos;
-import ds.geom.matrix.TranslationMatrix;
+import org.snowyegret.geom.matrix.TranslationMatrix;
 
 public class SpellCopy extends AbstractSpellMatrix {
 

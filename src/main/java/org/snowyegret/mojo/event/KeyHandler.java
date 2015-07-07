@@ -40,9 +40,8 @@ public class KeyHandler {
 			int keyCode = Keyboard.getEventKey();
 			// TODO Find a way to track shift right. We are not getting events for right shift, ctrl, alt.
 			// int keyCodeRight = Keyboard.getNumKeyboardEvents();
-			System.out.println("keyCode=" + keyCode);
-			System.out.println("state=" + Keyboard.getEventKeyState());
-			// Pass the cursor position for Pasting
+			//System.out.println("keyCode=" + keyCode);
+			//System.out.println("state=" + Keyboard.getEventKeyState());
 			BlockPos cursorPos = Minecraft.getMinecraft().objectMouseOver.getBlockPos();
 			MoJo.network.sendToServer(new KeyMessage(keyCode, Keyboard.getEventKeyState(), cursorPos));
 

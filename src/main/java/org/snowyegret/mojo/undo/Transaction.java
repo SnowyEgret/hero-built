@@ -18,6 +18,7 @@ import net.minecraftforge.common.IPlantable;
 
 import org.snowyegret.mojo.item.spell.Spell;
 import org.snowyegret.mojo.item.spell.matrix.SpellCopy;
+import org.snowyegret.mojo.item.spell.matrix.SpellRotate;
 import org.snowyegret.mojo.player.Player;
 
 import com.google.common.collect.Lists;
@@ -124,7 +125,7 @@ public class Transaction implements IUndoable, Iterable {
 		// player.getSelectionManager().select(reselects);
 		// }
 		// System.out.println("lastInvokedSpell=" + player.getLastInvokedSpell());
-		if (s instanceof SpellCopy || player.getLastInvokedSpell() instanceof SpellCopy) {
+		if (s instanceof SpellCopy || player.getLastInvokedSpell() instanceof SpellCopy || s instanceof SpellRotate) {
 			player.getSelectionManager().select(reselects);
 		} else {
 			player.getSelectionManager().setReselects(reselects);

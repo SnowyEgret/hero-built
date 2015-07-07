@@ -12,7 +12,7 @@ import org.snowyegret.mojo.network.SpellMessage;
 import org.snowyegret.mojo.pick.Pick;
 import org.snowyegret.mojo.player.Player;
 
-import ds.geom.PointSet;
+import org.snowyegret.geom.PointSet;
 
 public class SpellDivide extends AbstractSpellDraw {
 

@@ -5,8 +5,8 @@ import javax.vecmath.Point3d;
 import org.snowyegret.mojo.pick.Pick;
 import org.snowyegret.mojo.player.Player;
 
-import ds.geom.IDrawable;
-import ds.geom.surface.Cone;
+import org.snowyegret.geom.IDrawable;
+import org.snowyegret.geom.surface.Cone;
 
 public class SpellCone extends AbstractSpellDraw {
 

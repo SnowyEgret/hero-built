@@ -4,7 +4,7 @@ import javax.vecmath.Point3d;
 
 import org.apache.commons.lang3.Range;
 
-import ds.geom.curve.Curve;
+import org.snowyegret.geom.curve.Curve;
 
 public class CircleYZ extends Curve {
 

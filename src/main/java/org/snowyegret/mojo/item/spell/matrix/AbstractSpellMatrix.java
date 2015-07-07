@@ -28,9 +28,10 @@ public abstract class AbstractSpellMatrix extends Spell {
 		super(numPicks);
 	}
 
-	protected void transformSelections(Player player, Matrix4d matrix, EnumPlane plane) {
+	protected void transformSelections(Player player, Matrix4d matrix, EnumFacing side) {
 
 		boolean deleteInitialBlocks = player.getModifiers().isPressed(Modifier.CTRL);
+
 		// Deletes must be done first
 		List<IUndoable> deletes = Lists.newArrayList();
 		List<IUndoable> undoables = Lists.newArrayList();
@@ -46,45 +47,36 @@ public abstract class AbstractSpellMatrix extends Spell {
 				deletes.add(new UndoableSetBlock(sel.getPos(), player.getWorld().getState(sel.getPos()), air));
 			}
 			matrix.transform(p);
-			BlockPos pos = new BlockPos(p.x, p.y, p.z);
 			IBlockState state = sel.getState();
 			ImmutableMap props = state.getProperties();
-			for (Object k : props.keySet()) {
-				if (k instanceof PropertyDirection) {
-					PropertyDirection prop = (PropertyDirection) k;
+			for (Object key : props.keySet()) {
+				if (key instanceof PropertyDirection) {
+					PropertyDirection prop = (PropertyDirection) key;
 					EnumFacing facing = (EnumFacing) props.get(prop);
 					// System.out.println("facing=" + facing);
 					EnumFacing newFacing = null;
-					// if (plane == EnumFacing.EAST || plane == EnumFacing.WEST) {
-					if (plane == EnumPlane.VERTICAL_YZ && this instanceof SpellMirror) {
-						if (facing == EnumFacing.EAST) {
-							newFacing = EnumFacing.WEST;
-						}
-						if (facing == EnumFacing.WEST) {
-							newFacing = EnumFacing.EAST;
-						}
-					}
-					// if (plane == EnumFacing.NORTH || plane == EnumFacing.SOUTH) {
-					if (plane == EnumPlane.VERTICAL_XY && this instanceof SpellMirror) {
-						if (facing == EnumFacing.NORTH) {
-							newFacing = EnumFacing.SOUTH;
-						}
-						if (facing == EnumFacing.SOUTH) {
-							newFacing = EnumFacing.NORTH;
+					if (this instanceof SpellMirror) {
+						if (side == EnumFacing.EAST || side == EnumFacing.WEST) {
+							// if (plane == EnumPlane.VERTICAL_YZ) {
+							if (facing == EnumFacing.EAST || facing == EnumFacing.WEST) {
+								newFacing = facing.getOpposite();
+							}
+						} else if (side == EnumFacing.NORTH || side == EnumFacing.SOUTH) {
+							// else if (plane == EnumPlane.VERTICAL_XY) {
+							if (facing == EnumFacing.NORTH || facing == EnumFacing.SOUTH) {
+								newFacing = facing.getOpposite();
+							}
 						}
 					}
-					if (plane == EnumPlane.HORIZONTAL_XZ && this instanceof SpellRotate) {
-						if (facing == EnumFacing.NORTH) {
-							newFacing = EnumFacing.EAST;
-						}
-						if (facing == EnumFacing.EAST) {
-							newFacing = EnumFacing.SOUTH;
-						}
-						if (facing == EnumFacing.SOUTH) {
-							newFacing = EnumFacing.WEST;
-						}
-						if (facing == EnumFacing.WEST) {
-							newFacing = EnumFacing.NORTH;
+
+					else if (this instanceof SpellRotate) {
+						boolean counterClockwise = player.getModifiers().isPressed(Modifier.ALT);
+						if (side == EnumFacing.UP) {
+							// if (plane == EnumPlane.HORIZONTAL_XZ) {
+							newFacing = counterClockwise ? facing.rotateYCCW() : facing.rotateY();
+							// newFacing = facing.rotateYCCW();
+						} else if (side == EnumFacing.DOWN) {
+							newFacing = counterClockwise ? facing.rotateY() : facing.rotateYCCW();
 						}
 					}
 					// System.out.println("newFacing=" + newFacing);
@@ -94,6 +86,7 @@ public abstract class AbstractSpellMatrix extends Spell {
 					break;
 				}
 			}
+			BlockPos pos = new BlockPos(p.x, p.y, p.z);
 			undoables.add(new UndoableSetBlock(pos, player.getWorld().getState(pos), state));
 		}
 

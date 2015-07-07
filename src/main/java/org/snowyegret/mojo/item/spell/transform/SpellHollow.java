@@ -15,7 +15,7 @@ import org.snowyegret.mojo.select.SelectionManager;
 
 import com.google.common.collect.Lists;
 
-import ds.geom.VoxelSet;
+import org.snowyegret.geom.VoxelSet;
 
 public class SpellHollow extends AbstractSpellTransform {
 

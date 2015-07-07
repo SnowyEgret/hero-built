@@ -6,8 +6,8 @@ import org.snowyegret.mojo.pick.Pick;
 import org.snowyegret.mojo.pick.PickManager;
 import org.snowyegret.mojo.player.Player;
 
-import ds.geom.IDrawable;
-import ds.geom.curve.Line;
+import org.snowyegret.geom.IDrawable;
+import org.snowyegret.geom.curve.Line;
 
 public class SpellLine extends AbstractSpellDraw {
 

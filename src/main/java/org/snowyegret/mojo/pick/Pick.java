@@ -17,7 +17,7 @@ public class Pick {
 	private EnumPlane plane;
 
 	public Pick(BlockPos pos, IBlockState state, EnumFacing side) {
-		this.pos=pos;
+		this.pos = pos;
 		this.state = state;
 		this.side = side;
 		switch (side) {
@@ -43,21 +43,21 @@ public class Pick {
 	}
 
 	public Point3d point3d() {
-		return new Point3d(pos.getX(),pos.getY(), pos.getZ());
+		return new Point3d(pos.getX(), pos.getY(), pos.getZ());
 	}
 
 	public Point3i point3i() {
-		return new Point3i(pos.getX(),pos.getY(), pos.getZ());
+		return new Point3i(pos.getX(), pos.getY(), pos.getZ());
 	}
 
 	public BlockPos getPos() {
 		return pos;
 	}
-	
+
 	public EnumFacing getSide() {
 		return side;
 	}
-	
+
 	public void setState(IBlockState state) {
 		this.state = state;
 	}
@@ -91,7 +91,7 @@ public class Pick {
 		return builder.toString();
 	}
 
-	//TODO check state.equals (write a test case)
+	// TODO check state.equals (write a test case)
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

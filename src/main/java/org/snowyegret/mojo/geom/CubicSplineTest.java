@@ -4,8 +4,8 @@ import javax.vecmath.Point3d;
 
 import org.junit.Test;
 
-import ds.geom.PointSet;
-import ds.geom.Primitive;
+import org.snowyegret.geom.PointSet;
+import org.snowyegret.geom.Primitive;
 
 public class CubicSplineTest {
 

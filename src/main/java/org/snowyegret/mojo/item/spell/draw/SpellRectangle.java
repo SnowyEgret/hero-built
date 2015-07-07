@@ -5,8 +5,8 @@ import org.snowyegret.mojo.item.spell.Modifiers;
 import org.snowyegret.mojo.pick.Pick;
 import org.snowyegret.mojo.player.Player;
 
-import ds.geom.IDrawable;
-import ds.geom.curve.Rectangle;
+import org.snowyegret.geom.IDrawable;
+import org.snowyegret.geom.curve.Rectangle;
 
 public class SpellRectangle extends AbstractSpellDraw {
 

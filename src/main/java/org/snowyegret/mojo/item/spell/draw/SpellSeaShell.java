@@ -3,8 +3,8 @@ package org.snowyegret.mojo.item.spell.draw;
 import org.snowyegret.mojo.pick.Pick;
 import org.snowyegret.mojo.player.Player;
 
-import ds.geom.IDrawable;
-import ds.geom.surface.SeaShell;
+import org.snowyegret.geom.IDrawable;
+import org.snowyegret.geom.surface.SeaShell;
 
 public class SpellSeaShell extends AbstractSpellDraw {
 

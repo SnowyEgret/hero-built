@@ -4,7 +4,7 @@ import org.snowyegret.mojo.geom.CubicSpline;
 import org.snowyegret.mojo.pick.Pick;
 import org.snowyegret.mojo.player.Player;
 
-import ds.geom.IDrawable;
+import org.snowyegret.geom.IDrawable;
 
 public class SpellSpline extends AbstractSpellDraw {
 

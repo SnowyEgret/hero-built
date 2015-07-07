@@ -8,8 +8,8 @@ import org.snowyegret.mojo.item.spell.Modifiers;
 import org.snowyegret.mojo.pick.Pick;
 import org.snowyegret.mojo.player.Player;
 
-import ds.geom.IDrawable;
-import ds.geom.curve.CircleXZ;
+import org.snowyegret.geom.IDrawable;
+import org.snowyegret.geom.curve.CircleXZ;
 
 public class SpellCircle extends AbstractSpellDraw {
 
