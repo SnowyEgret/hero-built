@@ -23,8 +23,6 @@ public class BlockSelected extends Block implements ITileEntityProvider {
 
 	public BlockSelected() {
 		super(Material.clay);
-		setHardness(-1F);
-		setStepSound(soundTypeGravel);
 	}
 
 	@Override
@@ -53,7 +51,8 @@ public class BlockSelected extends Block implements ITileEntityProvider {
 		if (tileEntity != null) {
 			prevState = tileEntity.getPrevState();
 		} else {
-			//prevState = state;
+			System.out.println("tileEntity=" + tileEntity);
+			// prevState = state;
 		}
 		return ((IExtendedBlockState) state).withProperty(prevStateProperty, prevState);
 	}

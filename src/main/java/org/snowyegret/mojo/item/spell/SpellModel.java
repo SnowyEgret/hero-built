@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.client.model.ISmartItemModel;
 
+@Deprecated
 public class SpellModel implements ISmartItemModel {
 
 	private IBakedModel baseSpellModel;

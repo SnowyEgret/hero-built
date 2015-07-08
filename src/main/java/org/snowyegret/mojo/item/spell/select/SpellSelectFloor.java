@@ -2,13 +2,12 @@ package org.snowyegret.mojo.item.spell.select;
 
 import net.minecraft.util.EnumFacing;
 
+import org.snowyegret.mojo.item.spell.ICondition;
 import org.snowyegret.mojo.player.Player;
 
-public class SpellSelectFloor extends AbstractSpellSelect {
+import com.google.common.collect.Lists;
 
-	public SpellSelectFloor() {
-		super(Select.HORIZONTAL);
-	}
+public class SpellSelectFloor extends AbstractSpellSelect {
 
 	@Override
 	public Object[] getRecipe() {
@@ -17,19 +16,20 @@ public class SpellSelectFloor extends AbstractSpellSelect {
 
 	@Override
 	public void invoke(Player player) {
+		ICondition condition = null;
 		EnumFacing side = player.getPickManager().firstPick().side;
 		switch (side) {
 		case UP:
-			setConditions(new IsOnGround());
+			condition = new IsOnGround();
 			break;
 		case DOWN:
-			setConditions(new IsOnCeiling());
+			condition = new IsOnCeiling();
 			break;
-			//$CASES-OMITTED$
+		// $CASES-OMITTED$
 		default:
 			return;
 		}
-		super.invoke(player);
+		select(player, Select.HORIZONTAL_NO_CORNERS, Lists.newArrayList(condition));
 	}
-	
+
 }

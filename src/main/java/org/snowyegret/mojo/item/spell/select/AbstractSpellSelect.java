@@ -28,38 +28,40 @@ public abstract class AbstractSpellSelect extends Spell {
 
 	protected Item ingredientA = Items.feather;
 	protected Item ingredientB = Items.coal;
-	private BlockPos[] growthPattern;
-	private List<ICondition> conditions = Lists.newArrayList();
 
-	public AbstractSpellSelect(BlockPos[] growthPattern) {
+	// private BlockPos[] growthPattern;
+	// private List<ICondition> conditions = Lists.newArrayList();
+
+	// public AbstractSpellSelect(BlockPos[] growthPattern) {
+	public AbstractSpellSelect() {
 		super(1);
-		this.growthPattern = growthPattern;
+		// this.growthPattern = growthPattern;
 		// CTRL shrinks selection instead of grows
 		// ALT ignores pattern block
 		info.addModifiers(Modifier.CTRL, Modifier.ALT);
 	}
 
-	public BlockPos[] getSelectionPattern() {
-		return growthPattern;
-	}
+	// public BlockPos[] getSelectionPattern() {
+	// return growthPattern;
+	// }
+	//
+	// public void setSelectionPattern(BlockPos[] growthPattern) {
+	// this.growthPattern = growthPattern;
+	// }
+	//
+	// public void setConditions(ICondition... conditions) {
+	// this.conditions.clear();
+	// for (ICondition c : conditions) {
+	// this.conditions.add(c);
+	// }
+	// }
 
-	public void setSelectionPattern(BlockPos[] growthPattern) {
-		this.growthPattern = growthPattern;
-	}
-
-	public void setConditions(ICondition... conditions) {
-		this.conditions.clear();
-		for (ICondition c : conditions) {
-			this.conditions.add(c);
-		}
-	}
-
-	@Override
-	public void invoke(Player player) {
+	// @Override
+	// public void invoke(Player player) {
+	public void select(Player player, BlockPos[] pattern, Iterable<ICondition> conditions) {
 
 		Modifiers modifiers = player.getModifiers();
 		boolean shrink = modifiers.isPressed(Modifier.CTRL);
-		boolean anyBlock = modifiers.isPressed(Modifier.ALT);
 
 		SelectionManager selectionManager = player.getSelectionManager();
 
@@ -75,25 +77,32 @@ public abstract class AbstractSpellSelect extends Spell {
 		}
 
 		if (shrink) {
-			shrinkSelections(player, selectionManager);
+			// shrinkSelections(player, selectionManager);
+			shrinkSelections(player, pattern);
 		} else {
-			Block patternBlock = selectionManager.firstSelection().getState().getBlock();
-			growSelections(player, anyBlock, selectionManager, patternBlock);
+			// Block patternBlock = selectionManager.firstSelection().getState().getBlock();
+			// growSelections(player, anyBlock, selectionManager, patternBlock);
+			growSelections(player, pattern, conditions);
 		}
 	}
 
 	// Private-------------------------------------------------------------------------------
 
-	private void growSelections(Player player, boolean anyBlock, SelectionManager selectionManager, Block patternBlock) {
-		Set<BlockPos> grownSelections = Sets.newHashSet();
+	// private void growSelections(Player player, boolean anyBlock, SelectionManager selectionManager, Block
+	// patternBlock) {
+	private void growSelections(Player player, BlockPos[] pattern, Iterable<ICondition> conditions) {
+
+		SelectionManager selectionManager = player.getSelectionManager();
+		Block patternBlock = selectionManager.firstSelection().getState().getBlock();
+		Set<BlockPos> selections = Sets.newHashSet();
 		// Grown selections must be on selectionManager and not on this spell so that it belongs to a player
 		for (BlockPos center : selectionManager.getGrownSelections()) {
-			for (BlockPos p : growthPattern) {
-				p = p.add(center);
-				if (!applyConditions(player.getWorld(), p, patternBlock)) {
+			for (BlockPos pos : pattern) {
+				pos = pos.add(center);
+				if (!applyConditions(conditions, player.getWorld(), pos, patternBlock)) {
 					continue;
 				}
-				Block block = player.getWorld().getState(p).getBlock();
+				Block block = player.getWorld().getState(pos).getBlock();
 				// Do not select blocks if they are air
 				if (block instanceof BlockAir) {
 					continue;
@@ -105,7 +114,7 @@ public abstract class AbstractSpellSelect extends Spell {
 					// Select previously selected blocks if they have been left in world after a crash
 					// TileEntity is saved to world and it not null.
 					// If the prevState is null, reselect it.
-					PrevStateTileEntity tileEntity = (PrevStateTileEntity) player.getWorld().getTileEntity(p);
+					PrevStateTileEntity tileEntity = (PrevStateTileEntity) player.getWorld().getTileEntity(pos);
 					if (tileEntity.getPrevState() != null) {
 						// System.out.println("While growing selections, found a BlockSelected.");
 						continue;
@@ -124,37 +133,45 @@ public abstract class AbstractSpellSelect extends Spell {
 				// continue;
 				// }
 
+				boolean anyBlock = player.getModifiers().isPressed(Modifier.ALT);
 				if (anyBlock) {
-					grownSelections.add(p);
+					selections.add(pos);
 				} else {
 					if (block == patternBlock) {
-						grownSelections.add(p);
+						selections.add(pos);
 					}
 				}
 
 			}
 		}
-		selectionManager.select(grownSelections);
-		selectionManager.setGrownSelections(grownSelections);
+		// System.out.println("grownSelections=" + grownSelections.size());
+		selectionManager.select(selections);
+		selectionManager.setGrownSelections(selections);
 	}
 
-	private void shrinkSelections(Player player, SelectionManager selectionManager) {
-		List<BlockPos> shrunkSelections = Lists.newArrayList();
+	// private void shrinkSelections(Player player, SelectionManager selectionManager) {
+	private void shrinkSelections(Player player, BlockPos[] pattern) {
+
+		SelectionManager selectionManager = player.getSelectionManager();
+		List<BlockPos> selections = Lists.newArrayList();
 		for (Selection s : selectionManager.getSelections()) {
-			for (BlockPos p : growthPattern) {
+			for (BlockPos p : pattern) {
 				p = p.add(s.getPos());
 				Block b = player.getWorld().getBlock(p);
 				if (!(b instanceof BlockSelected)) {
-					shrunkSelections.add(s.getPos());
+					selections.add(s.getPos());
 					break;
 				}
 			}
 		}
-		selectionManager.deselect(shrunkSelections);
+		selectionManager.deselect(selections);
 		selectionManager.clearGrownSelections();
 	}
 
-	private boolean applyConditions(IWorld world, BlockPos pos, Block patternBlock) {
+	private boolean applyConditions(Iterable<ICondition> conditions, IWorld world, BlockPos pos, Block patternBlock) {
+		if (conditions == null) {
+			return true;
+		}
 		for (ICondition c : conditions) {
 			if (!c.test(world, pos, patternBlock)) {
 				return false;

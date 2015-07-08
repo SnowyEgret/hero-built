@@ -23,9 +23,10 @@ public class WorldWrapper implements IWorld {
 	@Override
 	public void setState(BlockPos pos, IBlockState state) {
 		// TODO is this any different than flag 3?
-		// world.setBlockState(pos, state);
+//		world.setBlockState(pos, state);
 		world.setBlockState(pos, state, 1);
 		world.markBlockForUpdate(pos);
+		//world.markChunkDirty(pos, null);
 	}
 
 	@Override

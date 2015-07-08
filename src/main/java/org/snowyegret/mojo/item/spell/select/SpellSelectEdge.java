@@ -2,13 +2,12 @@ package org.snowyegret.mojo.item.spell.select;
 
 import net.minecraft.util.EnumFacing;
 
+import org.snowyegret.mojo.item.spell.ICondition;
 import org.snowyegret.mojo.player.Player;
 
-public class SpellSelectEdge extends AbstractSpellSelect {
+import com.google.common.collect.Lists;
 
-	public SpellSelectEdge() {
-		super(Select.HORIZONTAL_NO_CORNERS);
-	}
+public class SpellSelectEdge extends AbstractSpellSelect {
 
 	@Override
 	public Object[] getRecipe() {
@@ -18,18 +17,22 @@ public class SpellSelectEdge extends AbstractSpellSelect {
 	@Override
 	public void invoke(Player player) {
 		EnumFacing side = player.getPickManager().firstPick().side;
+		ICondition condition = null;
 		switch (side) {
 		case UP:
-			setConditions(new IsOnEdgeOnGround());
+			condition = new IsOnEdgeOnGround();
 			break;
 		case DOWN:
-			setConditions(new IsOnEdgeOnCeiling());
+			condition = new IsOnEdgeOnCeiling();
 			break;
-			//$CASES-OMITTED$
+		// $CASES-OMITTED$
 		default:
+			System.out.println("Pick either the top or bottom face of a block");
+			// TODO Method Player.sendMessge(String message) #222
+			// player.sendMessage("item.spellSelectEdge.message.topOrBottomFace");
 			return;
 		}
-		super.invoke(player);
+		select(player, Select.HORIZONTAL_NO_CORNERS, Lists.newArrayList(condition));
 	}
-	
+
 }

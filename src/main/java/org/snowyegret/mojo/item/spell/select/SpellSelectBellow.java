@@ -1,22 +1,20 @@
 package org.snowyegret.mojo.item.spell.select;
 
+import net.minecraft.util.BlockPos;
+
 import org.snowyegret.mojo.item.spell.Modifier;
 import org.snowyegret.mojo.player.Player;
 
 public class SpellSelectBellow extends AbstractSpellSelect {
 
 	public SpellSelectBellow() {
-		super(Select.BELOW_INCLUSIVE);
+		info.addModifiers(Modifier.SHIFT);
 	}
-
+	
 	@Override
 	public void invoke(Player player) {
-		if (player.getModifiers().isPressed(Modifier.SHIFT)) {
-			setSelectionPattern(Select.BELOW);
-		} else {
-			setSelectionPattern(Select.BELOW_INCLUSIVE);
-		}
-		super.invoke(player);
+		BlockPos[] pattern = player.getModifiers().isPressed(Modifier.SHIFT) ? Select.BELOW : Select.BELOW_INCLUSIVE;
+		select(player, pattern, null);
 	}
 
 	@Override

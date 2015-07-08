@@ -1,26 +1,20 @@
 package org.snowyegret.mojo.item.spell.select;
 
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.BlockPos;
 
 import org.snowyegret.mojo.item.spell.Modifier;
-import org.snowyegret.mojo.item.spell.Modifiers;
 import org.snowyegret.mojo.player.Player;
-
 
 public class SpellSelectAbove extends AbstractSpellSelect {
 
 	public SpellSelectAbove() {
-		super(Select.ABOVE_INCLUSIVE);
+		info.addModifiers(Modifier.SHIFT);
 	}
-
+	
 	@Override
 	public void invoke(Player player) {
-		if (player.getModifiers().isPressed(Modifier.SHIFT)) {
-			setSelectionPattern(Select.ABOVE);
-		} else {
-			setSelectionPattern(Select.ABOVE_INCLUSIVE);
-		}
-		super.invoke(player);
+		BlockPos[] pattern = player.getModifiers().isPressed(Modifier.SHIFT) ? Select.ABOVE : Select.ABOVE_INCLUSIVE;
+		select(player, pattern, null);
 	}
 
 	@Override

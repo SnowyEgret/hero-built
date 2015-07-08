@@ -32,14 +32,14 @@ import org.snowyegret.geom.VoxelSet;
 public class SelectionManager {
 
 	private Map<BlockPos, Selection> selMap = Maps.newLinkedHashMap();
-	private Block blockSelected;
+	private IBlockState blockSelected;
 	private List<BlockPos> reselects;
 	private Set<BlockPos> grownSelections = Sets.newHashSet();
 	private Player player;
 
 	public SelectionManager(Player player, Block blockSelected) {
 		this.player = player;
-		this.blockSelected = blockSelected;
+		this.blockSelected = blockSelected.getDefaultState();
 	}
 
 	public void select(Iterable<BlockPos> pos) {
@@ -166,7 +166,7 @@ public class SelectionManager {
 	private Selection select(IWorld world, BlockPos pos) {
 		Selection s = null;
 		IBlockState state = world.getActualState(pos);
-		Block b = (state.getBlock());
+		Block b = state.getBlock();
 
 		// Should not happen.
 		// TODO Except that SpellDelete is reselecting on a delete key press
@@ -206,7 +206,7 @@ public class SelectionManager {
 		s = new Selection(pos, state);
 		selMap.put(pos, s);
 
-		world.setState(pos, blockSelected.getDefaultState());
+		world.setState(pos, blockSelected);
 		PrevStateTileEntity tileEntity = (PrevStateTileEntity) world.getTileEntity(pos);
 		tileEntity.setPrevState(state);
 		// Do I have to message client?

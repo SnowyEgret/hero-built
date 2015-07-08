@@ -41,9 +41,10 @@ public abstract class AbstractSpellDraw extends Spell {
 		player.clearSelections();
 		player.clearPicks();
 
+		// Rotate a drawable into ground plane defined by pick side (AbstractSpellDraw) #220
 		// Get rotation matrix based on side
-		Vec3i d = side.getDirectionVec();
-		RotationMatrix matrix = new RotationMatrix(new Vector3d(0, 1, 0), new Vector3d(d.getX(), d.getY(), d.getZ()));
+//		Vec3i d = side.getDirectionVec();
+//		RotationMatrix matrix = new RotationMatrix(new Vector3d(0, 1, 0), new Vector3d(d.getX(), d.getY(), d.getZ()));
 //		for (Point3d p : drawable.pointSet()) {
 //			matrix.transform(p);
 //		}

@@ -79,8 +79,8 @@ public class CommonProxy {
 
 	protected List<Item> items = Lists.newArrayList();
 
-	private final List<Class<? extends ItemBase>> itemsExcluded = Lists.newArrayList(Spell.class, Staff.class,
-			SpellDelete.class, SpellDivide.class, SpellSpline.class, SpellDivide.class);
+	private final List<Class<? extends ItemBase>> itemsExcluded = Lists.newArrayList(Staff.class, SpellDelete.class,
+			SpellDivide.class, SpellSpline.class, SpellDivide.class);
 
 	public void registerEventHandlers() {
 		MinecraftForge.EVENT_BUS.register(new EventHandlerClient());
@@ -112,7 +112,7 @@ public class CommonProxy {
 			List<Spell> otherSpells = initSpellsFromPackage("other");
 
 			// We are initializing Spell so that we can use its model as a base model
-			items.add(initItem(Spell.class));
+			// items.add(initItem(Spell.class));
 			items.addAll(drawSpells);
 			items.addAll(selectSpells);
 			items.addAll(matrixSpells);

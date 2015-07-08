@@ -18,14 +18,14 @@ import org.snowyegret.mojo.pick.PickManager;
 import org.snowyegret.mojo.player.Player;
 import org.snowyegret.mojo.player.Player;
 
-public class Spell extends ItemBase {
+public abstract class Spell extends ItemBase {
 
 	protected SpellInfo info;
 	private int numPicks;
 
 	// For base spell model
-	public Spell() {
-	}
+//	public Spell() {
+//	}
 
 	// No longer abstact because we a instantiating it so that we can use its model as a base model
 	public Spell(int numPicks) {
@@ -60,8 +60,10 @@ public class Spell extends ItemBase {
 		rollOver.add(info.getDescription());
 	}
 
-	public void invoke(Player player) {
-	}
+	public abstract void invoke(Player player);
+
+//	public void invoke(Player player) {
+//	}
 
 	@SideOnly(Side.CLIENT)
 	public SpellInfo getInfo() {
