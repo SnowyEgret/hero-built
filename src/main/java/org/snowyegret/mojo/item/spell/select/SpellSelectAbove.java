@@ -13,7 +13,7 @@ public class SpellSelectAbove extends AbstractSpellSelect {
 	
 	@Override
 	public void invoke(Player player) {
-		BlockPos[] pattern = player.getModifiers().isPressed(Modifier.SHIFT) ? Select.ABOVE : Select.ABOVE_INCLUSIVE;
+		BlockPos[] pattern = player.getModifiers().isPressed(Modifier.SHIFT) ? Select.ABOVE_INCLUSIVE : Select.UP;
 		select(player, pattern, null);
 	}
 

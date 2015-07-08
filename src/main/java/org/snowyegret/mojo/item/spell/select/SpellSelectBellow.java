@@ -13,7 +13,7 @@ public class SpellSelectBellow extends AbstractSpellSelect {
 	
 	@Override
 	public void invoke(Player player) {
-		BlockPos[] pattern = player.getModifiers().isPressed(Modifier.SHIFT) ? Select.BELOW : Select.BELOW_INCLUSIVE;
+		BlockPos[] pattern = player.getModifiers().isPressed(Modifier.SHIFT) ? Select.BELOW_INCLUSIVE : Select.DOWN;
 		select(player, pattern, null);
 	}
 

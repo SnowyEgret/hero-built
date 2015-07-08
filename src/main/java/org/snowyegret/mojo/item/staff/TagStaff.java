@@ -33,7 +33,8 @@ public class TagStaff {
 		if (name != null && !name.equals("")) {
 			spell = (Spell) GameRegistry.findItem(MoJo.MODID, name);
 			if (spell == null) {
-				throw new RuntimeException("Game registry could not find item. name=" + name);
+				//throw new RuntimeException("Game registry could not find item. name=" + name);
+				System.out.println("Game registry could not find item. name=" + name);
 			}
 		}
 		return spell;

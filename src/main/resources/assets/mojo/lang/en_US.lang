@@ -10,10 +10,6 @@ item.staffOak.name=Oak Staff
 item.staffBirch.name=Birch Staff
 item.staffAcacia.name=Acacia Staff
 
-#s ##########
-
-#pick.anywhere=anywhere
-
 # Draw spells ##########
 
 item.spellBox.name=Box
@@ -112,6 +108,7 @@ item.spellSelectAbove.description=grows selection above selected blocks
 item.spellSelectAbove.pick.0=
 item.spellSelectAbove.modifier.ctrl=shrink
 item.spellSelectAbove.modifier.alt=select any block
+item.spellSelectAbove.modifier.shift=straight down
 
 item.spellSelectAll.name=Select All
 item.spellSelectAll.description=grows selection in all directions
@@ -124,12 +121,7 @@ item.spellSelectBellow.description=grows selection bellow selected blocks
 item.spellSelectBellow.pick.0=
 item.spellSelectBellow.modifier.ctrl=shrink
 item.spellSelectBellow.modifier.alt=select any block
-
-item.spellSelectDown.name=Select Down
-item.spellSelectDown.description=grows selection downwards
-item.spellSelectDown.pick.0=
-item.spellSelectDown.modifier.ctrl=shrink
-item.spellSelectDown.modifier.alt=select any block
+item.spellSelectBellow.modifier.shift=straight down
 
 item.spellSelectEdge.name=Select Edge
 item.spellSelectEdge.description=selects an edge
@@ -155,12 +147,6 @@ item.spellSelectSurface.pick.0=
 item.spellSelectSurface.modifier.ctrl=shrink
 item.spellSelectSurface.modifier.alt=select any block
 item.spellSelectSurface.modifier.shift=ignore plane
-
-item.spellSelectUp.name=Select Up
-item.spellSelectUp.description=grows selection upwards
-item.spellSelectUp.pick.0=
-item.spellSelectUp.modifier.ctrl=shrink
-item.spellSelectUp.modifier.alt=select any block
 
 item.spellSelectVertical.name=Select Vertical Plane
 item.spellSelectVertical.description=grows selection in the vertical EW (default) or NS plane
