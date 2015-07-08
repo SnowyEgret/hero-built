@@ -29,10 +29,6 @@ public abstract class AbstractSpellSelect extends Spell {
 	protected Item ingredientA = Items.feather;
 	protected Item ingredientB = Items.coal;
 
-	// private BlockPos[] growthPattern;
-	// private List<ICondition> conditions = Lists.newArrayList();
-
-	// public AbstractSpellSelect(BlockPos[] growthPattern) {
 	public AbstractSpellSelect() {
 		super(1);
 		// this.growthPattern = growthPattern;
@@ -41,23 +37,6 @@ public abstract class AbstractSpellSelect extends Spell {
 		info.addModifiers(Modifier.CTRL, Modifier.ALT);
 	}
 
-	// public BlockPos[] getSelectionPattern() {
-	// return growthPattern;
-	// }
-	//
-	// public void setSelectionPattern(BlockPos[] growthPattern) {
-	// this.growthPattern = growthPattern;
-	// }
-	//
-	// public void setConditions(ICondition... conditions) {
-	// this.conditions.clear();
-	// for (ICondition c : conditions) {
-	// this.conditions.add(c);
-	// }
-	// }
-
-	// @Override
-	// public void invoke(Player player) {
 	public void select(Player player, BlockPos[] pattern, Iterable<ICondition> conditions) {
 
 		Modifiers modifiers = player.getModifiers();
@@ -77,19 +56,14 @@ public abstract class AbstractSpellSelect extends Spell {
 		}
 
 		if (shrink) {
-			// shrinkSelections(player, selectionManager);
 			shrinkSelections(player, pattern);
 		} else {
-			// Block patternBlock = selectionManager.firstSelection().getState().getBlock();
-			// growSelections(player, anyBlock, selectionManager, patternBlock);
 			growSelections(player, pattern, conditions);
 		}
 	}
 
 	// Private-------------------------------------------------------------------------------
 
-	// private void growSelections(Player player, boolean anyBlock, SelectionManager selectionManager, Block
-	// patternBlock) {
 	private void growSelections(Player player, BlockPos[] pattern, Iterable<ICondition> conditions) {
 
 		SelectionManager selectionManager = player.getSelectionManager();
@@ -149,7 +123,6 @@ public abstract class AbstractSpellSelect extends Spell {
 		selectionManager.setGrownSelections(selections);
 	}
 
-	// private void shrinkSelections(Player player, SelectionManager selectionManager) {
 	private void shrinkSelections(Player player, BlockPos[] pattern) {
 
 		SelectionManager selectionManager = player.getSelectionManager();
