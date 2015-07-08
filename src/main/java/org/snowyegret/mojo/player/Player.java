@@ -11,6 +11,7 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.Vec3;
 
 import org.snowyegret.mojo.MoJo;
+import org.snowyegret.mojo.geom.EnumPlane;
 import org.snowyegret.mojo.item.spell.Modifiers;
 import org.snowyegret.mojo.item.spell.Spell;
 import org.snowyegret.mojo.item.staff.Staff;
@@ -94,6 +95,21 @@ public class Player {
 			throw new RuntimeException("Unexpected modulus. Got " + modulus);
 		}
 		return direction;
+	}
+
+	public EnumPlane getVerticalPlane() {
+		switch (getDirection()) {
+		case EAST:
+			return EnumPlane.VERTICAL_XY_EAST_WEST;
+		case WEST:
+			return EnumPlane.VERTICAL_XY_EAST_WEST;
+		case NORTH:
+			return EnumPlane.VERTICAL_YZ_NORTH_SOUTH;
+		case SOUTH:
+			return EnumPlane.VERTICAL_YZ_NORTH_SOUTH;
+		default:
+			return null;
+		}
 	}
 
 	public ItemStack getHeldItemStack() {

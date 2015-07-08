@@ -153,7 +153,6 @@ item.spellSelectVertical.description=grows selection in the vertical EW (default
 item.spellSelectVertical.pick.0=
 item.spellSelectVertical.modifier.ctrl=shrink
 item.spellSelectVertical.modifier.alt=select any block
-item.spellSelectVertical.modifier.shift=NS plane
 
 # Transform spells ##########
 

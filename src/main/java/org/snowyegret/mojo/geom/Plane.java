@@ -33,27 +33,27 @@ public class Plane {
 			plane = EnumPlane.HORIZONTAL_XZ;
 			break;
 		case EAST:
-			plane = EnumPlane.VERTICAL_YZ;
+			plane = EnumPlane.VERTICAL_YZ_NORTH_SOUTH;
 			break;
 		case WEST:
-			plane = EnumPlane.VERTICAL_YZ;
+			plane = EnumPlane.VERTICAL_YZ_NORTH_SOUTH;
 			break;
 		case NORTH:
-			plane = EnumPlane.VERTICAL_XY;
+			plane = EnumPlane.VERTICAL_XY_EAST_WEST;
 			break;
 		case SOUTH:
-			plane = EnumPlane.VERTICAL_XY;
+			plane = EnumPlane.VERTICAL_XY_EAST_WEST;
 			break;
 		}
 	}
 
 	public boolean contains(BlockPos p) {
 		switch (plane) {
-		case VERTICAL_XY:
+		case VERTICAL_XY_EAST_WEST:
 			return p.getZ() == distanceFromOrigin;
 		case HORIZONTAL_XZ:
 			return p.getY() == distanceFromOrigin;
-		case VERTICAL_YZ:
+		case VERTICAL_YZ_NORTH_SOUTH:
 			return p.getX() == distanceFromOrigin;
 		default:
 			return false;

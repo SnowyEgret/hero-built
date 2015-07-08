@@ -7,14 +7,19 @@ import org.snowyegret.mojo.player.Player;
 
 public class SpellSelectVertical extends AbstractSpellSelect {
 
-	public SpellSelectVertical() {
-		info.addModifiers(Modifier.SHIFT);
-	}
-
 	@Override
 	public void invoke(Player player) {
-		// TODO Use player diretion to determine vertical plane in SpellSelectVertical #223
-		BlockPos[] pattern = player.getModifiers().isPressed(Modifier.SHIFT) ? Select.NORTH_SOUTH : Select.EAST_WEST;
+		BlockPos[] pattern = null;
+		switch (player.getVerticalPlane()) {
+		case VERTICAL_XY_EAST_WEST:
+			pattern = Select.EAST_WEST;
+			break;
+		case VERTICAL_YZ_NORTH_SOUTH:
+			pattern = Select.NORTH_SOUTH;
+			break;
+		default:
+			System.out.println("Unexpected plane: " + player.getVerticalPlane());
+		}
 		select(player, pattern, null);
 	}
 

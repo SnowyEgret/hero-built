@@ -28,16 +28,16 @@ public class Pick {
 			plane = EnumPlane.HORIZONTAL_XZ;
 			break;
 		case EAST:
-			plane = EnumPlane.VERTICAL_YZ;
+			plane = EnumPlane.VERTICAL_YZ_NORTH_SOUTH;
 			break;
 		case WEST:
-			plane = EnumPlane.VERTICAL_YZ;
+			plane = EnumPlane.VERTICAL_YZ_NORTH_SOUTH;
 			break;
 		case NORTH:
-			plane = EnumPlane.VERTICAL_XY;
+			plane = EnumPlane.VERTICAL_XY_EAST_WEST;
 			break;
 		case SOUTH:
-			plane = EnumPlane.VERTICAL_XY;
+			plane = EnumPlane.VERTICAL_XY_EAST_WEST;
 			break;
 		}
 	}
