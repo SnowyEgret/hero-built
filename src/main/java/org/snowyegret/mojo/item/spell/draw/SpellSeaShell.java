@@ -9,14 +9,18 @@ import org.snowyegret.geom.surface.SeaShell;
 public class SpellSeaShell extends AbstractSpellDraw {
 
 	public SpellSeaShell() {
-		super(1);
+		super(2);
 	}
 
 	@Override
 	public void invoke(Player player) {
 		Pick[] picks = player.getPicks();
-		IDrawable d = new SeaShell(picks[0].point3d());
-		draw(d, player, picks[0].side);
+		//TODO
+		// origin
+		// how many times it goes around
+		// offset (the ratio of a to b) 5 / 2 is ideal
+		IDrawable d = new SeaShell(picks[0].point3d(), picks[1].point3d());
+		draw(d, player, picks[0].side);  
 	}
-	
+
 }
