@@ -39,6 +39,8 @@ public class Select {
 	public static final BlockPos[] YZ = pos(range(0, 0), range(-1, 1), range(-1, 1));
 	public static final BlockPos[] X = pos(range(-1, 1), range(0, 0), range(0, 0));
 
+	public static final BlockPos[] XYZ = concat(X, Y, Z);
+
 	public static BlockPos[] toSideOfPlane(EnumFacing side) {
 		switch (side) {
 		case UP:

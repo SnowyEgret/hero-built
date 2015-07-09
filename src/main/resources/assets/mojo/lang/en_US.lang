@@ -184,6 +184,10 @@ item.spellHoleDrain.name=Drain Hole
 item.spellHoleDrain.description=drains a body of water
 item.spellHoleDrain.pick.0=any block under water
 
+item.spellErode.name=Erode
+item.spellErode.description=erodes corners
+item.spellErode.pick.0=
+
 item.spellHoleFill.name=Fill Hole
 item.spellHoleFill.description=fills a hole or body of water with level with selected block
 item.spellHoleFill.pick.0=anywhere

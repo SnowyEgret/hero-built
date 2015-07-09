@@ -1,11 +1,11 @@
-package org.snowyegret.mojo.item.spell.select;
+package org.snowyegret.mojo.item.spell.condition;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 
-import org.snowyegret.mojo.item.spell.ICondition;
+import org.snowyegret.mojo.item.spell.select.Select;
 import org.snowyegret.mojo.world.IWorld;
 
 public class IsOnSurface implements ICondition {
@@ -19,8 +19,10 @@ public class IsOnSurface implements ICondition {
 	}
 
 	@Override
-	public boolean test(IWorld world, BlockPos pos, Block patternBlock) {
+	public boolean apply(IWorld world, BlockPos pos, Block patternBlock) {
 		if (ignoreSide) {
+			// TODO
+			// Try with Select.XYZ
 			for (BlockPos p : Select.UP_DOWN_NESW) {
 				p = p.add(pos);
 				if (world.getBlock(p) == Blocks.air) {

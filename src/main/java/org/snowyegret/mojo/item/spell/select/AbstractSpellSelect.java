@@ -11,10 +11,10 @@ import net.minecraft.util.BlockPos;
 
 import org.snowyegret.mojo.block.BlockSelected;
 import org.snowyegret.mojo.block.PrevStateTileEntity;
-import org.snowyegret.mojo.item.spell.ICondition;
 import org.snowyegret.mojo.item.spell.Modifier;
 import org.snowyegret.mojo.item.spell.Modifiers;
 import org.snowyegret.mojo.item.spell.Spell;
+import org.snowyegret.mojo.item.spell.condition.ICondition;
 import org.snowyegret.mojo.pick.Pick;
 import org.snowyegret.mojo.player.Player;
 import org.snowyegret.mojo.select.Selection;
@@ -146,7 +146,7 @@ public abstract class AbstractSpellSelect extends Spell {
 			return true;
 		}
 		for (ICondition c : conditions) {
-			if (!c.test(world, pos, patternBlock)) {
+			if (!c.apply(world, pos, patternBlock)) {
 				return false;
 			}
 		}

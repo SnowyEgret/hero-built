@@ -2,7 +2,9 @@ package org.snowyegret.mojo.item.spell.select;
 
 import net.minecraft.util.EnumFacing;
 
-import org.snowyegret.mojo.item.spell.ICondition;
+import org.snowyegret.mojo.item.spell.condition.ICondition;
+import org.snowyegret.mojo.item.spell.condition.IsOnEdgeOnCeiling;
+import org.snowyegret.mojo.item.spell.condition.IsOnEdgeOnGround;
 import org.snowyegret.mojo.player.Player;
 
 import com.google.common.collect.Lists;

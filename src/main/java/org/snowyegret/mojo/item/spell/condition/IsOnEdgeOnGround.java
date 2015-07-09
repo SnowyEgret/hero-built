@@ -1,20 +1,21 @@
-package org.snowyegret.mojo.item.spell.select;
+package org.snowyegret.mojo.item.spell.condition;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
 
-import org.snowyegret.mojo.item.spell.ICondition;
+import org.snowyegret.mojo.item.spell.select.Select;
 import org.snowyegret.mojo.world.IWorld;
 
-public class IsOnEdgeOnCeiling implements ICondition {
+public class IsOnEdgeOnGround implements ICondition {
 
 	@Override
-	public boolean test(IWorld world, BlockPos pos, Block patternBlock) {
-		if(world.getBlock(pos.down()) != Blocks.air) {
+	public boolean apply(IWorld world, BlockPos pos, Block patternBlock) {
+		if (world.getBlock(pos.up()) != Blocks.air) {
 			return false;
 		}
-		for (BlockPos p : Select.BELOW) {
+		// Test for walls
+		for (BlockPos p : Select.ABOVE) {
 			p = p.add(pos);
 			if (world.getBlock(p) != Blocks.air) {
 				return true;
