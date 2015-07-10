@@ -13,7 +13,7 @@ public class GuiTextInputDialog extends GuiDialog {
 	private String text;
 	private final int margin = 20;
 
-	public GuiTextInputDialog(Player player, String...buttons) {
+	public GuiTextInputDialog(Player player, String... buttons) {
 		super(player, "Ok", "Cancel");
 		if (buttons != null) {
 			for (String b : buttons) {
@@ -27,6 +27,8 @@ public class GuiTextInputDialog extends GuiDialog {
 		switch (button.id) {
 		case 0:
 			text = textField.getText();
+			// TODO
+			// We are on the client side. Message server
 			ITextSetable s = (ITextSetable) player.getHeldItem();
 			s.setText(text, player);
 			break;
@@ -51,9 +53,11 @@ public class GuiTextInputDialog extends GuiDialog {
 	@Override
 	public void initGui() {
 		super.initGui();
-		//1.8
-		//textField = new GuiTextField(mc.fontRenderer, topLeftX() + margin, topLeftY() + margin, w - (2 * margin), buttonHeight);
-		textField = new GuiTextField(margin, mc.fontRendererObj, topLeftX() + margin, topLeftY() + margin, w - (2 * margin), buttonHeight);
+		// 1.8
+		// textField = new GuiTextField(mc.fontRenderer, topLeftX() + margin, topLeftY() + margin, w - (2 * margin),
+		// buttonHeight);
+		textField = new GuiTextField(margin, mc.fontRendererObj, topLeftX() + margin, topLeftY() + margin, w
+				- (2 * margin), buttonHeight);
 	}
 
 	@Override

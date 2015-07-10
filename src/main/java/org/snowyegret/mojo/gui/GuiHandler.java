@@ -20,9 +20,6 @@ public class GuiHandler implements IGuiHandler {
 		case GUI_STAFF:
 			return new GuiStaffContainer(player.inventory, new InventoryStaff(player.inventory,
 					player.inventory.currentItem));
-		case GUI_SPELL_TEXT:
-			// http://www.minecraftforge.net/forum/index.php?topic=9310.0
-			return new DummyContainer();
 		default:
 			throw new IllegalArgumentException("GUI id " + id + " is undefined");
 		}
