@@ -6,10 +6,12 @@ import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 
 import org.snowyegret.mojo.block.BlockPicked;
 import org.snowyegret.mojo.block.BlockSelected;
+import org.snowyegret.mojo.gui.GuiHandler;
 import org.snowyegret.mojo.gui.PickInfo;
 import org.snowyegret.mojo.gui.SelectionInfo;
 
@@ -36,6 +38,7 @@ public class MoJo {
 		proxy.registerItems();
 		proxy.registerNetworkMessages();
 		proxy.setCustomStateMappers();
+		//NetworkRegistry.INSTANCE.registerGuiHandler(MoJo.instance, new GuiHandler());
 	}
 
 	@EventHandler

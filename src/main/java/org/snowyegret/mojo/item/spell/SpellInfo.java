@@ -72,7 +72,12 @@ public class SpellInfo {
 		List l = new ArrayList();
 		int i = 0;
 		for (String p : picks) {
-			l.add(String.format("<pick%d> %s", ++i, net.minecraft.client.resources.I18n.format(p)));
+			String localizedString = net.minecraft.client.resources.I18n.format(p);
+			// Do not display a pick with an empty string in overlay #228
+			// Not sure this is an improvement
+			// if (!localizedString.isEmpty()) {
+			l.add(String.format("<pick%d> %s", ++i, localizedString));
+			// }
 		}
 		return Joiner.on(", ").join(l);
 	}
@@ -102,18 +107,12 @@ public class SpellInfo {
 	}
 
 	private String format(String string) {
-		// return I18n.format(root + string);
 		return root + string;
 	}
 
 	private void addPicks(int numPicks) {
 		for (int i = 0; i < numPicks; i++) {
 			String s = format("pick." + picks.size());
-			// To avoid repeating [].pick.0=anywhere in the lang file it can be left out
-			//
-			// if (s.startsWith("item.")) {
-			// s = I18n.format("pick.anywhere");
-			// }
 			picks.add(s);
 		}
 	}

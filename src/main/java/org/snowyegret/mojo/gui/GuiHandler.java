@@ -18,28 +18,30 @@ public class GuiHandler implements IGuiHandler {
 	public Object getServerGuiElement(int id, EntityPlayer player, World w, int x, int y, int z) {
 		switch (id) {
 		case GUI_STAFF:
-			 return new GuiStaffContainer(player.inventory, new InventoryStaff(player.inventory,
-			 player.inventory.currentItem));
-			//return new GuiStaffContainer(player.inventory, new InventoryStaff(player.inventory.getCurrentItem()));
+			return new GuiStaffContainer(player.inventory, new InventoryStaff(player.inventory,
+					player.inventory.currentItem));
+		case GUI_SPELL_TEXT:
+			// http://www.minecraftforge.net/forum/index.php?topic=9310.0
+			return new DummyContainer();
 		default:
 			throw new IllegalArgumentException("GUI id " + id + " is undefined");
 		}
 	}
 
 	@Override
-	public Object getClientGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
+	public Object getClientGuiElement(int id, EntityPlayer playerIn, World world, int x, int y, int z) {
+		System.out.println("id=" + id);
+		Player player = new Player(playerIn);
 		switch (id) {
 		case GUI_DIALOG:
-			return new GuiDialog(new Player(player), "Ok", "Cancel");
+			return new GuiDialog(player, "Ok", "Cancel");
 		case GUI_TEXT_INPUT_DIALOG:
-			return new GuiTextInputDialog(new Player(player));
+			return new GuiTextInputDialog(player);
 		case GUI_SPELL_TEXT:
-			return new GuiSpellText(new Player(player));
+			return new GuiSpellText(player);
 		case GUI_STAFF:
-			 return new GuiStaff(new GuiStaffContainer(player.inventory, new InventoryStaff(player.inventory,
-			 player.inventory.currentItem)));
-			//return new GuiStaff(new GuiStaffContainer(player.inventory, new InventoryStaff(
-			//		player.inventory.getCurrentItem())));
+			return new GuiStaff(new GuiStaffContainer(playerIn.inventory, new InventoryStaff(playerIn.inventory,
+					playerIn.inventory.currentItem)));
 		default:
 			throw new IllegalArgumentException("GUI id " + id + " is undefined");
 		}

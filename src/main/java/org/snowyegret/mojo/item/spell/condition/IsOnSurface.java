@@ -21,9 +21,7 @@ public class IsOnSurface implements ICondition {
 	@Override
 	public boolean apply(IWorld world, BlockPos pos, Block patternBlock) {
 		if (ignoreSide) {
-			// TODO
-			// Try with Select.XYZ
-			for (BlockPos p : Select.UP_DOWN_NESW) {
+			for (BlockPos p : Select.XYZ) {
 				p = p.add(pos);
 				if (world.getBlock(p) == Blocks.air) {
 					return true;
@@ -34,7 +32,7 @@ public class IsOnSurface implements ICondition {
 			if (b == Blocks.air) {
 				return true;
 			}
-			//For selecting under plants, etc
+			// For selecting under plants, etc
 			if (!b.isNormalCube()) {
 				return true;
 			}

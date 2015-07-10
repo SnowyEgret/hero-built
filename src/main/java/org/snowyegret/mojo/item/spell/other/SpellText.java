@@ -15,17 +15,15 @@ import javax.vecmath.Vector3d;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Items;
 import net.minecraft.util.BlockPos;
+import net.minecraftforge.fml.common.network.internal.FMLNetworkHandler;
 
+import org.snowyegret.mojo.MoJo;
 import org.snowyegret.mojo.gui.GuiHandler;
 import org.snowyegret.mojo.gui.ITextSetable;
-import org.snowyegret.mojo.item.spell.Modifiers;
 import org.snowyegret.mojo.item.spell.Spell;
 import org.snowyegret.mojo.pick.Pick;
-import org.snowyegret.mojo.pick.PickManager;
 import org.snowyegret.mojo.player.Player;
-import org.snowyegret.mojo.select.SelectionManager;
 import org.snowyegret.mojo.undo.IUndoable;
-import org.snowyegret.mojo.undo.Transaction;
 import org.snowyegret.mojo.undo.UndoableSetBlock;
 
 import com.google.common.collect.Lists;

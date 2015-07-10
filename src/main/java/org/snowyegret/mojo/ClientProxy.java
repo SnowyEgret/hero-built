@@ -53,8 +53,8 @@ public class ClientProxy extends CommonProxy {
 		});
 	}
 
-	@Override
-	public void registerGuiHandler() {
-		NetworkRegistry.INSTANCE.registerGuiHandler(MoJo.instance, new GuiHandler());
-	}
+//	@Override
+//	public void registerGuiHandler() {
+//		NetworkRegistry.INSTANCE.registerGuiHandler(MoJo.instance, new GuiHandler());   
+//	}
 }

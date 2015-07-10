@@ -10,7 +10,7 @@ import net.minecraft.util.BlockPos;
 import org.snowyegret.mojo.item.spell.Spell;
 import org.snowyegret.mojo.item.spell.condition.ICondition;
 import org.snowyegret.mojo.item.spell.condition.IsOnCorner;
-import org.snowyegret.mojo.item.spell.condition.IsOnEdge;
+import org.snowyegret.mojo.item.spell.condition.IsOnExteriorEdge;
 import org.snowyegret.mojo.player.Player;
 import org.snowyegret.mojo.select.Selection;
 import org.snowyegret.mojo.undo.IUndoable;
@@ -36,14 +36,14 @@ public class SpellErode extends Spell {
 		Set<IUndoable> undoables = Sets.newHashSet();
 		IBlockState air = Blocks.air.getDefaultState();
 		ICondition isOnCorner = new IsOnCorner();
-		ICondition isOnEdge = new IsOnEdge();
+		ICondition isOnEdge = new IsOnExteriorEdge();
 		IWorld w = player.getWorld();
 		for (Selection s : selections) {
 			BlockPos pos = s.getPos();
-			if (isOnCorner.apply(w, pos, Blocks.air)) {
+			if (isOnCorner.apply(w, pos, null)) {
 				undoables.add(new UndoableSetBlock(pos, player.getWorld().getState(pos), air));
 			}
-			if (isOnEdge.apply(w, pos, Blocks.air)) {
+			if (isOnEdge.apply(w, pos, null)) {
 				if (random.nextInt(10) < 3) {
 					undoables.add(new UndoableSetBlock(pos, player.getWorld().getState(pos), air));
 				}

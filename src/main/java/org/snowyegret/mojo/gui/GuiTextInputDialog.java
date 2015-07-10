@@ -11,7 +11,7 @@ public class GuiTextInputDialog extends GuiDialog {
 
 	private GuiTextField textField;
 	private String text;
-	private int margin = 20;
+	private final int margin = 20;
 
 	public GuiTextInputDialog(Player player, String...buttons) {
 		super(player, "Ok", "Cancel");

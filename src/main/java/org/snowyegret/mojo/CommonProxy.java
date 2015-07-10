@@ -23,6 +23,7 @@ import org.snowyegret.mojo.event.EventHandlerClient;
 import org.snowyegret.mojo.event.EventHandlerServer;
 import org.snowyegret.mojo.event.KeyHandler;
 import org.snowyegret.mojo.event.MouseHandler;
+import org.snowyegret.mojo.gui.GuiHandler;
 import org.snowyegret.mojo.item.IItem;
 import org.snowyegret.mojo.item.ItemBase;
 import org.snowyegret.mojo.item.spell.Spell;
@@ -154,6 +155,7 @@ public class CommonProxy {
 	}
 
 	public void registerGuiHandler() {
+		NetworkRegistry.INSTANCE.registerGuiHandler(MoJo.instance, new GuiHandler());
 	}
 
 	// Private------------------------------------------------------------------------------------

@@ -9,6 +9,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.Vec3;
+import net.minecraftforge.fml.common.network.internal.FMLNetworkHandler;
 
 import org.snowyegret.mojo.MoJo;
 import org.snowyegret.mojo.geom.EnumPlane;
@@ -168,8 +169,8 @@ public class Player {
 	}
 
 	public void openGui(int id) {
-		player.openGui(MoJo.instance, id, getWorld().getWorld(), (int) player.posX, (int) player.posY,
-				(int) player.posZ);
+		//FMLNetworkHandler.openGui(player, MoJo.instance, id, player.worldObj, (int) player.posX, (int) player.posY, (int) player.posZ);
+		player.openGui(MoJo.instance, id, player.worldObj, (int) player.posX, (int) player.posY, (int) player.posZ);
 	}
 
 	public void moveTo(BlockPos pos) {
@@ -181,7 +182,7 @@ public class Player {
 	}
 
 	public TransactionManager getTransactionManager() {
-		// This is null for some reason
+		// TODO This is null for some reason
 		props = (PlayerProperties) player.getExtendedProperties(PlayerProperties.NAME);
 		return props.getUndoManager();
 	}

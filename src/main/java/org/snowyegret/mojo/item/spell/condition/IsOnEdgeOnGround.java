@@ -14,14 +14,14 @@ public class IsOnEdgeOnGround implements ICondition {
 		if (world.getBlock(pos.up()) != Blocks.air) {
 			return false;
 		}
-		// Test for walls
+		// Test for interior edges
 		for (BlockPos p : Select.ABOVE) {
 			p = p.add(pos);
 			if (world.getBlock(p) != Blocks.air) {
 				return true;
 			}
 		}
-		// Test for edge of plane
+		// Test for exterior edges
 		for (BlockPos p : Select.HORIZONTAL_NO_CORNERS) {
 			p = p.add(pos);
 			if (world.getBlock(p) == Blocks.air) {
