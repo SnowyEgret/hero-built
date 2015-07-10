@@ -16,6 +16,8 @@ import org.snowyegret.mojo.geom.EnumPlane;
 import org.snowyegret.mojo.item.spell.Modifiers;
 import org.snowyegret.mojo.item.spell.Spell;
 import org.snowyegret.mojo.item.staff.Staff;
+import org.snowyegret.mojo.network.MouseClickMessage;
+import org.snowyegret.mojo.network.OpenGuiMessage;
 import org.snowyegret.mojo.network.SpellMessage;
 import org.snowyegret.mojo.pick.Pick;
 import org.snowyegret.mojo.pick.PickManager;
@@ -169,8 +171,15 @@ public class Player {
 	}
 
 	public void openGui(int id) {
-		//FMLNetworkHandler.openGui(player, MoJo.instance, id, player.worldObj, (int) player.posX, (int) player.posY, (int) player.posZ);
-		player.openGui(MoJo.instance, id, player.worldObj, (int) player.posX, (int) player.posY, (int) player.posZ);
+		// Fix for GuiText not opening from server side #232
+		// Not sure why forge doesn't take care of this
+		if (player instanceof EntityPlayerMP) {
+			//TODO
+			//sendMessage(new OpenGuiMessage(id));
+			MoJo.network.sendTo(new OpenGuiMessage(id), (EntityPlayerMP) player);
+		} else {
+			player.openGui(MoJo.instance, id, player.worldObj, (int) player.posX, (int) player.posY, (int) player.posZ);
+		}
 	}
 
 	public void moveTo(BlockPos pos) {

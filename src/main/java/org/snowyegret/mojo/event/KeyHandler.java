@@ -12,9 +12,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.lwjgl.input.Keyboard;
 import org.snowyegret.mojo.MoJo;
+import org.snowyegret.mojo.gui.GuiHandler;
 import org.snowyegret.mojo.item.spell.Action;
 import org.snowyegret.mojo.item.spell.Modifier;
 import org.snowyegret.mojo.network.KeyMessage;
+import org.snowyegret.mojo.player.Player;
 
 public class KeyHandler {
 
@@ -44,7 +46,6 @@ public class KeyHandler {
 			//System.out.println("state=" + Keyboard.getEventKeyState());
 			BlockPos cursorPos = Minecraft.getMinecraft().objectMouseOver.getBlockPos();
 			MoJo.network.sendToServer(new KeyMessage(keyCode, Keyboard.getEventKeyState(), cursorPos));
-
 		}
 	}
 }

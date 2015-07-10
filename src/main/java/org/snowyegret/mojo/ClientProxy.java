@@ -53,8 +53,9 @@ public class ClientProxy extends CommonProxy {
 		});
 	}
 
-//	@Override
-//	public void registerGuiHandler() {
-//		NetworkRegistry.INSTANCE.registerGuiHandler(MoJo.instance, new GuiHandler());   
-//	}
+	// Must be done on both sides?
+	// @Override
+	// public void registerGuiHandler() {
+	// NetworkRegistry.INSTANCE.registerGuiHandler(MoJo.instance, new GuiHandler());
+	// }
 }
