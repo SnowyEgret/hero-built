@@ -21,7 +21,7 @@ public class GuiSpellText extends GuiTextInputDialog {
 			SpellText s = (SpellText) player.getHeldItem();
 			JFontChooser chooser = new JFontChooser();
 			Font font = s.getFont();
-			System.out.println("font=" + font);
+			//System.out.println("font=" + font);
 			if (font != null) {
 				chooser.setSelectedFont(s.getFont());
 			}

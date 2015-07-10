@@ -51,6 +51,8 @@ import org.snowyegret.mojo.network.SelectionMessage;
 import org.snowyegret.mojo.network.SelectionMessageHandler;
 import org.snowyegret.mojo.network.SpellMessage;
 import org.snowyegret.mojo.network.SpellMessageHandler;
+import org.snowyegret.mojo.network.SpellTextMessage;
+import org.snowyegret.mojo.network.SpellTextMessageHandler;
 import org.snowyegret.mojo.util.StringUtils;
 
 import com.google.common.collect.Lists;
@@ -146,6 +148,7 @@ public class CommonProxy {
 		MoJo.network.registerMessage(KeyMessageHandler.class, KeyMessage.class, 0, Side.SERVER);
 		MoJo.network.registerMessage(ClearManagersMessageHandler.class, ClearManagersMessage.class, 1, Side.SERVER);
 		MoJo.network.registerMessage(MouseClickMessageHandler.class, MouseClickMessage.class, 2, Side.SERVER);
+		MoJo.network.registerMessage(SpellTextMessageHandler.class, SpellTextMessage.class, 3, Side.SERVER);
 
 		// Messages to client
 		MoJo.network.registerMessage(SelectionMessageHandler.class, SelectionMessage.class, 10, Side.CLIENT);
