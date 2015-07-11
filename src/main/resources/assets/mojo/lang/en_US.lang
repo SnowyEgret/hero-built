@@ -32,7 +32,7 @@ item.spellCone.description=creates a cone
 item.spellCone.pick.0=center
 item.spellCone.pick.1=radius
 item.spellCone.pick.2=height
-item.spellCone.modifier.shift=hollow
+item.spellCone.modifier.shift=
 item.spellCone.modifier.alt=on surface
 
 item.spellLine.name=Line
@@ -63,6 +63,7 @@ item.spellRectangle.description=creates a rectangle
 item.spellRectangle.pick.0=from
 item.spellRectangle.pick.1=diagonal corner
 item.spellRectangle.modifier.ctrl=square
+item.spellRectangle.modifier.shift=
 
 item.spellSphere.name=Sphere
 item.spellSphere.description=creates a sphere

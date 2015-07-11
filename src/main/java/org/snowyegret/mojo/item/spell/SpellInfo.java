@@ -85,8 +85,11 @@ public class SpellInfo {
 	@SideOnly(Side.CLIENT)
 	public String getModifiers() {
 		List<String> l = new ArrayList();
-		for (Map.Entry<String, String> p : modifiers.entrySet()) {
-			l.add(String.format("<%s>", p.getKey()) + " " + net.minecraft.client.resources.I18n.format(p.getValue()));
+		for (Map.Entry<String, String> m : modifiers.entrySet()) {
+			String localizedString = net.minecraft.client.resources.I18n.format(m.getValue());
+			if (!localizedString.isEmpty()) {
+				l.add(String.format("<%s>", m.getKey()) + " " + localizedString);
+			}
 		}
 		return Joiner.on(", ").join(l);
 	}
