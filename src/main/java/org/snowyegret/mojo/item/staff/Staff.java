@@ -9,6 +9,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
+import org.snowyegret.mojo.MoJo;
 import org.snowyegret.mojo.gui.GuiHandler;
 import org.snowyegret.mojo.item.ItemBase;
 import org.snowyegret.mojo.item.spell.Modifier;
@@ -44,8 +45,8 @@ public class Staff extends ItemBase {
 		// Return if called from the client thread
 		if (world.isRemote) {
 			return true;
-		}		
-		
+		}
+
 		Player player = new Player(playerIn);
 		Modifiers modifiers = player.getModifiers();
 
@@ -95,11 +96,11 @@ public class Staff extends ItemBase {
 			if (s != null) {
 				break;
 			}
-//			if (s == null) {
-//				continue;
-//			} else {
-//				break;
-//			}
+			// if (s == null) {
+			// continue;
+			// } else {
+			// break;
+			// }
 		}
 		return s;
 	}
@@ -117,11 +118,11 @@ public class Staff extends ItemBase {
 			if (s != null) {
 				break;
 			}
-//			if (s == null) {
-//				continue;
-//			} else {
-//				break;
-//			}
+			// if (s == null) {
+			// continue;
+			// } else {
+			// break;
+			// }
 		}
 		return s;
 	}

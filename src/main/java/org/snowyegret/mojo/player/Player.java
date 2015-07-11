@@ -171,15 +171,7 @@ public class Player {
 	}
 
 	public void openGui(int id) {
-		// Fix for GuiText not opening from server side #232
-		// Not sure why forge doesn't take care of this
-		if (player instanceof EntityPlayerMP) {
-			//TODO
-			//sendMessage(new OpenGuiMessage(id));
-			MoJo.network.sendTo(new OpenGuiMessage(id), (EntityPlayerMP) player);
-		} else {
-			player.openGui(MoJo.instance, id, player.worldObj, (int) player.posX, (int) player.posY, (int) player.posZ);
-		}
+		player.openGui(MoJo.instance, id, player.worldObj, (int) player.posX, (int) player.posY, (int) player.posZ);
 	}
 
 	public void moveTo(BlockPos pos) {

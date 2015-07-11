@@ -13,6 +13,7 @@ import java.util.Set;
 import javax.vecmath.Vector3d;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.common.network.internal.FMLNetworkHandler;
@@ -21,6 +22,7 @@ import org.snowyegret.mojo.MoJo;
 import org.snowyegret.mojo.gui.GuiHandler;
 import org.snowyegret.mojo.gui.ITextSetable;
 import org.snowyegret.mojo.item.spell.Spell;
+import org.snowyegret.mojo.network.OpenGuiMessage;
 import org.snowyegret.mojo.pick.Pick;
 import org.snowyegret.mojo.player.Player;
 import org.snowyegret.mojo.undo.IUndoable;
@@ -51,7 +53,8 @@ public class SpellText extends Spell implements ITextSetable {
 
 	@Override
 	public void invoke(Player player) {
-		player.openGui(GuiHandler.GUI_SPELL_TEXT);
+		// We are on the server thread and GuiSpellText doesn't have a container
+		MoJo.network.sendTo(new OpenGuiMessage(GuiHandler.GUI_SPELL_TEXT), (EntityPlayerMP) player.getPlayer());
 		picks = player.getPicks();
 		// Clear the picks because player may have cancelled
 		player.clearPicks();
@@ -103,7 +106,7 @@ public class SpellText extends Spell implements ITextSetable {
 		System.out.println("size=" + positions.size());
 		player.clearSelections();
 		player.clearPicks();
-		
+
 		IBlockState b = player.getHotbar().firstBlock();
 		List<IUndoable> undoables = Lists.newArrayList();
 		for (BlockPos p : positions) {

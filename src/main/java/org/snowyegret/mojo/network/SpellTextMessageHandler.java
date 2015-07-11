@@ -18,7 +18,7 @@ public class SpellTextMessageHandler  implements IMessageHandler<SpellTextMessag
 		server.addScheduledTask(new Runnable() {
 			public void run() {
 				Player p = new Player(player);
-				ITextSetable s = (ITextSetable) p.getHeldItem();
+				ITextSetable s = (ITextSetable) p.getSpell();
 				s.setText(message.getText(), p);
 			}
 		});
