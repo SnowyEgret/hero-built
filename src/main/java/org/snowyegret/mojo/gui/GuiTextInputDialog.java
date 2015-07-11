@@ -4,8 +4,8 @@ import java.io.IOException;
 
 import org.lwjgl.input.Keyboard;
 import org.snowyegret.mojo.MoJo;
-import org.snowyegret.mojo.network.KeyMessage;
-import org.snowyegret.mojo.network.SpellTextMessage;
+import org.snowyegret.mojo.message.server.KeyMessage;
+import org.snowyegret.mojo.message.server.SpellTextMessage;
 import org.snowyegret.mojo.player.Player;
 
 import net.minecraft.client.gui.GuiButton;

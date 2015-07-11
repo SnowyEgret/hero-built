@@ -30,7 +30,7 @@ public class SpellSelectEdge extends AbstractSpellSelect {
 		BlockPos[] pattern = null;
 		ICondition condition = null;
 		if (allExteriorEdges) {
-			pattern = Select.XYZ;
+			pattern = Select.ALL_NO_CORNERS;
 			condition = new IsOnExteriorEdge();
 		} else {
 			pattern = Select.HORIZONTAL_NO_CORNERS;

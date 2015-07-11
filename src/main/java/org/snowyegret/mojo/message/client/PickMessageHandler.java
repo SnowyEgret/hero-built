@@ -1,4 +1,4 @@
-package org.snowyegret.mojo.network;
+package org.snowyegret.mojo.message.client;
 
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;

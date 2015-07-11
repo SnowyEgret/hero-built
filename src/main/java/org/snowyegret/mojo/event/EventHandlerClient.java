@@ -29,7 +29,7 @@ import org.snowyegret.mojo.item.staff.StaffModel;
 import org.snowyegret.mojo.item.staff.StaffOak;
 import org.snowyegret.mojo.item.staff.StaffSelect;
 import org.snowyegret.mojo.item.staff.StaffTransform;
-import org.snowyegret.mojo.network.ClearManagersMessage;
+import org.snowyegret.mojo.message.server.ClearManagersMessage;
 import org.snowyegret.mojo.player.Player;
 import org.snowyegret.mojo.util.ModelResourceLocations;
 

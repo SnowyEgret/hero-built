@@ -1,4 +1,4 @@
-package org.snowyegret.mojo.network;
+package org.snowyegret.mojo.message.server;
 
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.WorldServer;

@@ -5,7 +5,7 @@ A Minecraft mod for builders who play with mojo.
 * Cut, copy, paste.
 * Copy, move, rotate, mirror, delete.
 * Lines, rectangles, circles, boxes, spheres, cones, pyramids, trails.
-* Fill, write, hollow.
+* Fill, write, hollow, erode.
 * Undo, redo.
 * All in-game.
 

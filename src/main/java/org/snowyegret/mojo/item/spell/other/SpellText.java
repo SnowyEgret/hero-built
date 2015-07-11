@@ -22,7 +22,7 @@ import org.snowyegret.mojo.MoJo;
 import org.snowyegret.mojo.gui.GuiHandler;
 import org.snowyegret.mojo.gui.ITextSetable;
 import org.snowyegret.mojo.item.spell.Spell;
-import org.snowyegret.mojo.network.OpenGuiMessage;
+import org.snowyegret.mojo.message.client.OpenGuiMessage;
 import org.snowyegret.mojo.pick.Pick;
 import org.snowyegret.mojo.player.Player;
 import org.snowyegret.mojo.undo.IUndoable;

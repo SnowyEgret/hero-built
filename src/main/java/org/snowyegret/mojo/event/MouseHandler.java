@@ -15,7 +15,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.snowyegret.mojo.MoJo;
 import org.snowyegret.mojo.item.spell.Spell;
 import org.snowyegret.mojo.item.staff.Staff;
-import org.snowyegret.mojo.network.MouseClickMessage;
+import org.snowyegret.mojo.message.server.MouseClickMessage;
 import org.snowyegret.mojo.player.Player;
 import org.snowyegret.mojo.player.Player;
 import org.snowyegret.mojo.world.IWorld;

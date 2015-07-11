@@ -12,7 +12,7 @@ import net.minecraft.util.EnumFacing;
 import org.snowyegret.mojo.MoJo;
 import org.snowyegret.mojo.block.BlockSelected;
 import org.snowyegret.mojo.block.PrevStateTileEntity;
-import org.snowyegret.mojo.network.PickMessage;
+import org.snowyegret.mojo.message.client.PickMessage;
 import org.snowyegret.mojo.player.Player;
 import org.snowyegret.mojo.world.IWorld;
 

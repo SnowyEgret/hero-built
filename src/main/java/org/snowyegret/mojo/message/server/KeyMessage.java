@@ -1,4 +1,4 @@
-package org.snowyegret.mojo.network;
+package org.snowyegret.mojo.message.server;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.util.BlockPos;

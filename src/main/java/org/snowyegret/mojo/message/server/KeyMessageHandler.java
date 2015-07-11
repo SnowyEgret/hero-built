@@ -1,4 +1,4 @@
-package org.snowyegret.mojo.network;
+package org.snowyegret.mojo.message.server;
 
 import java.util.NoSuchElementException;
 
@@ -18,6 +18,7 @@ import org.snowyegret.mojo.item.spell.Spell;
 import org.snowyegret.mojo.item.spell.matrix.SpellCopy;
 import org.snowyegret.mojo.item.spell.transform.SpellDelete;
 import org.snowyegret.mojo.item.staff.Staff;
+import org.snowyegret.mojo.message.client.SpellMessage;
 import org.snowyegret.mojo.pick.PickManager;
 import org.snowyegret.mojo.player.Player;
 import org.snowyegret.mojo.player.Player;
@@ -80,7 +81,7 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 						player.getTransactionManager().undo(player);
 					}
 				}
-				selectionManager.reselect();
+				//selectionManager.reselect();
 			} catch (NoSuchElementException e) {
 				MoJo.network.sendTo(new SpellMessage(e.getMessage()), (EntityPlayerMP) player.getPlayer());
 				// Return so that the overlay is not reset at end of switch

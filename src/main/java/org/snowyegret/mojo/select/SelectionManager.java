@@ -18,7 +18,7 @@ import org.snowyegret.mojo.MoJo;
 import org.snowyegret.mojo.block.BlockPicked;
 import org.snowyegret.mojo.block.BlockSelected;
 import org.snowyegret.mojo.block.PrevStateTileEntity;
-import org.snowyegret.mojo.network.SelectionMessage;
+import org.snowyegret.mojo.message.client.SelectionMessage;
 import org.snowyegret.mojo.player.Player;
 import org.snowyegret.mojo.world.IWorld;
 

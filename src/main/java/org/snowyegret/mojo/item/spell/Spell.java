@@ -13,7 +13,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.snowyegret.mojo.MoJo;
 import org.snowyegret.mojo.item.ItemBase;
-import org.snowyegret.mojo.network.SpellMessage;
+import org.snowyegret.mojo.message.client.SpellMessage;
 import org.snowyegret.mojo.pick.PickManager;
 import org.snowyegret.mojo.player.Player;
 import org.snowyegret.mojo.player.Player;

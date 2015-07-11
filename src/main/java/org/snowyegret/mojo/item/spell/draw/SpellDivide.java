@@ -7,11 +7,10 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import org.snowyegret.mojo.MoJo;
 import org.snowyegret.mojo.item.spell.Modifier;
 import org.snowyegret.mojo.item.spell.Modifiers;
-import org.snowyegret.mojo.network.SelectionMessage;
-import org.snowyegret.mojo.network.SpellMessage;
+import org.snowyegret.mojo.message.client.SelectionMessage;
+import org.snowyegret.mojo.message.client.SpellMessage;
 import org.snowyegret.mojo.pick.Pick;
 import org.snowyegret.mojo.player.Player;
-
 import org.snowyegret.geom.PointSet;
 
 public class SpellDivide extends AbstractSpellDraw {

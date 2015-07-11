@@ -15,7 +15,7 @@ import org.snowyegret.mojo.MoJo;
 import org.snowyegret.mojo.gui.GuiHandler;
 import org.snowyegret.mojo.item.spell.Action;
 import org.snowyegret.mojo.item.spell.Modifier;
-import org.snowyegret.mojo.network.KeyMessage;
+import org.snowyegret.mojo.message.server.KeyMessage;
 import org.snowyegret.mojo.player.Player;
 
 public class KeyHandler {
