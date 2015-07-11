@@ -15,11 +15,10 @@ public class GuiHandler implements IGuiHandler {
 	public static final int GUI_STAFF = 3;
 
 	@Override
-	public Object getServerGuiElement(int id, EntityPlayer player, World w, int x, int y, int z) {
+	public Object getServerGuiElement(int id, EntityPlayer playerIn, World w, int x, int y, int z) {
 		switch (id) {
 		case GUI_STAFF:
-			return new GuiStaffContainer(player.inventory, new InventoryStaff(player.inventory,
-					player.inventory.currentItem));
+			return new GuiStaffContainer(playerIn);
 		default:
 			throw new IllegalArgumentException("GUI id " + id + " is undefined");
 		}
@@ -37,8 +36,7 @@ public class GuiHandler implements IGuiHandler {
 		case GUI_SPELL_TEXT:
 			return new GuiSpellText(player);
 		case GUI_STAFF:
-			return new GuiStaff(new GuiStaffContainer(playerIn.inventory, new InventoryStaff(playerIn.inventory,
-					playerIn.inventory.currentItem)));
+			return new GuiStaff(new GuiStaffContainer(playerIn));			
 		default:
 			throw new IllegalArgumentException("GUI id " + id + " is undefined");
 		}

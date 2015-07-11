@@ -1,5 +1,7 @@
 package org.snowyegret.mojo.gui;
 
+import org.snowyegret.mojo.item.staff.InventoryStaff;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -12,22 +14,22 @@ public class GuiStaffContainer extends Container {
 
 	private IInventory inventoryStaff;
 
-	public GuiStaffContainer(InventoryPlayer inventoryPlayer, IInventory inventoryStaff) {
-		this.inventoryStaff = inventoryStaff;
+	public GuiStaffContainer(EntityPlayer player) {
+		this.inventoryStaff = new InventoryStaff(player.inventory, player.inventory.currentItem);
 
 		for (int i = 0; i < inventoryStaff.getSizeInventory(); i++) {
-			//Overrides isItemValid to permit only spells in these slots
+			// Overrides isItemValid to permit only spells in these slots
 			addSlotToContainer(new GuiStaffSlot(inventoryStaff, i, 8 + i * 18, 18));
 		}
 
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 9; j++) {
-				addSlotToContainer(new Slot(inventoryPlayer, j + i * 9 + 9, 8 + j * 18, 49 + i * 18));
+				addSlotToContainer(new Slot(player.inventory, j + i * 9 + 9, 8 + j * 18, 49 + i * 18));
 			}
 		}
 
 		for (int i = 0; i < 9; i++) {
-			addSlotToContainer(new Slot(inventoryPlayer, i, 8 + i * 18, 107));
+			addSlotToContainer(new Slot(player.inventory, i, 8 + i * 18, 107));
 		}
 	}
 
@@ -37,7 +39,7 @@ public class GuiStaffContainer extends Container {
 		return isUsable;
 	}
 
-	//Called when a player shift clicks on a slot
+	// Called when a player shift clicks on a slot
 	// @Override
 	// public ItemStack transferStackInSlot(EntityPlayer player, int i) {
 	// System.out.println("[GuiStaffContainer.transferStackInSlot] i=" + i);
