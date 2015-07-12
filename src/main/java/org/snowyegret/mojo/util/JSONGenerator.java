@@ -53,7 +53,7 @@ public class JSONGenerator {
 			}
 			// String n = StringUtils.nameFor(c);
 			String n = StringUtils.underscoreNameFor(c);
-			String json = String.format(template, c, n);
+			String json = String.format(template, MoJo.MODID, n);
 			// System.out.println("json=" + json);
 			Path file;
 			try {
@@ -76,12 +76,15 @@ public class JSONGenerator {
 		File dir = new File(texturesDir);
 		System.out.println("Verifying format of texture filenames in directory " + dir);
 		for (final File f : dir.listFiles()) {
-			System.out.println("Renaming file " + f);
 			try {
-				File newfile = new File(texturesDir + StringUtils.underscoreNameFor(f.getName()));
-				System.out.println("New name =" + newfile);
-				if (!f.renameTo(newfile)) {
-					System.out.println("Could not rename file " + f);
+				String oldName = f.getName();
+				String newName = StringUtils.underscoreNameFor(oldName);
+				if (!newName.equals(oldName)) {
+					File newfile = new File(texturesDir + newName);
+					System.out.println("New name =" + newName);
+					if (!f.renameTo(newfile)) {
+						System.out.println("Could not rename file " + f);
+					}
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
