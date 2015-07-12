@@ -167,7 +167,8 @@ public class CommonProxy {
 	// Private------------------------------------------------------------------------------------
 
 	private Block initBlock(Block block) {
-		String name = StringUtils.nameFor(block.getClass());
+		//String name = StringUtils.nameFor(block.getClass());
+		String name = StringUtils.underscoreNameFor(block.getClass());
 		System.out.println("Intitializing block " + name);
 		block.setUnlocalizedName(name);
 		GameRegistry.registerBlock(block, name);
@@ -179,7 +180,8 @@ public class CommonProxy {
 	}
 
 	private Item initItem(Class<? extends Item> itemClass, List<Spell>... spellsLists) throws Exception {
-		String name = StringUtils.nameFor(itemClass);
+		//String name = StringUtils.nameFor(itemClass);
+		String name = StringUtils.underscoreNameFor(itemClass);
 		System.out.println("Intitializing item " + name);
 		Constructor constructor = null;
 		Item item = null;

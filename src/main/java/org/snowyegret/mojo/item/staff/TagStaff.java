@@ -49,7 +49,8 @@ public class TagStaff {
 	}
 
 	public void setSpell(int i, Spell spell) {
-		String n = StringUtils.nameFor(spell.getClass());
+		//String n = StringUtils.nameFor(spell.getClass());
+		String n = StringUtils.underscoreNameFor(spell.getClass());
 		tag.setString(String.valueOf(i), n);
 	}
 

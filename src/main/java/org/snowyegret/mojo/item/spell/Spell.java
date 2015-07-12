@@ -3,7 +3,6 @@ package org.snowyegret.mojo.item.spell;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
@@ -11,11 +10,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import org.snowyegret.mojo.MoJo;
 import org.snowyegret.mojo.item.ItemBase;
-import org.snowyegret.mojo.message.client.SpellMessage;
 import org.snowyegret.mojo.pick.PickManager;
-import org.snowyegret.mojo.player.Player;
 import org.snowyegret.mojo.player.Player;
 
 public abstract class Spell extends ItemBase {
@@ -23,11 +19,6 @@ public abstract class Spell extends ItemBase {
 	protected SpellInfo info;
 	private int numPicks;
 
-	// For base spell model
-//	public Spell() {
-//	}
-
-	// No longer abstact because we a instantiating it so that we can use its model as a base model
 	public Spell(int numPicks) {
 		this.numPicks = numPicks;
 		info = new SpellInfo(this);
@@ -62,12 +53,8 @@ public abstract class Spell extends ItemBase {
 
 	public abstract void invoke(Player player);
 
-//	public void invoke(Player player) {
-//	}
-
 	@SideOnly(Side.CLIENT)
 	public SpellInfo getInfo() {
-		//return new SpellInfo(this);
 		return info;
 	}
 

@@ -35,16 +35,18 @@ public class StaffModel implements ISmartItemModel {
 
 	@Override
 	public List getGeneralQuads() {
-//		List<BakedQuad> combinedQuads = new ArrayList(baseStaffModel.getGeneralQuads());
-//		combinedQuads.addAll(spellModel.getGeneralQuads());
-//		return combinedQuads;
-		
+		// List<BakedQuad> combinedQuads = new ArrayList(baseStaffModel.getGeneralQuads());
+		// combinedQuads.addAll(spellModel.getGeneralQuads());
+		// return combinedQuads;
+
 		List<BakedQuad> quads = new ArrayList<>();
 		if (spellModel == null) {
 			return baseStaffModel.getGeneralQuads();
 		}
 		List<BakedQuad> spellQuads = spellModel.getGeneralQuads();
 		for (BakedQuad q : spellQuads) {
+			// TODO why doesn't this tint?
+			// Tint the spell to color of staff
 			quads.add(new BakedQuad(tint(q.getVertexData()), 0, q.getFace()));
 		}
 		return quads;

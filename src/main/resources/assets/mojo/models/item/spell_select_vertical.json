@@ -1,7 +1,7 @@
 {
     "parent": "builtin/generated",
     "textures": {
-        "layer0": "mojo:items/staff"
+        "layer0": "mojo:items/spell_select_vertical"
     },
     "display": {
         "thirdperson": {

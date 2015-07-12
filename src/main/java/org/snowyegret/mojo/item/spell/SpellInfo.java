@@ -21,7 +21,8 @@ public class SpellInfo {
 	private Map<String, String> modifiers = new HashMap<>();
 
 	public SpellInfo(Spell spell) {
-		root = "item." + StringUtils.nameFor(spell.getClass()) + ".";
+		//root = "item." + StringUtils.nameFor(spell.getClass()) + ".";
+		root = "item." + StringUtils.underscoreNameFor(spell.getClass()) + ".";
 		name = format("name");
 		description = format("description");
 		addPicks(spell.getNumPicks());
