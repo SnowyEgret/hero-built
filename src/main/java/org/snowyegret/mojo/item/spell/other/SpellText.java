@@ -23,6 +23,7 @@ import org.snowyegret.mojo.gui.GuiHandler;
 import org.snowyegret.mojo.gui.ITextSetable;
 import org.snowyegret.mojo.item.spell.Spell;
 import org.snowyegret.mojo.message.client.OpenGuiMessage;
+import org.snowyegret.mojo.message.client.SpellMessage;
 import org.snowyegret.mojo.pick.Pick;
 import org.snowyegret.mojo.player.Player;
 import org.snowyegret.mojo.undo.IUndoable;
@@ -54,7 +55,8 @@ public class SpellText extends Spell implements ITextSetable {
 	@Override
 	public void invoke(Player player) {
 		// We are on the server thread and GuiSpellText doesn't have a container
-		MoJo.network.sendTo(new OpenGuiMessage(GuiHandler.GUI_SPELL_TEXT), (EntityPlayerMP) player.getPlayer());
+		player.sendMessage(new OpenGuiMessage(GuiHandler.GUI_SPELL_TEXT));
+		//MoJo.network.sendTo(new OpenGuiMessage(GuiHandler.GUI_SPELL_TEXT), (EntityPlayerMP) player.getPlayer());
 		picks = player.getPicks();
 		// Clear the picks because player may have cancelled
 		player.clearPicks();

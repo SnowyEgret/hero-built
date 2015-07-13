@@ -21,11 +21,12 @@ public class JSONGenerator {
 	final String assetsDir = "src/main/resources/assets/";
 	final String modelsDir = assetsDir + MoJo.MODID + "/models/item/";
 	final String texturesDir = assetsDir + MoJo.MODID + "/textures/items/";
+	final String templateFile = "src/main/java/org/snowyegret/"+MoJo.MODID+"/util/JSONGenerator.template";
 
 	public JSONGenerator() throws IOException {
 
 		String template = null;
-		Path templatePath = Paths.get("src/main/java/org/snowyegret/mojo/util/JSONGenerator.template");
+		Path templatePath = Paths.get(templateFile);
 		BufferedReader reader = Files.newBufferedReader(templatePath, Charset.forName("US-ASCII"));
 		try {
 			StringBuilder sb = new StringBuilder();

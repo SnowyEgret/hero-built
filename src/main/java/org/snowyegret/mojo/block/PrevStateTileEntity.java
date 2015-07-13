@@ -49,15 +49,15 @@ public class PrevStateTileEntity extends TileEntity {
 	@Override
 	public Packet getDescriptionPacket() {
 		NBTTagCompound tag = new NBTTagCompound();
-		//super.writeToNBT(tag);
 		writeToNBT(tag);
+		//super.writeToNBT(tag);
 		return new S35PacketUpdateTileEntity(pos, this.getBlockMetadata(), tag);
 	}
 
 	@Override
 	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-		//super.readFromNBT(pkt.getNbtCompound());
 		readFromNBT(pkt.getNbtCompound());
+		//super.readFromNBT(pkt.getNbtCompound());
 	}
 
 	@Override

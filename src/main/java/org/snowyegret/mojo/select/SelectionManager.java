@@ -14,8 +14,9 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.Vec3;
 
+import org.snowyegret.geom.IntegerDomain;
+import org.snowyegret.geom.VoxelSet;
 import org.snowyegret.mojo.MoJo;
-import org.snowyegret.mojo.block.BlockPicked;
 import org.snowyegret.mojo.block.BlockSelected;
 import org.snowyegret.mojo.block.PrevStateTileEntity;
 import org.snowyegret.mojo.message.client.SelectionMessage;
@@ -25,9 +26,6 @@ import org.snowyegret.mojo.world.IWorld;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-
-import org.snowyegret.geom.IntegerDomain;
-import org.snowyegret.geom.VoxelSet;
 
 public class SelectionManager {
 
@@ -48,35 +46,41 @@ public class SelectionManager {
 		}
 		// player.getWorld().update();
 		// Message client with selection info to display in overlay
-		MoJo.network.sendTo(new SelectionMessage(this), (EntityPlayerMP) player.getPlayer());
+		player.sendMessage(new SelectionMessage(this));
+		//MoJo.network.sendTo(new SelectionMessage(this), (EntityPlayerMP) player.getPlayer());
 	}
 
 	// TODO
 	public void select(BlockPos pos) {
 		select(player.getWorld(), pos);
-		MoJo.network.sendTo(new SelectionMessage(this), (EntityPlayerMP) player.getPlayer());
+		player.sendMessage(new SelectionMessage(this));
+		//MoJo.network.sendTo(new SelectionMessage(this), (EntityPlayerMP) player.getPlayer());
 	}
 
 	public void deselect(BlockPos pos) {
 		deselect(player.getWorld(), pos);
-		MoJo.network.sendTo(new SelectionMessage(this), (EntityPlayerMP) player.getPlayer());
+		player.sendMessage(new SelectionMessage(this));
+		//MoJo.network.sendTo(new SelectionMessage(this), (EntityPlayerMP) player.getPlayer());
 	}
 
 	public void deselect(Iterable<BlockPos> positions) {
 		for (BlockPos pos : positions) {
 			deselect(player.getWorld(), pos);
 		}
-		MoJo.network.sendTo(new SelectionMessage(this), (EntityPlayerMP) player.getPlayer());
+		player.sendMessage(new SelectionMessage(this));
+		//MoJo.network.sendTo(new SelectionMessage(this), (EntityPlayerMP) player.getPlayer());
 	}
 
 	public void reselect() {
 		reselect(player.getWorld());
-		MoJo.network.sendTo(new SelectionMessage(this), (EntityPlayerMP) player.getPlayer());
+		player.sendMessage(new SelectionMessage(this));
+		//MoJo.network.sendTo(new SelectionMessage(this), (EntityPlayerMP) player.getPlayer());
 	}
 
 	public void clearSelections() {
 		clearSelections(player.getWorld());
-		MoJo.network.sendTo(new SelectionMessage(this), (EntityPlayerMP) player.getPlayer());
+		player.sendMessage(new SelectionMessage(this));
+		//MoJo.network.sendTo(new SelectionMessage(this), (EntityPlayerMP) player.getPlayer());
 	}
 
 	// ----------------------------------------------------------------------------

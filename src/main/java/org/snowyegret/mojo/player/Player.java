@@ -9,16 +9,14 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.Vec3;
-import net.minecraftforge.fml.common.network.internal.FMLNetworkHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 import org.snowyegret.mojo.MoJo;
 import org.snowyegret.mojo.geom.EnumPlane;
 import org.snowyegret.mojo.item.spell.Modifiers;
 import org.snowyegret.mojo.item.spell.Spell;
 import org.snowyegret.mojo.item.staff.Staff;
-import org.snowyegret.mojo.message.client.OpenGuiMessage;
 import org.snowyegret.mojo.message.client.SpellMessage;
-import org.snowyegret.mojo.message.server.MouseClickMessage;
 import org.snowyegret.mojo.pick.Pick;
 import org.snowyegret.mojo.pick.PickManager;
 import org.snowyegret.mojo.select.Selection;
@@ -251,7 +249,12 @@ public class Player {
 		PickManager pickManager = getPickManager();
 		pickManager.clearPicks();
 		pickManager.setNumPicks(spell.getNumPicks());
-		MoJo.network.sendTo(new SpellMessage(), (EntityPlayerMP) player);
+		sendMessage(new SpellMessage());
+		//MoJo.network.sendTo(new SpellMessage(), (EntityPlayerMP) player);
+	}
+
+	public void sendMessage(IMessage message) {
+		MoJo.network.sendTo(message, (EntityPlayerMP) player);
 	}
 
 }
