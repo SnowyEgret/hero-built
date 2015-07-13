@@ -81,6 +81,9 @@ public abstract class AbstractSpellSelect extends Spell {
 				if (block instanceof BlockAir) {
 					continue;
 				}
+				if (block.getMaterial().isLiquid()) {
+					continue;
+				}
 				// Do not select blocks if they are already selected
 				// Testing for BlockSelected and isSelected seems to perform equally
 				if (block instanceof BlockSelected) {
