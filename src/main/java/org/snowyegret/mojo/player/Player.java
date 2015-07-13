@@ -250,7 +250,6 @@ public class Player {
 		pickManager.clearPicks();
 		pickManager.setNumPicks(spell.getNumPicks());
 		sendMessage(new SpellMessage());
-		//MoJo.network.sendTo(new SpellMessage(), (EntityPlayerMP) player);
 	}
 
 	public void sendMessage(IMessage message) {

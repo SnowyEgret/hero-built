@@ -47,20 +47,17 @@ public class SelectionManager {
 		// player.getWorld().update();
 		// Message client with selection info to display in overlay
 		player.sendMessage(new SelectionMessage(this));
-		//MoJo.network.sendTo(new SelectionMessage(this), (EntityPlayerMP) player.getPlayer());
 	}
 
 	// TODO
 	public void select(BlockPos pos) {
 		select(player.getWorld(), pos);
 		player.sendMessage(new SelectionMessage(this));
-		//MoJo.network.sendTo(new SelectionMessage(this), (EntityPlayerMP) player.getPlayer());
 	}
 
 	public void deselect(BlockPos pos) {
 		deselect(player.getWorld(), pos);
 		player.sendMessage(new SelectionMessage(this));
-		//MoJo.network.sendTo(new SelectionMessage(this), (EntityPlayerMP) player.getPlayer());
 	}
 
 	public void deselect(Iterable<BlockPos> positions) {
@@ -68,19 +65,16 @@ public class SelectionManager {
 			deselect(player.getWorld(), pos);
 		}
 		player.sendMessage(new SelectionMessage(this));
-		//MoJo.network.sendTo(new SelectionMessage(this), (EntityPlayerMP) player.getPlayer());
 	}
 
 	public void reselect() {
 		reselect(player.getWorld());
 		player.sendMessage(new SelectionMessage(this));
-		//MoJo.network.sendTo(new SelectionMessage(this), (EntityPlayerMP) player.getPlayer());
 	}
 
 	public void clearSelections() {
 		clearSelections(player.getWorld());
 		player.sendMessage(new SelectionMessage(this));
-		//MoJo.network.sendTo(new SelectionMessage(this), (EntityPlayerMP) player.getPlayer());
 	}
 
 	// ----------------------------------------------------------------------------

@@ -56,7 +56,6 @@ public class SpellText extends Spell implements ITextSetable {
 	public void invoke(Player player) {
 		// We are on the server thread and GuiSpellText doesn't have a container
 		player.sendMessage(new OpenGuiMessage(GuiHandler.GUI_SPELL_TEXT));
-		//MoJo.network.sendTo(new OpenGuiMessage(GuiHandler.GUI_SPELL_TEXT), (EntityPlayerMP) player.getPlayer());
 		picks = player.getPicks();
 		// Clear the picks because player may have cancelled
 		player.clearPicks();

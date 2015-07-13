@@ -32,20 +32,17 @@ public class PickManager {
 	public Pick pick(BlockPos pos, EnumFacing side) {
 		Pick pick = pick(player.getWorld(), pos, side);
 		player.sendMessage(new PickMessage(this));
-		//MoJo.network.sendTo(new PickMessage(this), (EntityPlayerMP) player.getPlayer());
 		return pick;
 	}
 
 	public void clearPicks() {
 		clearPicks(player.getWorld());
 		player.sendMessage(new PickMessage(this));
-		//MoJo.network.sendTo(new PickMessage(this), (EntityPlayerMP) player.getPlayer());
 	}
 
 	public void repick() {
 		repick(player.getWorld());
 		player.sendMessage(new PickMessage(this));
-		//MoJo.network.sendTo(new PickMessage(this), (EntityPlayerMP) player.getPlayer());
 	}
 
 	// -------------------------------------------------------------------------

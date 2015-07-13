@@ -34,7 +34,6 @@ public class SpellDivide extends AbstractSpellDraw {
 		player.clearPicks();
 		
 		player.sendMessage(new SpellMessage(p0.distance(p1)));
-		//MoJo.network.sendTo(new SpellMessage(p0.distance(p1)), (EntityPlayerMP) player.getPlayer());
 		PointSet points = new PointSet();
 		if (divideByTwo) {
 			// TODO if point is on border between two blocks, draw both blocks

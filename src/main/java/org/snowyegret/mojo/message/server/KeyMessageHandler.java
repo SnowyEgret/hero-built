@@ -84,7 +84,6 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 				//selectionManager.reselect();
 			} catch (NoSuchElementException e) {
 				player.sendMessage(new SpellMessage(e.getMessage()));
-				//MoJo.network.sendTo(new SpellMessage(e.getMessage()), (EntityPlayerMP) player.getPlayer());
 				// Return so that the overlay is not reset at end of switch
 				return;
 			}
@@ -172,7 +171,6 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 
 		// Clear any messages in the overlay
 		player.sendMessage(new SpellMessage());
-		//MoJo.network.sendTo(new SpellMessage(), (EntityPlayerMP) player.getPlayer());
 	}
 
 	private void copy(Player player, int leftRight, int upDown) {
