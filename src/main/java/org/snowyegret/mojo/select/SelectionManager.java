@@ -10,13 +10,12 @@ import javax.vecmath.Point3i;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.Vec3;
 
 import org.snowyegret.geom.IntegerDomain;
 import org.snowyegret.geom.VoxelSet;
-import org.snowyegret.mojo.MoJo;
+import org.snowyegret.mojo.block.BlockPicked;
 import org.snowyegret.mojo.block.BlockSelected;
 import org.snowyegret.mojo.block.PrevStateTileEntity;
 import org.snowyegret.mojo.message.client.SelectionMessage;
@@ -166,19 +165,10 @@ public class SelectionManager {
 		IBlockState state = world.getActualState(pos);
 		Block b = state.getBlock();
 
-		// Should not happen.
-		// TODO Except that SpellDelete is reselecting on a delete key press
 		if (b instanceof BlockAir) {
 			System.out.println("BlockAir. Returning null.");
 			return null;
 		}
-
-		// if (b instanceof BlockPicked) {
-		// PrevStateTileEntity te = (PrevStateTileEntity) world.getTileEntity(pos);
-		// if (te != null) {
-		// state = te.getPrevState();
-		// }
-		// }
 
 		if (b instanceof BlockSelected) {
 			// Implementation of: Find a way to restore selected blocks to their previous state when they are left in
@@ -197,8 +187,17 @@ public class SelectionManager {
 			}
 		}
 
+		if (b instanceof BlockPicked) {
+			System.out.println("Selecting a BlockPicked");
+			System.out.println("Looking for previous state on tile entity");
+			PrevStateTileEntity te = (PrevStateTileEntity) world.getTileEntity(pos);
+			if (te != null) {
+				state = te.getPrevState();
+			}
+		}
+
 		if (isSelected(pos)) {
-			System.out.println("Position is selected but not a BlockSelected. This should not happen.");
+			System.out.println("Position is already selected. pos=" + pos);
 		}
 
 		s = new Selection(pos, state);
@@ -207,8 +206,6 @@ public class SelectionManager {
 		world.setState(pos, blockSelected);
 		PrevStateTileEntity tileEntity = (PrevStateTileEntity) world.getTileEntity(pos);
 		tileEntity.setPrevState(state);
-		// Do I have to message client?
-		// No, because PrevStateTileEntity overrides getDescriptionPacket and onDataPacket
 
 		return s;
 	}

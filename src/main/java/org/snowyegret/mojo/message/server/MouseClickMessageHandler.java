@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.world.WorldServer;
@@ -81,8 +82,14 @@ public class MouseClickMessageHandler implements IMessageHandler<MouseClickMessa
 			Iterable<BlockPos> allInBox = BlockPos.getAllInBox(lastPos, pos);
 			ArrayList<BlockPos> positions = Lists.newArrayList();
 			for (BlockPos p : allInBox) {
+				IBlockState state = player.getWorld().getActualState(p);
+				if (state.getBlock() == Blocks.air) {
+					continue;
+				}
+				if (state.getBlock().getMaterial().isLiquid()) {
+					continue;
+				}
 				if (matchFirstSelection) {
-					IBlockState state = player.getWorld().getActualState(p);
 					if (state == firstState) {
 						positions.add(p);
 					}

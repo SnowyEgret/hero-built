@@ -21,13 +21,13 @@ public class PickManager {
 	private LinkedList<Pick> picks = new LinkedList<>();
 	private LinkedList<Pick> lastPicks = new LinkedList<>();
 	private int numPicks = 0;
-	private Block blockPicked;
+	private IBlockState blockPicked;
 	private Player player;
 
 	public PickManager(Player player, Block blockPicked) {
 		this.player = player;
-		this.blockPicked = blockPicked;
-	}  
+		this.blockPicked = blockPicked.getDefaultState();
+	}
 
 	public Pick pick(BlockPos pos, EnumFacing side) {
 		Pick pick = pick(player.getWorld(), pos, side);
@@ -104,26 +104,26 @@ public class PickManager {
 			return null;
 		}
 
-		IBlockState prevState = world.getActualState(pos);
+		IBlockState state = world.getActualState(pos);
 		PrevStateTileEntity tileEntity;
-		if (prevState.getBlock() instanceof BlockSelected) {
-			// System.out.println("prevState=" + prevState);
+
+		if (state.getBlock() instanceof BlockSelected) {
 			tileEntity = (PrevStateTileEntity) world.getTileEntity(pos);
-			prevState = tileEntity.getPrevState();
+			state = tileEntity.getPrevState();
 			// If the BlockSelected is left in the world after a crash, prevState will be null.
-			// When selecting these blocks with a selection spell to delete or fill them, the previous state
-			// can simply be BlockPick's default state
-			if (prevState == null) {
-				System.out
-						.println("When clearing BlockSelecteds left in world after a crash, tileEntity.getPrevState() is null. Setting to BlockSelected default state.");
-				prevState = MoJo.blockSelected.getDefaultState();
+			// When selecting these blocks to delete or fill them, the previous state can simply be blockSelected
+			if (state == null) {
+				System.out.println("tileEntity.getPrevState() is null. Setting to BlockSelected default state.");
+				state = MoJo.blockSelected.getDefaultState();
 			}
 		}
-		Pick pick = new Pick(pos, prevState, side);
+
+		Pick pick = new Pick(pos, state, side);
 		picks.add(pick);
-		world.setState(pos, blockPicked.getDefaultState());
+		world.setState(pos, blockPicked);
 		tileEntity = (PrevStateTileEntity) world.getTileEntity(pos);
-		tileEntity.setPrevState(prevState);
+		tileEntity.setPrevState(state);
+
 		return pick;
 	}
 

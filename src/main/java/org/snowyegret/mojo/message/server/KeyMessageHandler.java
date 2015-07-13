@@ -50,7 +50,6 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 		IWorld world = player.getWorld();
 		Modifiers modifiers = player.getModifiers();
 		SelectionManager selectionManager = player.getSelectionManager();
-		PickManager pickManager = player.getPickManager();
 		int keyCode = message.getKeyCode();
 		boolean keyState = message.getKeyState();
 

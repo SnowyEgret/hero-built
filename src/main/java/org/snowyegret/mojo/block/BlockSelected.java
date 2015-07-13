@@ -11,9 +11,11 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldType;
 import net.minecraftforge.common.property.ExtendedBlockState;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -34,14 +36,11 @@ public class BlockSelected extends Block implements ITileEntityProvider {
 	public EnumWorldBlockLayer getBlockLayer() {
 		// Fix for Plants not rendering properly when selected #171
 		return EnumWorldBlockLayer.CUTOUT_MIPPED;
-		// return EnumWorldBlockLayer.SOLID;
 	}
 
 	@Override
 	protected BlockState createBlockState() {
-		ExtendedBlockState state = new ExtendedBlockState(this, new IProperty[0],
-				new IUnlistedProperty[] { prevStateProperty });
-		return state;
+		return new ExtendedBlockState(this, new IProperty[0], new IUnlistedProperty[] { prevStateProperty });
 	}
 
 	@Override
@@ -52,7 +51,7 @@ public class BlockSelected extends Block implements ITileEntityProvider {
 			prevState = tileEntity.getPrevState();
 		} else {
 			System.out.println("tileEntity=" + tileEntity);
-			// prevState = state;
+			// Try looking it up
 		}
 		return ((IExtendedBlockState) state).withProperty(prevStateProperty, prevState);
 	}

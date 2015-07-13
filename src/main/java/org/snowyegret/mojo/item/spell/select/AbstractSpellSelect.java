@@ -10,7 +10,6 @@ import net.minecraft.item.Item;
 import net.minecraft.util.BlockPos;
 
 import org.snowyegret.mojo.block.BlockSelected;
-import org.snowyegret.mojo.block.PrevStateTileEntity;
 import org.snowyegret.mojo.item.spell.Modifier;
 import org.snowyegret.mojo.item.spell.Modifiers;
 import org.snowyegret.mojo.item.spell.Spell;
@@ -29,7 +28,7 @@ public abstract class AbstractSpellSelect extends Spell {
 	protected Item ingredientA = Items.feather;
 	protected Item ingredientB = Items.coal;
 
-	public AbstractSpellSelect() {
+	protected AbstractSpellSelect() {
 		super(1);
 		// this.growthPattern = growthPattern;
 		// CTRL shrinks selection instead of grows
@@ -37,7 +36,7 @@ public abstract class AbstractSpellSelect extends Spell {
 		info.addModifiers(Modifier.CTRL, Modifier.ALT);
 	}
 
-	public void select(Player player, BlockPos[] pattern, Iterable<ICondition> conditions) {
+	protected void select(Player player, BlockPos[] pattern, Iterable<ICondition> conditions) {
 
 		Modifiers modifiers = player.getModifiers();
 		boolean shrink = modifiers.isPressed(Modifier.CTRL);
@@ -66,6 +65,7 @@ public abstract class AbstractSpellSelect extends Spell {
 
 	private void growSelections(Player player, BlockPos[] pattern, Iterable<ICondition> conditions) {
 
+		boolean anyBlock = player.getModifiers().isPressed(Modifier.ALT);
 		SelectionManager selectionManager = player.getSelectionManager();
 		Block patternBlock = selectionManager.firstSelection().getState().getBlock();
 		Set<BlockPos> selections = Sets.newHashSet();
@@ -84,30 +84,25 @@ public abstract class AbstractSpellSelect extends Spell {
 				// Do not select blocks if they are already selected
 				// Testing for BlockSelected and isSelected seems to perform equally
 				if (block instanceof BlockSelected) {
+					continue;
 					// System.out.println("Position already selected");
 					// Select previously selected blocks if they have been left in world after a crash
 					// TileEntity is saved to world and it not null.
 					// If the prevState is null, reselect it.
-					PrevStateTileEntity tileEntity = (PrevStateTileEntity) player.getWorld().getTileEntity(pos);
-					if (tileEntity.getPrevState() != null) {
-						// System.out.println("While growing selections, found a BlockSelected.");
-						continue;
-					} else {
-						// TODO Why reselect it if state is null and when is state null?
-						// If this never prints, delete this test
-						System.out
-								.println(">>>>>>>>>>>>>>>>>While growing selections, found a BlockSelected with null state.");
-					}
+					// PrevStateTileEntity tileEntity = (PrevStateTileEntity) player.getWorld().getTileEntity(pos);
+					// if (tileEntity.getPrevState() != null) {
+					// // System.out.println("While growing selections, found a BlockSelected.");
 					// continue;
+					// } else {
+					// System.out.println(">>>>>>>>While growing selections, found a BlockSelected with null state.");
+					// }
 				}
 
-				// Set takes care of this
-				// if (selectionManager.isSelected(p)) {
-				// System.out.println("Position already selected but is not a BlockSelected");
+				// if (selectionManager.isSelected(pos)) {
+				// System.out.println("Position already selected");
 				// continue;
 				// }
 
-				boolean anyBlock = player.getModifiers().isPressed(Modifier.ALT);
 				if (anyBlock) {
 					selections.add(pos);
 				} else {
