@@ -20,41 +20,49 @@ import org.snowyegret.mojo.util.ModelResourceLocations;
 
 public class StaffModel implements ISmartItemModel {
 
-	private IBakedModel baseStaffModel;
+	private IBakedModel baseModel;
 	private IBakedModel spellModel;
-	private final int COLOR = new Color(200, 200, 255).getRGB();
+	private final int tint = new Color(200, 200, 255).getRGB();
 
-	public StaffModel(IBakedModel model) {
-		this.baseStaffModel = model;
+	public StaffModel(IBakedModel baseModel) {
+		// Only getting infinite loop on isAmbientOcclusion with BlockSelected and BlockPicked
+		// if (baseModel instanceof StaffModel) {
+		// System.out.println(">>>>>>>>>Base model is a StaffModel.");
+		// baseModel = ((StaffModel) baseModel).getBaseModel();
+		// }
+		this.baseModel = baseModel;
 	}
 
 	@Override
 	public List getFaceQuads(EnumFacing side) {
-		return baseStaffModel.getFaceQuads(side);
+		return baseModel.getFaceQuads(side);
 	}
 
 	@Override
 	public List getGeneralQuads() {
-		// List<BakedQuad> combinedQuads = new ArrayList(baseStaffModel.getGeneralQuads());
-		// combinedQuads.addAll(spellModel.getGeneralQuads());
-		// return combinedQuads;
-
 		List<BakedQuad> quads = new ArrayList<>();
-		if (spellModel == null) {
-			return baseStaffModel.getGeneralQuads();
+		// if (spellModel == null) {
+		// return baseModel.getGeneralQuads();
+		// }
+		List<BakedQuad> staffQuads = baseModel.getGeneralQuads();
+		for (BakedQuad q : staffQuads) {
+			quads.add(q);
+			// quads.add(new BakedQuad(tint(q.getVertexData()), 0, q.getFace()));
 		}
-		List<BakedQuad> spellQuads = spellModel.getGeneralQuads();
-		for (BakedQuad q : spellQuads) {
-			// TODO why doesn't this tint?
-			// Tint the spell to color of staff
-			quads.add(new BakedQuad(tint(q.getVertexData()), 0, q.getFace()));
+		if (spellModel != null) {
+			List<BakedQuad> spellQuads = spellModel.getGeneralQuads();
+			for (BakedQuad q : spellQuads) {
+				// TODO why doesn't this tint?
+				// Tint the spell to color of staff
+				quads.add(new BakedQuad(tint(q.getVertexData()), 0, q.getFace()));
+			}
 		}
 		return quads;
 	}
 
 	@Override
 	public boolean isAmbientOcclusion() {
-		return baseStaffModel.isAmbientOcclusion();
+		return baseModel.isAmbientOcclusion();
 	}
 
 	@Override
@@ -64,17 +72,17 @@ public class StaffModel implements ISmartItemModel {
 
 	@Override
 	public boolean isBuiltInRenderer() {
-		return baseStaffModel.isBuiltInRenderer();
+		return baseModel.isBuiltInRenderer();
 	}
 
 	@Override
 	public TextureAtlasSprite getTexture() {
-		return baseStaffModel.getTexture();
+		return baseModel.getTexture();
 	}
 
 	@Override
 	public ItemCameraTransforms getItemCameraTransforms() {
-		return baseStaffModel.getItemCameraTransforms();
+		return baseModel.getItemCameraTransforms();
 	}
 
 	@Override
@@ -92,13 +100,17 @@ public class StaffModel implements ISmartItemModel {
 		return this;
 	}
 
+	// private IBakedModel getBaseModel() {
+	// return baseModel;
+	// }
+
 	private int[] tint(int[] vertexData) {
 		int[] vd = new int[vertexData.length];
 		System.arraycopy(vertexData, 0, vd, 0, vertexData.length);
-		vd[3] = COLOR;
-		vd[10] = COLOR;
-		vd[17] = COLOR;
-		vd[24] = COLOR;
+		vd[3] = tint;
+		vd[10] = tint;
+		vd[17] = tint;
+		vd[24] = tint;
 		return vd;
 	}
 

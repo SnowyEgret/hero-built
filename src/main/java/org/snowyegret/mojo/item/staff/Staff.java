@@ -32,6 +32,12 @@ public class Staff extends ItemBase {
 		}
 	}
 
+	// TODO Check that this is the default
+	@Override
+	public boolean isFull3D() {
+		return true;
+	}
+
 	@Override
 	public int getMaxItemUseDuration(ItemStack stack) {
 		return 1; // return any value greater than zero
