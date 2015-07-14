@@ -1,5 +1,214 @@
-item.itemStickSelection.name=Baton Selection
-item.itemStickEdit.name=Baton Edit
-item.itemStickSurface.name=Baton Surface
-item.itemStickSolid.name=Baton Solide
-item.itemStickCurve.name=Baton Courbe
+#Aucunes éspaces avant ou apres =
+
+# Bâtons ##########
+
+item.staff.name=Bâton
+item.staff_draw.name=Bâton à dessiner
+item.staff_select.name=Bâton à sélectionner
+item.staff_transform.name=Bâton d'édition
+item.staff_oak.name=Bâton de chêne
+item.staff_birch.name=Bâton de boulot
+item.staff_acacia.name=Bâton d'acacia
+
+# Draw spells ##########
+
+item.spell_box.name=Boîte
+item.spell_box.description=
+item.spell_box.pick.0=origine
+item.spell_box.pick.1=coin diagonal
+item.spell_box.modifier.ctrl=cube
+item.spell_box.modifier.shift=vide
+item.spell_box.modifier.alt=sur la surface
+
+item.spell_circle.name=Cercle
+item.spell_circle.description=
+item.spell_circle.pick.0=centre
+item.spell_circle.pick.1=rayon
+item.spell_circle.modifier.shift=
+item.spell_circle.modifier.alt=sur la surface
+
+item.spell_cone.name=Cône
+item.spell_cone.description=
+item.spell_cone.pick.0=centre
+item.spell_cone.pick.1=rayon
+item.spell_cone.pick.2=hauteur
+item.spell_cone.modifier.shift=
+item.spell_cone.modifier.alt=sur la surface
+
+item.spell_line.name=Ligne
+item.spell_line.description=
+item.spell_line.pick.0=de
+item.spell_line.pick.1=à
+item.spell_line.modifier.ctrl=polyligne
+item.spell_line.modifier.shift=
+item.spell_line.modifier.alt=sur la surface
+
+item.spell_divide.name=Diviser
+item.spell_divide.description=Diviser distance between picks
+item.spell_divide.pick.0=de
+item.spell_divide.pick.1=à
+item.spell_divide.modifier.ctrl=place markers at picks
+item.spell_divide.modifier.shift=divide by 2
+item.spell_divide.modifier.alt=divide by 3
+
+item.spell_pyramid.name=Pyramide
+item.spell_pyramid.description=
+item.spell_pyramid.pick.0=de
+item.spell_pyramid.pick.1=coin diagonal
+item.spell_pyramid.modifier.ctrl=carré
+item.spell_pyramid.modifier.shift=vide
+
+item.spell_rectangle.name=Rectangle
+item.spell_rectangle.description=
+item.spell_rectangle.pick.0=de
+item.spell_rectangle.pick.1=coin diagonal
+item.spell_rectangle.modifier.ctrl=carré
+item.spell_rectangle.modifier.shift=
+
+item.spell_sphere.name=Sphère
+item.spell_sphere.description=
+item.spell_sphere.pick.0=centre
+item.spell_sphere.pick.1=rayon
+item.spell_sphere.modifier.shift=hémisphere
+item.spell_sphere.modifier.alt=sur la surface
+
+item.spell_sea_shell.name=Coquille
+item.spell_sea_shell.description=
+item.spell_sea_shell.pick.0=centre
+item.spell_sea_shell.modifier.shift=
+item.spell_sea_shell.modifier.alt=sur la surface
+
+# Transform spells ##########
+
+item.spell_copy.name=Copier
+item.spell_copy.description=
+item.spell_copy.pick.0=de
+item.spell_copy.pick.1=à
+item.spell_copy.modifier.shift=supprimer originale
+
+item.spell_mirror.name=Miroiter
+item.spell_mirror.description=
+item.spell_mirror.pick.0=une face
+item.spell_mirror.modifier.ctrl=supprimer originale
+item.spell_mirror.modifier.alt=autour du centre du bloc
+
+item.spell_rotate.name=Rotationner
+item.spell_rotate.description=rotates sélection 90 degrees around specified axis
+item.spell_rotate.pick.0=centre de rotation
+item.spell_rotate.modifier.shift=rotate around centroid
+item.spell_rotate.modifier.ctrl=supprimer originale
+item.spell_rotate.modifier.alt=counter clockwise
+item.spell_rotate.modifier.x=x axis
+item.spell_rotate.modifier.y=y axis (défaut)
+item.spell_rotate.modifier.z=z axis
+
+# Select spells ##########
+
+item.spell_select_above.name=Au dessus
+item.spell_select_above.description=Sélectionner au dessus
+item.spell_select_above.pick.0=
+item.spell_select_above.modifier.ctrl=rétrécir
+item.spell_select_above.modifier.alt=select any block
+item.spell_select_above.modifier.shift=out and up
+
+item.spell_select_all.name=Tous
+item.spell_select_all.description=Sélectionner en tous directions
+item.spell_select_all.pick.0=
+item.spell_select_all.modifier.ctrl=rétrécir
+item.spell_select_all.modifier.alt=select any block
+
+item.spell_select_bellow.name=Au dessous
+item.spell_select_bellow.description=grows sélection bellow selected blocks
+item.spell_select_bellow.pick.0=
+item.spell_select_bellow.modifier.ctrl=rétrécir
+item.spell_select_bellow.modifier.alt=select any block
+item.spell_select_bellow.modifier.shift=out and down
+
+item.spell_select_edge.name=Bords
+item.spell_select_edge.description=Sélectionner les bords
+item.spell_select_edge.pick.0=bloc sur le bord
+item.spell_select_edge.modifier.ctrl=rétrécir
+item.spell_select_edge.modifier.alt=tous blocs
+item.spell_select_edge.modifier.shift=tous les bords de l'objet
+
+item.spell_select_floor.name=Plancher
+item.spell_select_floor.description=Sélectionner le plancher ou plafond
+item.spell_select_floor.pick.0=block on floor
+item.spell_select_floor.modifier.ctrl=rétrécir
+item.spell_select_floor.modifier.alt=tous blocs
+
+item.spell_select_horizontal.name=Horizontal
+item.spell_select_horizontal.description=Sélectionner en direction horizonatale
+item.spell_select_horizontal.pick.0=
+item.spell_select_horizontal.modifier.ctrl=rétrécir
+item.spell_select_horizontal.modifier.alt=tous blocs
+
+item.spell_select_surface.name=Sélectionner la surface
+item.spell_select_surface.description=selects blocks sur la surface
+item.spell_select_surface.pick.0=
+item.spell_select_surface.modifier.ctrl=rétrécir
+item.spell_select_surface.modifier.alt=tous blocs
+item.spell_select_surface.modifier.shift=grimper
+
+item.spell_select_vertical.name=Plan vertical
+item.spell_select_vertical.description=grows sélection in the vertical EW (default) or NS plane
+item.spell_select_vertical.pick.0=
+item.spell_select_vertical.modifier.ctrl=rétrécir
+item.spell_select_vertical.modifier.alt=tous blocs
+
+# Transform spells ##########
+
+item.spell_delete.name=Supprimer
+item.spell_delete.description=
+
+item.spell_fill.name=Remplir
+item.spell_fill.description=remplir avec le premier bloc en inventoire
+
+item.spell_fill_checker.name=Remplir à carreaux
+item.spell_fill_checker.description=remplir à carreaux avec les deux premiers blocs en inventoire
+
+item.spell_fill_random.name=Remplir aléatoirement
+item.spell_fill_random.description=remplir aléatoirement avec les blocs en inventoire
+
+item.spell_vide.name=Creuser
+item.spell_vide.description=Creuser l'intérieur d'une solide
+
+# Other spells ##########
+
+item.spell_drop.name=Laiser tomber
+item.spell_drop.description=Laisser tomber les sélections au sol
+item.spell_drop.pick.0=
+item.spell_drop.modifier.ctrl=supprimer l'originale
+item.spell_drop.modifier.alt=replir jusqu'en bas
+item.spell_drop.modifier.shift=monter à la surface
+
+item.spell_hole_drain.name=Drainer
+item.spell_hole_drain.description=drainer un trou
+item.spell_hole_drain.pick.0=un bloc en dessous de l'eau
+
+item.spell_erode.name=Érosioner
+item.spell_erode.description=érosionner les arêtes et les coins
+item.spell_erode.pick.0=
+
+item.spell_hole_fill.name=Remplir
+item.spell_hole_fill.description=remplir un trou au niveau du bloc sélectionné
+item.spell_hole_fill.pick.0=
+item.spell_hole_fill.modifier.ctrl=à la surface seulement
+item.spell_hole_fill.modifier.shift=avec le premier bloc en menu
+
+item.spell_menger_sponge.name=Éponge
+item.spell_menger_sponge.description=crée des cavitées
+item.spell_menger_sponge.pick.0=
+
+item.spell_text.name=Texte
+item.spell_text.description=
+item.spell_text.pick.0=la location
+item.spell_text.pick.1=la direction
+
+item.spell_thicken.name=Épaissir
+item.spell_thicken.description=
+item.spell_thicken.pick.0=
+item.spell_thicken.modifier.ctrl=vers l'intérieur
+item.spell_thicken.modifier.shift=vers l'extérieur
+item.spell_thicken.modifier.alt=à l'intérieur du plan
+

@@ -165,10 +165,10 @@ item.spell_fill.name=Fill
 item.spell_fill.description=fills with first block in inventory
 
 item.spell_fill_checker.name=Fill Checker
-item.spell_fill_checker.description=fills with checker pattern using first two blocks in inventory
+item.spell_fill_checker.description=fills with checker pattern using first two blocks in hotbar
 
 item.spell_fill_random.name=Fill Random
-item.spell_fill_random.description=fills with random pattern using blocks in inventory
+item.spell_fill_random.description=fills with random pattern using blocks in hotbar
 
 item.spell_hollow.name=Hollow
 item.spell_hollow.description=hollows selection
