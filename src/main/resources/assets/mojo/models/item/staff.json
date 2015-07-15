@@ -1,21 +1,33 @@
 {
      "elements": [
-        {   "from": [ 7, -16, 5 ],
-            "to": [ 9, 32, 7 ],
-             "faces": {
-                "down":  { "texture": "items/staff_end"},
-                "up":    { "texture": "items/staff_end" },
-                "north": { "uv": [ 0, 0, 16, 16 ],"texture": "items/staff_side" },
-                "south": { "uv": [ 0, 0, 16, 16 ], "texture": "items/staff_side" },
-                "west":  { "uv": [ 0, 0, 16, 16 ], "texture": "items/staff_side" },
-                "east":  { "uv": [ 0, 0, 16, 16 ], "texture": "items/staff_side" }
+        {
+           "from": [ 7, 0, 5 ],
+            "to": [ 9, 16, 7 ],
+            "faces": {
+                "down":  { "texture": "#staff" },
+                "up":    { "texture": "#staff" },
+                "north": { "texture": "#staff" },
+                "south": { "texture": "#staff" },
+                "west":  { "texture": "#staff" },
+                "east":  { "texture": "#staff" }
             }
         }
     ],
     "textures": {
-        "layer0": "mojo:items/staff"
+        "layer0": "mojo:items/staff",
+        "staff": "mojo:items/staff"
     },
     "display": {
+        "ground": {
+            "rotation": [ 0, 0, 90 ],
+            "translation": [ 0, 0, 0 ],
+            "scale": [ 1, 1, 1 ]
+        },
+        "gui": {
+            "rotation": [ 0, 0, 0 ],
+            "translation": [ 0, 0, 0 ],
+            "scale": [ 1, 1, 1 ]
+        },
         "thirdperson": {
             "rotation": [ 150, 190, 0 ],
             "translation": [ -1, 1, -3 ],

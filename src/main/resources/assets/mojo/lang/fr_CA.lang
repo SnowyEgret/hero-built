@@ -93,11 +93,11 @@ item.spell_mirror.modifier.ctrl=supprimer originale
 item.spell_mirror.modifier.alt=autour du centre du bloc
 
 item.spell_rotate.name=Rotationner
-item.spell_rotate.description=rotates sélection 90 degrees around specified axis
+item.spell_rotate.description=rotationner les selections 90 degrées autour de l'axe specifiée
 item.spell_rotate.pick.0=centre de rotation
-item.spell_rotate.modifier.shift=rotate around centroid
+item.spell_rotate.modifier.shift=autour du centre
 item.spell_rotate.modifier.ctrl=supprimer originale
-item.spell_rotate.modifier.alt=counter clockwise
+item.spell_rotate.modifier.alt=dans le sens antihoraire
 item.spell_rotate.modifier.x=axe x
 item.spell_rotate.modifier.y=axe y (défaut)
 item.spell_rotate.modifier.z=axe z
@@ -108,42 +108,42 @@ item.spell_select_above.name=Au dessus
 item.spell_select_above.description=Sélectionner au dessus
 item.spell_select_above.pick.0=
 item.spell_select_above.modifier.ctrl=rétrécir
-item.spell_select_above.modifier.alt=select any block
+item.spell_select_above.modifier.alt=tous blocs
 item.spell_select_above.modifier.shift=out and up
 
 item.spell_select_all.name=Toutes
 item.spell_select_all.description=Sélectionner en toutes directions
 item.spell_select_all.pick.0=
 item.spell_select_all.modifier.ctrl=rétrécir
-item.spell_select_all.modifier.alt=select any block
+item.spell_select_all.modifier.alt=tous blocs
 
-item.spell_select_bellow.name=Au dessous
-item.spell_select_bellow.description=grows sélection bellow selected blocks
+item.spell_select_bellow.name=En dessous
+item.spell_select_bellow.description=sélectionner en dessous des block sélectionner
 item.spell_select_bellow.pick.0=
 item.spell_select_bellow.modifier.ctrl=rétrécir
-item.spell_select_bellow.modifier.alt=select any block
+item.spell_select_bellow.modifier.alt=tous blocs
 item.spell_select_bellow.modifier.shift=out and down
 
 item.spell_select_edge.name=Bords
-item.spell_select_edge.description=Sélectionner les bords
+item.spell_select_edge.description=sélectionner les bords
 item.spell_select_edge.pick.0=bloc sur le bord
 item.spell_select_edge.modifier.ctrl=rétrécir
 item.spell_select_edge.modifier.alt=tous blocs
 item.spell_select_edge.modifier.shift=tous les bords de l'objet
 
 item.spell_select_floor.name=Plancher
-item.spell_select_floor.description=Sélectionner le plancher ou plafond
+item.spell_select_floor.description=sélectionner le plancher ou le plafond
 item.spell_select_floor.pick.0=block on floor
 item.spell_select_floor.modifier.ctrl=rétrécir
 item.spell_select_floor.modifier.alt=tous blocs
 
 item.spell_select_horizontal.name=Horizontal
-item.spell_select_horizontal.description=Sélectionner en direction horizonatale
+item.spell_select_horizontal.description=sélectionner en direction horizonatale
 item.spell_select_horizontal.pick.0=
 item.spell_select_horizontal.modifier.ctrl=rétrécir
 item.spell_select_horizontal.modifier.alt=tous blocs
 
-item.spell_select_surface.name=Sélectionner la surface
+item.spell_select_surface.name=Surface
 item.spell_select_surface.description=sélectionner les blocs en surface
 item.spell_select_surface.pick.0=
 item.spell_select_surface.modifier.ctrl=rétrécir
@@ -151,7 +151,7 @@ item.spell_select_surface.modifier.alt=tous blocs
 item.spell_select_surface.modifier.shift=grimper
 
 item.spell_select_vertical.name=Plan vertical
-item.spell_select_vertical.description=grows sélection in the vertical EW (default) or NS plane
+item.spell_select_vertical.description=sélectioner en plan vertical EO (défaut) or NS
 item.spell_select_vertical.pick.0=
 item.spell_select_vertical.modifier.ctrl=rétrécir
 item.spell_select_vertical.modifier.alt=tous blocs

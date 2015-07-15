@@ -11,13 +11,14 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldType;
 import net.minecraftforge.common.property.ExtendedBlockState;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import org.snowyegret.mojo.player.Player;
+import org.snowyegret.mojo.select.Selection;
 
 public class BlockSelected extends Block implements ITileEntityProvider {
 
@@ -42,6 +43,9 @@ public class BlockSelected extends Block implements ITileEntityProvider {
 	protected BlockState createBlockState() {
 		return new ExtendedBlockState(this, new IProperty[0], new IUnlistedProperty[] { prevStateProperty });
 	}
+	
+	// I am rendering a block using an ISmartModel which is getting an IBlockState from the block's
+	// tile entity.
 
 	@Override
 	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
@@ -51,7 +55,7 @@ public class BlockSelected extends Block implements ITileEntityProvider {
 			prevState = tileEntity.getPrevState();
 		} else {
 			System.out.println("tileEntity=" + tileEntity);
-			// Try looking it up
+			// Can not get it from selectionManager because we are on the client side
 		}
 		return ((IExtendedBlockState) state).withProperty(prevStateProperty, prevState);
 	}
