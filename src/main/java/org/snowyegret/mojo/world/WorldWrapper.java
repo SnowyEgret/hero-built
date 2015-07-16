@@ -26,6 +26,7 @@ public class WorldWrapper implements IWorld {
 		// world.setBlockState(pos, state);
 		world.setBlockState(pos, state, 1);
 		world.markBlockForUpdate(pos);
+		//world.updateEntities();
 		// world.markChunkDirty(pos, null);
 	}
 

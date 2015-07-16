@@ -43,9 +43,6 @@ public class BlockSelected extends Block implements ITileEntityProvider {
 	protected BlockState createBlockState() {
 		return new ExtendedBlockState(this, new IProperty[0], new IUnlistedProperty[] { prevStateProperty });
 	}
-	
-	// I am rendering a block using an ISmartModel which is getting an IBlockState from the block's
-	// tile entity.
 
 	@Override
 	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
@@ -53,10 +50,12 @@ public class BlockSelected extends Block implements ITileEntityProvider {
 		IBlockState prevState = null;
 		if (tileEntity != null) {
 			prevState = tileEntity.getPrevState();
-		} else {
-			System.out.println("tileEntity=" + tileEntity);
-			// Can not get it from selectionManager because we are on the client side
 		}
+		// else {
+		// System.out.println("tileEntity=" + tileEntity);
+		// // world.getTileEntity(pos);
+		// // Can not get it from selectionManager because we are on the client side
+		// }
 		return ((IExtendedBlockState) state).withProperty(prevStateProperty, prevState);
 	}
 

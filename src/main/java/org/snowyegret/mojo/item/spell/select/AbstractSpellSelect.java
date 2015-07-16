@@ -119,6 +119,7 @@ public abstract class AbstractSpellSelect extends Spell {
 		// System.out.println("grownSelections=" + grownSelections.size());
 		selectionManager.select(selections);
 		selectionManager.setGrownSelections(selections);
+		//player.getWorld().getWorld().updateEntities();
 	}
 
 	private void shrinkSelections(Player player, BlockPos[] pattern) {
