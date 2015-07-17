@@ -74,10 +74,13 @@ public class PrevStateTileEntity extends TileEntity {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("PrevStateTileEntiy [prevState=");
+		builder.append("PrevStateTileEntity [prevState=");
 		builder.append(prevState);
+		builder.append(", isInvalid()=");
+		builder.append(isInvalid());
 		builder.append("]");
 		return builder.toString();
 	}
+
 
 }

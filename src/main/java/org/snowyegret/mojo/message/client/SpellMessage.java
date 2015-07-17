@@ -6,7 +6,8 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 public class SpellMessage implements IMessage {
 
-	private Double distance = -1d;
+	private Double doubleValue = -1d;
+	private Integer intValue = -1;
 	private String message = "";
 
 	public SpellMessage() {
@@ -16,21 +17,36 @@ public class SpellMessage implements IMessage {
 		this.message = message;
 	}
 
-	public SpellMessage(Double distance) {
-		this.distance = distance;
+//	public SpellMessage(Double doubleValue) {
+//		this.doubleValue = doubleValue;
+//	}
+
+	public SpellMessage(String message, Double doubleValue) {
+		this.message = message;
+		this.doubleValue = doubleValue;
+	}
+
+	public SpellMessage(String message, Integer intValue) {
+		this.message = message;
+		this.intValue = intValue;
 	}
 
 	@Override
 	public void toBytes(ByteBuf buf) {
-		buf.writeDouble(distance);
+		buf.writeDouble(doubleValue);
+		buf.writeInt(intValue);
 		ByteBufUtils.writeUTF8String(buf, message);
 	}
 
 	@Override
 	public void fromBytes(ByteBuf buf) {
-		distance = buf.readDouble();
-		if (distance.intValue() == -1) {
-			distance = null;
+		doubleValue = buf.readDouble();
+		if (doubleValue.intValue() == -1) {
+			doubleValue = null;
+		}
+		intValue = buf.readInt();
+		if (intValue == -1) {
+			intValue = null;
 		}
 		message = ByteBufUtils.readUTF8String(buf);
 		if (message.isEmpty()) {
@@ -38,8 +54,12 @@ public class SpellMessage implements IMessage {
 		}
 	}
 
-	public Double getDistance() {
-		return distance;
+	public Double getDoubleValue() {
+		return doubleValue;
+	}
+
+	public Integer getIntValue() {
+		return intValue;
 	}
 
 	public String getMessage() {

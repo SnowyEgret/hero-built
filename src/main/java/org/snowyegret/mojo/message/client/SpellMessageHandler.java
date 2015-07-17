@@ -14,10 +14,10 @@ public class SpellMessageHandler implements IMessageHandler<SpellMessage, IMessa
 		 Minecraft.getMinecraft().addScheduledTask(new Runnable() {
 			public void run() {
 				// TODO static field SpellInfo on EventHandlerClient
-				EventHandlerClient.overlay.setDistance(message.getDistance());
+				EventHandlerClient.overlay.setDoubleValue(message.getDoubleValue());
+				EventHandlerClient.overlay.setIntValue(message.getIntValue());
 				EventHandlerClient.overlay.setMessage(message.getMessage());
 			}
-
 		});
 		return null;
 	}

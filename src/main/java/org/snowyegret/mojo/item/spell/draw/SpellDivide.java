@@ -33,7 +33,7 @@ public class SpellDivide extends AbstractSpellDraw {
 		Point3d p1 = picks[1].point3d();
 		player.clearPicks();
 		
-		player.sendMessage(new SpellMessage(p0.distance(p1)));
+		player.sendMessage(new SpellMessage("item.spell_divide.message", p0.distance(p1)));
 		PointSet points = new PointSet();
 		if (divideByTwo) {
 			// TODO if point is on border between two blocks, draw both blocks

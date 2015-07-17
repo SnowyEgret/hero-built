@@ -27,6 +27,11 @@ item.spell_circle.pick.1=radius
 item.spell_circle.modifier.shift=
 item.spell_circle.modifier.alt=on surface
 
+item.spell_cleanup.name=Cleanup
+item.spell_cleanup.description=cleans up selections and picks after a crash
+item.spell_cleanup.pick.0=
+item.spell_cleanup.message=Cleaned up %d blocks
+
 item.spell_cone.name=Cone
 item.spell_cone.description=creates a cone
 item.spell_cone.pick.0=center
@@ -50,6 +55,7 @@ item.spell_divide.pick.1=to
 item.spell_divide.modifier.ctrl=place markers at picks
 item.spell_divide.modifier.shift=divide by 2
 item.spell_divide.modifier.alt=divide by 3
+item.spell_divide.message=Distance: %.1f"
 
 item.spell_pyramid.name=Pyramid
 item.spell_pyramid.description=creates a solid pyramid

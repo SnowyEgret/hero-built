@@ -23,7 +23,8 @@ public class Overlay {
 	private static final int BLUE = 0xaaaaff;
 
 	private Vec3i displacement;
-	private Double distance = null;
+	private Double doubleValue = null;
+	private Integer intValue = null;
 	private String message = null;
 
 	public Overlay() {
@@ -33,8 +34,12 @@ public class Overlay {
 		this.displacement = displacement;
 	}
 
-	public void setDistance(Double distance) {
-		this.distance = distance;
+	public void setDoubleValue(Double doubleValue) {
+		this.doubleValue = doubleValue;
+	}
+
+	public void setIntValue(Integer intValue) {
+		this.intValue = intValue;
 	}
 
 	public void setMessage(String message) {
@@ -90,13 +95,19 @@ public class Overlay {
 			r.drawStringWithShadow(player.getDirection().toString().toLowerCase(), x, y += rh, BLUE);
 		}
 
-		if (distance != null) {
-			String s = String.format("Distance: %.1f", distance);
-			r.drawStringWithShadow(s, x, y += rh, GREEN);
-		}
+//		if (doubleValue != null) {
+//			String s = String.format("Distance: %.1f", doubleValue);
+//			r.drawStringWithShadow(s, x, y += rh, GREEN);
+//		}
 
 		if (message != null) {
-			r.drawStringWithShadow(message, x, y += rh, RED);
+			if (intValue != null) {
+				r.drawStringWithShadow(I18n.format(message, intValue), x, y += rh, RED);
+			} else if (doubleValue != null) {
+				r.drawStringWithShadow(I18n.format(message, doubleValue), x, y += rh, RED);
+			} else {
+				r.drawStringWithShadow(message, x, y += rh, RED);
+			}
 		}
 	}
 
