@@ -25,7 +25,8 @@ public class PrevStateTileEntity extends TileEntity {
 		prevState = state;
 	}
 
-	@Override
+	// Fix for Selections not rendered properly after third pick of SpellSelectAll/Below/Above #167	@Override
+	// http://www.minecraftforge.net/forum/index.php/topic,32141.0.html
 	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
 		// System.out.println("oldState="+oldState);
 		// System.out.println("newSate="+newSate);

@@ -26,7 +26,7 @@ public class BlockSelectedModel implements ISmartBlockModel {
 		// When selecting blocks left in world with a selection spell, sometimes s was BlockSelected instead of null
 		if (s != null && s.getBlock() instanceof BlockSelected) {
 			s = null;
-		}
+		} 
 		model = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelForState(s);
 		return this;
 	}

@@ -1,0 +1,50 @@
+package org.snowyegret.mojo.item.spell.select;
+
+import java.util.List;
+
+import net.minecraft.block.Block;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.Vec3i;
+
+import org.snowyegret.mojo.block.BlockPicked;
+import org.snowyegret.mojo.block.BlockSelected;
+import org.snowyegret.mojo.item.spell.Spell;
+import org.snowyegret.mojo.message.client.SpellMessage;
+import org.snowyegret.mojo.player.Player;
+import org.snowyegret.mojo.select.SelectionManager;
+import org.snowyegret.mojo.world.IWorld;
+
+import com.google.common.collect.Lists;
+
+public class SpellCleanup extends Spell {
+
+	private final int d = 100;
+	private final Vec3i v = new Vec3i(d, d, d);
+
+	public SpellCleanup() {
+		super(1);
+	}
+
+	@Override
+	public void invoke(Player player) {
+		player.clearPicks();
+		BlockPos p = player.getPosition();
+		Iterable<BlockPos> allInBox = BlockPos.getAllInBox(p.subtract(v), p.add(v));
+		List positions = Lists.newArrayList();
+		IWorld w = player.getWorld();
+		for (BlockPos pos : allInBox) {
+			Block b = w.getState(pos).getBlock();
+			if (b instanceof BlockSelected || b instanceof BlockPicked) {
+				positions.add(pos);
+			}
+		}
+
+		SelectionManager sm = player.getSelectionManager();
+		sm.select(positions);
+		int numSelected = sm.size();
+		System.out.println("numSelected=" + numSelected);
+		sm.clearSelections();
+		player.sendMessage(new SpellMessage("Cleaned up " + numSelected + " blocks in " + d + " block radius."));
+	}
+
+}

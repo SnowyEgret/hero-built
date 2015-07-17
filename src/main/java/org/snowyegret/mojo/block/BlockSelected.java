@@ -50,12 +50,12 @@ public class BlockSelected extends Block implements ITileEntityProvider {
 		IBlockState prevState = null;
 		if (tileEntity != null) {
 			prevState = tileEntity.getPrevState();
+		} else {
+			System.out.println("tileEntity=" + tileEntity);
+			// For debugging
+			// world.getTileEntity(pos);
+			// Can not get it from selectionManager because we are on the client side
 		}
-		// else {
-		// System.out.println("tileEntity=" + tileEntity);
-		// // world.getTileEntity(pos);
-		// // Can not get it from selectionManager because we are on the client side
-		// }
 		return ((IExtendedBlockState) state).withProperty(prevStateProperty, prevState);
 	}
 

@@ -25,7 +25,7 @@ import com.google.common.collect.Lists;
 
 public class Transaction implements IUndoable, Iterable {
 
-	public static final int MAX_SIZE = 99;
+	public static final int MAX_SIZE = 9999;
 	private static final String SIZE_KEY = "s";
 	protected List<IUndoable> undoables = Lists.newArrayList();
 	private boolean isCached = false;

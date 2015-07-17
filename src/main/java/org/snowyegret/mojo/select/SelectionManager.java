@@ -50,8 +50,10 @@ public class SelectionManager {
 
 	// TODO
 	public void select(BlockPos pos) {
-		select(player.getWorld(), pos);
-		player.sendMessage(new SelectionMessage(this));
+		Selection s = select(player.getWorld(), pos);
+		//if (s != null) {
+			player.sendMessage(new SelectionMessage(this));
+		//}
 	}
 
 	public void deselect(BlockPos pos) {
@@ -166,7 +168,7 @@ public class SelectionManager {
 		Block b = state.getBlock();
 
 		if (b instanceof BlockAir) {
-			System.out.println("BlockAir. Returning null.");
+			// System.out.println("BlockAir. Returning null.");
 			return null;
 		}
 
@@ -174,9 +176,9 @@ public class SelectionManager {
 			// Implementation of: Find a way to restore selected blocks to their previous state when they are left in
 			// world after a crash #173
 			// PrevStateTileEntity must call super.writeToNBT
-			System.out.println("Selecting a BlockSelected");
-			System.out.println("This Should only occur when a selection is left in world after a crash.");
-			System.out.println("Looking for previous state on tile entity");
+//			System.out.println("Selecting a BlockSelected");
+//			System.out.println("This Should only occur when a selection is left in world after a crash.");
+//			System.out.println("Looking for previous state on tile entity");
 			// This should only be the case when a selection is left in the world after a crash.
 			// If the BlockSelected has a tile entity it will render properly, if not as black/magenta block
 			// Try to get its state from its tile entity so that a player can select it and restore its
@@ -184,6 +186,9 @@ public class SelectionManager {
 			PrevStateTileEntity te = (PrevStateTileEntity) world.getTileEntity(pos);
 			if (te != null) {
 				state = te.getPrevState();
+				//System.out.println("state=" + state);
+			} else {
+				System.out.println("Selected a BlockSelected with no tile entity");
 			}
 		}
 
@@ -193,6 +198,8 @@ public class SelectionManager {
 			PrevStateTileEntity te = (PrevStateTileEntity) world.getTileEntity(pos);
 			if (te != null) {
 				state = te.getPrevState();
+			} else {
+				System.out.println("Selected a BlockPicked with no tile entity");
 			}
 		}
 
