@@ -157,7 +157,7 @@ item.spell_select_surface.modifier.alt=select any block
 item.spell_select_surface.modifier.shift=ignore plane
 
 item.spell_select_vertical.name=Select Vertical Plane
-item.spell_select_vertical.description=grows selection in the vertical EW (default) or NS plane
+item.spell_select_vertical.description=grows selection in a vertical plane
 item.spell_select_vertical.pick.0=
 item.spell_select_vertical.modifier.ctrl=shrink
 item.spell_select_vertical.modifier.alt=select any block
@@ -166,18 +166,23 @@ item.spell_select_vertical.modifier.alt=select any block
 
 item.spell_delete.name=Delete
 item.spell_delete.description=
+item.spell_delete.pick.0=
 
 item.spell_fill.name=Fill
-item.spell_fill.description=fills with first block in inventory
+item.spell_fill.pick.0=
+item.spell_fill.description=fills with first block in hotbar
 
 item.spell_fill_checker.name=Fill Checker
 item.spell_fill_checker.description=fills with checker pattern using first two blocks in hotbar
+item.spell_fill_checker.pick.0=
 
 item.spell_fill_random.name=Fill Random
 item.spell_fill_random.description=fills with random pattern using blocks in hotbar
+item.spell_fill_random.pick.0=
 
 item.spell_hollow.name=Hollow
 item.spell_hollow.description=hollows selection
+item.spell_hollow.pick.0=
 
 # Other spells ##########
 

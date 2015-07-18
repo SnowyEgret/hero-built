@@ -60,6 +60,7 @@ public class JSONGenerator {
 			try {
 				file = Files.createFile(Paths.get(modelsDir + n + ".json"));
 			} catch (Exception e) {
+				// File already exists, continue to next class
 				continue;
 			}
 			BufferedWriter writer = Files.newBufferedWriter(file, Charset.forName("US-ASCII"));
