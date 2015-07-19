@@ -54,7 +54,8 @@ public class StaffModel implements ISmartItemModel {
 			for (BakedQuad q : spellQuads) {
 				// TODO why doesn't this tint?
 				// Tint the spell to color of staff
-				quads.add(new BakedQuad(tint(q.getVertexData()), 0, q.getFace()));
+				//quads.add(new BakedQuad(tint(q.getVertexData()), 0, q.getFace()));
+				quads.add(q);
 			}
 		}
 		return quads;
