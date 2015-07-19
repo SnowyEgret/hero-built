@@ -9,6 +9,7 @@ import java.util.TreeMap;
 import java.util.Map.Entry;
 
 import org.apache.commons.lang3.text.WordUtils;
+import org.snowyegret.mojo.item.spell.Spell;
 import org.snowyegret.mojo.util.StringUtils;
 
 import com.google.common.base.Joiner;
@@ -26,7 +27,8 @@ import net.minecraft.item.ItemStack;
 
 public class Hotbar {
 
-	private List<HotbarSlot> slots = new ArrayList<>();
+	private List<HotbarSlot> blockSlots = new ArrayList<>();
+	private List<Spell> spells = new ArrayList<>();
 
 	public Hotbar(InventoryPlayer inventory) {
 		// TODO
@@ -43,34 +45,41 @@ public class Hotbar {
 					b = Blocks.water;
 				} else if (item == Items.lava_bucket) {
 					b = Blocks.lava;
+				} else if (item instanceof Spell) {
+					spells.add((Spell)item);
+					continue;
 				}
 
 				if (b != null) {
 					IBlockState state = b.getStateFromMeta(meta);
 					HotbarSlot slot = new HotbarSlot(state, i + 1);
-					slots.add(slot);
+					blockSlots.add(slot);
 				}
 			}
 		}
-		if (slots.isEmpty()) {
-			slots.add(new HotbarSlot(Blocks.dirt.getDefaultState()));
+		if (blockSlots.isEmpty()) {
+			blockSlots.add(new HotbarSlot(Blocks.dirt.getDefaultState()));
 		}
 	}
 
 	public IBlockState firstBlock() {
-		return slots.iterator().next().getState();
+		return blockSlots.iterator().next().getState();
+	}
+
+	public Spell firstSpell() {
+		return spells.iterator().next();
 	}
 
 	public HotbarDistribution getDistribution() {
-		return new HotbarDistribution(slots);
+		return new HotbarDistribution(blockSlots);
 	}
 
 	public IBlockState randomBlock() {
-		return new HotbarDistribution(slots).randomSlot().getState();
+		return new HotbarDistribution(blockSlots).randomSlot().getState();
 	}
 
 	public IBlockState getBlock(int i) {
-		return slots.get(i).getState();
+		return blockSlots.get(i).getState();
 	}
 
 	@Override

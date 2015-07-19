@@ -64,4 +64,9 @@ public class BlockSelected extends Block implements ITileEntityProvider {
 		return new PrevStateTileEntity();
 	}
 
+	@Override
+	public boolean hasTileEntity(IBlockState state) {
+		return true;
+	}
+
 }
