@@ -69,7 +69,8 @@ public class SpellCreateModel extends Spell {
 		System.out.println("max" + max);
 		BlockPos diff = max.subtract(min);
 		System.out.println("diff=" + diff);
-		BlockPos offset = new BlockPos(8, 8, 8).subtract(diff);
+		BlockPos offset = new BlockPos(16, 16, 16).subtract(diff);
+		BlockPos halfOffset = new BlockPos(offset.getX()/2, offset.getY()/2, offset.getZ()/2);
 		System.out.println("offset" + offset);
 		player.clearSelections();
 		player.clearPicks();
@@ -80,7 +81,7 @@ public class SpellCreateModel extends Spell {
 			Selection s = (Selection) iterator.next();
 			BlockPos pos = s.getPos();
 			pos = pos.subtract(min);
-			pos = pos.add(offset);
+			pos = pos.add(halfOffset);
 			int x = pos.getX();
 			int y = pos.getY();
 			int z = pos.getZ();

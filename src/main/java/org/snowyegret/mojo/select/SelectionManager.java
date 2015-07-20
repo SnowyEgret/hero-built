@@ -176,7 +176,7 @@ public class SelectionManager {
 			// Implementation of: Find a way to restore selected blocks to their previous state when they are left in
 			// world after a crash #173
 			// PrevStateTileEntity must call super.writeToNBT
-//			System.out.println("Selecting a BlockSelected");
+			System.out.println("Selecting a BlockSelected");
 //			System.out.println("This Should only occur when a selection is left in world after a crash.");
 //			System.out.println("Looking for previous state on tile entity");
 			// This should only be the case when a selection is left in the world after a crash.

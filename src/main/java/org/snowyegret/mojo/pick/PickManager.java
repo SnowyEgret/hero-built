@@ -108,6 +108,7 @@ public class PickManager {
 		PrevStateTileEntity tileEntity;
 
 		if (state.getBlock() instanceof BlockSelected) {
+			System.out.println("Picking a BlockSelected");
 			tileEntity = (PrevStateTileEntity) world.getTileEntity(pos);
 			state = tileEntity.getPrevState();
 			// If the BlockSelected is left in the world after a crash, prevState will be null.
@@ -121,8 +122,11 @@ public class PickManager {
 		Pick pick = new Pick(pos, state, side);
 		picks.add(pick);
 		world.setState(pos, blockPicked);
+		//if (!(state.getBlock() instanceof BlockSelected)) {
+		System.out.println("state=" + state);
 		tileEntity = (PrevStateTileEntity) world.getTileEntity(pos);
 		tileEntity.setPrevState(state);
+		//}
 
 		return pick;
 	}

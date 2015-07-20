@@ -25,6 +25,7 @@ public class BlockSelectedModel implements ISmartBlockModel {
 		// Fix for Crash with infinite loop at BlockSelected/PickedModel.isAmbientOcclusion #172
 		// When selecting blocks left in world with a selection spell, sometimes s was BlockSelected instead of null
 		if (s != null && s.getBlock() instanceof BlockSelected) {
+			System.out.println("State is BlockSelected. Setting model to null to avoid infinite loop");
 			s = null;
 		} 
 		model = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelForState(s);

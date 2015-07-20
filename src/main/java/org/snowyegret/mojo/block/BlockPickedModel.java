@@ -24,6 +24,7 @@ public class BlockPickedModel implements ISmartBlockModel {
 		IBlockState s = ((IExtendedBlockState) state).getValue(BlockPicked.prevStateProperty);
 		// Fix for Crash with infinite loop at BlockSelected/PickedModel.isAmbientOcclusion #172
 		if (s != null && s.getBlock() instanceof BlockPicked) {
+			System.out.println("State is BlockPicked. Setting model to null to avoid infinite loop");
 			s = null;
 		}
 		model = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelForState(s);

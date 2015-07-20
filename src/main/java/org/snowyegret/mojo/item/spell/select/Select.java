@@ -101,11 +101,12 @@ public class Select {
 								|| (Math.abs(y) == 1 && Math.abs(z) == 1))
 							continue;
 					}
-					// Exclude center
+					// Fix for Picking a selection twice during a selection spell results in block not tinted when rendered #254
 					// When excluded the picked block is not rendering as if it is not picked in a selection spell
-					if (x == 0 && y == 0 && z == 0) {
-						continue;
-					}
+					// Exclude center
+					// if (x == 0 && y == 0 && z == 0) {
+					// continue;
+					// }
 					positions.add(new BlockPos(x, y, z));
 				}
 			}
