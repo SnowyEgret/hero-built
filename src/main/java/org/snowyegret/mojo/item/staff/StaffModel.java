@@ -25,17 +25,31 @@ public class StaffModel implements ISmartItemModel {
 	private final int tint = new Color(200, 200, 255).getRGB();
 
 	public StaffModel(IBakedModel baseModel) {
-		// Only getting infinite loop on isAmbientOcclusion with BlockSelected and BlockPicked
-		// if (baseModel instanceof StaffModel) {
-		// System.out.println(">>>>>>>>>Base model is a StaffModel.");
-		// baseModel = ((StaffModel) baseModel).getBaseModel();
-		// }
 		this.baseModel = baseModel;
 	}
 
 	@Override
 	public List getFaceQuads(EnumFacing side) {
-		return baseModel.getFaceQuads(side);
+		// return baseModel.getFaceQuads(side);
+		List<BakedQuad> quads = new ArrayList<>();
+		// if (spellModel == null) {
+		// return baseModel.getGeneralQuads();
+		// }
+		List<BakedQuad> staffQuads = baseModel.getFaceQuads(side);
+		for (BakedQuad q : staffQuads) {
+			quads.add(q);
+			// quads.add(new BakedQuad(tint(q.getVertexData()), 0, q.getFace()));
+		}
+		if (spellModel != null) {
+			List<BakedQuad> spellQuads = spellModel.getFaceQuads(side);
+			for (BakedQuad q : spellQuads) {
+				// TODO why doesn't this tint?
+				// Tint the spell to color of staff
+				// quads.add(new BakedQuad(tint(q.getVertexData()), 0, q.getFace()));
+				quads.add(q);
+			}
+		}
+		return quads;
 	}
 
 	@Override
@@ -54,7 +68,7 @@ public class StaffModel implements ISmartItemModel {
 			for (BakedQuad q : spellQuads) {
 				// TODO why doesn't this tint?
 				// Tint the spell to color of staff
-				//quads.add(new BakedQuad(tint(q.getVertexData()), 0, q.getFace()));
+				// quads.add(new BakedQuad(tint(q.getVertexData()), 0, q.getFace()));
 				quads.add(q);
 			}
 		}
@@ -100,10 +114,6 @@ public class StaffModel implements ISmartItemModel {
 		}
 		return this;
 	}
-
-	// private IBakedModel getBaseModel() {
-	// return baseModel;
-	// }
 
 	private int[] tint(int[] vertexData) {
 		int[] vd = new int[vertexData.length];

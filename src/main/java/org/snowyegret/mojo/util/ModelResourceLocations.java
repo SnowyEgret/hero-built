@@ -8,16 +8,15 @@ import org.snowyegret.mojo.MoJo;
 
 public class ModelResourceLocations {
 
-	public static ModelResourceLocation get(Class c) {
-		if (Item.class.isAssignableFrom(c)) {
-			//return new ModelResourceLocation(MoJo.MODID + ":" + StringUtils.nameFor(c), "inventory");
-			return new ModelResourceLocation(MoJo.MODID + ":" + StringUtils.underscoreNameFor(c), "inventory");
-		} else if (Block.class.isAssignableFrom(c)) {
-			//ModelResourceLocation l = new ModelResourceLocation(MoJo.MODID + ":" + StringUtils.nameFor(c));
-			ModelResourceLocation l = new ModelResourceLocation(MoJo.MODID + ":" + StringUtils.underscoreNameFor(c));
-			return l;
+	public static ModelResourceLocation get(Class cls) {
+		if (Item.class.isAssignableFrom(cls)) {
+			return new ModelResourceLocation(MoJo.MODID + ":" + StringUtils.underscoreNameFor(cls), "inventory");
+		} else if (Block.class.isAssignableFrom(cls)) {
+			ModelResourceLocation mrl = new ModelResourceLocation(MoJo.MODID + ":" + StringUtils.underscoreNameFor(cls));
+			System.out.println("mrl=" + mrl);
+			return mrl;
 		} else {
-			throw new Error("Expected either an item or a block. Got a " + c);
+			throw new Error("Expected either an item or a block. Got a " + cls);
 		}
 	}
 

@@ -21,14 +21,17 @@ public class BlockSelectedModel implements ISmartBlockModel {
 
 	@Override
 	public IBakedModel handleBlockState(IBlockState state) {
-		IBlockState s = ((IExtendedBlockState) state).getValue(BlockSelected.prevStateProperty);
+		IBlockState prevState = ((IExtendedBlockState) state).getValue(BlockSelected.prevStateProperty);
 		// Fix for Crash with infinite loop at BlockSelected/PickedModel.isAmbientOcclusion #172
 		// When selecting blocks left in world with a selection spell, sometimes s was BlockSelected instead of null
-		if (s != null && s.getBlock() instanceof BlockSelected) {
-			System.out.println("State is BlockSelected. Setting model to null to avoid infinite loop");
-			s = null;
-		} 
-		model = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelForState(s);
+		if (prevState != null && prevState.getBlock() instanceof BlockSelected) {
+			System.out.println("State is BlockSelected. Setting prevState to null to avoid infinite loop");
+			prevState = null;
+		}
+		if (prevState == null) {
+			System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>prevState=" + prevState);
+		}
+		model = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelForState(prevState);
 		return this;
 	}
 
@@ -43,7 +46,7 @@ public class BlockSelectedModel implements ISmartBlockModel {
 	}
 
 	@Override
-	public List getGeneralQuads() { 
+	public List getGeneralQuads() {
 		List<BakedQuad> quads = new ArrayList<>();
 		List<BakedQuad> generalQuads = model.getGeneralQuads();
 		for (BakedQuad q : generalQuads) {

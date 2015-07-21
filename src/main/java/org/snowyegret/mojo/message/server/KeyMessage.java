@@ -8,7 +8,7 @@ public class KeyMessage implements IMessage {
 
 	private int keyCode;
 	private boolean keyState;
-	private BlockPos cursorPos;
+	private BlockPos cursorPos = new BlockPos(0,0,0);
 
 	public KeyMessage() {
 	}

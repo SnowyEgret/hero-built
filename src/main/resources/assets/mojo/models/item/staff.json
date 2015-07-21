@@ -13,19 +13,6 @@
                 "west":  { "uv": [ 0, 0, 2, 16 ], "texture": "#staff", "tintindex": 24534 },
                 "east":  { "texture": "#staff" }
             }
-        },
-        {
-           "__comment": "This is a comment",
-           "from": [ 0, 0, 0 ],
-            "to": [ 1, 1, 1 ],
-            "faces": {
-                "down":  { "texture": "#staff" },
-                "up":    { "texture": "#staff" },
-                "north": { "texture": "#staff" },
-                "south": { "texture": "#staff" },
-                "west":  { "texture": "#staff" },
-                "east":  { "texture": "#staff" }
-            }
         }
     ],
     "textures": {
@@ -51,7 +38,7 @@
         "firstperson": {
             "rotation": [ -20, -100, 0 ],
             "translation": [ 0, 5, 1 ],
-            "scale": [ 0.7, 1, 1 ]
+            "scale": [ 0.6, 0.8, 0.8 ]
         }
     }
 }
