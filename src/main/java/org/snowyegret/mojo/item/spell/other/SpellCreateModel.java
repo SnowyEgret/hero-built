@@ -84,13 +84,14 @@ public class SpellCreateModel extends Spell {
 		StringBuilder builder = new StringBuilder();
 		builder.append(header);
 		builder.append(orb);
+		int count = 0;
+		int r;
 		for (Iterator iterator = selections.iterator(); iterator.hasNext();) {
-			int r = random.nextInt(10);
-			System.out.println("r="+r);
-			if (r < 5) {
-				continue;
-			}
 			Selection s = (Selection) iterator.next();
+			// r = random.nextInt(10);
+			// if (r < 5) {
+			// continue;
+			// }
 			BlockPos pos = s.getPos();
 			pos = pos.subtract(min);
 			pos = pos.add(halfOffset);
@@ -102,17 +103,20 @@ public class SpellCreateModel extends Spell {
 			if (iterator.hasNext()) {
 				builder.append(",");
 			}
+			count++;
 		}
 		builder.append("\n\t],");
+
 		Spell firstSpellInHotbar = player.getHotbar().firstSpell();
 		String modelName = StringUtils.underscoreNameFor(firstSpellInHotbar.getClass());
-		//String texture = String.format(textureTemplate, MoJo.MODID, modelName, MoJo.MODID, modelName, MoJo.MODID);
+		// String texture = String.format(textureTemplate, MoJo.MODID, modelName, MoJo.MODID, modelName, MoJo.MODID);
 		String texture = String.format(textureTemplate, MoJo.MODID, MoJo.MODID, MoJo.MODID, MoJo.MODID, MoJo.MODID);
 		builder.append(texture);
 		builder.append(display);
 		builder.append("\n}");
 		String json = builder.toString();
-		System.out.println("json=" + json);
+		// System.out.println("json=" + json);
+		System.out.println("count=" + count);
 
 		// ResourcePack pack = new ResourcePack(firstSpellInHotbar.getClass(), json);
 		// System.out.println("p=" + pack);

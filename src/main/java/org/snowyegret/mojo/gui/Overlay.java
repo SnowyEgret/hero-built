@@ -1,5 +1,7 @@
 package org.snowyegret.mojo.gui;
 
+import java.awt.Color;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.resources.I18n;
@@ -17,10 +19,10 @@ import org.snowyegret.mojo.player.Player;
 
 public class Overlay {
 
-	private static final int WHITE = 0xffffff;
-	private static final int RED = 0xffaaaa;
-	private static final int GREEN = 0xaaffaa;
-	private static final int BLUE = 0xaaaaff;
+	private final int WHITE = 0xffffff;
+	private final int RED = 0xffaaaa;
+	private final int GREEN = 0xaaffaa;
+	private final int BLUE = 0xaaaaff;
 
 	private Vec3i displacement;
 	private Double doubleValue = null;

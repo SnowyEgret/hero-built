@@ -8,7 +8,7 @@ public class KeyMessage implements IMessage {
 
 	private int keyCode;
 	private boolean keyState;
-	private BlockPos cursorPos = new BlockPos(0,0,0);
+	private BlockPos cursorPos = new BlockPos(0, 0, 0);
 
 	public KeyMessage() {
 	}
@@ -16,7 +16,9 @@ public class KeyMessage implements IMessage {
 	public KeyMessage(int keyCode, boolean keyState, BlockPos cursorPos) {
 		this.keyCode = keyCode;
 		this.keyState = keyState;
-		this.cursorPos = cursorPos;
+		if (cursorPos != null) {
+			this.cursorPos = cursorPos;
+		}
 	}
 
 	public int getKeyCode() {

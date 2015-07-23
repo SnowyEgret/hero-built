@@ -10,15 +10,16 @@ public class MouseClickMessage implements IMessage {
 	private int button;
 	private BlockPos pos;
 	private MovingObjectType typeOfHit;
+	private boolean isDoubleClick = false;
 
 	public MouseClickMessage() {
 	}
 
-	public MouseClickMessage(int button, BlockPos pos, MovingObjectType typeOfHit) {
+	public MouseClickMessage(int button, BlockPos pos, MovingObjectType typeOfHit, boolean isDoubleClick) {
 		this.button = button;
 		this.pos = pos;
 		this.typeOfHit = typeOfHit;
-
+		this.isDoubleClick = isDoubleClick;
 	}
 
 	@Override
@@ -26,6 +27,7 @@ public class MouseClickMessage implements IMessage {
 		buf.writeInt(button);
 		buf.writeLong(pos.toLong());
 		buf.writeInt(typeOfHit.ordinal());
+		buf.writeBoolean(isDoubleClick);
 	}
 
 	@Override
@@ -39,6 +41,7 @@ public class MouseClickMessage implements IMessage {
 				break;
 			}
 		}
+		isDoubleClick = buf.readBoolean();
 	}
 
 	public BlockPos getPos() {
@@ -53,6 +56,10 @@ public class MouseClickMessage implements IMessage {
 		return typeOfHit;
 	}
 
+	public boolean isDoubleClick() {
+		return isDoubleClick;
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -62,6 +69,8 @@ public class MouseClickMessage implements IMessage {
 		builder.append(pos);
 		builder.append(", typeOfHit=");
 		builder.append(typeOfHit);
+		builder.append(", isDoubleClick=");
+		builder.append(isDoubleClick);
 		builder.append("]");
 		return builder.toString();
 	}

@@ -32,6 +32,12 @@ public class Staff extends ItemBase {
 		}
 	}
 
+	// http://greyminecraftcoder.blogspot.com.au/2014/12/item-rendering-18.html
+	@Override
+	public boolean hasEffect(ItemStack stack) {
+		return true;
+	}
+
 	// TODO Check that this is the default
 	@Override
 	public boolean isFull3D() {

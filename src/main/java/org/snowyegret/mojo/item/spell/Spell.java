@@ -3,6 +3,7 @@ package org.snowyegret.mojo.item.spell;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
@@ -25,10 +26,10 @@ public abstract class Spell extends ItemBase {
 	}
 
 	// FIXME Has no effect
-	// @Override
-	// public EnumAction getItemUseAction(ItemStack stack) {
-	// return EnumAction.NONE;
-	// }
+//	@Override
+//	public EnumAction getItemUseAction(ItemStack stack) {
+//		return EnumAction.BLOCK;
+//	}
 
 	@Override
 	public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ) {

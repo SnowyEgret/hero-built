@@ -17,13 +17,14 @@ import org.snowyegret.mojo.item.spell.Spell;
 import org.snowyegret.mojo.item.staff.Staff;
 import org.snowyegret.mojo.message.server.MouseClickMessage;
 import org.snowyegret.mojo.player.Player;
-import org.snowyegret.mojo.player.Player;
 import org.snowyegret.mojo.world.IWorld;
 
 public class MouseHandler {
 
 	public static boolean isOrbiting;
 	private Vec3 centroid;
+	private long lastClickTime = 0;
+	private static final long DOUBLE_CLICK_THRESHOLD = 200000000;
 
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
@@ -33,6 +34,14 @@ public class MouseHandler {
 		// TODO Seems not to work in multiplayer
 		if (Minecraft.getMinecraft().isGamePaused()) {
 			return;
+		}
+
+		// Sent with MouseClickMessage to recursively select all of block type at position
+		boolean isDoubleClick = false;
+		if (e.button == 0 && e.buttonstate) {
+			long clickTime = e.nanoseconds;
+			isDoubleClick = clickTime - lastClickTime < DOUBLE_CLICK_THRESHOLD;
+			lastClickTime = clickTime;
 		}
 
 		Player player = new Player();
@@ -50,7 +59,8 @@ public class MouseHandler {
 			// Check for buttonstate prevents loop when breaking block against sky
 			if (e.buttonstate && cursor.typeOfHit == MovingObjectType.MISS) {
 				if (e.buttonstate) {
-					MoJo.network.sendToServer(new MouseClickMessage(e.button, cursor.getBlockPos(), cursor.typeOfHit));
+					MoJo.network.sendToServer(new MouseClickMessage(e.button, cursor.getBlockPos(), cursor.typeOfHit,
+							isDoubleClick));
 				}
 				e.setCanceled(true);
 			}
@@ -95,7 +105,8 @@ public class MouseHandler {
 					return;
 				}
 				// Message server to handle mouse clicks
-				MoJo.network.sendToServer(new MouseClickMessage(e.button, cursor.getBlockPos(), cursor.typeOfHit));
+				MoJo.network.sendToServer(new MouseClickMessage(e.button, cursor.getBlockPos(), cursor.typeOfHit,
+						isDoubleClick));
 				e.setCanceled(true);
 				return;
 			}
