@@ -1,6 +1,7 @@
 package org.snowyegret.mojo.message.server;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import net.minecraft.block.Block;
@@ -18,6 +19,8 @@ import org.snowyegret.mojo.block.BlockSelected;
 import org.snowyegret.mojo.block.PrevStateTileEntity;
 import org.snowyegret.mojo.item.spell.Modifier;
 import org.snowyegret.mojo.item.spell.Modifiers;
+import org.snowyegret.mojo.item.spell.condition.ICondition;
+import org.snowyegret.mojo.item.spell.condition.IsOnExteriorEdge;
 import org.snowyegret.mojo.item.spell.select.Select;
 import org.snowyegret.mojo.player.Player;
 import org.snowyegret.mojo.select.SelectionManager;
@@ -28,7 +31,10 @@ import com.google.common.collect.Sets;
 
 public class MouseClickMessageHandler implements IMessageHandler<MouseClickMessage, IMessage> {
 
+	// Used by selectRecursive to terminate recursion
+	// Reinitialized every time selectRecursive is called
 	private int lastSize;
+	private static int MAX_NUM_SELECTIONS = 10000;
 
 	@Override
 	public IMessage onMessage(final MouseClickMessage message, MessageContext ctx) {
@@ -90,9 +96,17 @@ public class MouseClickMessageHandler implements IMessageHandler<MouseClickMessa
 				System.out.println("Expected a BlockSelected");
 				return;
 			}
-			Set<BlockPos> positions = Sets.newHashSet();
-			recursivelySelect(positions, Sets.newHashSet(pos), player.getWorld(), block);
-			//System.out.println("size=" + positions.size());
+			// TODO use isOnEdge(side) when ready
+			// FIXME IsOnExteriorEdge is selecting a double row
+			ICondition condition = null;
+			if (new IsOnExteriorEdge().apply(player.getWorld(), pos, null)) {
+				condition = new IsOnExteriorEdge();
+			}
+			List<BlockPos> positions = Lists.newArrayList();
+			// Must put pos in list!
+			List<BlockPos> newPositions = Lists.newArrayList(pos);
+			selectRecursive(positions, newPositions, player.getWorld(), block, condition);
+			// System.out.println("size=" + positions.size());
 			sm.select(positions);
 			return;
 		}
@@ -140,25 +154,32 @@ public class MouseClickMessageHandler implements IMessageHandler<MouseClickMessa
 		sm.select(pos);
 	}
 
-	private void recursivelySelect(Set<BlockPos> positions, Set<BlockPos> newPositions, IWorld world, Block block) {
-		Set<BlockPos> newNewPositions = Sets.newHashSet();
+	private void selectRecursive(List<BlockPos> positions, List<BlockPos> newPositions, IWorld world, Block block, ICondition condition) {
+		List<BlockPos> newNewPositions = Lists.newArrayList();
 		for (BlockPos pos : newPositions) {
-			for (BlockPos p : Select.ALL) {
+			for (BlockPos p : Select.ALL_NO_CORNERS) {
 				p = p.add(pos);
 				Block b = world.getBlock(p);
 				if (b == block) {
-					positions.add(p);
-					newNewPositions.add(p);
+					if (!positions.contains(p)) {
+						if (condition != null) {
+							if (condition.apply(world, pos, null)) {
+								positions.add(p);
+								newNewPositions.add(p);
+							}
+						} else {
+							positions.add(p);
+							newNewPositions.add(p);
+						}
+					}
 				}
 			}
 		}
 		newPositions = newNewPositions;
-		// newPositions.clear();
-		// newPositions.addAll(newNewPositions);
 		int size = positions.size();
-		if (size < 1000 && size > lastSize) {
+		if (size < MAX_NUM_SELECTIONS && size > lastSize) {
 			lastSize = size;
-			recursivelySelect(positions, newPositions, world, block);
+			selectRecursive(positions, newPositions, world, block, condition);
 		}
 	}
 

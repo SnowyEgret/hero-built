@@ -26,7 +26,7 @@ public class IsOnExteriorEdge implements ICondition {
 			}
 		}
 		int size = airBlockPositions.size();
-		// System.out.println("size=" + size);
+		//System.out.println("size=" + size);
 		// if (size > 9) {
 		// if (size > 17 && size < 20) {
 		// return false;
@@ -46,7 +46,7 @@ public class IsOnExteriorEdge implements ICondition {
 			}
 		}
 
-		// Number of air blocks is one or zero
+		// Number of air blocks is one or zero or 2 with d >= 3
 		return false;
 	}
 }

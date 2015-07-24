@@ -22,6 +22,7 @@ import org.snowyegret.mojo.select.Selection;
 import org.snowyegret.mojo.util.ResourcePack;
 import org.snowyegret.mojo.util.StringUtils;
 
+// http://greyminecraftcoder.blogspot.ca/2014/12/block-models-18.html
 public class SpellCreateModel extends Spell {
 
 	private final Random random = new Random();
