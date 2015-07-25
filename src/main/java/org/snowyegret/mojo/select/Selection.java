@@ -2,13 +2,18 @@ package org.snowyegret.mojo.select;
 
 import javax.vecmath.Point3d;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.BlockPos;
 
 public class Selection {
 
 	private BlockPos pos;
 	private IBlockState state;
+	private String POS_KEY = "p";
+	private String STATE_KEY = "s";
 
 	public Selection(BlockPos pos, IBlockState state) {
 		this.pos = pos;
@@ -72,6 +77,14 @@ public class Selection {
 		} else if (!state.equals(other.state))
 			return false;
 		return true;
+	}
+
+	// TODO Interface for reading and writing NBT for transaction and selections #259
+	public NBTTagCompound toNBT() {
+		NBTTagCompound tag = new NBTTagCompound();
+		tag.setLong(POS_KEY, pos.toLong());
+		tag.setInteger(STATE_KEY, Block.getStateId(state));
+		return tag;
 	}
 
 }

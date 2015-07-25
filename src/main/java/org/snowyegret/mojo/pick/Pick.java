@@ -3,7 +3,10 @@ package org.snowyegret.mojo.pick;
 import javax.vecmath.Point3d;
 import javax.vecmath.Point3i;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 
@@ -11,6 +14,9 @@ import org.snowyegret.mojo.geom.EnumPlane;
 
 public class Pick {
 
+	private static final String POS_KEY = "p";
+	private static final String STATE_KEY = "s";
+	
 	private BlockPos pos;
 	public EnumFacing side;
 	private IBlockState state;
@@ -118,5 +124,13 @@ public class Pick {
 
 	public EnumPlane getPlane() {
 		return plane;
+	}
+
+	// TODO Interface for reading and writing NBT for transaction and selections #259
+	public NBTTagCompound toNBT() {
+		NBTTagCompound tag = new NBTTagCompound();
+		tag.setLong(POS_KEY, pos.toLong());
+		tag.setInteger(STATE_KEY, Block.getStateId(state));
+		return tag;
 	}
 }
