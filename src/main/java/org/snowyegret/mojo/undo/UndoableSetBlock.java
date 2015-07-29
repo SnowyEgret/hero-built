@@ -12,10 +12,12 @@ public class UndoableSetBlock implements IUndoable {
 
 	BlockPos pos;
 	IBlockState prevState, state;
-	private static final String POS_KEY = "a";
-	private static final String PREV_STATE_KEY = "b";
-	private static final String STATE_ID_KEY = "c";
+	private static final String KEY_POS = "a";
+	private static final String KEY_PREV_STATE = "b";
+	private static final String KEY_STATE = "c";
 
+	// For Transaction.fromNBT which can't be static if part of an interface (except in 1.8)
+	// http://stackoverflow.com/questions/21817/why-cant-i-declare-static-methods-in-an-interface
 	UndoableSetBlock() {
 	}
 
@@ -42,21 +44,21 @@ public class UndoableSetBlock implements IUndoable {
 		player.getWorld().setState(pos, state);
 	}
 
-	//Implemented to save a large transaction to disk.
+	// Implemented to save a large transaction to disk.
 	@Override
 	public NBTTagCompound toNBT() {
 		NBTTagCompound tag = new NBTTagCompound();
-		tag.setLong(POS_KEY, pos.toLong());
-		tag.setInteger(PREV_STATE_KEY, Block.getStateId(prevState));
-		tag.setInteger(STATE_ID_KEY, Block.getStateId(state));
+		tag.setLong(KEY_POS, pos.toLong());
+		tag.setInteger(KEY_PREV_STATE, Block.getStateId(prevState));
+		tag.setInteger(KEY_STATE, Block.getStateId(state));
 		return tag;
 	}
 
 	@Override
 	public IUndoable fromNBT(NBTTagCompound tag) {
-		pos = BlockPos.fromLong(tag.getLong(POS_KEY));
-		prevState = Block.getStateById(tag.getInteger(PREV_STATE_KEY));
-		state = Block.getStateById(tag.getInteger(STATE_ID_KEY));
+		pos = BlockPos.fromLong(tag.getLong(KEY_POS));
+		prevState = Block.getStateById(tag.getInteger(KEY_PREV_STATE));
+		state = Block.getStateById(tag.getInteger(KEY_STATE));
 		return new UndoableSetBlock(pos, prevState, state);
 	}
 

@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 public class PrevStateTileEntity extends TileEntity {
 
 	private IBlockState prevState;
-	private final String PREV_STATE_KEY = "b";
+	private final String PREV_STATE_KEY = "st";
 
 	public IBlockState getPrevState() {
 		return prevState;
@@ -45,10 +45,10 @@ public class PrevStateTileEntity extends TileEntity {
 			//
 			// }
 
-			// Implementation of: Find a way to restore selected blocks to their previous state when they are left in
-			// world after a crash #173
-			super.writeToNBT(tag);
 		}
+		// Implementation of: Find a way to restore selected blocks to their previous state when they are left in
+		// world after a crash #173
+		super.writeToNBT(tag);
 	}
 
 	@Override

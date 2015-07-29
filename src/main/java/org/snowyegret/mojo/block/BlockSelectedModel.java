@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.IBakedModel;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.client.model.ISmartBlockModel;
 import net.minecraftforge.common.property.IExtendedBlockState;
@@ -21,22 +22,25 @@ public class BlockSelectedModel implements ISmartBlockModel {
 
 	@Override
 	public IBakedModel handleBlockState(IBlockState state) {
-		IBlockState prevState = ((IExtendedBlockState) state).getValue(BlockSelected.prevStateProperty);
+		IBlockState prevState = ((IExtendedBlockState) state).getValue(BlockSelected.PROPERTY_STATE);
 		// Fix for Crash with infinite loop at BlockSelected/PickedModel.isAmbientOcclusion #172
 		// When selecting blocks left in world with a selection spell, sometimes s was BlockSelected instead of null
 		if (prevState != null && prevState.getBlock() instanceof BlockSelected) {
+			// TODO Can I get its extended state again?
 			System.out.println("State is BlockSelected. Setting prevState to null to avoid infinite loop");
 			prevState = null;
 		}
 		if (prevState == null) {
-			System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>prevState=" + prevState);
+			System.out.println("prevState=" + prevState);
+			System.out.println(">>>>>>>>>>>>>Setting prevState to default");
+			prevState = Blocks.clay.getDefaultState();
 		}
 		model = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelForState(prevState);
 		return this;
 	}
 
 	@Override
-	public List getFaceQuads(EnumFacing face) {
+	public List getFaceQuads(EnumFacing face) { 
 		List<BakedQuad> quads = new ArrayList<>();
 		List<BakedQuad> faceQuads = model.getFaceQuads(face);
 		for (BakedQuad q : faceQuads) {

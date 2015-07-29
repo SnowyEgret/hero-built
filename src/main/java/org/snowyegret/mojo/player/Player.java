@@ -32,6 +32,7 @@ public class Player {
 
 	private EntityPlayer player;
 	private PlayerProperties props;
+	private String blockSavedPath;
 
 	public enum Direction {
 		NORTH,
@@ -208,6 +209,14 @@ public class Player {
 
 	public Spell getLastInvokedSpell() {
 		return props.getLastInvokedSpell();
+	}
+
+	public void setBlockSavedPath(String blockSavedPath) {
+		props.setBlockSavedPath(blockSavedPath);
+	}
+
+	public String getBlockSavedPath() {
+		return props.getBlockSavedPath();
 	}
 
 	public Clipboard getClipboard() {

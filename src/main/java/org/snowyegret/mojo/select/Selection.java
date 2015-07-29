@@ -12,8 +12,8 @@ public class Selection {
 
 	private BlockPos pos;
 	private IBlockState state;
-	private String POS_KEY = "p";
-	private String STATE_KEY = "s";
+	private static final String KEY_POS = "pos";
+	private static final String KEY_STATE = "state";
 
 	public Selection(BlockPos pos, IBlockState state) {
 		this.pos = pos;
@@ -82,9 +82,15 @@ public class Selection {
 	// TODO Interface for reading and writing NBT for transaction and selections #259
 	public NBTTagCompound toNBT() {
 		NBTTagCompound tag = new NBTTagCompound();
-		tag.setLong(POS_KEY, pos.toLong());
-		tag.setInteger(STATE_KEY, Block.getStateId(state));
+		tag.setLong(KEY_POS, pos.toLong());
+		tag.setInteger(KEY_STATE, Block.getStateId(state));
 		return tag;
+	}
+
+	public static Selection fromNBT(NBTTagCompound tag) {
+		BlockPos pos = BlockPos.fromLong(tag.getLong(KEY_POS));
+		IBlockState state = Block.getStateById(tag.getInteger(KEY_STATE));
+		return new Selection(pos, state);
 	}
 
 }

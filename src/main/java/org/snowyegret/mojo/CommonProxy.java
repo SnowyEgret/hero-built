@@ -17,6 +17,8 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
 import org.snowyegret.mojo.block.BlockPicked;
+import org.snowyegret.mojo.block.BlockSaved;
+import org.snowyegret.mojo.block.BlockSavedTileEntity;
 import org.snowyegret.mojo.block.BlockSelected;
 import org.snowyegret.mojo.block.PrevStateTileEntity;
 import org.snowyegret.mojo.event.EventHandlerClient;
@@ -61,7 +63,7 @@ import com.google.common.reflect.ClassPath.ClassInfo;
 
 public class CommonProxy {
 
-	private static CreativeTabs tabSpells;
+	public static CreativeTabs tabSpells;
 	static {
 		tabSpells = new CreativeTabs("tabSpells") {
 			@Override
@@ -96,6 +98,7 @@ public class CommonProxy {
 
 	public void registerTileEntities() {
 		GameRegistry.registerTileEntity(PrevStateTileEntity.class, PrevStateTileEntity.class.getSimpleName());
+		GameRegistry.registerTileEntity(BlockSavedTileEntity.class, BlockSavedTileEntity.class.getSimpleName());
 	}
 
 	public void registerItemModels() {
@@ -105,6 +108,7 @@ public class CommonProxy {
 		System.out.println("Initializing blocks...");
 		MoJo.blockSelected = (BlockSelected) initBlock(new BlockSelected());
 		MoJo.blockPicked = (BlockPicked) initBlock(new BlockPicked());
+		MoJo.blockSaved = (BlockSaved) initBlock(new BlockSaved());
 	}
 
 	public void registerItems() {

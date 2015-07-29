@@ -184,11 +184,11 @@ public class Transaction implements IUndoable, Iterable {
 	@Override
 	public IUndoable fromNBT(NBTTagCompound tag) {
 		int size = tag.getInteger(SIZE_KEY);
+		undoables = Lists.newArrayList();
 		for (int i = 0; i < size; i++) {
 			NBTTagCompound t = tag.getCompoundTag(String.valueOf(i));
 			// Can this be generic? So far we only have one type of IUndoable
 			IUndoable u = new UndoableSetBlock();
-			undoables = Lists.newArrayList();
 			undoables.add(u.fromNBT(t));
 		}
 		return this;

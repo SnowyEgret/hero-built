@@ -28,6 +28,8 @@ public class PlayerProperties implements IExtendedEntityProperties {
 
 	private Player player;
 
+	private String blockSavedPath;
+
 	public PlayerProperties(EntityPlayer entity) {
 		player = new Player(entity);
 	}
@@ -83,6 +85,14 @@ public class PlayerProperties implements IExtendedEntityProperties {
 
 	public Clipboard getClipboard() {
 		return clipboard;
+	}
+
+	public void setBlockSavedPath(String blockSavedPath) {
+		this.blockSavedPath = blockSavedPath;
+	}
+
+	public String getBlockSavedPath() {
+		return blockSavedPath;
 	}
 
 }

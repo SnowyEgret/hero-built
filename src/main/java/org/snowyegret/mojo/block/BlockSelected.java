@@ -22,7 +22,7 @@ import org.snowyegret.mojo.select.Selection;
 
 public class BlockSelected extends Block implements ITileEntityProvider {
 
-	public static final PrevStateProperty prevStateProperty = new PrevStateProperty();
+	public static final PropertyState PROPERTY_STATE = new PropertyState();
 
 	public BlockSelected() {
 		super(Material.clay);
@@ -41,7 +41,7 @@ public class BlockSelected extends Block implements ITileEntityProvider {
 
 	@Override
 	protected BlockState createBlockState() {
-		return new ExtendedBlockState(this, new IProperty[0], new IUnlistedProperty[] { prevStateProperty });
+		return new ExtendedBlockState(this, new IProperty[0], new IUnlistedProperty[] { PROPERTY_STATE });
 	}
 
 	@Override
@@ -56,7 +56,7 @@ public class BlockSelected extends Block implements ITileEntityProvider {
 			// world.getTileEntity(pos);
 			// Can not get it from selectionManager because we are on the client side
 		}
-		return ((IExtendedBlockState) state).withProperty(prevStateProperty, prevState);
+		return ((IExtendedBlockState) state).withProperty(PROPERTY_STATE, prevState);
 	}
 
 	@Override

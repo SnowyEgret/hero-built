@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.IBakedModel;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.client.model.ISmartBlockModel;
 import net.minecraftforge.common.property.IExtendedBlockState;
@@ -21,13 +22,18 @@ public class BlockPickedModel implements ISmartBlockModel {
 
 	@Override
 	public IBakedModel handleBlockState(IBlockState state) {
-		IBlockState s = ((IExtendedBlockState) state).getValue(BlockPicked.prevStateProperty);
+		IBlockState prevState = ((IExtendedBlockState) state).getValue(BlockPicked.PROPERTY_STATE);
 		// Fix for Crash with infinite loop at BlockSelected/PickedModel.isAmbientOcclusion #172
-		if (s != null && s.getBlock() instanceof BlockPicked) {
+		if (prevState != null && prevState.getBlock() instanceof BlockPicked) {
 			System.out.println("State is BlockPicked. Setting model to null to avoid infinite loop");
-			s = null;
+			prevState = null;
 		}
-		model = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelForState(s);
+		if (prevState == null) {
+			System.out.println("prevState=" + prevState);
+			System.out.println(">>>>>>>>>>>>>Setting prevState to default");
+			prevState = Blocks.clay.getDefaultState();
+		}
+		model = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelForState(prevState);
 		return this;
 	}
 

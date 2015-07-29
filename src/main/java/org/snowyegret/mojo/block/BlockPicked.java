@@ -19,7 +19,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockPicked extends Block implements ITileEntityProvider {
 
-	public static final PrevStateProperty prevStateProperty = new PrevStateProperty();
+	public static final PropertyState PROPERTY_STATE = new PropertyState();
 
 	public BlockPicked() {
 		super(Material.clay);
@@ -34,7 +34,7 @@ public class BlockPicked extends Block implements ITileEntityProvider {
 
 	@Override
 	protected BlockState createBlockState() {
-		return new ExtendedBlockState(this, new IProperty[0], new IUnlistedProperty[] { prevStateProperty });
+		return new ExtendedBlockState(this, new IProperty[0], new IUnlistedProperty[] { PROPERTY_STATE });
 	}
 
 	@Override
@@ -51,7 +51,7 @@ public class BlockPicked extends Block implements ITileEntityProvider {
 		} else {
 			System.out.println("tileEntity=" + tileEntity);
 		}
-		return ((IExtendedBlockState) state).withProperty(prevStateProperty, prevState);
+		return ((IExtendedBlockState) state).withProperty(PROPERTY_STATE, prevState);
 	}
 
 	@Override
