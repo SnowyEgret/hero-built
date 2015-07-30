@@ -34,6 +34,7 @@ import com.google.common.collect.Lists;
 public class SpellText extends Spell implements ITextSetable {
 
 	private Graphics graphics;
+	//TODO Move these to player
 	private Font font;
 	private Pick[] picks;
 

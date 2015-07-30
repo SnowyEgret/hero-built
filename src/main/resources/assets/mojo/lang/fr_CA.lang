@@ -84,7 +84,7 @@ item.spell_copy.name=Copier
 item.spell_copy.description=
 item.spell_copy.pick.0=de
 item.spell_copy.pick.1=à
-item.spell_copy.modifier.shift=supprimer originale
+item.spell_copy.modifier.shift=supprimer les sélections originales
 
 item.spell_mirror.name=Miroiter
 item.spell_mirror.description=
@@ -199,6 +199,12 @@ item.spell_hole_fill.modifier.shift=avec le premier bloc en menu
 item.spell_menger_sponge.name=Éponge
 item.spell_menger_sponge.description=crée des cavitées
 item.spell_menger_sponge.pick.0=
+
+item.spell_save.name=Sauvegarder
+item.spell_save.description=Sauvegarder les selections
+item.spell_save.pick.0=origine
+item.spell_save.modifier.ctrl=supprimer les sélections originales
+item.spell_save.message.no_selections=Sélectionner les blocs a sauvegarder
 
 item.spell_text.name=Texte
 item.spell_text.description=

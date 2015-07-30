@@ -108,7 +108,7 @@ public class Overlay {
 			} else if (doubleValue != null) {
 				r.drawStringWithShadow(I18n.format(message, doubleValue), x, y += rh, RED);
 			} else {
-				r.drawStringWithShadow(message, x, y += rh, RED);
+				r.drawStringWithShadow(I18n.format(message), x, y += rh, RED);
 			}
 		}
 	}

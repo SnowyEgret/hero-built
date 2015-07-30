@@ -211,6 +211,12 @@ item.spell_menger_sponge.name=Menger Sponge
 item.spell_menger_sponge.description=creates cavities in selection
 item.spell_menger_sponge.pick.0=
 
+item.spell_save.name=Save
+item.spell_save.description=Save selections to file
+item.spell_save.pick.0=origin
+item.spell_save.modifier.ctrl=delete selections
+item.spell_save.message.no_selections=Select blocks to save
+
 item.spell_text.name=Text
 item.spell_text.description=draws text
 item.spell_text.pick.0=location
