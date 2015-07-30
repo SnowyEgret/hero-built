@@ -6,20 +6,25 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-import org.snowyegret.mojo.gui.ITextSetable;
+import org.snowyegret.mojo.gui.ITextInput;
 import org.snowyegret.mojo.player.Player;
 
-public class SpellTextMessageHandler  implements IMessageHandler<SpellTextMessage, IMessage>{
+public class TextInputMessageHandler implements IMessageHandler<TextInputMessage, IMessage> {
 
 	@Override
-	public IMessage onMessage(final SpellTextMessage message, MessageContext ctx) {
+	public IMessage onMessage(final TextInputMessage message, MessageContext ctx) {
 		final EntityPlayerMP player = ctx.getServerHandler().playerEntity;
 		WorldServer server = player.getServerForPlayer();
 		server.addScheduledTask(new Runnable() {
 			public void run() {
 				Player p = new Player(player);
-				ITextSetable s = (ITextSetable) p.getSpell();
-				s.setText(message.getText(), p);
+				ITextInput s = (ITextInput) p.getSpell();
+				String text = message.getText();
+				if (text.equals(TextInputMessage.CANCEL)) {
+					s.cancel(p);
+				} else {
+					s.setText(text, p);
+				}
 			}
 		});
 		return null;

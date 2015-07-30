@@ -2,14 +2,12 @@ package org.snowyegret.mojo.gui;
 
 import java.io.IOException;
 
-import org.lwjgl.input.Keyboard;
-import org.snowyegret.mojo.MoJo;
-import org.snowyegret.mojo.message.server.KeyMessage;
-import org.snowyegret.mojo.message.server.SpellTextMessage;
-import org.snowyegret.mojo.player.Player;
-
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
+
+import org.snowyegret.mojo.MoJo;
+import org.snowyegret.mojo.message.server.TextInputMessage;
+import org.snowyegret.mojo.player.Player;
 
 public class GuiTextInputDialog extends GuiDialog {
 
@@ -33,11 +31,10 @@ public class GuiTextInputDialog extends GuiDialog {
 			text = textField.getText();
 			// TODO GuiTextInputDialog must message server with text on "Ok" #234
 			// We are on the client side. Message server
-			MoJo.network.sendToServer(new SpellTextMessage(text));
-//			ITextSetable s = (ITextSetable) player.getHeldItem();
-//			s.setText(text, player);
+			MoJo.network.sendToServer(new TextInputMessage(text));
 			break;
 		case 1:
+			MoJo.network.sendToServer(new TextInputMessage(TextInputMessage.CANCEL));
 			break;
 		}
 		mc.displayGuiScreen(null);

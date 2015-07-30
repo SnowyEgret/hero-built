@@ -4,14 +4,15 @@ import io.netty.buffer.ByteBuf;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
-public class SpellTextMessage implements IMessage {
+public class TextInputMessage implements IMessage {
 
+	public static final String CANCEL = "cancel";
 	private String text;
 
-	public SpellTextMessage() {
+	public TextInputMessage() {
 	}
 
-	public SpellTextMessage(String text) {
+	public TextInputMessage(String text) {
 		this.text = text;
 	}
 

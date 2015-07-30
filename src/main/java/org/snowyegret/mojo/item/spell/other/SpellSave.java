@@ -12,7 +12,7 @@ import org.snowyegret.mojo.MoJo;
 import org.snowyegret.mojo.block.BlockSavedTileEntity;
 import org.snowyegret.mojo.gui.GuiHandler;
 import org.snowyegret.mojo.gui.GuiTextInputDialog;
-import org.snowyegret.mojo.gui.ITextSetable;
+import org.snowyegret.mojo.gui.ITextInput;
 import org.snowyegret.mojo.item.spell.Spell;
 import org.snowyegret.mojo.item.spell.transform.SpellDelete;
 import org.snowyegret.mojo.message.client.OpenGuiMessage;
@@ -24,7 +24,7 @@ import org.snowyegret.mojo.undo.Transaction;
 import org.snowyegret.mojo.undo.UndoableSetBlock;
 import org.snowyegret.mojo.world.IWorld;
 
-public class SpellSave extends Spell implements ITextSetable {
+public class SpellSave extends Spell implements ITextInput {
 
 	// private BlockPos origin;
 	// TODO is this the right place for this?
@@ -47,10 +47,6 @@ public class SpellSave extends Spell implements ITextSetable {
 
 	@Override
 	public void setText(String text, Player player) {
-		// TODO Cancel mechanism also for SpellText
-		// if (text.equals(GuiTextInputDialog.CANCEL)) {
-		// return;
-		// }
 		SelectionManager sm = player.getSelectionManager();
 		BlockPos origin = sm.firstSelection().getPos();
 		NBTTagCompound tag = new NBTTagCompound();
@@ -72,6 +68,7 @@ public class SpellSave extends Spell implements ITextSetable {
 			e.printStackTrace();
 		}
 		// TODO modifier for delete
+		// TODO move to transaction for undo
 		new SpellDelete().invoke(player);
 		sm.clearSelections();
 
@@ -90,6 +87,12 @@ public class SpellSave extends Spell implements ITextSetable {
 		System.out.println("path=" + path);
 		te.setPath(path);
 
+	}
+
+	@Override
+	public void cancel(Player player) {
+		player.clearPicks();
+		player.clearSelections();
 	}
 
 }

@@ -20,7 +20,7 @@ import net.minecraftforge.fml.common.network.internal.FMLNetworkHandler;
 
 import org.snowyegret.mojo.MoJo;
 import org.snowyegret.mojo.gui.GuiHandler;
-import org.snowyegret.mojo.gui.ITextSetable;
+import org.snowyegret.mojo.gui.ITextInput;
 import org.snowyegret.mojo.item.spell.Spell;
 import org.snowyegret.mojo.message.client.OpenGuiMessage;
 import org.snowyegret.mojo.message.client.SpellMessage;
@@ -31,12 +31,11 @@ import org.snowyegret.mojo.undo.UndoableSetBlock;
 
 import com.google.common.collect.Lists;
 
-public class SpellText extends Spell implements ITextSetable {
+public class SpellText extends Spell implements ITextInput {
 
 	private Graphics graphics;
-	//TODO Move these to player
+	//TODO Move this to player
 	private Font font;
-	private Pick[] picks;
 
 	public SpellText() {
 		super(2);
@@ -57,7 +56,6 @@ public class SpellText extends Spell implements ITextSetable {
 	public void invoke(Player player) {
 		// We are on the server thread and GuiSpellText doesn't have a container
 		player.sendMessage(new OpenGuiMessage(GuiHandler.GUI_SPELL_TEXT));
-		picks = player.getPicks();
 		// Clear the picks because player may have cancelled
 		player.clearPicks();
 	}
@@ -65,6 +63,7 @@ public class SpellText extends Spell implements ITextSetable {
 	@Override
 	public void setText(String text, Player player) {
 
+		Pick[] picks = player.getPicks();
 		Vector3d d = new Vector3d();
 		d.sub(picks[0].point3d(), picks[1].point3d());
 		double angle = new Vector3d(-1, 0, 0).angle(d);
@@ -115,6 +114,12 @@ public class SpellText extends Spell implements ITextSetable {
 			undoables.add(new UndoableSetBlock(p, player.getWorld().getState(p), b));
 		}
 		player.getTransactionManager().doTransaction(undoables);
+	}
+
+	@Override
+	public void cancel(Player player) {
+		player.clearPicks();
+		player.clearSelections();
 	}
 
 	public void setFont(Font font) {
