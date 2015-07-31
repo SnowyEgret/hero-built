@@ -34,15 +34,16 @@ import com.google.common.collect.Lists;
 public class SpellText extends Spell implements ITextInput {
 
 	private Graphics graphics;
-	//TODO Move this to player
-	private Font font;
+
+	// TODO Move this to player
+	// private Font defaultFont;
 
 	public SpellText() {
 		super(2);
-		int fontSize = 24;
-		String fontName = "Arial";
-		int fontStyle = Font.PLAIN;
-		font = new Font(fontName, fontStyle, fontSize);
+		// int fontSize = 24;
+		// String fontName = "Arial";
+		// int fontStyle = Font.PLAIN;
+		// defaultFont = new Font(fontName, fontStyle, fontSize);
 		graphics = new BufferedImage(10, 10, BufferedImage.TYPE_INT_RGB).getGraphics();
 		// font = font.deriveFont(32);
 	}
@@ -57,7 +58,7 @@ public class SpellText extends Spell implements ITextInput {
 		// We are on the server thread and GuiSpellText doesn't have a container
 		player.sendMessage(new OpenGuiMessage(GuiHandler.GUI_SPELL_TEXT));
 		// Clear the picks because player may have cancelled
-		player.clearPicks();
+		// player.clearPicks();
 	}
 
 	@Override
@@ -72,6 +73,11 @@ public class SpellText extends Spell implements ITextInput {
 		// font = font.deriveFont(transform);
 		System.out.println("angle=" + angle);
 
+		Font font = player.getFont();
+		System.out.println("font=" + font);
+		// if (font == null) {
+		// font = this.defaultFont;
+		// }
 		graphics.setFont(font);
 		FontMetrics fm = graphics.getFontMetrics();
 		Rectangle2D r = fm.getStringBounds(text, graphics);
@@ -104,7 +110,6 @@ public class SpellText extends Spell implements ITextInput {
 			}
 		}
 
-		System.out.println("size=" + positions.size());
 		player.clearSelections();
 		player.clearPicks();
 
@@ -114,6 +119,10 @@ public class SpellText extends Spell implements ITextInput {
 			undoables.add(new UndoableSetBlock(p, player.getWorld().getState(p), b));
 		}
 		player.getTransactionManager().doTransaction(undoables);
+
+		// TODO message player with number blocks added
+		// Message player after transaction with number of blocks added/changed/deleted #271
+		System.out.println("size=" + positions.size());
 	}
 
 	@Override
@@ -122,11 +131,11 @@ public class SpellText extends Spell implements ITextInput {
 		player.clearSelections();
 	}
 
-	public void setFont(Font font) {
-		this.font = font;
-	}
-
-	public Font getFont() {
-		return font;
-	}
+	// public void setDefaultFont(Font font) {
+	// this.defaultFont = font;
+	// }
+	//
+	// public Font getDefaultFont() {
+	// return defaultFont;
+	// }
 }

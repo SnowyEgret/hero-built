@@ -11,6 +11,8 @@ import org.snowyegret.mojo.player.Player;
 
 public class GuiTextInputDialog extends GuiDialog {
 
+	private static final int OK = 0;
+	private static final int CANCEL = 1;
 	private GuiTextField textField;
 	private String text;
 	private final int margin = 20;
@@ -27,13 +29,13 @@ public class GuiTextInputDialog extends GuiDialog {
 	@Override
 	protected void actionPerformed(GuiButton button) {
 		switch (button.id) {
-		case 0:
+		case OK:
 			text = textField.getText();
 			// TODO GuiTextInputDialog must message server with text on "Ok" #234
 			// We are on the client side. Message server
 			MoJo.network.sendToServer(new TextInputMessage(text));
 			break;
-		case 1:
+		case CANCEL:
 			MoJo.network.sendToServer(new TextInputMessage(TextInputMessage.CANCEL));
 			break;
 		}

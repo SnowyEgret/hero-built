@@ -30,4 +30,13 @@ public class TextInputMessage implements IMessage {
 		return text;
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("TextInputMessage [text=");
+		builder.append(text);
+		builder.append("]");
+		return builder.toString();
+	}
+
 }

@@ -1,5 +1,6 @@
 package org.snowyegret.mojo.player;
 
+import java.awt.Font;
 import java.util.List;
 
 import net.minecraft.client.Minecraft;
@@ -209,6 +210,14 @@ public class Player {
 
 	public Spell getLastInvokedSpell() {
 		return props.getLastInvokedSpell();
+	}
+
+	public void setFont(Font font) {
+		props.setFont(font);
+	}
+
+	public Font getFont() {
+		return props.getFont();
 	}
 
 	public void setBlockSavedPath(String blockSavedPath) {

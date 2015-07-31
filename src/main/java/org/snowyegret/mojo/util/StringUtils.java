@@ -1,5 +1,7 @@
 package org.snowyegret.mojo.util;
 
+import java.awt.Font;
+
 import com.google.common.base.CaseFormat;
 
 public class StringUtils {
@@ -25,5 +27,15 @@ public class StringUtils {
 
 	private String idOf(Object o) {
 		return o.getClass().getSimpleName() + "@" + Integer.toHexString(o.hashCode());
+	}
+
+	public static String encodeFont(Font font) {
+		StringBuilder builder = new StringBuilder();
+		builder.append(font.getFontName());
+		builder.append("-");
+		builder.append(font.getStyle());
+		builder.append("-");
+		builder.append(font.getSize());
+		return builder.toString();
 	}
 }

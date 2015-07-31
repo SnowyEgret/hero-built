@@ -1,5 +1,7 @@
 package org.snowyegret.mojo.player;
 
+import java.awt.Font;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -9,14 +11,16 @@ import net.minecraftforge.common.IExtendedEntityProperties;
 import org.snowyegret.mojo.MoJo;
 import org.snowyegret.mojo.item.spell.Modifiers;
 import org.snowyegret.mojo.item.spell.Spell;
-import org.snowyegret.mojo.item.spell.matrix.SpellCopy;
 import org.snowyegret.mojo.pick.PickManager;
 import org.snowyegret.mojo.select.SelectionManager;
 import org.snowyegret.mojo.undo.TransactionManager;
+import org.snowyegret.mojo.util.StringUtils;
 
 public class PlayerProperties implements IExtendedEntityProperties {
 
+	private Player player;
 	public final static String NAME = "PlayerProperties";
+	private static final String KEY_FONT = "font";
 
 	private Modifiers modifiers;
 	private SelectionManager selectionManager;
@@ -25,10 +29,8 @@ public class PlayerProperties implements IExtendedEntityProperties {
 	private Clipboard clipboard;
 	private Spell lastSpell;
 	private Spell lastInvokedSpell;
-
-	private Player player;
-
 	private String blockSavedPath;
+	private Font font;
 
 	public PlayerProperties(EntityPlayer entity) {
 		player = new Player(entity);
@@ -52,10 +54,18 @@ public class PlayerProperties implements IExtendedEntityProperties {
 
 	@Override
 	public void saveNBTData(NBTTagCompound tag) {
+		if (font != null) {
+			tag.setString(KEY_FONT, StringUtils.encodeFont(font));
+		}
 	}
 
 	@Override
 	public void loadNBTData(NBTTagCompound tag) {
+		String fontString = tag.getString(KEY_FONT);
+		if (fontString != null) {
+			font = Font.decode(fontString);
+		}
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>tag=" + tag);
 	}
 
 	@Override
@@ -65,6 +75,10 @@ public class PlayerProperties implements IExtendedEntityProperties {
 		pickManager = new PickManager(player, MoJo.blockPicked);
 		transactionManager = new TransactionManager(player);
 		clipboard = new Clipboard();
+		int fontSize = 24;
+		String fontName = "Arial";
+		int fontStyle = Font.PLAIN;
+		font = new Font(fontName, fontStyle, fontSize);
 	}
 
 	public void setLastSpell(Spell spell) {
@@ -93,6 +107,14 @@ public class PlayerProperties implements IExtendedEntityProperties {
 
 	public String getBlockSavedPath() {
 		return blockSavedPath;
+	}
+
+	public void setFont(Font font) {
+		this.font = font;
+	}
+
+	public Font getFont() {
+		return font;
 	}
 
 }

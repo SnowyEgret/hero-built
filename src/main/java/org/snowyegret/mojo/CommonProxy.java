@@ -53,6 +53,8 @@ import org.snowyegret.mojo.message.server.KeyMessage;
 import org.snowyegret.mojo.message.server.KeyMessageHandler;
 import org.snowyegret.mojo.message.server.MouseClickMessage;
 import org.snowyegret.mojo.message.server.MouseClickMessageHandler;
+import org.snowyegret.mojo.message.server.PlayerSetFontMessage;
+import org.snowyegret.mojo.message.server.PlayerSetFontMessageHandler;
 import org.snowyegret.mojo.message.server.TextInputMessage;
 import org.snowyegret.mojo.message.server.TextInputMessageHandler;
 import org.snowyegret.mojo.util.StringUtils;
@@ -153,6 +155,7 @@ public class CommonProxy {
 		MoJo.network.registerMessage(ClearManagersMessageHandler.class, ClearManagersMessage.class, 1, Side.SERVER);
 		MoJo.network.registerMessage(MouseClickMessageHandler.class, MouseClickMessage.class, 2, Side.SERVER);
 		MoJo.network.registerMessage(TextInputMessageHandler.class, TextInputMessage.class, 3, Side.SERVER);
+		MoJo.network.registerMessage(PlayerSetFontMessageHandler.class, PlayerSetFontMessage.class, 4, Side.SERVER);
 
 		// Messages to client
 		MoJo.network.registerMessage(SelectionMessageHandler.class, SelectionMessage.class, 10, Side.CLIENT);
@@ -164,6 +167,7 @@ public class CommonProxy {
 	public void setCustomStateMappers() {
 	}
 
+	
 	public void registerGuiHandler() {
 		NetworkRegistry.INSTANCE.registerGuiHandler(MoJo.instance, new GuiHandler());
 	}
