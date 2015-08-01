@@ -72,7 +72,7 @@ public class BlockSaved extends Block implements ITileEntityProvider {
 			return;
 		}
 		String path = t.getString(KEY_PATH);
-		// System.out.println("path=" + path);
+		System.out.println("path=" + path);
 
 		NBTTagCompound tag = null;
 		try {

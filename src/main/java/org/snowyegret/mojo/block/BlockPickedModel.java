@@ -18,7 +18,7 @@ import net.minecraftforge.common.property.IExtendedBlockState;
 public class BlockPickedModel implements ISmartBlockModel {
 
 	private IBakedModel model;
-	private final int COLOR = new Color(255, 200, 200).getRGB();
+	private static final int COLOR = new Color(255, 200, 200).getRGB();
 
 	@Override
 	public IBakedModel handleBlockState(IBlockState state) {

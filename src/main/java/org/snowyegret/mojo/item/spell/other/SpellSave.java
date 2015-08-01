@@ -1,9 +1,14 @@
 package org.snowyegret.mojo.item.spell.other;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
 
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.BlockPos;
@@ -11,22 +16,23 @@ import net.minecraft.util.BlockPos;
 import org.snowyegret.mojo.MoJo;
 import org.snowyegret.mojo.block.BlockSavedTileEntity;
 import org.snowyegret.mojo.gui.GuiHandler;
-import org.snowyegret.mojo.gui.GuiTextInputDialog;
 import org.snowyegret.mojo.gui.ITextInput;
+import org.snowyegret.mojo.item.spell.Modifier;
 import org.snowyegret.mojo.item.spell.Spell;
-import org.snowyegret.mojo.item.spell.transform.SpellDelete;
 import org.snowyegret.mojo.message.client.OpenGuiMessage;
 import org.snowyegret.mojo.message.client.SpellMessage;
 import org.snowyegret.mojo.player.Player;
 import org.snowyegret.mojo.select.Selection;
 import org.snowyegret.mojo.select.SelectionManager;
+import org.snowyegret.mojo.undo.IUndoable;
 import org.snowyegret.mojo.undo.Transaction;
 import org.snowyegret.mojo.undo.UndoableSetBlock;
 import org.snowyegret.mojo.world.IWorld;
 
+import com.google.common.collect.Lists;
+
 public class SpellSave extends Spell implements ITextInput {
 
-	// private BlockPos origin;
 	// TODO is this the right place for this?
 	public static final String KEY_SIZE = "size";
 	public static final String KEY_ORIGIN = "origin";
@@ -47,6 +53,7 @@ public class SpellSave extends Spell implements ITextInput {
 
 	@Override
 	public void setText(String text, Player player) {
+
 		SelectionManager sm = player.getSelectionManager();
 		BlockPos origin = sm.firstSelection().getPos();
 		NBTTagCompound tag = new NBTTagCompound();
@@ -58,41 +65,54 @@ public class SpellSave extends Spell implements ITextInput {
 			i++;
 		}
 
-		File file = null;
+		// Write tag to file
+		// File file = null;
+		Path path = null;
 		try {
-			file = File.createTempFile(text, ".save");
-			// file = Files.createFile(Paths.get(text+".save"), null);
-			file.deleteOnExit();
-			CompressedStreamTools.writeCompressed(tag, new FileOutputStream(file));
+			// file = File.createTempFile(text, ".save");
+			path = Files.createFile(Paths.get("saves", text + origin.toLong() + ".save"));
+			CompressedStreamTools.writeCompressed(tag, new FileOutputStream(path.toFile()));
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.out.println(e);
+			player.clearSelections();
+			player.clearPicks();
+			return;
 		}
-		// TODO modifier for delete
-		// TODO move to transaction for undo
-		new SpellDelete().invoke(player);
-		sm.clearSelections();
+		System.out.println("path=" + path);
 
-		// TODO should there be a player.doTransaction(IUndoable)?
-		// Same for KeyMessageHandler case PASTE:
-		// TODO deletes should be in same transaction
-		// String path = file.getPath();
+		// Delete original
+		List<IUndoable> deletes = Lists.newArrayList();
+		// FIXME If the selections are not deleted, BlockSaved will be placed at position of first selection and the
+		// TileEntity will be PrevStateTileEntity instead of BlockSavedTileEntity
+		// boolean deleteSelections = player.getModifiers().isPressed(Modifier.CTRL);
+		boolean deleteSelections = true;
+		if (deleteSelections) {
+			final IBlockState air = Blocks.air.getDefaultState();
+			for (Selection s : sm.getSelections()) {
+				deletes.add(new UndoableSetBlock(s.getPos(), s.getState(), air));
+			}
+		}
+
+		player.clearSelections();
+		player.clearPicks();
 
 		Transaction t = new Transaction();
+		t.addAll(deletes);
 		t.add(new UndoableSetBlock(origin, player.getWorld().getState(origin), MoJo.blockSaved.getDefaultState()));
 		t.dO(player);
 
+		// Write path to tile entity
 		IWorld w = player.getWorld();
 		BlockSavedTileEntity te = (BlockSavedTileEntity) w.getTileEntity(origin);
-		String path = file.getPath();
-		System.out.println("path=" + path);
-		te.setPath(path);
-
+		// String path = file.getPath();
+		te.setPath(path.toString());
+		System.out.println("te=" + te);
 	}
 
 	@Override
 	public void cancel(Player player) {
-		player.clearPicks();
 		player.clearSelections();
+		player.clearPicks();
 	}
 
 }

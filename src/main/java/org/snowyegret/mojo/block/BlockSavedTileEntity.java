@@ -50,4 +50,13 @@ public class BlockSavedTileEntity extends TileEntity {
 		super.readFromNBT(pkt.getNbtCompound());
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("BlockSavedTileEntity [path=");
+		builder.append(path);
+		builder.append("]");
+		return builder.toString();
+	}
+
 }
