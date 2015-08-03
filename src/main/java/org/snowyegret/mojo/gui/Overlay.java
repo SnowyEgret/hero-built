@@ -73,19 +73,20 @@ public class Overlay {
 				int dy = displacement.getY();
 				int dz = displacement.getZ();
 				if (dx != 0) {
-					r.drawStringWithShadow(((dx > 0) ? "East" : "West") + ": " + (Math.abs(dx)), x, y += rh, RED);
+					r.drawStringWithShadow(((dx > 0) ? I18n.format("east") : I18n.format("west")) + ": " + (Math.abs(dx)), x, y += rh, RED);
 				}
 				if (dz != 0) {
-					r.drawStringWithShadow(((dz > 0) ? "North" : "South") + ": " + (Math.abs(dz)), x, y += rh, RED);
+					r.drawStringWithShadow(((dz > 0) ? I18n.format("north") : I18n.format("south")) + ": " + (Math.abs(dz)), x, y += rh, RED);
 				}
 				if (dy != 0) {
-					r.drawStringWithShadow(((dy > 0) ? "Down" : "Up") + ": " + (Math.abs(dy)), x, y += rh, RED);
+					r.drawStringWithShadow(((dy > 0) ? I18n.format("down") : I18n.format("up")) + ": " + (Math.abs(dy)), x, y += rh, RED);
 				}
 			}
 		}
 
 		if (EventHandlerClient.selectionInfo.getSize() != 0) {
-			r.drawStringWithShadow("Selections: " + EventHandlerClient.selectionInfo.getSize(), x, y += rh, RED);
+			//r.drawStringWithShadow("Selections: " + EventHandlerClient.selectionInfo.getSize(), x, y += rh, RED);
+			r.drawStringWithShadow(I18n.format("selection_info.size", EventHandlerClient.selectionInfo.getSize()), x, y += rh, RED);
 		}
 
 		// TODO SpellFillRandom should set message
@@ -94,7 +95,7 @@ public class Overlay {
 		}
 
 		if (MouseHandler.isOrbiting) {
-			r.drawStringWithShadow(player.getDirection().toString().toLowerCase(), x, y += rh, BLUE);
+			r.drawStringWithShadow(I18n.format(player.getDirection().toString().toLowerCase()), x, y += rh, BLUE);
 		}
 
 //		if (doubleValue != null) {
