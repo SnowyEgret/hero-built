@@ -82,14 +82,13 @@ public class MouseHandler {
 			return;
 		}
 
-		// Set orbiting and orbit centroid
+		// Setup orbiting
 		if (e.button == 2) {
 			if (e.buttonstate) {
-				if (EventHandlerClient.selectionInfo.getSize() != 0) {
-					isOrbiting = true;
-					BlockPos c = EventHandlerClient.selectionInfo.getCentroid();
-					centroid = new Vec3(c.getX(), c.getY(), c.getZ());
-				}
+				BlockPos c = (EventHandlerClient.selectionInfo.getSize() != 0) ? EventHandlerClient.selectionInfo
+						.getCentroid() : cursor.getBlockPos();
+				centroid = new Vec3(c.getX(), c.getY(), c.getZ());
+				isOrbiting = true;
 			} else {
 				isOrbiting = false;
 			}
