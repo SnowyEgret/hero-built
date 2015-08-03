@@ -16,6 +16,7 @@ import net.minecraft.util.Vec3;
 import org.snowyegret.geom.IntegerDomain;
 import org.snowyegret.geom.VoxelSet;
 import org.snowyegret.mojo.block.BlockPicked;
+import org.snowyegret.mojo.block.BlockSaved;
 import org.snowyegret.mojo.block.BlockSelected;
 import org.snowyegret.mojo.block.PrevStateTileEntity;
 import org.snowyegret.mojo.message.client.SelectionMessage;
@@ -171,7 +172,13 @@ public class SelectionManager {
 			// System.out.println("BlockAir. Returning null.");
 			return null;
 		}
-
+		
+		// Selecting a BlockSaved deletes it's tile entity.
+		// No reason to select
+		if (b instanceof BlockSaved) {
+			return null;
+		}
+		
 		if (b instanceof BlockSelected) {
 			// Implementation of: Find a way to restore selected blocks to their previous state when they are left in
 			// world after a crash #173
