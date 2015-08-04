@@ -199,7 +199,9 @@ public class BlockSaved extends Block implements ITileEntityProvider {
 			// Delay deletion of the block until after getDrops
 			return true;
 		}
-		//if (player.get)
+		if (player.capabilities.isCreativeMode) {
+			harvestBlock(world, player, pos, this.getDefaultState(), null);
+		}
 		return super.removedByPlayer(world, pos, player, willHarvest);
 	}
 
