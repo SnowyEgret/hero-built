@@ -9,6 +9,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
@@ -35,12 +36,12 @@ public class Player {
 	private PlayerProperties props;
 	private String blockSavedPath;
 
-	public enum Direction {
-		NORTH,
-		SOUTH,
-		EAST,
-		WEST;
-	}
+//	public enum Direction {
+//		NORTH,
+//		SOUTH,
+//		EAST,
+//		WEST;
+//	}
 
 	public Player(EntityPlayer player) {
 		this.player = player;
@@ -66,42 +67,43 @@ public class Player {
 		return new Hotbar(player.inventory);
 	}
 
-	public Direction getDirection() {
-		int yaw = (int) (player.rotationYawHead);
-		yaw += (yaw >= 0) ? 45 : -45;
-		yaw /= 90;
-		int modulus = yaw % 4;
-		Direction direction = null;
-		switch (modulus) {
-		case 0:
-			direction = Direction.SOUTH;
-			break;
-		case 1:
-			direction = Direction.WEST;
-			break;
-		case -1:
-			direction = Direction.EAST;
-			break;
-		case 2:
-			direction = Direction.NORTH;
-			break;
-		case -2:
-			direction = Direction.NORTH;
-			break;
-		case 3:
-			direction = Direction.EAST;
-			break;
-		case -3:
-			direction = Direction.WEST;
-			break;
-		default:
-			throw new RuntimeException("Unexpected modulus. Got " + modulus);
-		}
-		return direction;
-	}
+//	public Direction getDirection() {
+//		int yaw = (int) (player.rotationYawHead);
+//		yaw += (yaw >= 0) ? 45 : -45;
+//		yaw /= 90;
+//		int modulus = yaw % 4;
+//		Direction direction = null;
+//		switch (modulus) {
+//		case 0:
+//			direction = Direction.SOUTH;
+//			break;
+//		case 1:
+//			direction = Direction.WEST;
+//			break;
+//		case -1:
+//			direction = Direction.EAST;
+//			break;
+//		case 2:
+//			direction = Direction.NORTH;
+//			break;
+//		case -2:
+//			direction = Direction.NORTH;
+//			break;
+//		case 3:
+//			direction = Direction.EAST;
+//			break;
+//		case -3:
+//			direction = Direction.WEST;
+//			break;
+//		default:
+//			throw new RuntimeException("Unexpected modulus. Got " + modulus);
+//		}
+//		return direction;
+//	}
 
 	public EnumPlane getVerticalPlane() {
-		switch (getDirection()) {
+		//switch (getDirection()) {
+		switch (getHorizonatalFacing()) {
 		case EAST:
 			return EnumPlane.VERTICAL_XY_EAST_WEST;
 		case WEST:
@@ -272,6 +274,10 @@ public class Player {
 
 	public void sendMessage(IMessage message) {
 		MoJo.network.sendTo(message, (EntityPlayerMP) player);
+	}
+
+	public EnumFacing getHorizonatalFacing() {
+		return player.getHorizontalFacing();
 	}
 
 }

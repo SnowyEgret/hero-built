@@ -174,7 +174,7 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 
 	private void copy(Player player, int leftRight, int upDown) {
 		BlockPos to = null;
-		switch (player.getDirection()) {
+		switch (player.getHorizonatalFacing()) {
 		case NORTH:
 			to = new BlockPos(leftRight, 0, upDown);
 			break;
@@ -187,7 +187,23 @@ public class KeyMessageHandler implements IMessageHandler<KeyMessage, IMessage> 
 		case WEST:
 			to = new BlockPos(upDown, 0, -leftRight);
 			break;
+		default:
+			break;
 		}
+//		switch (player.getDirection()) {
+//		case NORTH:
+//			to = new BlockPos(leftRight, 0, upDown);
+//			break;
+//		case SOUTH:
+//			to = new BlockPos(-leftRight, 0, -upDown);
+//			break;
+//		case EAST:
+//			to = new BlockPos(-upDown, 0, leftRight);
+//			break;
+//		case WEST:
+//			to = new BlockPos(upDown, 0, -leftRight);
+//			break;
+//		}
 		SpellCopy s = new SpellCopy();
 		// So far this is the only place this is being used
 		// Reslects will be selected in Transation.dO

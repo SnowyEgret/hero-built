@@ -95,7 +95,8 @@ public class Overlay {
 		}
 
 		if (MouseHandler.isOrbiting) {
-			r.drawStringWithShadow(I18n.format(player.getDirection().toString().toLowerCase()), x, y += rh, BLUE);
+			//r.drawStringWithShadow(I18n.format(player.getDirection().toString().toLowerCase()), x, y += rh, BLUE);
+			r.drawStringWithShadow(I18n.format(player.getHorizonatalFacing().toString().toLowerCase()), x, y += rh, BLUE);
 		}
 
 //		if (doubleValue != null) {
