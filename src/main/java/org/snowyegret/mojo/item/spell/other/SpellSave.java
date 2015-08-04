@@ -16,7 +16,7 @@ import net.minecraft.util.BlockPos;
 
 import org.snowyegret.mojo.MoJo;
 import org.snowyegret.mojo.block.BlockSavedTileEntity;
-import org.snowyegret.mojo.block.BlockSavedModel;
+import org.snowyegret.mojo.block.GeneratedModel;
 import org.snowyegret.mojo.gui.GuiHandler;
 import org.snowyegret.mojo.gui.ITextInput;
 import org.snowyegret.mojo.item.spell.Spell;

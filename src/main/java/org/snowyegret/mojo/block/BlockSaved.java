@@ -106,7 +106,7 @@ public class BlockSaved extends Block implements ITileEntityProvider {
 
 	@Override
 	public CreativeTabs getCreativeTabToDisplayOn() {
-		return CommonProxy.tabSpells;
+		return CommonProxy.tabMoJo;
 	}
 
 	@Override
@@ -199,6 +199,8 @@ public class BlockSaved extends Block implements ITileEntityProvider {
 			// Delay deletion of the block until after getDrops
 			return true;
 		}
+		// Implementation of issue: BlockSaved drops in creative mode #263
+		// http://www.minecraftforge.net/forum/index.php/topic,32700.0.html
 		if (player.capabilities.isCreativeMode) {
 			harvestBlock(world, player, pos, this.getDefaultState(), null);
 		}

@@ -14,8 +14,8 @@ import org.snowyegret.mojo.geom.EnumPlane;
 
 public class Pick {
 
-	private static final String POS_KEY = "p";
-	private static final String STATE_KEY = "s";
+	private static final String POS_KEY = "pos";
+	private static final String STATE_KEY = "state";
 	
 	private BlockPos pos;
 	public EnumFacing side;

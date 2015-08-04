@@ -65,11 +65,12 @@ import com.google.common.reflect.ClassPath.ClassInfo;
 
 public class CommonProxy {
 
-	public static CreativeTabs tabSpells;
+	public static CreativeTabs tabMoJo;
 	static {
-		tabSpells = new CreativeTabs("tabSpells") {
+		tabMoJo = new CreativeTabs("Mo'Jo") {
 			@Override
 			public Item getTabIconItem() {
+				// TODO replace this with someting from Mojo
 				return Items.glass_bottle;
 			}
 
@@ -88,8 +89,14 @@ public class CommonProxy {
 
 	protected List<Item> items = Lists.newArrayList();
 
-	private final List<Class<? extends ItemBase>> itemsExcluded = Lists.newArrayList(Staff.class, SpellDelete.class,
-			SpellDivide.class, SpellSpline.class, SpellDivide.class);
+	private final List<Class<? extends ItemBase>> itemsExcluded = Lists.newArrayList(
+			// @formatter:off
+			Staff.class, 
+			SpellDelete.class,
+			SpellSpline.class, 
+			SpellDivide.class
+			// @formatter:on
+			);
 
 	public void registerEventHandlers() {
 		MinecraftForge.EVENT_BUS.register(new EventHandlerClient());
@@ -215,7 +222,7 @@ public class CommonProxy {
 		// We are using this method to load class Staff to use it's model as a base model.
 		// We don't want it to be part of the game
 		if (!itemsExcluded.contains(item.getClass())) {
-			item.setCreativeTab(tabSpells);
+			item.setCreativeTab(tabMoJo);
 		} else {
 			System.out.println("Excluded " + name + " from creative tabs");
 		}

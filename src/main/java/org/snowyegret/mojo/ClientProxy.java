@@ -31,7 +31,6 @@ public class ClientProxy extends CommonProxy {
 
 	@Override
 	public void setCustomStateMappers() {
-		// Create custom state mappers for BlockSelected and BlockPicked models
 		ModelLoader.setCustomStateMapper(MoJo.blockSelected, new StateMapperBase() {
 			@Override
 			protected ModelResourceLocation getModelResourceLocation(IBlockState iBlockState) {

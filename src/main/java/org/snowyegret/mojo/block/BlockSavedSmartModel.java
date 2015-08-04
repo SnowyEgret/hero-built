@@ -59,7 +59,7 @@ public class BlockSavedSmartModel implements ISmartBlockModel {
 		String path = ((IExtendedBlockState) state).getValue(BlockSaved.PROPERTY_PATH);
 		if (!models.containsKey(path)) {
 			System.out.println("Creating model for path=" + path);
-			models.put(path, new BlockSavedModel(path));
+			models.put(path, new GeneratedModel(path));
 		}
 		// Seems we can lookup a null string. Model will just have no quads
 		model = models.get(path);
