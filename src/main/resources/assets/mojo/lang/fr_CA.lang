@@ -1,5 +1,15 @@
 #Aucunes éspaces avant ou apres =
 
+west=Ouest
+north=Nord
+south=Sud
+east=Est
+down=En bas
+up=En haut
+
+selection_info.size=Sélections: %d
+
+
 # Bâtons ##########
 
 item.staff.name=Bâton

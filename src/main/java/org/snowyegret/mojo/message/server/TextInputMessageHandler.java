@@ -17,7 +17,7 @@ public class TextInputMessageHandler implements IMessageHandler<TextInputMessage
 		WorldServer server = player.getServerForPlayer();
 		server.addScheduledTask(new Runnable() {
 			public void run() {
-				System.out.println("message=" + message);
+				//System.out.println("message=" + message);
 				Player p = new Player(player);
 				ITextInput s = (ITextInput) p.getSpell();
 				String text = message.getText();

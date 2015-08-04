@@ -51,7 +51,7 @@ public class MouseClickMessageHandler implements IMessageHandler<MouseClickMessa
 	// Private------------------------------------------------------------
 
 	private void processMessage(MouseClickMessage message, EntityPlayerMP playerIn) {
-		System.out.println("message=" + message);
+		//System.out.println("message=" + message);
 		Player player = new Player(playerIn);
 		SelectionManager selectionManager = player.getSelectionManager();
 		MovingObjectType typeOfHit = message.getTypeOfHit();

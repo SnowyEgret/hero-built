@@ -22,6 +22,7 @@ import org.snowyegret.mojo.select.Selection;
 import org.snowyegret.mojo.util.ResourcePack;
 import org.snowyegret.mojo.util.StringUtils;
 
+// TODO Could instead generate the model like BlockSavedModel
 // http://greyminecraftcoder.blogspot.ca/2014/12/block-models-18.html
 public class SpellCreateModel extends Spell {
 

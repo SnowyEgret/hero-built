@@ -15,6 +15,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.snowyegret.mojo.MoJo;
 import org.snowyegret.mojo.block.BlockPicked;
 import org.snowyegret.mojo.block.BlockPickedModel;
+import org.snowyegret.mojo.block.BlockSaved;
+import org.snowyegret.mojo.block.BlockSavedSmartModel;
 import org.snowyegret.mojo.block.BlockSelected;
 import org.snowyegret.mojo.block.BlockSelectedModel;
 import org.snowyegret.mojo.gui.Overlay;
@@ -89,6 +91,7 @@ public class EventHandlerClient {
 		IRegistry r = event.modelRegistry;
 		r.putObject(ModelResourceLocations.get(BlockSelected.class), new BlockSelectedModel());
 		r.putObject(ModelResourceLocations.get(BlockPicked.class), new BlockPickedModel());
+		r.putObject(ModelResourceLocations.get(BlockSaved.class), new BlockSavedSmartModel());
 
 		// Prepared in ClientProxy.registerItemModels
 		Object baseModel = event.modelRegistry.getObject(ModelResourceLocations.get(Staff.class));

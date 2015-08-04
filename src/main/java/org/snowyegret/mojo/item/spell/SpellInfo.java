@@ -21,10 +21,10 @@ public class SpellInfo {
 	private Map<String, String> modifiers = new HashMap<>();
 
 	public SpellInfo(Spell spell) {
-		//root = "item." + StringUtils.nameFor(spell.getClass()) + ".";
+		// root = "item." + StringUtils.nameFor(spell.getClass()) + ".";
 		root = "item." + StringUtils.underscoreNameFor(spell.getClass()) + ".";
-		name = format("name");
-		description = format("description");
+		name = prepend("name");
+		description = prepend("description");
 		addPicks(spell.getNumPicks());
 	}
 
@@ -32,25 +32,25 @@ public class SpellInfo {
 		for (Modifier modifier : modifiers) {
 			switch (modifier) {
 			case CTRL:
-				this.modifiers.put("ctrl", format("modifier.ctrl"));
+				this.modifiers.put("ctrl", prepend("modifier.ctrl"));
 				break;
 			case ALT:
-				this.modifiers.put("alt", format("modifier.alt"));
+				this.modifiers.put("alt", prepend("modifier.alt"));
 				break;
 			case SHIFT:
-				this.modifiers.put("shift", format("modifier.shift"));
+				this.modifiers.put("shift", prepend("modifier.shift"));
 				break;
 			case X:
-				this.modifiers.put("x", format("modifier.x"));
+				this.modifiers.put("x", prepend("modifier.x"));
 				break;
 			case Y:
-				this.modifiers.put("y", format("modifier.y"));
+				this.modifiers.put("y", prepend("modifier.y"));
 				break;
 			case Z:
-				this.modifiers.put("z", format("modifier.z"));
+				this.modifiers.put("z", prepend("modifier.z"));
 				break;
 			case SPACE:
-				this.modifiers.put("space", format("modifier.space"));
+				this.modifiers.put("space", prepend("modifier.space"));
 				break;
 			default:
 				break;
@@ -110,13 +110,15 @@ public class SpellInfo {
 		return builder.toString();
 	}
 
-	private String format(String string) {
+	// Private--------------------------------------------------------------------
+
+	private String prepend(String string) {
 		return root + string;
 	}
 
 	private void addPicks(int numPicks) {
 		for (int i = 0; i < numPicks; i++) {
-			String s = format("pick." + picks.size());
+			String s = prepend("pick." + picks.size());
 			picks.add(s);
 		}
 	}

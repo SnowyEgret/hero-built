@@ -1,21 +1,21 @@
 package org.snowyegret.mojo;
 
-import net.minecraft.block.state.IBlockState;
+import java.util.Map;
+
+import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 
 import org.snowyegret.mojo.block.BlockPicked;
 import org.snowyegret.mojo.block.BlockSaved;
 import org.snowyegret.mojo.block.BlockSelected;
-import org.snowyegret.mojo.gui.GuiHandler;
-import org.snowyegret.mojo.gui.PickInfo;
-import org.snowyegret.mojo.gui.SelectionInfo;
+
+import com.google.common.collect.Maps;
 
 @Mod(modid = MoJo.MODID, name = MoJo.NAME, version = MoJo.VERSION)
 public class MoJo {

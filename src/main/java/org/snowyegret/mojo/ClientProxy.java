@@ -7,17 +7,10 @@ import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 import org.snowyegret.mojo.block.BlockPicked;
+import org.snowyegret.mojo.block.BlockSaved;
 import org.snowyegret.mojo.block.BlockSelected;
-import org.snowyegret.mojo.event.EventHandlerClient;
-import org.snowyegret.mojo.event.EventHandlerServer;
-import org.snowyegret.mojo.event.KeyHandler;
-import org.snowyegret.mojo.event.MouseHandler;
-import org.snowyegret.mojo.gui.GuiHandler;
 import org.snowyegret.mojo.util.ModelResourceLocations;
 
 public class ClientProxy extends CommonProxy {
@@ -49,6 +42,12 @@ public class ClientProxy extends CommonProxy {
 			@Override
 			protected ModelResourceLocation getModelResourceLocation(IBlockState iBlockState) {
 				return ModelResourceLocations.get(BlockPicked.class);
+			}
+		});
+		ModelLoader.setCustomStateMapper(MoJo.blockSaved, new StateMapperBase() {
+			@Override
+			protected ModelResourceLocation getModelResourceLocation(IBlockState iBlockState) {
+				return ModelResourceLocations.get(BlockSaved.class);
 			}
 		});
 	}

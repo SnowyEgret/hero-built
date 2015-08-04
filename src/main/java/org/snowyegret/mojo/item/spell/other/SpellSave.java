@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.util.List;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
@@ -15,9 +16,9 @@ import net.minecraft.util.BlockPos;
 
 import org.snowyegret.mojo.MoJo;
 import org.snowyegret.mojo.block.BlockSavedTileEntity;
+import org.snowyegret.mojo.block.BlockSavedModel;
 import org.snowyegret.mojo.gui.GuiHandler;
 import org.snowyegret.mojo.gui.ITextInput;
-import org.snowyegret.mojo.item.spell.Modifier;
 import org.snowyegret.mojo.item.spell.Spell;
 import org.snowyegret.mojo.message.client.OpenGuiMessage;
 import org.snowyegret.mojo.message.client.SpellMessage;
@@ -66,10 +67,8 @@ public class SpellSave extends Spell implements ITextInput {
 		}
 
 		// Write tag to file
-		// File file = null;
 		Path path = null;
 		try {
-			// file = File.createTempFile(text, ".save");
 			path = Files.createFile(Paths.get("saves", text + origin.toLong() + ".save"));
 			CompressedStreamTools.writeCompressed(tag, new FileOutputStream(path.toFile()));
 		} catch (IOException e) {
@@ -78,7 +77,11 @@ public class SpellSave extends Spell implements ITextInput {
 			player.clearPicks();
 			return;
 		}
-		System.out.println("path=" + path);
+		//System.out.println("path=" + path);
+
+		// Create a model
+		// IBakedModel model = new SpellSavedModel(sm.getSelections());
+		// MoJo.models.put(path.toString(), model);
 
 		// Delete original
 		List<IUndoable> deletes = Lists.newArrayList();
@@ -104,9 +107,8 @@ public class SpellSave extends Spell implements ITextInput {
 		// Write path to tile entity
 		IWorld w = player.getWorld();
 		BlockSavedTileEntity te = (BlockSavedTileEntity) w.getTileEntity(origin);
-		// String path = file.getPath();
 		te.setPath(path.toString());
-		System.out.println("te=" + te);
+		//System.out.println("te=" + te);
 	}
 
 	@Override

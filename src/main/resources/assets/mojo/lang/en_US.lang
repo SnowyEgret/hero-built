@@ -1,5 +1,14 @@
 #No spaces before or after =
 
+west=West
+north=North
+south=South
+east=East
+down=Down
+up=Up
+
+selection_info.size=Selections: %d
+
 # Staffs ##########
 
 item.staff.name=Staff
