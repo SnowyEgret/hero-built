@@ -2,6 +2,7 @@ package org.snowyegret.mojo.event;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.MovingObjectPosition;
@@ -13,6 +14,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.snowyegret.mojo.MoJo;
+import org.snowyegret.mojo.block.BlockSaved;
 import org.snowyegret.mojo.item.spell.Spell;
 import org.snowyegret.mojo.item.staff.Staff;
 import org.snowyegret.mojo.message.server.MouseClickMessage;
@@ -97,7 +99,14 @@ public class MouseHandler {
 		}
 
 		Item heldItem = stack.getItem();
-		if (heldItem instanceof Staff || heldItem instanceof Spell || cursor.typeOfHit == MovingObjectType.MISS) {
+		// Fix for issue: Won't select with BlockSaved in hand #286
+		boolean isBlockSaved = false;
+		if (heldItem instanceof ItemBlock) {
+			if (((ItemBlock)heldItem).getBlock() instanceof BlockSaved) {
+				isBlockSaved = true;
+			}
+		}
+		if (heldItem instanceof Staff || heldItem instanceof Spell || cursor.typeOfHit == MovingObjectType.MISS || isBlockSaved ) {
 			if (e.buttonstate) {
 				if (e.button == 1 && cursor.typeOfHit == MovingObjectType.BLOCK) {
 					// Right click on a block handled by onItemUse. No cancel.
