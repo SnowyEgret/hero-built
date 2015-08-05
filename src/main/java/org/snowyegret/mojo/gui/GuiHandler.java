@@ -26,7 +26,7 @@ public class GuiHandler implements IGuiHandler {
 
 	@Override
 	public Object getClientGuiElement(int id, EntityPlayer playerIn, World world, int x, int y, int z) {
-		System.out.println("id=" + id);
+		//System.out.println("id=" + id);
 		Player player = new Player(playerIn);
 		switch (id) {
 		case GUI_DIALOG:

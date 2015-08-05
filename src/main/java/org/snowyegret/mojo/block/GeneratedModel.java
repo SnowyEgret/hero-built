@@ -19,6 +19,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 
+import org.snowyegret.geom.IDrawable;
 import org.snowyegret.geom.IntegerDomain;
 import org.snowyegret.geom.VoxelSet;
 import org.snowyegret.mojo.item.spell.other.SpellSave;
@@ -27,15 +28,42 @@ import org.snowyegret.mojo.select.Selection;
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Ints;
 
+// Generates quads for cubes based on selections saved to file or an IDrawable
+// Cubes are scaled to fit inside a block
+// Used by BlockSavedModel and ItemModels for draw spells (package spell.draw) in EventHandlerClient#onModelBakeEvent
 public class GeneratedModel implements IBakedModel {
 
 	private static final int COLOR = Color.WHITE.getRGB();
 	// This class is not registered, so there can be more than one instance
 	private String path;
+	private String drawable;
 	private List generalQuads = Lists.newArrayList();
+	private int numCubes;
+
+	public GeneratedModel(IDrawable drawable, IBlockState state) {
+		// For toString()
+		this.drawable = drawable.getClass().getSimpleName();
+		System.out.println("drawable=" + drawable);
+		TextureAtlasSprite sprite = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes()
+				.getModelForState(state).getTexture();
+		System.out.println("sprite=" + sprite);
+		VoxelSet voxels = drawable.voxelize();
+		numCubes = voxels.size();
+		IntegerDomain domain = voxels.getDomain();
+		BlockPos cornerClosestToOrigin = new BlockPos(domain.rx.getMinimum(), domain.ry.getMinimum(),
+				domain.rz.getMinimum());
+		float scale = 1 / (float) (domain.maxDimension() + 1);
+		for (Point3i p : voxels) {
+			BlockPos pos = new BlockPos(p.x, p.y, p.z).subtract(cornerClosestToOrigin);
+			//System.out.println("pos=" + pos);
+			for (EnumFacing side : EnumFacing.values()) {
+				BakedQuad q = createBakedQuadForFace(pos, scale, 0, sprite, side);
+				generalQuads.add(q);
+			}
+		}
+	}
 
 	public GeneratedModel(String path) {
-
 		// For toString()
 		this.path = path;
 
@@ -59,6 +87,7 @@ public class GeneratedModel implements IBakedModel {
 		for (int i = 0; i < size; i++) {
 			selections.add(Selection.fromNBT(tag.getCompoundTag(String.valueOf(i))));
 		}
+		numCubes = selections.size();
 
 		IntegerDomain domain = getDomain(selections);
 		BlockPos cornerClosestToOrigin = new BlockPos(domain.rx.getMinimum(), domain.ry.getMinimum(),
@@ -123,9 +152,13 @@ public class GeneratedModel implements IBakedModel {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("BlockSavedModel [path=");
+		builder.append("GeneratedModel [path=");
 		builder.append(path);
-		builder.append(", generalQuads=");
+		builder.append(", drawable=");
+		builder.append(drawable);
+		builder.append(", numCubes=");
+		builder.append(numCubes);
+		builder.append(", numQuads=");
 		builder.append(generalQuads.size());
 		builder.append("]");
 		return builder.toString();
@@ -142,6 +175,7 @@ public class GeneratedModel implements IBakedModel {
 		return new VoxelSet(points).getDomain();
 	}
 
+	// Based on code at
 	// https://github.com/TheGreyGhost/MinecraftByExample/blob/master/src/main/java/minecraftbyexample/mbe15_item_smartitemmodel/ChessboardSmartItemModel.java
 	private BakedQuad createBakedQuadForFace(BlockPos pos, float w, int itemRenderLayer, TextureAtlasSprite sprite, EnumFacing face) {
 		float lr, ud, fb;

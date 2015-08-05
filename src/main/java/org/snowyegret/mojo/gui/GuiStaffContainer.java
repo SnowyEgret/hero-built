@@ -1,13 +1,12 @@
 package org.snowyegret.mojo.gui;
 
-import org.snowyegret.mojo.item.staff.InventoryStaff;
-
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+
+import org.snowyegret.mojo.item.staff.InventoryStaff;
 
 //http://www.minecraftforge.net/wiki/Containers_and_GUIs
 public class GuiStaffContainer extends Container {

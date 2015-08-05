@@ -31,25 +31,22 @@ public class EventHandlerServer {
 	@SubscribeEvent
 	public void onPlayerInteractEvent(PlayerInteractEvent e) {
 
-		// This is coming in twice, sometimes both on server, both on client, or one on each.
-		// System.out.println("world=" + e.world);
 		if (e.world.isRemote) {
 			return;
 		}
 
 		// TODO is this necessary? Remove if this println never comes up
-		if (e.action == null) {
-			System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-			System.out.println("e.action=" + e.action);
-			e.setCanceled(true);
-			return;
-		}
+		// if (e.action == null) {
+		// System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+		// System.out.println("e.action=" + e.action);
+		// e.setCanceled(true);
+		// return;
+		// }
 
 		Player player = new Player(e.entityPlayer);
 
 		// Return if player is holding nothing
 		ItemStack stack = player.getHeldItemStack();
-		// System.out.println("stack=" + stack);
 		if (stack == null) {
 			return;
 		}

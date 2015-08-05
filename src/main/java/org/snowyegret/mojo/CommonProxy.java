@@ -90,7 +90,7 @@ public class CommonProxy {
 	protected List<Item> items = Lists.newArrayList();
 
 	private final List<Class<? extends ItemBase>> itemsExcluded = Lists.newArrayList(
-			// @formatter:off
+// @formatter:off
 			Staff.class, 
 			SpellDelete.class,
 			SpellSpline.class, 
@@ -99,6 +99,7 @@ public class CommonProxy {
 			);
 
 	public void registerEventHandlers() {
+		System.out.println("Registering event handlers...");
 		MinecraftForge.EVENT_BUS.register(new EventHandlerClient());
 		MinecraftForge.EVENT_BUS.register(new EventHandlerServer());
 		MinecraftForge.EVENT_BUS.register(new MouseHandler());
@@ -106,6 +107,7 @@ public class CommonProxy {
 	}
 
 	public void registerTileEntities() {
+		System.out.println("Registering tile entities...");
 		GameRegistry.registerTileEntity(PrevStateTileEntity.class, PrevStateTileEntity.class.getSimpleName());
 		GameRegistry.registerTileEntity(BlockSavedTileEntity.class, BlockSavedTileEntity.class.getSimpleName());
 	}
@@ -113,16 +115,20 @@ public class CommonProxy {
 	public void registerItemModels() {
 	}
 
+	public void registerItemBlockModels() {
+	}
+
 	public void registerBlocks() {
-		System.out.println("Initializing blocks...");
+		System.out.println("Initializing and registering blocks...");
 		MoJo.blockSelected = (BlockSelected) initBlock(new BlockSelected());
 		MoJo.blockPicked = (BlockPicked) initBlock(new BlockPicked());
 		MoJo.blockSaved = (BlockSaved) initBlock(new BlockSaved());
 	}
 
 	public void registerItems() {
+		System.out.println("Initializing and registering items...");
 		try {
-			System.out.println("Initializing spells...");
+			System.out.println("Initializing and registering spells...");
 			List<Spell> drawSpells = initSpellsFromPackage("draw");
 			List<Spell> selectSpells = initSpellsFromPackage("select");
 			List<Spell> transformSpells = initSpellsFromPackage("transform");
@@ -137,7 +143,7 @@ public class CommonProxy {
 			items.addAll(transformSpells);
 			items.addAll(otherSpells);
 
-			System.out.println("Initializing staffs...");
+			System.out.println("Initializing and registering staffs...");
 			// We are initializing Staff so that we can use its model as a base model
 			items.add(initItem(Staff.class));
 			items.add(initItem(StaffOak.class));
@@ -155,6 +161,7 @@ public class CommonProxy {
 	}
 
 	public void registerNetworkMessages() {
+		System.out.println("Registering network messages...");
 		MoJo.network = NetworkRegistry.INSTANCE.newSimpleChannel(MoJo.MODID);
 
 		// Messages to server
@@ -174,15 +181,15 @@ public class CommonProxy {
 	public void setCustomStateMappers() {
 	}
 
-	
 	public void registerGuiHandler() {
+		System.out.println("Registering gui handler...");
 		NetworkRegistry.INSTANCE.registerGuiHandler(MoJo.instance, new GuiHandler());
 	}
 
 	// Private------------------------------------------------------------------------------------
 
 	private Block initBlock(Block block) {
-		//String name = StringUtils.nameFor(block.getClass());
+		// String name = StringUtils.nameFor(block.getClass());
 		String name = StringUtils.underscoreNameFor(block.getClass());
 		System.out.println("Intitializing block " + name);
 		block.setUnlocalizedName(name);
@@ -195,7 +202,7 @@ public class CommonProxy {
 	}
 
 	private Item initItem(Class<? extends Item> itemClass, List<Spell>... spellsLists) throws Exception {
-		//String name = StringUtils.nameFor(itemClass);
+		// String name = StringUtils.nameFor(itemClass);
 		String name = StringUtils.underscoreNameFor(itemClass);
 		System.out.println("Intitializing item " + name);
 		Constructor constructor = null;

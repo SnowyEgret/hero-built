@@ -1,21 +1,17 @@
 package org.snowyegret.mojo;
 
-import java.util.Map;
-
-import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 
 import org.snowyegret.mojo.block.BlockPicked;
 import org.snowyegret.mojo.block.BlockSaved;
 import org.snowyegret.mojo.block.BlockSelected;
-
-import com.google.common.collect.Maps;
 
 @Mod(modid = MoJo.MODID, name = MoJo.NAME, version = MoJo.VERSION)
 public class MoJo {
@@ -37,18 +33,25 @@ public class MoJo {
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
+		System.out.println("Preinitializing--------------------------------------------------------------------------------------------------------");
 		proxy.registerBlocks();
 		proxy.registerItems();
 		proxy.registerNetworkMessages();
 		proxy.setCustomStateMappers();
-		//NetworkRegistry.INSTANCE.registerGuiHandler(MoJo.instance, new GuiHandler());
 	}
 
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
+		System.out.println("Intializing------------------------------------------------------------------------------------------------------------");
 		proxy.registerGuiHandler();
 		proxy.registerEventHandlers();
 		proxy.registerTileEntities();
 		proxy.registerItemModels();
+		proxy.registerItemBlockModels();
+	}
+	
+	@EventHandler
+	public void init(FMLPostInitializationEvent event) {
+		System.out.println("Postinitializing--------------------------------------------------------------------------------------------------------");
 	}
 }

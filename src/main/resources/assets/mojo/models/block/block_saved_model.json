@@ -1,12 +1,7 @@
 {
     "parent": "block/cube",
     "textures": {
-        "down": "mojo:blocks/block_saved",
-        "up": "mojo:blocks/block_saved",
-        "north": "mojo:blocks/block_saved",
-        "east": "mojo:blocks/block_saved",
-        "south": "mojo:blocks/block_saved",
-        "west": "mojo:blocks/block_saved",
+        "all": "mojo:blocks/block_saved",
         "particle": "blocks/lapis_block"
     }
 }

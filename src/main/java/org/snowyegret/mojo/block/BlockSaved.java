@@ -61,6 +61,12 @@ public class BlockSaved extends Block implements ITileEntityProvider {
 		return true;
 	}
 
+	// Prevents sky blue base when rendered
+	@Override
+	public boolean isOpaqueCube() {
+		return false;
+	}
+
 	// Prevents ambient occlusion when rendered
 	@Override
 	public boolean isFullCube() {
@@ -90,12 +96,6 @@ public class BlockSaved extends Block implements ITileEntityProvider {
 		}
 		// System.out.println("path=" + path);
 		return ((IExtendedBlockState) state).withProperty(PROPERTY_PATH, path);
-	}
-
-	// Prevents sky blue base when rendered
-	@Override
-	public boolean isOpaqueCube() {
-		return false;
 	}
 
 	@SideOnly(Side.CLIENT)

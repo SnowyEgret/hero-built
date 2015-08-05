@@ -18,13 +18,13 @@ import net.minecraftforge.client.model.ISmartItemModel;
 import org.snowyegret.mojo.item.spell.Spell;
 import org.snowyegret.mojo.util.ModelResourceLocations;
 
-public class StaffModel implements ISmartItemModel {
+public class StaffSmartModel implements ISmartItemModel {
 
 	private IBakedModel baseModel;
 	private IBakedModel spellModel;
 	private final int tint = new Color(200, 200, 255).getRGB();
 
-	public StaffModel(IBakedModel baseModel) {
+	public StaffSmartModel(IBakedModel baseModel) {
 		this.baseModel = baseModel;
 	}
 
@@ -107,7 +107,7 @@ public class StaffModel implements ISmartItemModel {
 			Staff staff = (Staff) item;
 			Spell spell = staff.getSpell(stack);
 			if (spell != null) {
-				ModelResourceLocation spellLocation = ModelResourceLocations.get(spell.getClass());
+				ModelResourceLocation spellLocation = ModelResourceLocations.forClass(spell.getClass());
 				spellModel = Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getModelManager()
 						.getModel(spellLocation);
 			}

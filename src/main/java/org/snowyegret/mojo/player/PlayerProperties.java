@@ -65,7 +65,7 @@ public class PlayerProperties implements IExtendedEntityProperties {
 		if (fontString != null) {
 			font = Font.decode(fontString);
 		}
-		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>tag=" + tag);
+		//System.out.println("tag=" + tag);
 	}
 
 	@Override

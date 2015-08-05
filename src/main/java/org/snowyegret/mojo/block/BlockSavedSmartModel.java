@@ -19,13 +19,26 @@ public class BlockSavedSmartModel implements ISmartBlockModel {
 	private IBakedModel model;
 
 	@Override
+	public IBakedModel handleBlockState(IBlockState state) {
+		String path = ((IExtendedBlockState) state).getValue(BlockSaved.PROPERTY_PATH);
+		if (!models.containsKey(path)) {
+			System.out.println("Creating model for path=" + path);
+			models.put(path, new GeneratedModel(path));
+		}
+		// Seems we can lookup a null string. Model will just have no quads
+		model = models.get(path);
+		//System.out.println("model=" + model);
+		return model;
+	}
+
+	@Override
 	public List getFaceQuads(EnumFacing side) {
 		return model.getFaceQuads(side);
 	}
 
 	@Override
 	public List getGeneralQuads() {
-		System.out.println("this=" + this);
+		//System.out.println("this=" + this);
 		return model.getGeneralQuads();
 	}
 
@@ -52,18 +65,5 @@ public class BlockSavedSmartModel implements ISmartBlockModel {
 	@Override
 	public ItemCameraTransforms getItemCameraTransforms() {
 		return model.getItemCameraTransforms();
-	}
-
-	@Override
-	public IBakedModel handleBlockState(IBlockState state) {
-		String path = ((IExtendedBlockState) state).getValue(BlockSaved.PROPERTY_PATH);
-		if (!models.containsKey(path)) {
-			System.out.println("Creating model for path=" + path);
-			models.put(path, new GeneratedModel(path));
-		}
-		// Seems we can lookup a null string. Model will just have no quads
-		model = models.get(path);
-		System.out.println("model=" + model);
-		return model;
 	}
 }

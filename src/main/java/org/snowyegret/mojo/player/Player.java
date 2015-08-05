@@ -46,9 +46,10 @@ public class Player {
 	public Player(EntityPlayer player) {
 		this.player = player;
 		props = (PlayerProperties) player.getExtendedProperties(PlayerProperties.NAME);
-		if (props == null) {
-			System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>props=" + props);
-		}
+		// if (props == null) {
+		// System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>props=" + props);
+		// new Throwable().printStackTrace();
+		// }
 	}
 
 	public Player() {
@@ -118,6 +119,7 @@ public class Player {
 	}
 
 	public ItemStack getHeldItemStack() {
+		// Not sure what the difference is
 		// return player.getCurrentEquippedItem();
 		return player.getHeldItem();
 	}

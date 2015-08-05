@@ -57,9 +57,6 @@ public class GuiTextInputDialog extends GuiDialog {
 	@Override
 	public void initGui() {
 		super.initGui();
-		// 1.8
-		// textField = new GuiTextField(mc.fontRenderer, topLeftX() + margin, topLeftY() + margin, w - (2 * margin),
-		// buttonHeight);
 		textField = new GuiTextField(margin, mc.fontRendererObj, topLeftX() + margin, topLeftY() + margin, w
 				- (2 * margin), buttonHeight);
 	}

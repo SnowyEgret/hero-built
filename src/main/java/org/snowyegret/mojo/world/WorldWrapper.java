@@ -6,6 +6,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 
+// This wrapper is left over from early stage unit tests which have been abandoned
+// It probably should be dumped because it mostly just delegates to field world
+// Kept for now because it enables a global setBlockState policy
 public class WorldWrapper implements IWorld {
 
 	private World world;

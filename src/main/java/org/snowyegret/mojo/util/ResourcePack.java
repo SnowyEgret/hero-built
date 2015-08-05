@@ -24,7 +24,7 @@ public class ResourcePack implements IResourcePack {
 	Map<ResourceLocation, String> map = Maps.newHashMap();
 
 	public ResourcePack(Class cls, String json) {
-		ModelResourceLocation mrl = ModelResourceLocations.get(cls);
+		ModelResourceLocation mrl = ModelResourceLocations.forClass(cls);
 		System.out.println("mrl=" + mrl);
 		map.put(mrl, json);
 	}

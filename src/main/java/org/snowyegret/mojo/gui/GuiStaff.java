@@ -28,7 +28,7 @@ public class GuiStaff extends GuiContainer {
 		String staffName = stack.getDisplayName();
 		fontRendererObj.drawString(staffName, 8, 6, 4210752);
 		fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, rowHeight + 2, 4210752);
-		
+
 	}
 
 	@Override
@@ -37,7 +37,7 @@ public class GuiStaff extends GuiContainer {
 		mc.getTextureManager().bindTexture(texture);
 		int x = (width - xSize) / 2;
 		int y = (height - ySize) / 2;
-		drawTexturedModalRect(x, y,             0, 0,   xSize, rowHeight);
+		drawTexturedModalRect(x, y, 0, 0, xSize, rowHeight);
 		drawTexturedModalRect(x, y + rowHeight, 0, 126, xSize, 96);
 	}
 }

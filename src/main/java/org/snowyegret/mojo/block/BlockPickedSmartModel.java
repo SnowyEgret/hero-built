@@ -15,7 +15,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.client.model.ISmartBlockModel;
 import net.minecraftforge.common.property.IExtendedBlockState;
 
-public class BlockPickedModel implements ISmartBlockModel {
+public class BlockPickedSmartModel implements ISmartBlockModel {
 
 	private IBakedModel model;
 	private static final int COLOR = new Color(255, 200, 200).getRGB();

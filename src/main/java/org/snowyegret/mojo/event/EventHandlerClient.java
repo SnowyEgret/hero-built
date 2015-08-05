@@ -1,7 +1,10 @@
 package org.snowyegret.mojo.event;
 
+import javax.vecmath.Point3d;
+
 import net.minecraft.client.gui.GuiIngameMenu;
 import net.minecraft.client.resources.model.IBakedModel;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.IRegistry;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
@@ -12,22 +15,25 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import org.snowyegret.geom.surface.Sphere;
 import org.snowyegret.mojo.MoJo;
 import org.snowyegret.mojo.block.BlockPicked;
-import org.snowyegret.mojo.block.BlockPickedModel;
+import org.snowyegret.mojo.block.BlockPickedSmartModel;
 import org.snowyegret.mojo.block.BlockSaved;
 import org.snowyegret.mojo.block.BlockSavedSmartModel;
 import org.snowyegret.mojo.block.BlockSelected;
-import org.snowyegret.mojo.block.BlockSelectedModel;
+import org.snowyegret.mojo.block.BlockSelectedSmartModel;
+import org.snowyegret.mojo.block.GeneratedModel;
 import org.snowyegret.mojo.gui.Overlay;
 import org.snowyegret.mojo.gui.PickInfo;
 import org.snowyegret.mojo.gui.SelectionInfo;
 import org.snowyegret.mojo.item.spell.Spell;
+import org.snowyegret.mojo.item.spell.draw.SpellSphere;
 import org.snowyegret.mojo.item.staff.Staff;
 import org.snowyegret.mojo.item.staff.StaffAcacia;
 import org.snowyegret.mojo.item.staff.StaffBirch;
 import org.snowyegret.mojo.item.staff.StaffDraw;
-import org.snowyegret.mojo.item.staff.StaffModel;
+import org.snowyegret.mojo.item.staff.StaffSmartModel;
 import org.snowyegret.mojo.item.staff.StaffOak;
 import org.snowyegret.mojo.item.staff.StaffSelect;
 import org.snowyegret.mojo.item.staff.StaffTransform;
@@ -37,6 +43,7 @@ import org.snowyegret.mojo.util.ModelResourceLocations;
 
 public class EventHandlerClient {
 
+	// Client side message handlers set these fields
 	public static SelectionInfo selectionInfo = new SelectionInfo();
 	public static PickInfo pickInfo = new PickInfo();
 	public static Overlay overlay = new Overlay();
@@ -68,6 +75,7 @@ public class EventHandlerClient {
 		}
 	}
 
+	// Draws information about the current spell to the overlay
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void onRenderGameOverlayEvent(RenderGameOverlayEvent event) {
@@ -86,25 +94,33 @@ public class EventHandlerClient {
 		}
 	}
 
+	// Put ISmartModels on model registery
 	@SubscribeEvent
 	public void onModelBakeEvent(ModelBakeEvent event) {
 		IRegistry r = event.modelRegistry;
-		r.putObject(ModelResourceLocations.get(BlockSelected.class), new BlockSelectedModel());
-		r.putObject(ModelResourceLocations.get(BlockPicked.class), new BlockPickedModel());
-		r.putObject(ModelResourceLocations.get(BlockSaved.class), new BlockSavedSmartModel());
+		r.putObject(ModelResourceLocations.forClass(BlockSelected.class), new BlockSelectedSmartModel());
+		r.putObject(ModelResourceLocations.forClass(BlockPicked.class), new BlockPickedSmartModel());
+		r.putObject(ModelResourceLocations.forClass(BlockSaved.class), new BlockSavedSmartModel());
 
 		// Prepared in ClientProxy.registerItemModels
-		Object baseModel = event.modelRegistry.getObject(ModelResourceLocations.get(Staff.class));
-		r.putObject(ModelResourceLocations.get(StaffDraw.class), new StaffModel((IBakedModel) baseModel));
-		r.putObject(ModelResourceLocations.get(StaffSelect.class), new StaffModel((IBakedModel) baseModel));
-		r.putObject(ModelResourceLocations.get(StaffTransform.class), new StaffModel((IBakedModel) baseModel));
-		r.putObject(ModelResourceLocations.get(StaffOak.class), new StaffModel((IBakedModel) baseModel));
-		r.putObject(ModelResourceLocations.get(StaffBirch.class), new StaffModel((IBakedModel) baseModel));
-		r.putObject(ModelResourceLocations.get(StaffAcacia.class), new StaffModel((IBakedModel) baseModel));
-//		baseModel = event.modelRegistry.getObject(ModelResourceLocations.get(Spell.class));
-//		r.putObject(ModelResourceLocations.get(SpellCircle.class), new SpellModel((IBakedModel) baseModel));
+		Object baseModel = event.modelRegistry.getObject(ModelResourceLocations.forClass(Staff.class));
+		
+		r.putObject(ModelResourceLocations.forClass(StaffDraw.class), new StaffSmartModel((IBakedModel) baseModel));
+		r.putObject(ModelResourceLocations.forClass(StaffSelect.class), new StaffSmartModel((IBakedModel) baseModel));
+		r.putObject(ModelResourceLocations.forClass(StaffTransform.class), new StaffSmartModel((IBakedModel) baseModel));
+		r.putObject(ModelResourceLocations.forClass(StaffOak.class), new StaffSmartModel((IBakedModel) baseModel));
+		r.putObject(ModelResourceLocations.forClass(StaffBirch.class), new StaffSmartModel((IBakedModel) baseModel));
+		r.putObject(ModelResourceLocations.forClass(StaffAcacia.class), new StaffSmartModel((IBakedModel) baseModel));
+
+		// TODO This is not a smart model
+		// Try using a GeneratedModel for a spell
+		Sphere sphere = new Sphere(new Point3d(0, 0, 0), new Point3d(6, 0, 0), false);
+		IBakedModel model = new GeneratedModel(sphere, Blocks.stone.getDefaultState());
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>model=" + model);
+		r.putObject(ModelResourceLocations.forClass(SpellSphere.class), model);
 	}
 
+	// TODO what if closed with x?
 	// Clears selections and picks when quitting game
 	// http://www.minecraftforge.net/forum/index.php/topic,30987.msg161224.html
 	@SubscribeEvent
