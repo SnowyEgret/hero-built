@@ -1,5 +1,10 @@
 package org.snowyegret.mojo;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemModelMesher;
@@ -44,7 +49,7 @@ public class ClientProxy extends CommonProxy {
 		ItemModelMesher mesher = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
 		Item item = GameRegistry.findItem(MoJo.MODID, "block_saved");
 		// System.out.println("item=" + item);
-		ModelResourceLocation mrl = new ModelResourceLocation(MoJo.MODID+":block_saved", "inventory");
+		ModelResourceLocation mrl = new ModelResourceLocation(MoJo.MODID + ":block_saved", "inventory");
 		mesher.register(item, META, mrl);
 		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + item.getUnlocalizedName() + " model="
 				+ mesher.getModelManager().getModel(mrl));
@@ -72,4 +77,5 @@ public class ClientProxy extends CommonProxy {
 			}
 		});
 	}
+
 }

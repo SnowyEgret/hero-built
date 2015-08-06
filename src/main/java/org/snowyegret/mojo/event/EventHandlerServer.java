@@ -1,5 +1,11 @@
 package org.snowyegret.mojo.event;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.function.Consumer;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -7,19 +13,25 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import org.snowyegret.mojo.CommonProxy;
+import org.snowyegret.mojo.MoJo;
+import org.snowyegret.mojo.block.BlockSaved;
 import org.snowyegret.mojo.item.spell.Spell;
+import org.snowyegret.mojo.item.spell.other.SpellSave;
 import org.snowyegret.mojo.item.spell.other.SpellTrail;
 import org.snowyegret.mojo.item.spell.transform.SpellFill;
 import org.snowyegret.mojo.player.Player;
 import org.snowyegret.mojo.player.PlayerProperties;
-import org.snowyegret.mojo.world.IWorld;
 
 public class EventHandlerServer {
 
@@ -127,5 +139,89 @@ public class EventHandlerServer {
 			event.entity.registerExtendedProperties(PlayerProperties.NAME, new PlayerProperties(
 					(EntityPlayer) event.entity));
 		}
+	}
+
+	// Check the new saves directory for saves imported to game
+	@SubscribeEvent
+	public void onEntityJoinWorld(EntityJoinWorldEvent event) {
+		World w = event.world;
+		if (w.isRemote) {
+			return;
+		}
+		if (!(event.entity instanceof EntityPlayer)) {
+			return;
+		}
+		final Player player = new Player((EntityPlayer) event.entity);
+
+		// Action for each .save file
+		Consumer<? super Path> action = new Consumer<Path>() {
+			@Override
+			public void accept(Path path) {
+				if (!Files.isRegularFile(path)) {
+					return;
+				}
+				if (!path.getFileName().toString().endsWith(SpellSave.EXTENTION)) {
+					System.out.println("Expected extension " + SpellSave.EXTENTION + ". path=" + path);
+					return;
+				}
+				try {
+					//Files.move(path, path.resolve(CommonProxy.PATH_SAVES));
+					Files.move(path, Paths.get(CommonProxy.PATH_SAVES.toString(), path.getFileName().toString()));
+				} catch (IOException e) {
+					System.out.println("Could not move file. e=" + e);
+				}
+				ItemStack stack = new ItemStack(MoJo.blockSaved);
+				NBTTagCompound tag = new NBTTagCompound();
+				stack.setTagCompound(tag);
+				tag.setString(BlockSaved.KEY_PATH, path.toString());
+				System.out.println("tag=" + tag);
+				System.out.println("stack=" + stack);
+				System.out.println("Adding BlockSaved with path " + path + " to player's inventory");
+				
+				//MoJo.network.sendToServer(new AddToInventoryMessage(stack));
+				boolean stackAdded = player.getPlayer().inventory.addItemStackToInventory(stack);
+				if (!stackAdded) {
+					System.out.println("No room in player's inventory.");
+					return;
+				}
+				System.out.println("inventory=" + player.getPlayer().inventory);
+			}
+		};
+
+		try {
+			Files.walk(CommonProxy.PATH_SAVES_NEW).forEach(action);
+		} catch (IOException e) {
+			System.out.println("e=" + e);
+		}
+		
+
+		// final String newSavesFolder = "mojo/saves/new";
+		// File dir = new File(newSavesFolder);
+		// if (!dir.isDirectory()) {
+		// System.out.println(newSavesFolder + " is not a directory");
+		// return;
+		// }
+		// // TODO Check that file does not exist in saves directory
+		//
+		// for (File file : dir.listFiles()) {
+		// System.out.println("file=" + file);
+		// ItemStack stack = new ItemStack(MoJo.blockSaved);
+		// NBTTagCompound tag = new NBTTagCompound();
+		// stack.setTagCompound(tag);
+		// tag.setString(BlockSaved.KEY_PATH, file.getPath());
+		// System.out.println("stack=" + stack);
+		// System.out.println("Adding BlockSaved with path " + file.getPath() + " to player's inventory");
+		// boolean stackAdded = player.getPlayer().inventory.addItemStackToInventory(stack);
+		// if (!stackAdded) {
+		// System.out.println("No room in player's inventory.");
+		// return;
+		// }
+		//
+		// // TODO move file to saves directory
+		// Path source = Paths.get(file.getPath());
+		// Path target = source;
+		// CopyOption options;
+		// Files.move(source, target, options);
+		// }
 	}
 }

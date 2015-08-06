@@ -1,7 +1,11 @@
 package org.snowyegret.mojo;
 
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,6 +69,9 @@ import com.google.common.reflect.ClassPath.ClassInfo;
 
 public class CommonProxy {
 
+	public static final Path PATH_SAVES = Paths.get(MoJo.MODID, "saves");
+	public static final Path PATH_SAVES_NEW = Paths.get(MoJo.MODID, "saves-new");
+
 	public static CreativeTabs tabMoJo;
 	static {
 		tabMoJo = new CreativeTabs("Mo'Jo") {
@@ -95,8 +102,31 @@ public class CommonProxy {
 			SpellDelete.class,
 			SpellSpline.class, 
 			SpellDivide.class
-			// @formatter:on
 			);
+// @formatter:on
+
+	// Overridden by ClienProxy --------------------------------------------------------------------------
+
+	public void setCustomStateMappers() {
+	}
+
+	public void registerItemModels() {
+	}
+
+	public void registerItemBlockModels() {
+	}
+
+	// end Overridden by ClienProxy --------------------------------------------------------------------------
+
+	public void createFileSystem() {
+		System.out.println("creating mojo filesystem...");
+		try {
+			Files.createDirectories(PATH_SAVES);
+			Files.createDirectories(PATH_SAVES_NEW);
+		} catch (IOException e) {
+			System.out.println("Could not create mojo file system. e=" + e);
+		}
+	}
 
 	public void registerEventHandlers() {
 		System.out.println("Registering event handlers...");
@@ -110,12 +140,6 @@ public class CommonProxy {
 		System.out.println("Registering tile entities...");
 		GameRegistry.registerTileEntity(PrevStateTileEntity.class, PrevStateTileEntity.class.getSimpleName());
 		GameRegistry.registerTileEntity(BlockSavedTileEntity.class, BlockSavedTileEntity.class.getSimpleName());
-	}
-
-	public void registerItemModels() {
-	}
-
-	public void registerItemBlockModels() {
 	}
 
 	public void registerBlocks() {
@@ -176,9 +200,6 @@ public class CommonProxy {
 		MoJo.network.registerMessage(PickMessageHandler.class, PickMessage.class, 11, Side.CLIENT);
 		MoJo.network.registerMessage(SpellMessageHandler.class, SpellMessage.class, 12, Side.CLIENT);
 		MoJo.network.registerMessage(OpenGuiMessageHandler.class, OpenGuiMessage.class, 13, Side.CLIENT);
-	}
-
-	public void setCustomStateMappers() {
 	}
 
 	public void registerGuiHandler() {

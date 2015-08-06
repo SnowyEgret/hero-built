@@ -34,6 +34,7 @@ public class MoJo {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		System.out.println("Preinitializing--------------------------------------------------------------------------------------------------------");
+		proxy.createFileSystem();
 		proxy.registerBlocks();
 		proxy.registerItems();
 		proxy.registerNetworkMessages();
