@@ -33,8 +33,8 @@ import org.snowyegret.mojo.ClientProxy;
 import org.snowyegret.mojo.MoJo;
 import org.snowyegret.mojo.block.BlockPicked;
 import org.snowyegret.mojo.block.BlockPickedSmartModel;
-import org.snowyegret.mojo.block.BlockSaved;
-import org.snowyegret.mojo.block.BlockSavedSmartModel;
+import org.snowyegret.mojo.block.BlockMaquette;
+import org.snowyegret.mojo.block.BlockMaquetteSmartModel;
 import org.snowyegret.mojo.block.BlockSelected;
 import org.snowyegret.mojo.block.BlockSelectedSmartModel;
 import org.snowyegret.mojo.block.GeneratedModel;
@@ -43,7 +43,7 @@ import org.snowyegret.mojo.gui.PickInfo;
 import org.snowyegret.mojo.gui.SelectionInfo;
 import org.snowyegret.mojo.item.spell.Spell;
 import org.snowyegret.mojo.item.spell.draw.SpellSphere;
-import org.snowyegret.mojo.item.spell.other.SpellSave;
+import org.snowyegret.mojo.item.spell.other.SpellMaquette;
 import org.snowyegret.mojo.item.staff.Staff;
 import org.snowyegret.mojo.item.staff.StaffAcacia;
 import org.snowyegret.mojo.item.staff.StaffBirch;
@@ -116,7 +116,7 @@ public class EventHandlerClient {
 		IRegistry r = event.modelRegistry;
 		r.putObject(ModelResourceLocations.forClass(BlockSelected.class), new BlockSelectedSmartModel());
 		r.putObject(ModelResourceLocations.forClass(BlockPicked.class), new BlockPickedSmartModel());
-		r.putObject(ModelResourceLocations.forClass(BlockSaved.class), new BlockSavedSmartModel());
+		r.putObject(ModelResourceLocations.forClass(BlockMaquette.class), new BlockMaquetteSmartModel());
 
 		// Prepared in ClientProxy.registerItemModels
 		Object baseModel = event.modelRegistry.getObject(ModelResourceLocations.forClass(Staff.class));
@@ -130,10 +130,10 @@ public class EventHandlerClient {
 
 		// TODO This is not a smart model
 		// Try using a GeneratedModel for a spell
-		Sphere sphere = new Sphere(new Point3d(0, 0, 0), new Point3d(6, 0, 0), false);
-		IBakedModel model = new GeneratedModel(sphere, Blocks.stone.getDefaultState());
-		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>model=" + model);
-		r.putObject(ModelResourceLocations.forClass(SpellSphere.class), model);
+//		Sphere sphere = new Sphere(new Point3d(0, 0, 0), new Point3d(6, 0, 0), false);
+//		IBakedModel model = new GeneratedModel(sphere, Blocks.stone.getDefaultState());
+//		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>model=" + model);
+//		r.putObject(ModelResourceLocations.forClass(SpellSphere.class), model);
 	}
 
 	// TODO what if closed with x?

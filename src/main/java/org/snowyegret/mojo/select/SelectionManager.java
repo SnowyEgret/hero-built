@@ -16,7 +16,7 @@ import net.minecraft.util.Vec3;
 import org.snowyegret.geom.IntegerDomain;
 import org.snowyegret.geom.VoxelSet;
 import org.snowyegret.mojo.block.BlockPicked;
-import org.snowyegret.mojo.block.BlockSaved;
+import org.snowyegret.mojo.block.BlockMaquette;
 import org.snowyegret.mojo.block.BlockSelected;
 import org.snowyegret.mojo.block.PrevStateTileEntity;
 import org.snowyegret.mojo.message.client.SelectionMessage;
@@ -175,7 +175,7 @@ public class SelectionManager {
 		
 		// Selecting a BlockSaved deletes it's tile entity.
 		// No reason to select
-		if (b instanceof BlockSaved) {
+		if (b instanceof BlockMaquette) {
 			return null;
 		}
 		

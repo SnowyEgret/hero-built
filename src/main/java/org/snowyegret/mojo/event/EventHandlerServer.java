@@ -27,9 +27,9 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import org.snowyegret.mojo.CommonProxy;
 import org.snowyegret.mojo.MoJo;
-import org.snowyegret.mojo.block.BlockSaved;
+import org.snowyegret.mojo.block.BlockMaquette;
 import org.snowyegret.mojo.item.spell.Spell;
-import org.snowyegret.mojo.item.spell.other.SpellSave;
+import org.snowyegret.mojo.item.spell.other.SpellMaquette;
 import org.snowyegret.mojo.item.spell.other.SpellTrail;
 import org.snowyegret.mojo.item.spell.transform.SpellFill;
 import org.snowyegret.mojo.player.Player;
@@ -147,9 +147,9 @@ public class EventHandlerServer {
 	public void onItemExpire(ItemExpireEvent event) {
 		ItemStack stack = event.entityItem.getEntityItem();
 		if (stack.getItem() instanceof ItemBlock) {
-			if (((ItemBlock) stack.getItem()).getBlock() instanceof BlockSaved) {
+			if (((ItemBlock) stack.getItem()).getBlock() instanceof BlockMaquette) {
 				NBTTagCompound tag = stack.getTagCompound();
-				String path = tag.getString(BlockSaved.KEY_PATH);
+				String path = tag.getString(BlockMaquette.KEY_PATH);
 				System.out.println("path=" + path);
 				// TODO delete file
 				// After all this, do we really want to delete the file?
@@ -180,8 +180,8 @@ public class EventHandlerServer {
 				if (!Files.isRegularFile(path)) {
 					return;
 				}
-				if (!path.getFileName().toString().endsWith(SpellSave.EXTENTION)) {
-					System.out.println("Expected extension " + SpellSave.EXTENTION + ". path=" + path);
+				if (!path.getFileName().toString().endsWith(SpellMaquette.EXTENTION)) {
+					System.out.println("Expected extension " + SpellMaquette.EXTENTION + ". path=" + path);
 					return;
 				}
 				try {
@@ -190,10 +190,10 @@ public class EventHandlerServer {
 				} catch (IOException e) {
 					System.out.println("Could not move file. e=" + e);
 				}
-				ItemStack stack = new ItemStack(MoJo.blockSaved);
+				ItemStack stack = new ItemStack(MoJo.blockMaquette);
 				NBTTagCompound tag = new NBTTagCompound();
 				stack.setTagCompound(tag);
-				tag.setString(BlockSaved.KEY_PATH, path.toString());
+				tag.setString(BlockMaquette.KEY_PATH, path.toString());
 				System.out.println("tag=" + tag);
 				System.out.println("stack=" + stack);
 				System.out.println("Adding BlockSaved with path " + path + " to player's inventory");

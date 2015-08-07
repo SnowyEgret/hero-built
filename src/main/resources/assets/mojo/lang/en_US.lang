@@ -9,6 +9,10 @@ up=Up
 
 selection_info.size=Selections: %d
 
+# Blocks ##########
+
+tile.block_maquette.name = Maquette
+
 # Staffs ##########
 
 item.staff.name=Staff
@@ -216,15 +220,15 @@ item.spell_hole_fill.pick.0=
 item.spell_hole_fill.modifier.ctrl=top surface only
 item.spell_hole_fill.modifier.shift=use first block in inventory
 
+item.spell_maquette.name=Maquette
+item.spell_maquette.description=Create a scale maquette of selected blocks
+item.spell_maquette.pick.0=origin
+item.spell_maquette.modifier.ctrl=delete selections
+item.spell_maquette.message.no_selections=Select blocks to be used to create maquette
+
 item.spell_menger_sponge.name=Menger Sponge
 item.spell_menger_sponge.description=creates cavities in selection
 item.spell_menger_sponge.pick.0=
-
-item.spell_save.name=Save
-item.spell_save.description=Save selections to file
-item.spell_save.pick.0=origin
-item.spell_save.modifier.ctrl=delete selections
-item.spell_save.message.no_selections=Select blocks to save
 
 item.spell_text.name=Text
 item.spell_text.description=draws text

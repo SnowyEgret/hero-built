@@ -21,8 +21,8 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
 import org.snowyegret.mojo.block.BlockPicked;
-import org.snowyegret.mojo.block.BlockSaved;
-import org.snowyegret.mojo.block.BlockSavedTileEntity;
+import org.snowyegret.mojo.block.BlockMaquette;
+import org.snowyegret.mojo.block.BlockMaquetteTileEntity;
 import org.snowyegret.mojo.block.BlockSelected;
 import org.snowyegret.mojo.block.PrevStateTileEntity;
 import org.snowyegret.mojo.event.EventHandlerClient;
@@ -139,14 +139,14 @@ public class CommonProxy {
 	public void registerTileEntities() {
 		System.out.println("Registering tile entities...");
 		GameRegistry.registerTileEntity(PrevStateTileEntity.class, PrevStateTileEntity.class.getSimpleName());
-		GameRegistry.registerTileEntity(BlockSavedTileEntity.class, BlockSavedTileEntity.class.getSimpleName());
+		GameRegistry.registerTileEntity(BlockMaquetteTileEntity.class, BlockMaquetteTileEntity.class.getSimpleName());
 	}
 
 	public void registerBlocks() {
 		System.out.println("Initializing and registering blocks...");
 		MoJo.blockSelected = (BlockSelected) initBlock(new BlockSelected());
 		MoJo.blockPicked = (BlockPicked) initBlock(new BlockPicked());
-		MoJo.blockSaved = (BlockSaved) initBlock(new BlockSaved());
+		MoJo.blockMaquette = (BlockMaquette) initBlock(new BlockMaquette());
 	}
 
 	public void registerItems() {

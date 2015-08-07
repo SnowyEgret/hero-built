@@ -15,9 +15,10 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import org.snowyegret.mojo.block.BlockPicked;
-import org.snowyegret.mojo.block.BlockSaved;
+import org.snowyegret.mojo.block.BlockMaquette;
 import org.snowyegret.mojo.block.BlockSelected;
 import org.snowyegret.mojo.util.ModelResourceLocations;
+import org.snowyegret.mojo.util.StringUtils;
 
 public class ClientProxy extends CommonProxy {
 
@@ -47,9 +48,11 @@ public class ClientProxy extends CommonProxy {
 	public void registerItemBlockModels() {
 		System.out.println("Registering ItemBlock models...");
 		ItemModelMesher mesher = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
-		Item item = GameRegistry.findItem(MoJo.MODID, "block_saved");
+		String name = StringUtils.underscoreNameFor(BlockMaquette.class);
+		Item item = GameRegistry.findItem(MoJo.MODID, name);
 		// System.out.println("item=" + item);
-		ModelResourceLocation mrl = new ModelResourceLocation(MoJo.MODID + ":block_saved", "inventory");
+		// ModelResourceLocation mrl = new ModelResourceLocation(MoJo.MODID + ":block_saved", "inventory");
+		ModelResourceLocation mrl = new ModelResourceLocation(MoJo.MODID + ":" + name, "inventory");
 		mesher.register(item, META, mrl);
 		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + item.getUnlocalizedName() + " model="
 				+ mesher.getModelManager().getModel(mrl));
@@ -70,10 +73,10 @@ public class ClientProxy extends CommonProxy {
 				return ModelResourceLocations.forClass(BlockPicked.class);
 			}
 		});
-		ModelLoader.setCustomStateMapper(MoJo.blockSaved, new StateMapperBase() {
+		ModelLoader.setCustomStateMapper(MoJo.blockMaquette, new StateMapperBase() {
 			@Override
 			protected ModelResourceLocation getModelResourceLocation(IBlockState iBlockState) {
-				return ModelResourceLocations.forClass(BlockSaved.class);
+				return ModelResourceLocations.forClass(BlockMaquette.class);
 			}
 		});
 	}

@@ -13,14 +13,14 @@ import net.minecraftforge.common.property.IExtendedBlockState;
 
 import com.google.common.collect.Maps;
 
-public class BlockSavedSmartModel implements ISmartBlockModel {
+public class BlockMaquetteSmartModel implements ISmartBlockModel {
 
 	private Map<String, IBakedModel> models = Maps.newHashMap();
 	private IBakedModel model;
 
 	@Override
 	public IBakedModel handleBlockState(IBlockState state) {
-		String path = ((IExtendedBlockState) state).getValue(BlockSaved.PROPERTY_PATH);
+		String path = ((IExtendedBlockState) state).getValue(BlockMaquette.PROPERTY_PATH);
 		if (!models.containsKey(path)) {
 			System.out.println("Creating model for path=" + path);
 			models.put(path, new GeneratedModel(path));

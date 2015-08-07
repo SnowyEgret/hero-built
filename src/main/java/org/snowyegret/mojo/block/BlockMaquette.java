@@ -33,7 +33,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.snowyegret.mojo.CommonProxy;
-import org.snowyegret.mojo.item.spell.other.SpellSave;
+import org.snowyegret.mojo.item.spell.other.SpellMaquette;
 import org.snowyegret.mojo.player.Player;
 import org.snowyegret.mojo.select.Selection;
 import org.snowyegret.mojo.undo.IUndoable;
@@ -42,18 +42,23 @@ import org.snowyegret.mojo.world.IWorld;
 
 import com.google.common.collect.Lists;
 
-public class BlockSaved extends Block implements ITileEntityProvider {
+public class BlockMaquette extends Block implements ITileEntityProvider {
 
 	public static final PropertyPath PROPERTY_PATH = new PropertyPath();
 	public static final String KEY_PATH = "path";
 
-	public BlockSaved() {
+	public BlockMaquette() {
 		super(Material.clay);
 	}
 
 	@Override
+	public String getLocalizedName() {
+		return "Bar";
+	}
+
+	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		return new BlockSavedTileEntity();
+		return new BlockMaquetteTileEntity();
 	}
 
 	@Override
@@ -87,7 +92,7 @@ public class BlockSaved extends Block implements ITileEntityProvider {
 
 	@Override
 	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-		BlockSavedTileEntity tileEntity = (BlockSavedTileEntity) world.getTileEntity(pos);
+		BlockMaquetteTileEntity tileEntity = (BlockMaquetteTileEntity) world.getTileEntity(pos);
 		String path = null;
 		if (tileEntity != null) {
 			path = tileEntity.getPath();
@@ -104,17 +109,16 @@ public class BlockSaved extends Block implements ITileEntityProvider {
 		return EnumWorldBlockLayer.CUTOUT_MIPPED;
 	}
 
-	@Override
-	public CreativeTabs getCreativeTabToDisplayOn() {
-		return CommonProxy.tabMoJo;
-	}
+	// @Override
+	// public CreativeTabs getCreativeTabToDisplayOn() {
+	// return CommonProxy.tabMoJo;
+	// }
 
-	@Override
-	public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos, IBlockState state) {
-		// TODO Auto-generated method stub
-		ItemBlock b;
-		super.onBlockDestroyedByPlayer(worldIn, pos, state);
-	}
+	// @Override
+	// public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos, IBlockState state) {
+	// // TODO Auto-generated method stub
+	// super.onBlockDestroyedByPlayer(worldIn, pos, state);
+	// }
 
 	@Override
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
@@ -143,8 +147,8 @@ public class BlockSaved extends Block implements ITileEntityProvider {
 		}
 		// System.out.println("tag=" + tag);
 
-		int size = tag.getInteger(SpellSave.KEY_SIZE);
-		BlockPos origin = BlockPos.fromLong(tag.getLong(SpellSave.KEY_ORIGIN));
+		int size = tag.getInteger(SpellMaquette.KEY_SIZE);
+		BlockPos origin = BlockPos.fromLong(tag.getLong(SpellMaquette.KEY_ORIGIN));
 		origin = pos.subtract(origin);
 		List<Selection> selections = Lists.newArrayList();
 		for (int i = 0; i < size; i++) {
@@ -179,7 +183,7 @@ public class BlockSaved extends Block implements ITileEntityProvider {
 			System.out.println("Could not write path to tag. te=" + te);
 			return itemStacks;
 		}
-		if (!(te instanceof BlockSavedTileEntity)) {
+		if (!(te instanceof BlockMaquetteTileEntity)) {
 			System.out.println("Could not write path to tag. TileEntity not a BlockSavedTileEntity. te=" + te);
 			return itemStacks;
 		}
@@ -188,7 +192,7 @@ public class BlockSaved extends Block implements ITileEntityProvider {
 		ItemStack stack = new ItemStack(this);
 		NBTTagCompound tag = new NBTTagCompound();
 		stack.setTagCompound(tag);
-		((BlockSavedTileEntity) te).writeToNBT(tag);
+		((BlockMaquetteTileEntity) te).writeToNBT(tag);
 		itemStacks.add(stack);
 		return itemStacks;
 	}

@@ -10,7 +10,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 
-public class BlockSavedTileEntity extends TileEntity {
+public class BlockMaquetteTileEntity extends TileEntity {
 
 	private String path;
 
@@ -36,14 +36,14 @@ public class BlockSavedTileEntity extends TileEntity {
 			tag = new NBTTagCompound();
 		}
 		if (path != null) {
-			tag.setString(BlockSaved.KEY_PATH, path);
+			tag.setString(BlockMaquette.KEY_PATH, path);
 		}
 		super.writeToNBT(tag);
 	}
 
 	@Override
 	public void readFromNBT(NBTTagCompound tag) {
-		path = tag.getString(BlockSaved.KEY_PATH);
+		path = tag.getString(BlockMaquette.KEY_PATH);
 		super.readFromNBT(tag);
 	}
 

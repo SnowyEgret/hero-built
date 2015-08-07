@@ -15,7 +15,7 @@ import net.minecraft.util.BlockPos;
 
 import org.snowyegret.mojo.ClientProxy;
 import org.snowyegret.mojo.MoJo;
-import org.snowyegret.mojo.block.BlockSavedTileEntity;
+import org.snowyegret.mojo.block.BlockMaquetteTileEntity;
 import org.snowyegret.mojo.gui.GuiHandler;
 import org.snowyegret.mojo.gui.ITextInput;
 import org.snowyegret.mojo.item.spell.Spell;
@@ -31,14 +31,14 @@ import org.snowyegret.mojo.world.IWorld;
 
 import com.google.common.collect.Lists;
 
-public class SpellSave extends Spell implements ITextInput {
+public class SpellMaquette extends Spell implements ITextInput {
 
 	// TODO is this the right place for this?
 	public static final String KEY_SIZE = "size";
 	public static final String KEY_ORIGIN = "origin";
 	public static final String EXTENTION = ".save";
 
-	public SpellSave() {
+	public SpellMaquette() {
 		super(1);
 	}
 
@@ -101,12 +101,12 @@ public class SpellSave extends Spell implements ITextInput {
 
 		Transaction t = new Transaction();
 		t.addAll(deletes);
-		t.add(new UndoableSetBlock(origin, player.getWorld().getState(origin), MoJo.blockSaved.getDefaultState()));
+		t.add(new UndoableSetBlock(origin, player.getWorld().getState(origin), MoJo.blockMaquette.getDefaultState()));
 		t.dO(player);
 
 		// Write path to tile entity
 		IWorld w = player.getWorld();
-		BlockSavedTileEntity te = (BlockSavedTileEntity) w.getTileEntity(origin);
+		BlockMaquetteTileEntity te = (BlockMaquetteTileEntity) w.getTileEntity(origin);
 		te.setPath(path.toString());
 		// System.out.println("te=" + te);
 	}

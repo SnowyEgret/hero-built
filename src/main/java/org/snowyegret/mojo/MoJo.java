@@ -10,7 +10,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 
 import org.snowyegret.mojo.block.BlockPicked;
-import org.snowyegret.mojo.block.BlockSaved;
+import org.snowyegret.mojo.block.BlockMaquette;
 import org.snowyegret.mojo.block.BlockSelected;
 
 @Mod(modid = MoJo.MODID, name = MoJo.NAME, version = MoJo.VERSION)
@@ -29,7 +29,7 @@ public class MoJo {
 	public static SimpleNetworkWrapper network;
 	public static BlockSelected blockSelected;
 	public static BlockPicked blockPicked;
-	public static BlockSaved blockSaved;
+	public static BlockMaquette blockMaquette;
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {

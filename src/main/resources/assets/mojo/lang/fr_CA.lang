@@ -206,15 +206,15 @@ item.spell_hole_fill.pick.0=
 item.spell_hole_fill.modifier.ctrl=à la surface seulement
 item.spell_hole_fill.modifier.shift=avec le premier bloc en menu
 
+item.spell_maquette.name=Maquette
+item.spell_maquette.description=Créer une maquette of des blocs sélectionnés
+item.spell_maquette.pick.0=origine
+item.spell_maquette.modifier.ctrl=supprimer les sélections originales
+item.spell_maquette.message.no_selections=Sélectionner les blocs pour créer la maquette
+
 item.spell_menger_sponge.name=Éponge
 item.spell_menger_sponge.description=crée des cavitées
 item.spell_menger_sponge.pick.0=
-
-item.spell_save.name=Sauvegarder
-item.spell_save.description=Sauvegarder les selections
-item.spell_save.pick.0=origine
-item.spell_save.modifier.ctrl=supprimer les sélections originales
-item.spell_save.message.no_selections=Sélectionner les blocs a sauvegarder
 
 item.spell_text.name=Texte
 item.spell_text.description=

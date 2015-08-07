@@ -25,7 +25,7 @@ import net.minecraft.util.EnumFacing;
 import org.snowyegret.geom.IDrawable;
 import org.snowyegret.geom.IntegerDomain;
 import org.snowyegret.geom.VoxelSet;
-import org.snowyegret.mojo.item.spell.other.SpellSave;
+import org.snowyegret.mojo.item.spell.other.SpellMaquette;
 import org.snowyegret.mojo.select.Selection;
 
 import com.google.common.collect.Lists;
@@ -137,14 +137,17 @@ public class GeneratedModel implements IBakedModel {
 
 	// Private-------------------------------------------------------------------------
 
-	private NBTTagCompound readTagFromFile(String path) {
-		if (Paths.get(path) == null) {
-			System.out.println("Invalid path. path=" + path);
+	private NBTTagCompound readTagFromFile(String pathString) {
+		try {
+			Path path = Paths.get(pathString);
+		} catch (Exception e) {
+			System.out.println("Can not read tag from file. Invalid path. path=" + pathString);
 			return null;
 		}
+		
 		NBTTagCompound tag = null;
 		try {
-			tag = CompressedStreamTools.readCompressed(new FileInputStream(path));
+			tag = CompressedStreamTools.readCompressed(new FileInputStream(pathString));
 		} catch (IOException e) {
 			System.out.println("Can not read tag from file. e=" + e);
 		}
@@ -154,7 +157,7 @@ public class GeneratedModel implements IBakedModel {
 
 	private void createQuads(NBTTagCompound tag) {
 		List<Selection> selections = Lists.newArrayList();
-		int size = tag.getInteger(SpellSave.KEY_SIZE);
+		int size = tag.getInteger(SpellMaquette.KEY_SIZE);
 		for (int i = 0; i < size; i++) {
 			selections.add(Selection.fromNBT(tag.getCompoundTag(String.valueOf(i))));
 		}

@@ -14,7 +14,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.snowyegret.mojo.MoJo;
-import org.snowyegret.mojo.block.BlockSaved;
+import org.snowyegret.mojo.block.BlockMaquette;
 import org.snowyegret.mojo.item.spell.Spell;
 import org.snowyegret.mojo.item.staff.Staff;
 import org.snowyegret.mojo.message.server.MouseClickMessage;
@@ -102,7 +102,7 @@ public class MouseHandler {
 		// Fix for issue: Won't select with BlockSaved in hand #286
 		boolean isBlockSaved = false;
 		if (heldItem instanceof ItemBlock) {
-			if (((ItemBlock)heldItem).getBlock() instanceof BlockSaved) {
+			if (((ItemBlock)heldItem).getBlock() instanceof BlockMaquette) {
 				isBlockSaved = true;
 			}
 		}
