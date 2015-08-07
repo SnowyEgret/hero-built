@@ -36,7 +36,7 @@ public class SpellMaquette extends Spell implements ITextInput {
 	// TODO is this the right place for this?
 	public static final String KEY_SIZE = "size";
 	public static final String KEY_ORIGIN = "origin";
-	public static final String EXTENTION = ".save";
+	public static final String EXTENTION = ".maquette";
 
 	public SpellMaquette() {
 		super(1);
@@ -55,6 +55,7 @@ public class SpellMaquette extends Spell implements ITextInput {
 	@Override
 	public void setText(String text, Player player) {
 
+		// Create tag
 		SelectionManager sm = player.getSelectionManager();
 		//TODO Should be block under cursor
 		BlockPos origin = sm.firstSelection().getPos();
@@ -108,7 +109,8 @@ public class SpellMaquette extends Spell implements ITextInput {
 		IWorld w = player.getWorld();
 		BlockMaquetteTileEntity te = (BlockMaquetteTileEntity) w.getTileEntity(origin);
 		te.setPath(path.toString());
-		// System.out.println("te=" + te);
+		te.setTag(tag);
+		System.out.println("te=" + te);
 	}
 
 	@Override

@@ -144,7 +144,7 @@ public class GeneratedModel implements IBakedModel {
 			System.out.println("Can not read tag from file. Invalid path. path=" + pathString);
 			return null;
 		}
-		
+
 		NBTTagCompound tag = null;
 		try {
 			tag = CompressedStreamTools.readCompressed(new FileInputStream(pathString));
@@ -156,6 +156,10 @@ public class GeneratedModel implements IBakedModel {
 	}
 
 	private void createQuads(NBTTagCompound tag) {
+		if (tag == null) {
+			System.out.println("Could not create quads. tag=" + tag);
+			return;
+		}
 		List<Selection> selections = Lists.newArrayList();
 		int size = tag.getInteger(SpellMaquette.KEY_SIZE);
 		for (int i = 0; i < size; i++) {

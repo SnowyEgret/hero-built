@@ -1,18 +1,15 @@
 package org.snowyegret.mojo.block;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
-import net.minecraft.world.World;
 
 public class BlockMaquetteTileEntity extends TileEntity {
 
 	private String path;
+	private NBTTagCompound tag;
 
 	public void setPath(String path) {
 		this.path = path;
@@ -22,9 +19,17 @@ public class BlockMaquetteTileEntity extends TileEntity {
 		return path;
 	}
 
-	// TODO we had to do this for PrevStateTileEntiey
+	public void setTag(NBTTagCompound tag) {
+		this.tag = tag;
+	}
+
+	public NBTTagCompound getTag() {
+		return tag;
+	}
+
+	// TODO we had to do this for PrevStateTileEntity
 	// When selecting a BlockSaved its tile entity is deleted.
-	// For now, just prohibit selection of BlockSaved in SelectionManager
+	// For now, just prohibit selection of BlockMaquette in SelectionManager
 	// @Override
 	// public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
 	// return oldState.getBlock() != newState.getBlock() || newState.getBlock() instanceof BlockSelected;
@@ -38,12 +43,16 @@ public class BlockMaquetteTileEntity extends TileEntity {
 		if (path != null) {
 			tag.setString(BlockMaquette.KEY_PATH, path);
 		}
+		if (this.tag != null) {
+			tag.setTag(BlockMaquette.KEY_TAG, this.tag);
+		}
 		super.writeToNBT(tag);
 	}
 
-	@Override
+	@Override  
 	public void readFromNBT(NBTTagCompound tag) {
 		path = tag.getString(BlockMaquette.KEY_PATH);
+		this.tag = (NBTTagCompound) tag.getTag(BlockMaquette.KEY_TAG);
 		super.readFromNBT(tag);
 	}
 
@@ -64,10 +73,13 @@ public class BlockMaquetteTileEntity extends TileEntity {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("BlockSavedTileEntity [path=");
+		builder.append("BlockMaquetteTileEntity [path=");
 		builder.append(path);
+		builder.append(", tag=");
+		builder.append(tag);
 		builder.append("]");
 		return builder.toString();
 	}
+
 
 }

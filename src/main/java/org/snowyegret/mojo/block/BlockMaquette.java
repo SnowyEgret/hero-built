@@ -46,14 +46,12 @@ public class BlockMaquette extends Block implements ITileEntityProvider {
 
 	public static final PropertyPath PROPERTY_PATH = new PropertyPath();
 	public static final String KEY_PATH = "path";
+	public static final IUnlistedProperty PROPERTY_TAG = new PropertyTag();
+	// public static final String KEY_TAG = "tag";
+	public static final String KEY_TAG = "BlockEntityTag";
 
 	public BlockMaquette() {
 		super(Material.clay);
-	}
-
-	@Override
-	public String getLocalizedName() {
-		return "Bar";
 	}
 
 	@Override
@@ -87,20 +85,27 @@ public class BlockMaquette extends Block implements ITileEntityProvider {
 
 	@Override
 	protected BlockState createBlockState() {
-		return new ExtendedBlockState(this, new IProperty[0], new IUnlistedProperty[] { PROPERTY_PATH });
+		return new ExtendedBlockState(this, new IProperty[0], new IUnlistedProperty[] { PROPERTY_PATH, PROPERTY_TAG });
 	}
 
 	@Override
 	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-		BlockMaquetteTileEntity tileEntity = (BlockMaquetteTileEntity) world.getTileEntity(pos);
+		BlockMaquetteTileEntity te = (BlockMaquetteTileEntity) world.getTileEntity(pos);
+		System.out.println("te=" + te);
 		String path = null;
-		if (tileEntity != null) {
-			path = tileEntity.getPath();
+		NBTTagCompound tag = null;
+		if (te != null) {
+			path = te.getPath();
+			tag = te.getTag();
 		} else {
-			System.out.println("Could not get path. tileEntity=" + tileEntity);
+			System.out.println("Could not get path and tag. te=" + te);
 		}
-		// System.out.println("path=" + path);
-		return ((IExtendedBlockState) state).withProperty(PROPERTY_PATH, path);
+		System.out.println("path=" + path);
+		System.out.println("tag=" + tag);
+		IBlockState extendedState = ((IExtendedBlockState) state).withProperty(PROPERTY_PATH, path);
+		extendedState = ((IExtendedBlockState) extendedState).withProperty(PROPERTY_TAG, tag);
+		System.out.println("extendedState=" + extendedState.getProperties());
+		return extendedState;
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -189,10 +194,14 @@ public class BlockMaquette extends Block implements ITileEntityProvider {
 		}
 
 		// Write BlockSavedTileEntity#path to the stack's tag
+		// http://www.minecraftforge.net/forum/index.php/topic,32550.msg170141.html#msg170141
+		// Side note: if you create a compound tag with the key "BlockEntityTag" in an ItemStack's compound tag and your
+		// Block has a TileEntity, ItemBlock will call TileEntity#readFromNBT with it after placing the Block.
 		ItemStack stack = new ItemStack(this);
 		NBTTagCompound tag = new NBTTagCompound();
 		stack.setTagCompound(tag);
 		((BlockMaquetteTileEntity) te).writeToNBT(tag);
+
 		itemStacks.add(stack);
 		return itemStacks;
 	}

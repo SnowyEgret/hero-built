@@ -7,7 +7,7 @@ public class PropertyState implements IUnlistedProperty<IBlockState> {
 
 	@Override
 	public String getName() {
-		return "PropertyState";
+		return getClass().getSimpleName();
 	}
 
 	@Override

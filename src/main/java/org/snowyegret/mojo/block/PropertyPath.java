@@ -7,7 +7,7 @@ public class PropertyPath implements IUnlistedProperty<String> {
 
 	@Override
 	public String getName() {
-		return "PropertyPath";
+		return getClass().getSimpleName();
 	}
 
 	@Override
