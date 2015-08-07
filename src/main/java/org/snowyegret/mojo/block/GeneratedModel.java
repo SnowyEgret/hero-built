@@ -3,6 +3,9 @@ package org.snowyegret.mojo.block;
 import java.awt.Color;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Collection;
 import java.util.List;
 
 import javax.vecmath.Point3i;
@@ -34,16 +37,37 @@ import com.google.common.primitives.Ints;
 public class GeneratedModel implements IBakedModel {
 
 	private static final int COLOR = Color.WHITE.getRGB();
-	// This class is not registered, so there can be more than one instance
-	private String path;
-	private String drawable;
-	private List generalQuads = Lists.newArrayList();
+
+	// This class is never registered, so there can be more than one instance and fields
+	// Depending on which constructor is called, one of these three fields will be initialized for #toString
+	// private NBTTagCompound tag;
+	// private String path;
+	// private String drawable;
+
+	// Also just for #toString
 	private int numCubes;
 
+	private List generalQuads = Lists.newArrayList();
+
+	public GeneratedModel(NBTTagCompound tag) {
+		// this.tag = tag.;
+		// System.out.println("tag=" + tag);
+		createQuads(tag);
+	}
+
+	public GeneratedModel(String path) {
+		// this.path = path;
+		// System.out.println("path=" + path);
+		NBTTagCompound tag = readTagFromFile(path);
+		if (tag != null) {
+			createQuads(tag);
+		}
+	}
+
 	public GeneratedModel(IDrawable drawable, IBlockState state) {
-		// For toString()
-		this.drawable = drawable.getClass().getSimpleName();
+		// this.drawable = drawable.getClass().getSimpleName();
 		System.out.println("drawable=" + drawable);
+
 		TextureAtlasSprite sprite = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes()
 				.getModelForState(state).getTexture();
 		System.out.println("sprite=" + sprite);
@@ -55,54 +79,7 @@ public class GeneratedModel implements IBakedModel {
 		float scale = 1 / (float) (domain.maxDimension() + 1);
 		for (Point3i p : voxels) {
 			BlockPos pos = new BlockPos(p.x, p.y, p.z).subtract(cornerClosestToOrigin);
-			//System.out.println("pos=" + pos);
-			for (EnumFacing side : EnumFacing.values()) {
-				BakedQuad q = createBakedQuadForFace(pos, scale, 0, sprite, side);
-				generalQuads.add(q);
-			}
-		}
-	}
-
-	public GeneratedModel(String path) {
-		// For toString()
-		this.path = path;
-
-		if (path == null || path.isEmpty()) {
-			System.out.println("Can not create quads. path=" + path);
-			return;
-		}
-
-		// TODO duplicates code in BlockSaved
-		// Read selections from file
-		NBTTagCompound tag = null;
-		try {
-			tag = CompressedStreamTools.readCompressed(new FileInputStream(path));
-		} catch (IOException e) {
-			System.out.println("Can not create quads. e=" + e);
-			return;
-		}
-
-		List<Selection> selections = Lists.newArrayList();
-		int size = tag.getInteger(SpellSave.KEY_SIZE);
-		for (int i = 0; i < size; i++) {
-			selections.add(Selection.fromNBT(tag.getCompoundTag(String.valueOf(i))));
-		}
-		numCubes = selections.size();
-
-		IntegerDomain domain = getDomain(selections);
-		BlockPos cornerClosestToOrigin = new BlockPos(domain.rx.getMinimum(), domain.ry.getMinimum(),
-				domain.rz.getMinimum());
-		// TODO SpellSave should refuse to save a single block to avoid scale = 1 and model looking identical to block
-		float scale = 1 / (float) (domain.maxDimension() + 1);
-		// System.out.println("scale=" + scale);
-
-		BlockModelShapes shapes = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes();
-		for (Selection sel : selections) {
-			BlockPos pos = sel.getPos().subtract(cornerClosestToOrigin);
 			// System.out.println("pos=" + pos);
-			IBlockState state = sel.getState();
-			TextureAtlasSprite sprite = shapes.getModelForState(state).getTexture();
-			// Create a BakedQuad for each side
 			for (EnumFacing side : EnumFacing.values()) {
 				BakedQuad q = createBakedQuadForFace(pos, scale, 0, sprite, side);
 				generalQuads.add(q);
@@ -147,16 +124,10 @@ public class GeneratedModel implements IBakedModel {
 		return null;
 	}
 
-	// -------------------------------------------------------------------------
-
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("GeneratedModel [path=");
-		builder.append(path);
-		builder.append(", drawable=");
-		builder.append(drawable);
-		builder.append(", numCubes=");
+		builder.append("GeneratedModel [numCubes=");
 		builder.append(numCubes);
 		builder.append(", numQuads=");
 		builder.append(generalQuads.size());
@@ -165,6 +136,50 @@ public class GeneratedModel implements IBakedModel {
 	}
 
 	// Private-------------------------------------------------------------------------
+
+	private NBTTagCompound readTagFromFile(String path) {
+		if (Paths.get(path) == null) {
+			System.out.println("Invalid path. path=" + path);
+			return null;
+		}
+		NBTTagCompound tag = null;
+		try {
+			tag = CompressedStreamTools.readCompressed(new FileInputStream(path));
+		} catch (IOException e) {
+			System.out.println("Can not read tag from file. e=" + e);
+		}
+		return tag;
+
+	}
+
+	private void createQuads(NBTTagCompound tag) {
+		List<Selection> selections = Lists.newArrayList();
+		int size = tag.getInteger(SpellSave.KEY_SIZE);
+		for (int i = 0; i < size; i++) {
+			selections.add(Selection.fromNBT(tag.getCompoundTag(String.valueOf(i))));
+		}
+		numCubes = selections.size();
+
+		IntegerDomain domain = getDomain(selections);
+		BlockPos cornerClosestToOrigin = new BlockPos(domain.rx.getMinimum(), domain.ry.getMinimum(),
+				domain.rz.getMinimum());
+		// TODO SpellSave should refuse to save a single block to avoid scale = 1 and model looking identical to block
+		float scale = 1 / (float) (domain.maxDimension() + 1);
+		// System.out.println("scale=" + scale);
+
+		BlockModelShapes shapes = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes();
+		for (Selection sel : selections) {
+			BlockPos pos = sel.getPos().subtract(cornerClosestToOrigin);
+			// System.out.println("pos=" + pos);
+			IBlockState state = sel.getState();
+			TextureAtlasSprite sprite = shapes.getModelForState(state).getTexture();
+			// Create a BakedQuad for each side
+			for (EnumFacing side : EnumFacing.values()) {
+				BakedQuad q = createBakedQuadForFace(pos, scale, 0, sprite, side);
+				generalQuads.add(q);
+			}
+		}
+	}
 
 	private IntegerDomain getDomain(List<Selection> selections) {
 		List<Point3i> points = Lists.newArrayList();

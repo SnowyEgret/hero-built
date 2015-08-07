@@ -8,6 +8,7 @@ import java.util.function.Consumer;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -18,6 +19,7 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.item.ItemExpireEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
@@ -141,6 +143,24 @@ public class EventHandlerServer {
 		}
 	}
 
+	@SubscribeEvent
+	public void onItemExpire(ItemExpireEvent event) {
+		ItemStack stack = event.entityItem.getEntityItem();
+		if (stack.getItem() instanceof ItemBlock) {
+			if (((ItemBlock) stack.getItem()).getBlock() instanceof BlockSaved) {
+				NBTTagCompound tag = stack.getTagCompound();
+				String path = tag.getString(BlockSaved.KEY_PATH);
+				System.out.println("path=" + path);
+				// TODO delete file
+				// After all this, do we really want to delete the file?
+				// What if the player has died with the only copy of a complex construction in his inventory?
+				// If we allow overwrite of maquette name, the file will be deleted.
+				// Is it really a problem if lots of unused maquette files accumulate?
+				// Every world has its own folder of maquettes
+			}
+		}
+	}
+
 	// Check the new saves directory for saves imported to game
 	@SubscribeEvent
 	public void onEntityJoinWorld(EntityJoinWorldEvent event) {
@@ -165,7 +185,7 @@ public class EventHandlerServer {
 					return;
 				}
 				try {
-					//Files.move(path, path.resolve(CommonProxy.PATH_SAVES));
+					// Files.move(path, path.resolve(CommonProxy.PATH_SAVES));
 					Files.move(path, Paths.get(CommonProxy.PATH_SAVES.toString(), path.getFileName().toString()));
 				} catch (IOException e) {
 					System.out.println("Could not move file. e=" + e);
@@ -177,8 +197,8 @@ public class EventHandlerServer {
 				System.out.println("tag=" + tag);
 				System.out.println("stack=" + stack);
 				System.out.println("Adding BlockSaved with path " + path + " to player's inventory");
-				
-				//MoJo.network.sendToServer(new AddToInventoryMessage(stack));
+
+				// MoJo.network.sendToServer(new AddToInventoryMessage(stack));
 				boolean stackAdded = player.getPlayer().inventory.addItemStackToInventory(stack);
 				if (!stackAdded) {
 					System.out.println("No room in player's inventory.");
@@ -193,7 +213,6 @@ public class EventHandlerServer {
 		} catch (IOException e) {
 			System.out.println("e=" + e);
 		}
-		
 
 		// final String newSavesFolder = "mojo/saves/new";
 		// File dir = new File(newSavesFolder);
