@@ -15,6 +15,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -23,6 +24,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -47,6 +49,8 @@ public class BlockMaquette extends Block implements ITileEntityProvider {
 	public static final PropertyPath PROPERTY_PATH = new PropertyPath();
 	public static final String KEY_PATH = "path";
 	public static final IUnlistedProperty PROPERTY_TAG = new PropertyTag();
+	
+	// See comment in #getDrops
 	// public static final String KEY_TAG = "tag";
 	public static final String KEY_TAG = "BlockEntityTag";
 
@@ -169,6 +173,7 @@ public class BlockMaquette extends Block implements ITileEntityProvider {
 			undoables.add(new UndoableSetBlock(p, w.getState(p), s.getState()));
 		}
 		player.getTransactionManager().doTransaction(undoables);
+		ItemBlock b;
 	}
 
 	// If this returns null, super.getDrops in getDrops with get an empty list.
@@ -201,6 +206,9 @@ public class BlockMaquette extends Block implements ITileEntityProvider {
 		NBTTagCompound tag = new NBTTagCompound();
 		stack.setTagCompound(tag);
 		((BlockMaquetteTileEntity) te).writeToNBT(tag);
+
+		//String path = tag.getString(KEY_PATH);
+		stack.setStackDisplayName(((BlockMaquetteTileEntity)te).getPath());
 
 		itemStacks.add(stack);
 		return itemStacks;
