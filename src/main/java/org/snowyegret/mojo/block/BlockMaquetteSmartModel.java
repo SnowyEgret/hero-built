@@ -3,6 +3,8 @@ package org.snowyegret.mojo.block;
 import java.util.List;
 import java.util.Map;
 
+import org.snowyegret.mojo.item.spell.other.SpellMaquette;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -22,15 +24,19 @@ public class BlockMaquetteSmartModel implements ISmartBlockModel {
 
 	@Override
 	public IBakedModel handleBlockState(IBlockState state) {
-		String path = ((IExtendedBlockState) state).getValue(BlockMaquette.PROPERTY_PATH);
 		NBTTagCompound tag = ((IExtendedBlockState) state).getValue(BlockMaquette.PROPERTY_TAG);
-		if (!models.containsKey(path)) {
-			System.out.println("Creating model for path=" + path);
-			// models.put(path, new GeneratedModel(path));
-			models.put(path, new GeneratedModel(tag));
+		// TODO Name must be unique
+		if (tag == null) {
+			System.out.println("Could not get tag from extended block state. tag=" + tag);
+			return new GeneratedModel();
+		}
+		String name = tag.getString(SpellMaquette.KEY_NAME);
+		if (!models.containsKey(name)) {
+			System.out.println("Creating model for path=" + name);
+			models.put(name, new GeneratedModel(tag));
 		}
 		// Seems we can lookup a null string. Model will just have no quads
-		model = models.get(path);
+		model = models.get(name);
 		System.out.println("model=" + model);
 		return model;
 	}
@@ -63,6 +69,13 @@ public class BlockMaquetteSmartModel implements ISmartBlockModel {
 
 	@Override
 	public TextureAtlasSprite getTexture() {
+		// This method is first called if model is null because handleBlockState is not called
+		// Normally should not happen
+		if (model == null) {
+			System.out.println("Could not get texture. model=" + model);
+			System.out.println("Creating default model");
+			model = new GeneratedModel();
+		}
 		return model.getTexture();
 	}
 

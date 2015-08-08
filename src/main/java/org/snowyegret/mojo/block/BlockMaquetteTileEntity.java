@@ -8,16 +8,7 @@ import net.minecraft.tileentity.TileEntity;
 
 public class BlockMaquetteTileEntity extends TileEntity {
 
-	private String path;
 	private NBTTagCompound tag;
-
-	public void setPath(String path) {
-		this.path = path;
-	}
-
-	public String getPath() {
-		return path;
-	}
 
 	public void setTag(NBTTagCompound tag) {
 		this.tag = tag;
@@ -40,9 +31,6 @@ public class BlockMaquetteTileEntity extends TileEntity {
 		if (tag == null) {
 			tag = new NBTTagCompound();
 		}
-		if (path != null) {
-			tag.setString(BlockMaquette.KEY_PATH, path);
-		}
 		if (this.tag != null) {
 			tag.setTag(BlockMaquette.KEY_TAG, this.tag);
 		}
@@ -51,7 +39,6 @@ public class BlockMaquetteTileEntity extends TileEntity {
 
 	@Override  
 	public void readFromNBT(NBTTagCompound tag) {
-		path = tag.getString(BlockMaquette.KEY_PATH);
 		this.tag = (NBTTagCompound) tag.getTag(BlockMaquette.KEY_TAG);
 		super.readFromNBT(tag);
 	}
@@ -74,8 +61,6 @@ public class BlockMaquetteTileEntity extends TileEntity {
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("BlockMaquetteTileEntity [path=");
-		builder.append(path);
-		builder.append(", tag=");
 		builder.append(tag);
 		builder.append("]");
 		return builder.toString();

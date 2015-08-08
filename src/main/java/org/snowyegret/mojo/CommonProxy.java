@@ -69,6 +69,8 @@ import com.google.common.reflect.ClassPath.ClassInfo;
 
 public class CommonProxy {
 
+	// TODO change name of folders to import and export
+	// Export and Import BlockMaquette to and from file #293
 	public static final Path PATH_SAVES = Paths.get(MoJo.MODID, "saves");
 	public static final Path PATH_SAVES_NEW = Paths.get(MoJo.MODID, "saves-new");
 

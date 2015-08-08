@@ -46,13 +46,10 @@ import com.google.common.collect.Lists;
 
 public class BlockMaquette extends Block implements ITileEntityProvider {
 
-	public static final PropertyPath PROPERTY_PATH = new PropertyPath();
-	public static final String KEY_PATH = "path";
-	public static final IUnlistedProperty PROPERTY_TAG = new PropertyTag();
-	
 	// See comment in #getDrops
 	// public static final String KEY_TAG = "tag";
 	public static final String KEY_TAG = "BlockEntityTag";
+	public static final IUnlistedProperty PROPERTY_TAG = new PropertyTag();
 
 	public BlockMaquette() {
 		super(Material.clay);
@@ -89,7 +86,7 @@ public class BlockMaquette extends Block implements ITileEntityProvider {
 
 	@Override
 	protected BlockState createBlockState() {
-		return new ExtendedBlockState(this, new IProperty[0], new IUnlistedProperty[] { PROPERTY_PATH, PROPERTY_TAG });
+		return new ExtendedBlockState(this, new IProperty[0], new IUnlistedProperty[] { PROPERTY_TAG });
 	}
 
 	@Override
@@ -99,17 +96,12 @@ public class BlockMaquette extends Block implements ITileEntityProvider {
 		String path = null;
 		NBTTagCompound tag = null;
 		if (te != null) {
-			path = te.getPath();
 			tag = te.getTag();
 		} else {
 			System.out.println("Could not get path and tag. te=" + te);
 		}
-		System.out.println("path=" + path);
 		System.out.println("tag=" + tag);
-		IBlockState extendedState = ((IExtendedBlockState) state).withProperty(PROPERTY_PATH, path);
-		extendedState = ((IExtendedBlockState) extendedState).withProperty(PROPERTY_TAG, tag);
-		System.out.println("extendedState=" + extendedState.getProperties());
-		return extendedState;
+		return ((IExtendedBlockState) state).withProperty(PROPERTY_TAG, tag);
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -139,22 +131,33 @@ public class BlockMaquette extends Block implements ITileEntityProvider {
 			System.out.println("stack=" + stack);
 			return;
 		}
-		NBTTagCompound t = stack.getTagCompound();
-		if (t == null) {
-			System.out.println("tag=" + t);
-			return;
-		}
-		String path = t.getString(KEY_PATH);
-		System.out.println("path=" + path);
 
-		NBTTagCompound tag = null;
-		try {
-			tag = CompressedStreamTools.readCompressed(new FileInputStream(path));
-		} catch (IOException e) {
-			System.out.println("Could not read file. e=" + e);
+		// TODO modifier to simplyPlace block and put tag on tileEntity
+
+		// TODO modifier to export
+		// Write tag to file
+		// Path path = null;
+		// try {
+		// // path = Files.createFile(Paths.get(ClientProxy.PATH_SAVES, text + origin.toLong() + EXTENTION));
+		// // TODO if file exists
+		// // player.sendMessage(new OpenGuiMessage(GuiHandler.FILE_OVERWRITE_DIALOG));
+		// path = Files.createFile(Paths.get(ClientProxy.PATH_SAVES.toString(), text + origin.toLong() + EXTENTION));
+		// CompressedStreamTools.writeCompressed(tag, new FileOutputStream(path.toFile()));
+		// } catch (IOException e) {
+		// System.out.println(e);
+		// player.clearSelections();
+		// player.clearPicks();
+		// return;
+		// }
+		// System.out.println("path=" + path);
+
+		NBTTagCompound tag = stack.getTagCompound();
+		if (tag == null) {
+			System.out.println("tag=" + tag);
 			return;
 		}
-		// System.out.println("tag=" + tag);
+		tag = tag.getCompoundTag(BlockMaquette.KEY_TAG);
+		System.out.println("tag=" + tag);
 
 		int size = tag.getInteger(SpellMaquette.KEY_SIZE);
 		BlockPos origin = BlockPos.fromLong(tag.getLong(SpellMaquette.KEY_ORIGIN));
@@ -164,6 +167,7 @@ public class BlockMaquette extends Block implements ITileEntityProvider {
 			NBTTagCompound tt = tag.getCompoundTag(String.valueOf(i));
 			selections.add(Selection.fromNBT(tt));
 		}
+		System.out.println("selections=" + selections);
 
 		List<IUndoable> undoables = Lists.newArrayList();
 		Player player = new Player((EntityPlayer) placer);
@@ -207,8 +211,9 @@ public class BlockMaquette extends Block implements ITileEntityProvider {
 		stack.setTagCompound(tag);
 		((BlockMaquetteTileEntity) te).writeToNBT(tag);
 
-		//String path = tag.getString(KEY_PATH);
-		stack.setStackDisplayName(((BlockMaquetteTileEntity)te).getPath());
+		// TODO Eliminate this
+		tag = tag.getCompoundTag(BlockMaquette.KEY_TAG);
+		stack.setStackDisplayName(tag.getString(SpellMaquette.KEY_NAME));
 
 		itemStacks.add(stack);
 		return itemStacks;

@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collection;
 import java.util.List;
 
 import javax.vecmath.Point3i;
@@ -17,6 +16,7 @@ import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.IBakedModel;
+import net.minecraft.init.Blocks;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.BlockPos;
@@ -39,24 +39,23 @@ public class GeneratedModel implements IBakedModel {
 	private static final int COLOR = Color.WHITE.getRGB();
 
 	// This class is never registered, so there can be more than one instance and fields
-	// Depending on which constructor is called, one of these three fields will be initialized for #toString
-	// private NBTTagCompound tag;
-	// private String path;
-	// private String drawable;
-
-	// Also just for #toString
+	// For #toString
 	private int numCubes;
-
 	private List generalQuads = Lists.newArrayList();
 
+	// IBakedModel---------------------------------------------------------------------
+
+	// For case where BlockMaquetteSmartModel cannot read tag
+	// Returns a model with no quads
+	public GeneratedModel() {
+	}
+
 	public GeneratedModel(NBTTagCompound tag) {
-		// this.tag = tag.;
 		// System.out.println("tag=" + tag);
 		createQuads(tag);
 	}
 
 	public GeneratedModel(String path) {
-		// this.path = path;
 		// System.out.println("path=" + path);
 		NBTTagCompound tag = readTagFromFile(path);
 		if (tag != null) {
@@ -65,7 +64,6 @@ public class GeneratedModel implements IBakedModel {
 	}
 
 	public GeneratedModel(IDrawable drawable, IBlockState state) {
-		// this.drawable = drawable.getClass().getSimpleName();
 		System.out.println("drawable=" + drawable);
 
 		TextureAtlasSprite sprite = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes()
@@ -116,7 +114,7 @@ public class GeneratedModel implements IBakedModel {
 
 	@Override
 	public TextureAtlasSprite getTexture() {
-		return null;
+		return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(Blocks.dirt.getDefaultState());
 	}
 
 	@Override
