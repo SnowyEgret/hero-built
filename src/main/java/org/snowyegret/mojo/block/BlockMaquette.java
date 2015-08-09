@@ -1,7 +1,5 @@
 package org.snowyegret.mojo.block;
 
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.List;
 import java.util.Random;
 
@@ -11,20 +9,14 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -34,8 +26,8 @@ import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import org.snowyegret.mojo.CommonProxy;
-import org.snowyegret.mojo.item.spell.other.SpellMaquette;
+import org.snowyegret.mojo.item.spell.Modifier;
+import org.snowyegret.mojo.item.spell.Modifiers;
 import org.snowyegret.mojo.player.Player;
 import org.snowyegret.mojo.select.Selection;
 import org.snowyegret.mojo.undo.IUndoable;
@@ -46,10 +38,9 @@ import com.google.common.collect.Lists;
 
 public class BlockMaquette extends Block implements ITileEntityProvider {
 
-	// See comment in #getDrops
-	// public static final String KEY_TAG = "tag";
-	public static final String KEY_TAG = "BlockEntityTag";
-	public static final IUnlistedProperty PROPERTY_TAG = new PropertyTag();
+	// public static final IUnlistedProperty PROPERTY_TAG = new PropertyTag();
+	public static final IUnlistedProperty PROPERTY_SELECTIONS = new PropertySelections();
+	public static final IUnlistedProperty PROPERTY_NAME = new PropertyName();
 
 	public BlockMaquette() {
 		super(Material.clay);
@@ -86,22 +77,36 @@ public class BlockMaquette extends Block implements ITileEntityProvider {
 
 	@Override
 	protected BlockState createBlockState() {
-		return new ExtendedBlockState(this, new IProperty[0], new IUnlistedProperty[] { PROPERTY_TAG });
+		// return new ExtendedBlockState(this, new IProperty[0], new IUnlistedProperty[] { PROPERTY_TAG });
+		return new ExtendedBlockState(this, new IProperty[0], new IUnlistedProperty[] { PROPERTY_SELECTIONS,
+				PROPERTY_NAME });
 	}
 
 	@Override
 	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
 		BlockMaquetteTileEntity te = (BlockMaquetteTileEntity) world.getTileEntity(pos);
 		System.out.println("te=" + te);
-		String path = null;
-		NBTTagCompound tag = null;
+
+		// NBTTagCompound tag = null;
+		// if (te != null) {
+		// tag = te.getTag();
+		// } else {
+		// System.out.println("Could not get path and tag. te=" + te);
+		// }
+		// System.out.println("tag=" + tag);
+		// return ((IExtendedBlockState) state).withProperty(PROPERTY_TAG, tag);
+
+		Iterable<Selection> selections = null;
+		String name = null;
 		if (te != null) {
-			tag = te.getTag();
+			selections = te.getSelections();
+			name = te.getName();
 		} else {
-			System.out.println("Could not get path and tag. te=" + te);
+			System.out.println("Could not get name and selections. te=" + te);
 		}
-		System.out.println("tag=" + tag);
-		return ((IExtendedBlockState) state).withProperty(PROPERTY_TAG, tag);
+		IBlockState extendedState = ((IExtendedBlockState) state).withProperty(PROPERTY_SELECTIONS, selections);
+		extendedState = ((IExtendedBlockState) extendedState).withProperty(PROPERTY_NAME, name);
+		return extendedState;
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -132,7 +137,15 @@ public class BlockMaquette extends Block implements ITileEntityProvider {
 			return;
 		}
 
-		// TODO modifier to simplyPlace block and put tag on tileEntity
+		Player player = new Player((EntityPlayer) placer);
+		Modifiers modifiers = player.getModifiers();
+		if (modifiers.isPressed(Modifier.CTRL)) {
+			System.out.println("stack.getTagCompound()=" + stack.getTagCompound());
+			// BlockMaquetTileEntity#readFromNBT will be called because the stack has a tag with tag with a key
+			// BlockEntityTag
+			// FIXME BlockMaquetTileEntity#writeToNBT cannot write to tag
+			return;
+		}
 
 		// TODO modifier to export
 		// Write tag to file
@@ -153,14 +166,14 @@ public class BlockMaquette extends Block implements ITileEntityProvider {
 
 		NBTTagCompound tag = stack.getTagCompound();
 		if (tag == null) {
-			System.out.println("tag=" + tag);
+			System.out.println("Could not read tag. tag=" + tag);
 			return;
 		}
-		tag = tag.getCompoundTag(BlockMaquette.KEY_TAG);
+		//tag = tag.getCompoundTag(BlockMaquetteTileEntity.KEY_TAG);
 		System.out.println("tag=" + tag);
 
-		int size = tag.getInteger(SpellMaquette.KEY_SIZE);
-		BlockPos origin = BlockPos.fromLong(tag.getLong(SpellMaquette.KEY_ORIGIN));
+		int size = tag.getInteger(BlockMaquetteTileEntity.KEY_SIZE);
+		BlockPos origin = BlockPos.fromLong(tag.getLong(BlockMaquetteTileEntity.KEY_ORIGIN));
 		origin = pos.subtract(origin);
 		List<Selection> selections = Lists.newArrayList();
 		for (int i = 0; i < size; i++) {
@@ -170,14 +183,12 @@ public class BlockMaquette extends Block implements ITileEntityProvider {
 		System.out.println("selections=" + selections);
 
 		List<IUndoable> undoables = Lists.newArrayList();
-		Player player = new Player((EntityPlayer) placer);
 		IWorld w = player.getWorld();
 		for (Selection s : selections) {
 			BlockPos p = s.getPos().add(origin);
 			undoables.add(new UndoableSetBlock(p, w.getState(p), s.getState()));
 		}
 		player.getTransactionManager().doTransaction(undoables);
-		ItemBlock b;
 	}
 
 	// If this returns null, super.getDrops in getDrops with get an empty list.
@@ -209,11 +220,10 @@ public class BlockMaquette extends Block implements ITileEntityProvider {
 		ItemStack stack = new ItemStack(this);
 		NBTTagCompound tag = new NBTTagCompound();
 		stack.setTagCompound(tag);
+		tag.setTag(BlockMaquetteTileEntity.KEY_TAG, new NBTTagCompound());
 		((BlockMaquetteTileEntity) te).writeToNBT(tag);
 
-		// TODO Eliminate this
-		tag = tag.getCompoundTag(BlockMaquette.KEY_TAG);
-		stack.setStackDisplayName(tag.getString(SpellMaquette.KEY_NAME));
+		stack.setStackDisplayName(((BlockMaquetteTileEntity) te).getName());
 
 		itemStacks.add(stack);
 		return itemStacks;

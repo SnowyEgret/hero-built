@@ -3,7 +3,7 @@ package org.snowyegret.mojo.block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
 
-public class PropertyPath implements IUnlistedProperty<String> {
+public class PropertyName implements IUnlistedProperty<String> {
 
 	@Override
 	public String getName() {

@@ -4,7 +4,6 @@ import java.util.List;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.BlockPos;
 
 import org.snowyegret.mojo.MoJo;
@@ -26,12 +25,6 @@ import com.google.common.collect.Lists;
 
 public class SpellMaquette extends Spell implements ITextInput {
 
-	// TODO Move this to BlockMaquette
-	public static final String KEY_SIZE = "size";
-	public static final String KEY_NAME = "name";
-	public static final String KEY_ORIGIN = "origin";
-	public static final String EXTENTION = ".maquette";
-
 	public SpellMaquette() {
 		super(1);
 	}
@@ -49,19 +42,20 @@ public class SpellMaquette extends Spell implements ITextInput {
 	@Override
 	public void setText(String maquetteName, Player player) {
 
-		// Create tag
 		SelectionManager sm = player.getSelectionManager();
 		// TODO Should be block under cursor
 		BlockPos origin = sm.firstSelection().getPos();
-		NBTTagCompound tag = new NBTTagCompound();
-		tag.setString(KEY_NAME, maquetteName);
-		tag.setInteger(KEY_SIZE, sm.size());
-		tag.setLong(KEY_ORIGIN, origin.toLong());
-		int i = 0;
-		for (Selection s : sm.getSelections()) {
-			tag.setTag(String.valueOf(i), s.toNBT());
-			i++;
-		}
+		// TODO move this to BlockMaquetteTileEntity.writeToNBT
+		// Create tag
+		// NBTTagCompound tag = new NBTTagCompound();
+		// tag.setString(KEY_NAME, maquetteName);
+		// tag.setInteger(KEY_SIZE, sm.size());
+		// tag.setLong(KEY_ORIGIN, origin.toLong());
+		// int i = 0;
+		// for (Selection s : sm.getSelections()) {
+		// tag.setTag(String.valueOf(i), s.toNBT());
+		// i++;
+		// }
 
 		// Delete original
 		List<IUndoable> deletes = Lists.newArrayList();
@@ -77,6 +71,7 @@ public class SpellMaquette extends Spell implements ITextInput {
 			}
 		}
 
+		List<Selection> selections = sm.getSelectionList();
 		player.clearSelections();
 		player.clearPicks();
 
@@ -88,7 +83,10 @@ public class SpellMaquette extends Spell implements ITextInput {
 		// Write path to tile entity
 		IWorld w = player.getWorld();
 		BlockMaquetteTileEntity te = (BlockMaquetteTileEntity) w.getTileEntity(origin);
-		te.setTag(tag);
+		// te.setTag(tag);
+		te.setName(maquetteName);
+		te.setOrigin(origin);
+		te.setSelections(selections);
 		System.out.println("te=" + te);
 	}
 

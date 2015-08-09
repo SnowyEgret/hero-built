@@ -3,16 +3,15 @@ package org.snowyegret.mojo.block;
 import java.util.List;
 import java.util.Map;
 
-import org.snowyegret.mojo.item.spell.other.SpellMaquette;
-
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.IBakedModel;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.client.model.ISmartBlockModel;
 import net.minecraftforge.common.property.IExtendedBlockState;
+
+import org.snowyegret.mojo.select.Selection;
 
 import com.google.common.collect.Maps;
 
@@ -24,16 +23,21 @@ public class BlockMaquetteSmartModel implements ISmartBlockModel {
 
 	@Override
 	public IBakedModel handleBlockState(IBlockState state) {
-		NBTTagCompound tag = ((IExtendedBlockState) state).getValue(BlockMaquette.PROPERTY_TAG);
+		// NBTTagCompound tag = ((IExtendedBlockState) state).getValue(BlockMaquette.PROPERTY_TAG);
+		Iterable<Selection> selections = ((IExtendedBlockState) state).getValue(BlockMaquette.PROPERTY_SELECTIONS);
+		String name = ((IExtendedBlockState) state).getValue(BlockMaquette.PROPERTY_NAME);
 		// TODO Name must be unique
-		if (tag == null) {
-			System.out.println("Could not get tag from extended block state. tag=" + tag);
+		if (selections == null) {
+			System.out.println("Could not get selections from extended block state. selections=" + selections);
 			return new GeneratedModel();
 		}
-		String name = tag.getString(SpellMaquette.KEY_NAME);
+		if (name == null) {
+			System.out.println("Could not get name from extended block state. name=" + name);
+			return new GeneratedModel();
+		}
 		if (!models.containsKey(name)) {
 			System.out.println("Creating model for path=" + name);
-			models.put(name, new GeneratedModel(tag));
+			models.put(name, new GeneratedModel(selections));
 		}
 		// Seems we can lookup a null string. Model will just have no quads
 		model = models.get(name);

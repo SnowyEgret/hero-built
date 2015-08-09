@@ -26,6 +26,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import org.snowyegret.mojo.CommonProxy;
 import org.snowyegret.mojo.MoJo;
+import org.snowyegret.mojo.block.BlockMaquetteTileEntity;
 import org.snowyegret.mojo.item.spell.Spell;
 import org.snowyegret.mojo.item.spell.other.SpellMaquette;
 import org.snowyegret.mojo.item.spell.other.SpellTrail;
@@ -179,8 +180,8 @@ public class EventHandlerServer {
 				if (!Files.isRegularFile(path)) {
 					return;
 				}
-				if (!path.getFileName().toString().endsWith(SpellMaquette.EXTENTION)) {
-					System.out.println("Expected extension " + SpellMaquette.EXTENTION + ". path=" + path);
+				if (!path.getFileName().toString().endsWith(BlockMaquetteTileEntity.EXTENTION)) {
+					System.out.println("Expected extension " + BlockMaquetteTileEntity.EXTENTION + ". path=" + path);
 					return;
 				}
 

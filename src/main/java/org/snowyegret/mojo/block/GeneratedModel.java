@@ -25,7 +25,6 @@ import net.minecraft.util.EnumFacing;
 import org.snowyegret.geom.IDrawable;
 import org.snowyegret.geom.IntegerDomain;
 import org.snowyegret.geom.VoxelSet;
-import org.snowyegret.mojo.item.spell.other.SpellMaquette;
 import org.snowyegret.mojo.select.Selection;
 
 import com.google.common.collect.Lists;
@@ -53,6 +52,10 @@ public class GeneratedModel implements IBakedModel {
 	public GeneratedModel(NBTTagCompound tag) {
 		// System.out.println("tag=" + tag);
 		createQuads(tag);
+	}
+
+	public GeneratedModel(Iterable<Selection> selections) {
+		createQuads(selections);
 	}
 
 	public GeneratedModel(String path) {
@@ -114,7 +117,8 @@ public class GeneratedModel implements IBakedModel {
 
 	@Override
 	public TextureAtlasSprite getTexture() {
-		return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(Blocks.dirt.getDefaultState());
+		return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes()
+				.getTexture(Blocks.dirt.getDefaultState());
 	}
 
 	@Override
@@ -153,27 +157,19 @@ public class GeneratedModel implements IBakedModel {
 
 	}
 
-	private void createQuads(NBTTagCompound tag) {
-		if (tag == null) {
-			System.out.println("Could not create quads. tag=" + tag);
-			return;
-		}
-		List<Selection> selections = Lists.newArrayList();
-		int size = tag.getInteger(SpellMaquette.KEY_SIZE);
-		for (int i = 0; i < size; i++) {
-			selections.add(Selection.fromNBT(tag.getCompoundTag(String.valueOf(i))));
-		}
-		numCubes = selections.size();
-
+	private void createQuads(Iterable<Selection> selections) {
+		numCubes = 0;
+	
 		IntegerDomain domain = getDomain(selections);
 		BlockPos cornerClosestToOrigin = new BlockPos(domain.rx.getMinimum(), domain.ry.getMinimum(),
 				domain.rz.getMinimum());
 		// TODO SpellSave should refuse to save a single block to avoid scale = 1 and model looking identical to block
 		float scale = 1 / (float) (domain.maxDimension() + 1);
 		// System.out.println("scale=" + scale);
-
+	
 		BlockModelShapes shapes = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes();
 		for (Selection sel : selections) {
+			numCubes++;
 			BlockPos pos = sel.getPos().subtract(cornerClosestToOrigin);
 			// System.out.println("pos=" + pos);
 			IBlockState state = sel.getState();
@@ -186,7 +182,42 @@ public class GeneratedModel implements IBakedModel {
 		}
 	}
 
-	private IntegerDomain getDomain(List<Selection> selections) {
+	private void createQuads(NBTTagCompound tag) {
+		if (tag == null) {
+			System.out.println("Could not create quads. tag=" + tag);
+			return;
+		}
+		List<Selection> selections = Lists.newArrayList();
+		int size = tag.getInteger(BlockMaquetteTileEntity.KEY_SIZE);
+		for (int i = 0; i < size; i++) {
+			selections.add(Selection.fromNBT(tag.getCompoundTag(String.valueOf(i))));
+		}
+		createQuads(selections);
+		// numCubes = selections.size();
+		//
+		// IntegerDomain domain = getDomain(selections);
+		// BlockPos cornerClosestToOrigin = new BlockPos(domain.rx.getMinimum(), domain.ry.getMinimum(),
+		// domain.rz.getMinimum());
+		// // TODO SpellSave should refuse to save a single block to avoid scale = 1 and model looking identical to
+		// block
+		// float scale = 1 / (float) (domain.maxDimension() + 1);
+		// // System.out.println("scale=" + scale);
+		//
+		// BlockModelShapes shapes = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes();
+		// for (Selection sel : selections) {
+		// BlockPos pos = sel.getPos().subtract(cornerClosestToOrigin);
+		// // System.out.println("pos=" + pos);
+		// IBlockState state = sel.getState();
+		// TextureAtlasSprite sprite = shapes.getModelForState(state).getTexture();
+		// // Create a BakedQuad for each side
+		// for (EnumFacing side : EnumFacing.values()) {
+		// BakedQuad q = createBakedQuadForFace(pos, scale, 0, sprite, side);
+		// generalQuads.add(q);
+		// }
+		// }
+	}
+
+	private IntegerDomain getDomain(Iterable<Selection> selections) {
 		List<Point3i> points = Lists.newArrayList();
 		for (Selection s : selections) {
 			BlockPos p = s.getPos();
