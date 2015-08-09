@@ -127,65 +127,28 @@ public class BlockMaquette extends Block implements ITileEntityProvider {
 	// }
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-		// System.out.println("world=" + world);
+	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState stateIn, EntityLivingBase placer, ItemStack stack) {
+		// Only on server
 		if (world.isRemote) {
-			return;
-		}
-		if (stack == null) {
-			System.out.println("stack=" + stack);
 			return;
 		}
 
 		Player player = new Player((EntityPlayer) placer);
 		Modifiers modifiers = player.getModifiers();
 		if (modifiers.isPressed(Modifier.CTRL)) {
-			System.out.println("stack.getTagCompound()=" + stack.getTagCompound());
-			// BlockMaquetTileEntity#readFromNBT will be called because the stack has a tag with tag with a key
-			// BlockEntityTag
-			// FIXME BlockMaquetTileEntity#writeToNBT cannot write to tag
+			// Do no expand block
 			return;
 		}
 
-		// TODO modifier to export
-		// Write tag to file
-		// Path path = null;
-		// try {
-		// // path = Files.createFile(Paths.get(ClientProxy.PATH_SAVES, text + origin.toLong() + EXTENTION));
-		// // TODO if file exists
-		// // player.sendMessage(new OpenGuiMessage(GuiHandler.FILE_OVERWRITE_DIALOG));
-		// path = Files.createFile(Paths.get(ClientProxy.PATH_SAVES.toString(), text + origin.toLong() + EXTENTION));
-		// CompressedStreamTools.writeCompressed(tag, new FileOutputStream(path.toFile()));
-		// } catch (IOException e) {
-		// System.out.println(e);
-		// player.clearSelections();
-		// player.clearPicks();
-		// return;
-		// }
-		// System.out.println("path=" + path);
-
-		NBTTagCompound tag = stack.getTagCompound();
-		if (tag == null) {
-			System.out.println("Could not read tag. tag=" + tag);
-			return;
-		}
-		//tag = tag.getCompoundTag(BlockMaquetteTileEntity.KEY_TAG);
-		System.out.println("tag=" + tag);
-
-		int size = tag.getInteger(BlockMaquetteTileEntity.KEY_SIZE);
-		BlockPos origin = BlockPos.fromLong(tag.getLong(BlockMaquetteTileEntity.KEY_ORIGIN));
-		origin = pos.subtract(origin);
-		List<Selection> selections = Lists.newArrayList();
-		for (int i = 0; i < size; i++) {
-			NBTTagCompound tt = tag.getCompoundTag(String.valueOf(i));
-			selections.add(Selection.fromNBT(tt));
-		}
-		System.out.println("selections=" + selections);
-
-		List<IUndoable> undoables = Lists.newArrayList();
+		// BlockMaquetteTileEntity:readFromNBT has been called because stack has tag with key 'BlockEntityTag'
+		// Set in #getDrops
+		// See comment in #getDrops
+		BlockMaquetteTileEntity te = (BlockMaquetteTileEntity) world.getTileEntity(pos);
 		IWorld w = player.getWorld();
-		for (Selection s : selections) {
-			BlockPos p = s.getPos().add(origin);
+		List<IUndoable> undoables = Lists.newArrayList();
+		for (Selection s : te.getSelections()) {
+			BlockPos p = s.getPos().subtract(te.getOrigin());
+			p = p.add(pos);
 			undoables.add(new UndoableSetBlock(p, w.getState(p), s.getState()));
 		}
 		player.getTransactionManager().doTransaction(undoables);
@@ -197,6 +160,38 @@ public class BlockMaquette extends Block implements ITileEntityProvider {
 	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
 		return null;
 	}
+
+	// @Override
+	// public void onBlockClicked(World worldIn, BlockPos pos, EntityPlayer playerIn) {
+	// // Only on server
+	// if (worldIn.isRemote) {
+	// return;
+	// }
+	//
+	// Player player = new Player((EntityPlayer) playerIn);
+	// Modifiers modifiers = player.getModifiers();
+	// if (modifiers.isPressed(Modifier.SHIFT)) {
+	// System.out.println("Modifier.SHIFT was pressed.");
+	// return;
+	// }
+	// // TODO modifier to export
+	// // Write tag to file
+	// // Path path = null;
+	// // try {
+	// // // path = Files.createFile(Paths.get(ClientProxy.PATH_SAVES, text + origin.toLong() + EXTENTION));
+	// // // TODO if file exists
+	// // // player.sendMessage(new OpenGuiMessage(GuiHandler.FILE_OVERWRITE_DIALOG));
+	// // path = Files.createFile(Paths.get(ClientProxy.PATH_SAVES.toString(), text + origin.toLong() + EXTENTION));
+	// // CompressedStreamTools.writeCompressed(tag, new FileOutputStream(path.toFile()));
+	// // } catch (IOException e) {
+	// // System.out.println(e);
+	// // player.clearSelections();
+	// // player.clearPicks();
+	// // return;
+	// // }
+	// // System.out.println("path=" + path);
+	//
+	// }
 
 	// These methods (getDrops, removedByPlayer, harvestBlock) delay deletion of tile entity until block is picked up.
 	// http://www.minecraftforge.net/forum/index.php/topic,32477.msg169713.html
@@ -217,11 +212,13 @@ public class BlockMaquette extends Block implements ITileEntityProvider {
 		// http://www.minecraftforge.net/forum/index.php/topic,32550.msg170141.html#msg170141
 		// Side note: if you create a compound tag with the key "BlockEntityTag" in an ItemStack's compound tag and your
 		// Block has a TileEntity, ItemBlock will call TileEntity#readFromNBT with it after placing the Block.
+		// "it" refers to the BlockEntity tag
 		ItemStack stack = new ItemStack(this);
 		NBTTagCompound tag = new NBTTagCompound();
 		stack.setTagCompound(tag);
-		tag.setTag(BlockMaquetteTileEntity.KEY_TAG, new NBTTagCompound());
-		((BlockMaquetteTileEntity) te).writeToNBT(tag);
+		NBTTagCompound blockEntityTag = new NBTTagCompound();
+		tag.setTag("BlockEntityTag", blockEntityTag);
+		((BlockMaquetteTileEntity) te).writeToNBT(blockEntityTag);
 
 		stack.setStackDisplayName(((BlockMaquetteTileEntity) te).getName());
 

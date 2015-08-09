@@ -36,8 +36,8 @@ public class BlockMaquetteSmartModel implements ISmartBlockModel {
 			return new GeneratedModel();
 		}
 		if (!models.containsKey(name)) {
-			System.out.println("Creating model for path=" + name);
-			models.put(name, new GeneratedModel(selections));
+			IBakedModel m = models.put(name, new GeneratedModel(selections));
+			System.out.println("Created new GeneratedModel");
 		}
 		// Seems we can lookup a null string. Model will just have no quads
 		model = models.get(name);
