@@ -206,114 +206,150 @@ public class GeneratedModel implements IBakedModel {
 	private BakedQuad scaleAndTranslateQuad(BakedQuad q, Vec3i t, float s) {
 
 		int[] v = q.getVertexData().clone();
-		int x = t.getX();
-		int y = t.getY();
-		int z = t.getZ();
+		// leftRigh, upDown, frontBack
+		int lr, ud, fb;
 
+		// A quad has four verticies
+		// indices of x values of vertices are 0, 7, 14, 21
+		// indices of y values of vertices are 1, 8, 15, 22
+		// indices of z values of vertices are 2, 9, 16, 23
+		
+		// east: x
+		// south: z
+		// up: y
+		
 		switch (q.getFace()) {
 		case UP:
-			v[0] = transform(v[0], x, s);
-			v[7] = transform(v[7], x, s);
-			v[14] = transform(v[14], x, s);
-			v[21] = transform(v[21], x, s);
+			// Quad up is towards north
+			lr = t.getX();
+			ud = t.getZ();
+			fb = t.getY();
+			
+			v[0] = transform(v[0], lr, s);
+			v[7] = transform(v[7], lr, s);
+			v[14] = transform(v[14], lr, s);
+			v[21] = transform(v[21], lr, s);
 
-			v[1] = transform(v[1], -z, s);
-			v[8] = transform(v[8], -z, s);
-			v[15] = transform(v[15], -z, s);
-			v[22] = transform(v[22], -z, s);
+			v[1] = transform(v[1], fb, s);
+			v[8] = transform(v[8], fb, s);
+			v[15] = transform(v[15], fb, s);
+			v[22] = transform(v[22], fb, s);
 
-			v[2] = transform(v[2], y, s);
-			v[9] = transform(v[9], y, s);
-			v[16] = transform(v[16], y, s);
-			v[23] = transform(v[23], y, s);
+			v[2] = transform(v[2], ud, s);
+			v[9] = transform(v[9], ud, s);
+			v[16] = transform(v[16], ud, s);
+			v[23] = transform(v[23], ud, s);
 			break;
 
 		case DOWN:
-			v[0] = transform(v[0], x, s);
-			v[7] = transform(v[7], x, s);
-			v[14] = transform(v[14], x, s);
-			v[21] = transform(v[21], x, s);
+			// Quad up is towards south
+			lr = t.getX();
+			ud = t.getZ();
+			fb = t.getY();
 
-			v[1] = transform(v[1], z, s);
-			v[8] = transform(v[8], z, s);
-			v[15] = transform(v[15], z, s);
-			v[22] = transform(v[22], z, s);
+			v[0] = transform(v[0], lr, s);
+			v[7] = transform(v[7], lr, s);
+			v[14] = transform(v[14], lr, s);
+			v[21] = transform(v[21], lr, s);
 
-			v[2] = transform(v[2], -y, s);
-			v[9] = transform(v[9], -y, s);
-			v[16] = transform(v[16], -y, s);
-			v[23] = transform(v[23], -y, s);
-			break;
+			v[1] = transform(v[1], fb, s);
+			v[8] = transform(v[8], fb, s);
+			v[15] = transform(v[15], fb, s);
+			v[22] = transform(v[22], fb, s);
 
-		case EAST:
-			v[0] = transform(v[0], z, s);
-			v[7] = transform(v[7], z, s);
-			v[14] = transform(v[14], z, s);
-			v[21] = transform(v[21], z, s);
-
-			v[1] = transform(v[1], y, s);
-			v[8] = transform(v[8], y, s);
-			v[15] = transform(v[15], y, s);
-			v[22] = transform(v[22], y, s);
-
-			v[2] = transform(v[2], x, s);
-			v[9] = transform(v[9], x, s);
-			v[16] = transform(v[16], x, s);
-			v[23] = transform(v[23], x, s);
+			v[2] = transform(v[2], -ud, s);
+			v[9] = transform(v[9], -ud, s);
+			v[16] = transform(v[16], -ud, s);
+			v[23] = transform(v[23], -ud, s);
 			break;
 
 		case WEST:
-			v[0] = transform(v[0], z, s);
-			v[7] = transform(v[7], z, s);
-			v[14] = transform(v[14], z, s);
-			v[21] = transform(v[21], z, s);
+			lr = t.getZ();
+			ud = t.getY();
+			fb = t.getX();
 
-			v[1] = transform(v[1], y, s);
-			v[8] = transform(v[8], y, s);
-			v[15] = transform(v[15], y, s);
-			v[22] = transform(v[22], y, s);
+			v[0] = transform(v[0], fb, s);
+			v[7] = transform(v[7], fb, s);
+			v[14] = transform(v[14], fb, s);
+			v[21] = transform(v[21], fb, s);
 
-			v[2] = transform(v[2], -x, s);
-			v[9] = transform(v[9], -x, s);
-			v[16] = transform(v[16], -x, s);
-			v[23] = transform(v[23], -x, s);
+			v[1] = transform(v[1], ud, s);
+			v[8] = transform(v[8], ud, s);
+			v[15] = transform(v[15], ud, s);
+			v[22] = transform(v[22], ud, s);
+
+			v[2] = transform(v[2], lr, s);
+			v[9] = transform(v[9], lr, s);
+			v[16] = transform(v[16], lr, s);
+			v[23] = transform(v[23], lr, s);
+			break;
+
+		case EAST:
+			lr = t.getZ();
+			ud = t.getY();
+			fb = t.getX();
+
+			v[0] = transform(v[0], fb, s);
+			v[7] = transform(v[7], fb, s);
+			v[14] = transform(v[14], fb, s);
+			v[21] = transform(v[21], fb, s);
+
+			v[1] = transform(v[1], ud, s);
+			v[8] = transform(v[8], ud, s);
+			v[15] = transform(v[15], ud, s);
+			v[22] = transform(v[22], ud, s);
+
+			v[2] = transform(v[2], lr, s);
+			v[9] = transform(v[9], lr, s);
+			v[16] = transform(v[16], lr, s);
+			v[23] = transform(v[23], lr, s);
 			break;
 
 		case NORTH:
-			v[0] = transform(v[0], -x, s);
-			v[7] = transform(v[7], -x, s);
-			v[14] = transform(v[14], -x, s);
-			v[21] = transform(v[21], -x, s);
+			lr = t.getX();
+			ud = t.getY();
+			fb = t.getZ();
 
-			v[1] = transform(v[1], y, s);
-			v[8] = transform(v[8], y, s);
-			v[15] = transform(v[15], y, s);
-			v[22] = transform(v[22], y, s);
+			v[0] = transform(v[0], lr, s);
+			v[7] = transform(v[7], lr, s);
+			v[14] = transform(v[14], lr, s);
+			v[21] = transform(v[21], lr, s);
 
-			v[2] = transform(v[2], -z, s);
-			v[9] = transform(v[9], -z, s);
-			v[16] = transform(v[16], -z, s);
-			v[23] = transform(v[23], -z, s);
+			v[1] = transform(v[1], ud, s);
+			v[8] = transform(v[8], ud, s);
+			v[15] = transform(v[15], ud, s);
+			v[22] = transform(v[22], ud, s);
+
+			v[2] = transform(v[2], fb, s);
+			v[9] = transform(v[9], fb, s);
+			v[16] = transform(v[16], fb, s);
+			v[23] = transform(v[23], fb, s);
 			break;
 
 		case SOUTH:
-			// Case where quad coordinates are aligned with world coordinates
-			v[0] = transform(v[0], x, s);
-			v[7] = transform(v[7], x, s);
-			v[14] = transform(v[14], x, s);
-			v[21] = transform(v[21], x, s);
+			// Case where quad is aligned with world coordinates
+			lr = t.getX();
+			ud = t.getY();
+			fb = t.getZ();
 
-			v[1] = transform(v[1], y, s);
-			v[8] = transform(v[8], y, s);
-			v[15] = transform(v[15], y, s);
-			v[22] = transform(v[22], y, s);
+			v[0] = transform(v[0], lr, s);
+			v[7] = transform(v[7], lr, s);
+			v[14] = transform(v[14], lr, s);
+			v[21] = transform(v[21], lr, s);
 
-			v[2] = transform(v[2], z, s);
-			v[9] = transform(v[9], z, s);
-			v[16] = transform(v[16], z, s);
-			v[23] = transform(v[23], z, s);
+			v[1] = transform(v[1], ud, s);
+			v[8] = transform(v[8], ud, s);
+			v[15] = transform(v[15], ud, s);
+			v[22] = transform(v[22], ud, s);
+
+			v[2] = transform(v[2], fb, s);
+			v[9] = transform(v[9], fb, s);
+			v[16] = transform(v[16], fb, s);
+			v[23] = transform(v[23], fb, s);
 			break;
+
 		default:
+			System.out.println("Unexpected face=" + q.getFace());
 			break;
 		}
 
@@ -326,6 +362,7 @@ public class GeneratedModel implements IBakedModel {
 		return Float.floatToRawIntBits(f);
 	}
 
+	@Deprecated
 	private void createQuads(NBTTagCompound tag) {
 		if (tag == null) {
 			System.out.println("Could not create quads. tag=" + tag);
