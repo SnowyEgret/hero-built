@@ -21,6 +21,7 @@ import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Vec3i;
 
 import org.snowyegret.geom.IDrawable;
 import org.snowyegret.geom.IntegerDomain;
@@ -39,31 +40,19 @@ public class GeneratedModel implements IBakedModel {
 
 	// This class is never registered, so there can be more than one instance and fields
 	// For #toString
-	private int numCubes;
+	private int numBlocks;
 	private List generalQuads = Lists.newArrayList();
+	private List faceQuads = Lists.newArrayList();
 
 	// IBakedModel---------------------------------------------------------------------
 
-	// For case where BlockMaquetteSmartModel cannot read tag
+	// For case where BlockMaquetteSmartModel cannot get selections
 	// Returns a model with no quads
 	public GeneratedModel() {
 	}
 
-	public GeneratedModel(NBTTagCompound tag) {
-		// System.out.println("tag=" + tag);
-		createQuads(tag);
-	}
-
 	public GeneratedModel(Iterable<Selection> selections) {
 		createQuads(selections);
-	}
-
-	public GeneratedModel(String path) {
-		// System.out.println("path=" + path);
-		NBTTagCompound tag = readTagFromFile(path);
-		if (tag != null) {
-			createQuads(tag);
-		}
 	}
 
 	public GeneratedModel(IDrawable drawable, IBlockState state) {
@@ -73,7 +62,7 @@ public class GeneratedModel implements IBakedModel {
 				.getModelForState(state).getTexture();
 		System.out.println("sprite=" + sprite);
 		VoxelSet voxels = drawable.voxelize();
-		numCubes = voxels.size();
+		numBlocks = voxels.size();
 		IntegerDomain domain = voxels.getDomain();
 		BlockPos cornerClosestToOrigin = new BlockPos(domain.rx.getMinimum(), domain.ry.getMinimum(),
 				domain.rz.getMinimum());
@@ -88,11 +77,26 @@ public class GeneratedModel implements IBakedModel {
 		}
 	}
 
+	@Deprecated
+	public GeneratedModel(NBTTagCompound tag) {
+		// System.out.println("tag=" + tag);
+		createQuads(tag);
+	}
+
 	// IBakedModel---------------------------------------------------------------------
+
+	@Deprecated
+	public GeneratedModel(String path) {
+		// System.out.println("path=" + path);
+		NBTTagCompound tag = readTagFromFile(path);
+		if (tag != null) {
+			createQuads(tag);
+		}
+	}
 
 	@Override
 	public List getFaceQuads(EnumFacing side) {
-		return Lists.newArrayList();
+		return faceQuads;
 	}
 
 	@Override
@@ -129,9 +133,11 @@ public class GeneratedModel implements IBakedModel {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("GeneratedModel [numCubes=");
-		builder.append(numCubes);
-		builder.append(", numQuads=");
+		builder.append("GeneratedModel [numBlocks=");
+		builder.append(numBlocks);
+		builder.append(", faceQuads=");
+		builder.append(faceQuads.size());
+		builder.append(", generalQuads=");
 		builder.append(generalQuads.size());
 		builder.append("]");
 		return builder.toString();
@@ -158,28 +164,166 @@ public class GeneratedModel implements IBakedModel {
 	}
 
 	private void createQuads(Iterable<Selection> selections) {
-		numCubes = 0;
-	
+
 		IntegerDomain domain = getDomain(selections);
 		BlockPos cornerClosestToOrigin = new BlockPos(domain.rx.getMinimum(), domain.ry.getMinimum(),
 				domain.rz.getMinimum());
 		// TODO SpellSave should refuse to save a single block to avoid scale = 1 and model looking identical to block
 		float scale = 1 / (float) (domain.maxDimension() + 1);
 		// System.out.println("scale=" + scale);
-	
+
 		BlockModelShapes shapes = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes();
+		numBlocks = 0;
 		for (Selection sel : selections) {
-			numCubes++;
+			numBlocks++;
 			BlockPos pos = sel.getPos().subtract(cornerClosestToOrigin);
 			// System.out.println("pos=" + pos);
 			IBlockState state = sel.getState();
-			TextureAtlasSprite sprite = shapes.getModelForState(state).getTexture();
-			// Create a BakedQuad for each side
-			for (EnumFacing side : EnumFacing.values()) {
-				BakedQuad q = createBakedQuadForFace(pos, scale, 0, sprite, side);
+			// TextureAtlasSprite sprite = shapes.getModelForState(state).getTexture();
+			IBakedModel model = shapes.getModelForState(sel.getState());
+			List<BakedQuad> gQuads = model.getGeneralQuads();
+			for (BakedQuad q : gQuads) {
+				q = scaleAndTranslateQuad(q, pos, scale);
+				// System.out.println("q=" + q.getFace());
 				generalQuads.add(q);
+				// faceQuads.add(q);
+			}
+			// Create a BakedQuad for each side
+			for (EnumFacing face : EnumFacing.values()) {
+				// BakedQuad q = createBakedQuadForFace(pos, scale, 0, sprite, side);
+				// generalQuads.add(q);
+				List<BakedQuad> fQuads = model.getFaceQuads(face);
+				for (BakedQuad q : fQuads) {
+					q = scaleAndTranslateQuad(q, pos, scale);
+					// System.out.println("q=" + q.getFace());
+					// generalQuads.add(q);
+					faceQuads.add(q);
+				}
 			}
 		}
+	}
+
+	private BakedQuad scaleAndTranslateQuad(BakedQuad q, Vec3i t, float s) {
+
+		int[] v = q.getVertexData().clone();
+		int x = t.getX();
+		int y = t.getY();
+		int z = t.getZ();
+
+		switch (q.getFace()) {
+		case UP:
+			v[0] = transform(v[0], x, s);
+			v[7] = transform(v[7], x, s);
+			v[14] = transform(v[14], x, s);
+			v[21] = transform(v[21], x, s);
+
+			v[1] = transform(v[1], -z, s);
+			v[8] = transform(v[8], -z, s);
+			v[15] = transform(v[15], -z, s);
+			v[22] = transform(v[22], -z, s);
+
+			v[2] = transform(v[2], y, s);
+			v[9] = transform(v[9], y, s);
+			v[16] = transform(v[16], y, s);
+			v[23] = transform(v[23], y, s);
+			break;
+
+		case DOWN:
+			v[0] = transform(v[0], x, s);
+			v[7] = transform(v[7], x, s);
+			v[14] = transform(v[14], x, s);
+			v[21] = transform(v[21], x, s);
+
+			v[1] = transform(v[1], z, s);
+			v[8] = transform(v[8], z, s);
+			v[15] = transform(v[15], z, s);
+			v[22] = transform(v[22], z, s);
+
+			v[2] = transform(v[2], -y, s);
+			v[9] = transform(v[9], -y, s);
+			v[16] = transform(v[16], -y, s);
+			v[23] = transform(v[23], -y, s);
+			break;
+
+		case EAST:
+			v[0] = transform(v[0], z, s);
+			v[7] = transform(v[7], z, s);
+			v[14] = transform(v[14], z, s);
+			v[21] = transform(v[21], z, s);
+
+			v[1] = transform(v[1], y, s);
+			v[8] = transform(v[8], y, s);
+			v[15] = transform(v[15], y, s);
+			v[22] = transform(v[22], y, s);
+
+			v[2] = transform(v[2], x, s);
+			v[9] = transform(v[9], x, s);
+			v[16] = transform(v[16], x, s);
+			v[23] = transform(v[23], x, s);
+			break;
+
+		case WEST:
+			v[0] = transform(v[0], z, s);
+			v[7] = transform(v[7], z, s);
+			v[14] = transform(v[14], z, s);
+			v[21] = transform(v[21], z, s);
+
+			v[1] = transform(v[1], y, s);
+			v[8] = transform(v[8], y, s);
+			v[15] = transform(v[15], y, s);
+			v[22] = transform(v[22], y, s);
+
+			v[2] = transform(v[2], -x, s);
+			v[9] = transform(v[9], -x, s);
+			v[16] = transform(v[16], -x, s);
+			v[23] = transform(v[23], -x, s);
+			break;
+
+		case NORTH:
+			v[0] = transform(v[0], -x, s);
+			v[7] = transform(v[7], -x, s);
+			v[14] = transform(v[14], -x, s);
+			v[21] = transform(v[21], -x, s);
+
+			v[1] = transform(v[1], y, s);
+			v[8] = transform(v[8], y, s);
+			v[15] = transform(v[15], y, s);
+			v[22] = transform(v[22], y, s);
+
+			v[2] = transform(v[2], -z, s);
+			v[9] = transform(v[9], -z, s);
+			v[16] = transform(v[16], -z, s);
+			v[23] = transform(v[23], -z, s);
+			break;
+
+		case SOUTH:
+			// Case where quad coordinates are aligned with world coordinates
+			v[0] = transform(v[0], x, s);
+			v[7] = transform(v[7], x, s);
+			v[14] = transform(v[14], x, s);
+			v[21] = transform(v[21], x, s);
+
+			v[1] = transform(v[1], y, s);
+			v[8] = transform(v[8], y, s);
+			v[15] = transform(v[15], y, s);
+			v[22] = transform(v[22], y, s);
+
+			v[2] = transform(v[2], z, s);
+			v[9] = transform(v[9], z, s);
+			v[16] = transform(v[16], z, s);
+			v[23] = transform(v[23], z, s);
+			break;
+		default:
+			break;
+		}
+
+		return new BakedQuad(v, q.getTintIndex(), q.getFace());
+	}
+
+	private int transform(int i, int t, float s) {
+		float f = Float.intBitsToFloat(i);
+		f = (f + t) * s;
+		return Float.floatToRawIntBits(f);
 	}
 
 	private void createQuads(NBTTagCompound tag) {
@@ -193,28 +337,6 @@ public class GeneratedModel implements IBakedModel {
 			selections.add(Selection.fromNBT(tag.getCompoundTag(String.valueOf(i))));
 		}
 		createQuads(selections);
-		// numCubes = selections.size();
-		//
-		// IntegerDomain domain = getDomain(selections);
-		// BlockPos cornerClosestToOrigin = new BlockPos(domain.rx.getMinimum(), domain.ry.getMinimum(),
-		// domain.rz.getMinimum());
-		// // TODO SpellSave should refuse to save a single block to avoid scale = 1 and model looking identical to
-		// block
-		// float scale = 1 / (float) (domain.maxDimension() + 1);
-		// // System.out.println("scale=" + scale);
-		//
-		// BlockModelShapes shapes = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes();
-		// for (Selection sel : selections) {
-		// BlockPos pos = sel.getPos().subtract(cornerClosestToOrigin);
-		// // System.out.println("pos=" + pos);
-		// IBlockState state = sel.getState();
-		// TextureAtlasSprite sprite = shapes.getModelForState(state).getTexture();
-		// // Create a BakedQuad for each side
-		// for (EnumFacing side : EnumFacing.values()) {
-		// BakedQuad q = createBakedQuadForFace(pos, scale, 0, sprite, side);
-		// generalQuads.add(q);
-		// }
-		// }
 	}
 
 	private IntegerDomain getDomain(Iterable<Selection> selections) {

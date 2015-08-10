@@ -1,22 +1,32 @@
 package org.snowyegret.mojo.block;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockStairs;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -26,28 +36,46 @@ import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import org.snowyegret.mojo.ClientProxy;
 import org.snowyegret.mojo.item.spell.Modifier;
 import org.snowyegret.mojo.item.spell.Modifiers;
 import org.snowyegret.mojo.player.Player;
 import org.snowyegret.mojo.select.Selection;
 import org.snowyegret.mojo.undo.IUndoable;
 import org.snowyegret.mojo.undo.UndoableSetBlock;
-import org.snowyegret.mojo.world.IWorld;
 
 import com.google.common.collect.Lists;
 
 public class BlockMaquette extends Block implements ITileEntityProvider {
 
-	// public static final IUnlistedProperty PROPERTY_TAG = new PropertyTag();
+	public static final String EXTENTION = ".maquette";
+	// For passing BlockMaqetteTileEntity fields to smart model
 	public static final IUnlistedProperty PROPERTY_SELECTIONS = new PropertySelections();
 	public static final IUnlistedProperty PROPERTY_NAME = new PropertyName();
 
+	// For rotating block
+	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+
 	public BlockMaquette() {
 		super(Material.clay);
+		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
+	}
+
+	public IBlockState getStateFromMeta(int meta) {
+		IBlockState iblockstate = this.getDefaultState().withProperty(FACING, EnumFacing.getFront(5 - (meta & 3)));
+		return iblockstate;
+	}
+
+	public int getMetaFromState(IBlockState state) {
+		int i = 0;
+		i |= 5 - ((EnumFacing) state.getValue(FACING)).getIndex();
+		return i;
 	}
 
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
+		Block a = Blocks.stone_stairs;
+		BlockStairs s;
 		return new BlockMaquetteTileEntity();
 	}
 
@@ -78,7 +106,7 @@ public class BlockMaquette extends Block implements ITileEntityProvider {
 	@Override
 	protected BlockState createBlockState() {
 		// return new ExtendedBlockState(this, new IProperty[0], new IUnlistedProperty[] { PROPERTY_TAG });
-		return new ExtendedBlockState(this, new IProperty[0], new IUnlistedProperty[] { PROPERTY_SELECTIONS,
+		return new ExtendedBlockState(this, new IProperty[] { FACING }, new IUnlistedProperty[] { PROPERTY_SELECTIONS,
 				PROPERTY_NAME });
 	}
 
@@ -104,6 +132,9 @@ public class BlockMaquette extends Block implements ITileEntityProvider {
 		} else {
 			System.out.println("Could not get name and selections. te=" + te);
 		}
+		// TODO
+		// return ((IExtendedBlockState) state).withProperty(PROPERTY_SELECTIONS, selections).withProperty(
+		// PROPERTY_NAME, name);
 		IBlockState extendedState = ((IExtendedBlockState) state).withProperty(PROPERTY_SELECTIONS, selections);
 		extendedState = ((IExtendedBlockState) extendedState).withProperty(PROPERTY_NAME, name);
 		return extendedState;
@@ -127,13 +158,13 @@ public class BlockMaquette extends Block implements ITileEntityProvider {
 	// }
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState stateIn, EntityLivingBase placer, ItemStack stack) {
+	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState stateIn, EntityLivingBase playerIn, ItemStack stack) {
 		// Only on server
 		if (world.isRemote) {
 			return;
 		}
 
-		Player player = new Player((EntityPlayer) placer);
+		Player player = new Player((EntityPlayer) playerIn);
 		Modifiers modifiers = player.getModifiers();
 		if (modifiers.isPressed(Modifier.CTRL)) {
 			// Do no expand block
@@ -144,12 +175,11 @@ public class BlockMaquette extends Block implements ITileEntityProvider {
 		// Set in #getDrops
 		// See comment in #getDrops
 		BlockMaquetteTileEntity te = (BlockMaquetteTileEntity) world.getTileEntity(pos);
-		IWorld w = player.getWorld();
 		List<IUndoable> undoables = Lists.newArrayList();
 		for (Selection s : te.getSelections()) {
 			BlockPos p = s.getPos().subtract(te.getOrigin());
 			p = p.add(pos);
-			undoables.add(new UndoableSetBlock(p, w.getState(p), s.getState()));
+			undoables.add(new UndoableSetBlock(p, world.getBlockState(p), s.getState()));
 		}
 		player.getTransactionManager().doTransaction(undoables);
 	}
@@ -163,35 +193,50 @@ public class BlockMaquette extends Block implements ITileEntityProvider {
 
 	// @Override
 	// public void onBlockClicked(World worldIn, BlockPos pos, EntityPlayer playerIn) {
-	// // Only on server
-	// if (worldIn.isRemote) {
-	// return;
 	// }
-	//
-	// Player player = new Player((EntityPlayer) playerIn);
-	// Modifiers modifiers = player.getModifiers();
-	// if (modifiers.isPressed(Modifier.SHIFT)) {
-	// System.out.println("Modifier.SHIFT was pressed.");
-	// return;
-	// }
-	// // TODO modifier to export
-	// // Write tag to file
-	// // Path path = null;
-	// // try {
-	// // // path = Files.createFile(Paths.get(ClientProxy.PATH_SAVES, text + origin.toLong() + EXTENTION));
-	// // // TODO if file exists
-	// // // player.sendMessage(new OpenGuiMessage(GuiHandler.FILE_OVERWRITE_DIALOG));
-	// // path = Files.createFile(Paths.get(ClientProxy.PATH_SAVES.toString(), text + origin.toLong() + EXTENTION));
-	// // CompressedStreamTools.writeCompressed(tag, new FileOutputStream(path.toFile()));
-	// // } catch (IOException e) {
-	// // System.out.println(e);
-	// // player.clearSelections();
-	// // player.clearPicks();
-	// // return;
-	// // }
-	// // System.out.println("path=" + path);
-	//
-	// }
+
+	@Override
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ) {
+		// Only on server
+		if (worldIn.isRemote) {
+			return false;
+		}
+
+		Player player = new Player((EntityPlayer) playerIn);
+		Modifiers modifiers = player.getModifiers();
+
+		// Rotate
+		// if (modifiers.isPressed(Modifier.SHIFT)) {
+		// // FIXME Do we need a model for each direction?
+		// boolean isRotated = rotateBlock(worldIn, pos, EnumFacing.UP);
+		// System.out.println("isRotated=" + isRotated);
+		// return isRotated;
+		// }
+
+		// Export
+		if (modifiers.isPressed(Modifier.CTRL)) {
+			// TODO modifier to export
+			// Write tag to file
+			try {
+				// TODO if file exists
+				// player.sendMessage(new OpenGuiMessage(GuiHandler.FILE_OVERWRITE_DIALOG));
+				BlockMaquetteTileEntity te = (BlockMaquetteTileEntity) worldIn.getTileEntity(pos);
+				Path path = Files.createFile(Paths.get(ClientProxy.PATH_EXPORT.toString(), te.getName() + EXTENTION));
+				System.out.println("path=" + path);
+				NBTTagCompound tag = new NBTTagCompound();
+				te.writeToNBT(tag);
+				CompressedStreamTools.writeCompressed(tag, new FileOutputStream(path.toFile()));
+				return true;
+			} catch (IOException e) {
+				System.out.println(e);
+				player.clearSelections();
+				player.clearPicks();
+				return false;
+			}
+		}
+
+		return false;
+	}
 
 	// These methods (getDrops, removedByPlayer, harvestBlock) delay deletion of tile entity until block is picked up.
 	// http://www.minecraftforge.net/forum/index.php/topic,32477.msg169713.html
@@ -199,25 +244,21 @@ public class BlockMaquette extends Block implements ITileEntityProvider {
 	public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
 		List<ItemStack> itemStacks = super.getDrops(world, pos, state, fortune);
 		TileEntity te = world.getTileEntity(pos);
-		if (te == null) {
-			System.out.println("Could not write path to tag. te=" + te);
-			return itemStacks;
-		}
-		if (!(te instanceof BlockMaquetteTileEntity)) {
-			System.out.println("Could not write path to tag. TileEntity not a BlockSavedTileEntity. te=" + te);
+		if (te == null || !(te instanceof BlockMaquetteTileEntity)) {
+			System.out.println("Could not write tile entity to tag. te=" + te);
 			return itemStacks;
 		}
 
-		// Write BlockSavedTileEntity#path to the stack's tag
 		// http://www.minecraftforge.net/forum/index.php/topic,32550.msg170141.html#msg170141
+		// Choonster:
 		// Side note: if you create a compound tag with the key "BlockEntityTag" in an ItemStack's compound tag and your
 		// Block has a TileEntity, ItemBlock will call TileEntity#readFromNBT with it after placing the Block.
-		// "it" refers to the BlockEntity tag
 		ItemStack stack = new ItemStack(this);
 		NBTTagCompound tag = new NBTTagCompound();
 		stack.setTagCompound(tag);
 		NBTTagCompound blockEntityTag = new NBTTagCompound();
 		tag.setTag("BlockEntityTag", blockEntityTag);
+		// "it" in above comment refers to the BlockEntity tag. Must write tile entity to blockEntityTag
 		((BlockMaquetteTileEntity) te).writeToNBT(blockEntityTag);
 
 		stack.setStackDisplayName(((BlockMaquetteTileEntity) te).getName());

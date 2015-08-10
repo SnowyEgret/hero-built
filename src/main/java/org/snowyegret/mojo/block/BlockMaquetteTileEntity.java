@@ -22,7 +22,6 @@ public class BlockMaquetteTileEntity extends TileEntity {
 	public static final String KEY_SIZE = "size";
 	public static final String KEY_NAME = "name";
 	public static final String KEY_ORIGIN = "origin";
-	public static final String EXTENTION = ".maquette";
 
 	private String name;
 	private BlockPos origin;

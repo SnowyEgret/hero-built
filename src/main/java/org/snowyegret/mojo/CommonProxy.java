@@ -69,11 +69,9 @@ import com.google.common.reflect.ClassPath.ClassInfo;
 
 public class CommonProxy {
 
-	// TODO change name of folders to import and export
-	// Export and Import BlockMaquette to and from file #293
-	public static final Path PATH_SAVES = Paths.get(MoJo.MODID, "saves");
-	public static final Path PATH_SAVES_NEW = Paths.get(MoJo.MODID, "saves-new");
-
+	public static final Path PATH_EXPORT = Paths.get(MoJo.MODID, "export");
+	// For now only one folder will do
+	// public static final Path PATH_IMPORT = Paths.get(MoJo.MODID, "import");
 	public static CreativeTabs tabMoJo;
 	static {
 		tabMoJo = new CreativeTabs("Mo'Jo") {
@@ -123,8 +121,8 @@ public class CommonProxy {
 	public void createFileSystem() {
 		System.out.println("creating mojo filesystem...");
 		try {
-			Files.createDirectories(PATH_SAVES);
-			Files.createDirectories(PATH_SAVES_NEW);
+			Files.createDirectories(PATH_EXPORT);
+			// Files.createDirectories(PATH_SAVES_NEW);
 		} catch (IOException e) {
 			System.out.println("Could not create mojo file system. e=" + e);
 		}

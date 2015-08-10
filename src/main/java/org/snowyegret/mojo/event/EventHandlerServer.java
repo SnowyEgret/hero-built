@@ -26,9 +26,9 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import org.snowyegret.mojo.CommonProxy;
 import org.snowyegret.mojo.MoJo;
+import org.snowyegret.mojo.block.BlockMaquette;
 import org.snowyegret.mojo.block.BlockMaquetteTileEntity;
 import org.snowyegret.mojo.item.spell.Spell;
-import org.snowyegret.mojo.item.spell.other.SpellMaquette;
 import org.snowyegret.mojo.item.spell.other.SpellTrail;
 import org.snowyegret.mojo.item.spell.transform.SpellFill;
 import org.snowyegret.mojo.player.Player;
@@ -180,8 +180,8 @@ public class EventHandlerServer {
 				if (!Files.isRegularFile(path)) {
 					return;
 				}
-				if (!path.getFileName().toString().endsWith(BlockMaquetteTileEntity.EXTENTION)) {
-					System.out.println("Expected extension " + BlockMaquetteTileEntity.EXTENTION + ". path=" + path);
+				if (!path.getFileName().toString().endsWith(BlockMaquette.EXTENTION)) {
+					System.out.println("Expected extension " + BlockMaquette.EXTENTION + ". path=" + path);
 					return;
 				}
 
@@ -196,7 +196,14 @@ public class EventHandlerServer {
 				System.out.println("tag=" + tag);
 
 				ItemStack stack = new ItemStack(MoJo.blockMaquette);
-				stack.setTagCompound(tag);
+				// TODO Is this right?
+				// See BlockMaquette:getDrops
+				NBTTagCompound t = new NBTTagCompound();
+				stack.setTagCompound(t);
+				t.setTag("BlockEntityTag", tag);
+
+				//stack.setStackDisplayName(path.getFileName().toString());
+				stack.setStackDisplayName(tag.getString(BlockMaquetteTileEntity.KEY_NAME));
 
 				boolean stackAdded = player.getPlayer().inventory.addItemStackToInventory(stack);
 				if (!stackAdded) {
@@ -216,7 +223,7 @@ public class EventHandlerServer {
 		};
 
 		try {
-			Files.walk(CommonProxy.PATH_SAVES_NEW).forEach(action);
+			Files.walk(CommonProxy.PATH_EXPORT).forEach(action);
 		} catch (IOException e) {
 			System.out.println("e=" + e);
 		}
