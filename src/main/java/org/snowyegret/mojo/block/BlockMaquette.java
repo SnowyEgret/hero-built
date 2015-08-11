@@ -50,25 +50,25 @@ public class BlockMaquette extends Block implements ITileEntityProvider {
 
 	public static final String EXTENTION = ".maquette";
 	// For passing BlockMaqetteTileEntity fields to smart model
-	public static final IUnlistedProperty PROPERTY_SELECTIONS = new PropertySelections();
-	public static final IUnlistedProperty PROPERTY_NAME = new PropertyName();
+	public static final IUnlistedProperty PROP_SELECTIONS = new PropertySelections();
+	public static final IUnlistedProperty PROP_NAME = new PropertyName();
 
 	// For rotating block
-	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+	public static final PropertyDirection PROP_FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 
 	public BlockMaquette() {
 		super(Material.clay);
-		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
+		this.setDefaultState(this.blockState.getBaseState().withProperty(PROP_FACING, EnumFacing.NORTH));
 	}
 
 	public IBlockState getStateFromMeta(int meta) {
-		IBlockState iblockstate = this.getDefaultState().withProperty(FACING, EnumFacing.getFront(5 - (meta & 3)));
+		IBlockState iblockstate = this.getDefaultState().withProperty(PROP_FACING, EnumFacing.getFront(5 - (meta & 3)));
 		return iblockstate;
 	}
 
 	public int getMetaFromState(IBlockState state) {
 		int i = 0;
-		i |= 5 - ((EnumFacing) state.getValue(FACING)).getIndex();
+		i |= 5 - ((EnumFacing) state.getValue(PROP_FACING)).getIndex();
 		return i;
 	}
 
@@ -103,30 +103,22 @@ public class BlockMaquette extends Block implements ITileEntityProvider {
 
 	@Override
 	protected BlockState createBlockState() {
-		// return new ExtendedBlockState(this, new IProperty[0], new IUnlistedProperty[] { PROPERTY_TAG });
-		return new ExtendedBlockState(this, new IProperty[] { FACING }, new IUnlistedProperty[] { PROPERTY_SELECTIONS,
-				PROPERTY_NAME });
+		return new ExtendedBlockState(this, new IProperty[] { PROP_FACING }, new IUnlistedProperty[] { PROP_SELECTIONS,
+				PROP_NAME });
 	}
 
 	@Override
 	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
 		BlockMaquetteTileEntity te = (BlockMaquetteTileEntity) world.getTileEntity(pos);
-		//System.out.println("te=" + te);
-
 		Iterable<Selection> selections = null;
 		String name = null;
 		if (te != null) {
 			selections = te.getSelections();
 			name = te.getName();
 		} else {
-			System.out.println("Could not get name and selections. te=" + te);
+			System.out.println("Could not get name and selections from tile entity. te=" + te);
 		}
-		// TODO do this:
-		// return ((IExtendedBlockState) state).withProperty(PROPERTY_SELECTIONS, selections).withProperty(
-		// PROPERTY_NAME, name);
-		IBlockState extendedState = ((IExtendedBlockState) state).withProperty(PROPERTY_SELECTIONS, selections);
-		extendedState = ((IExtendedBlockState) extendedState).withProperty(PROPERTY_NAME, name);
-		return extendedState;
+		return ((IExtendedBlockState) state).withProperty(PROP_SELECTIONS, selections).withProperty(PROP_NAME, name);
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -156,21 +148,18 @@ public class BlockMaquette extends Block implements ITileEntityProvider {
 		Player player = new Player((EntityPlayer) playerIn);
 		Modifiers modifiers = player.getModifiers();
 		if (modifiers.isPressed(Modifier.CTRL)) {
-			// Do no expand block
-			return;
+			// BlockMaquetteTileEntity:readFromNBT has been called because stack has tag with key 'BlockEntityTag'
+			// Set in #getDrops
+			// See comment in #getDrops
+			BlockMaquetteTileEntity te = (BlockMaquetteTileEntity) world.getTileEntity(pos);
+			List<IUndoable> undoables = Lists.newArrayList();
+			for (Selection s : te.getSelections()) {
+				BlockPos p = s.getPos().subtract(te.getOrigin());
+				p = p.add(pos);
+				undoables.add(new UndoableSetBlock(p, world.getBlockState(p), s.getState()));
+			}
+			player.getTransactionManager().doTransaction(undoables);
 		}
-
-		// BlockMaquetteTileEntity:readFromNBT has been called because stack has tag with key 'BlockEntityTag'
-		// Set in #getDrops
-		// See comment in #getDrops
-		BlockMaquetteTileEntity te = (BlockMaquetteTileEntity) world.getTileEntity(pos);
-		List<IUndoable> undoables = Lists.newArrayList();
-		for (Selection s : te.getSelections()) {
-			BlockPos p = s.getPos().subtract(te.getOrigin());
-			p = p.add(pos);
-			undoables.add(new UndoableSetBlock(p, world.getBlockState(p), s.getState()));
-		}
-		player.getTransactionManager().doTransaction(undoables);
 	}
 
 	// If this returns null, super.getDrops in getDrops with get an empty list.

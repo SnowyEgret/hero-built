@@ -17,18 +17,18 @@ import com.google.common.collect.Maps;
 
 public class BlockMaquetteSmartModel implements ISmartBlockModel {
 
-	// Model cache
-	private Map<String, IBakedModel> models = Maps.newHashMap();
+	// GenerateModel cache
+	private Map<String, GeneratedModel> models = Maps.newHashMap();
 	private IBakedModel model;
 
 	@Override
 	public IBakedModel handleBlockState(IBlockState state) {
 		// NBTTagCompound tag = ((IExtendedBlockState) state).getValue(BlockMaquette.PROPERTY_TAG);
-		Iterable<Selection> selections = ((IExtendedBlockState) state).getValue(BlockMaquette.PROPERTY_SELECTIONS);
-		String name = ((IExtendedBlockState) state).getValue(BlockMaquette.PROPERTY_NAME);
+		Iterable<Selection> selections = ((IExtendedBlockState) state).getValue(BlockMaquette.PROP_SELECTIONS);
+		String name = ((IExtendedBlockState) state).getValue(BlockMaquette.PROP_NAME);
 
 		// For getting one of four rotated models from cache
-		EnumFacing facing = (EnumFacing) state.getValue(BlockMaquette.FACING);
+		EnumFacing facing = (EnumFacing) state.getValue(BlockMaquette.PROP_FACING);
 
 		if (selections == null || !selections.iterator().hasNext() || name == null || facing == null) {
 			System.out.println("Returning a GeneratedModel with no quads.");
@@ -47,7 +47,7 @@ public class BlockMaquetteSmartModel implements ISmartBlockModel {
 			// if (!models.containsKey(name)) {
 			for (EnumFacing f : EnumFacing.HORIZONTALS) {
 				models.put(name + "_" + f.toString(), new GeneratedModel(selections, f));
-				System.out.println("Created GeneratedModel. name=" + name + "_" + f.toString());
+				System.out.println("Cached GeneratedModel. name=" + name + "_" + f.toString());
 			}
 		}
 		// Seems we can lookup a null string. Model will just have no quads
@@ -56,6 +56,7 @@ public class BlockMaquetteSmartModel implements ISmartBlockModel {
 		return model;
 	}
 
+	
 	@Override
 	public List getFaceQuads(EnumFacing side) {
 		return model.getFaceQuads(side);
