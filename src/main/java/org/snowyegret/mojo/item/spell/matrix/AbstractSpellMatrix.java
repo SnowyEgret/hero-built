@@ -11,6 +11,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 
+import org.snowyegret.mojo.block.BlockMaquette;
 import org.snowyegret.mojo.geom.EnumPlane;
 import org.snowyegret.mojo.item.spell.Modifier;
 import org.snowyegret.mojo.item.spell.Spell;
@@ -47,7 +48,11 @@ public abstract class AbstractSpellMatrix extends Spell {
 				deletes.add(new UndoableSetBlock(sel.getPos(), player.getWorld().getState(sel.getPos()), air));
 			}
 			matrix.transform(p);
+			
+			// Rotate the facing property if it exists
 			IBlockState state = sel.getState();
+			// TODO something like this?
+			// EnumFacing facing = (EnumFacing) state.getValue(BlockMaquette.FACING);
 			ImmutableMap props = state.getProperties();
 			for (Object key : props.keySet()) {
 				if (key instanceof PropertyDirection) {
@@ -57,12 +62,10 @@ public abstract class AbstractSpellMatrix extends Spell {
 					EnumFacing newFacing = null;
 					if (this instanceof SpellMirror) {
 						if (side == EnumFacing.EAST || side == EnumFacing.WEST) {
-							// if (plane == EnumPlane.VERTICAL_YZ) {
 							if (facing == EnumFacing.EAST || facing == EnumFacing.WEST) {
 								newFacing = facing.getOpposite();
 							}
 						} else if (side == EnumFacing.NORTH || side == EnumFacing.SOUTH) {
-							// else if (plane == EnumPlane.VERTICAL_XY) {
 							if (facing == EnumFacing.NORTH || facing == EnumFacing.SOUTH) {
 								newFacing = facing.getOpposite();
 							}
@@ -86,6 +89,7 @@ public abstract class AbstractSpellMatrix extends Spell {
 					break;
 				}
 			}
+			
 			BlockPos pos = new BlockPos(p.x, p.y, p.z);
 			undoables.add(new UndoableSetBlock(pos, player.getWorld().getState(pos), state));
 		}

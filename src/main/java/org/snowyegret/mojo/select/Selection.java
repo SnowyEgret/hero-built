@@ -1,6 +1,7 @@
 package org.snowyegret.mojo.select;
 
 import javax.vecmath.Point3d;
+import javax.vecmath.Point3i;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -18,6 +19,10 @@ public class Selection {
 	public Selection(BlockPos pos, IBlockState state) {
 		this.pos = pos;
 		this.state = state;
+	}
+
+	public Point3i point3i() {
+		return new Point3i(pos.getX(), pos.getY(), pos.getZ());
 	}
 
 	public Point3d point3d() {
@@ -91,6 +96,10 @@ public class Selection {
 		BlockPos pos = BlockPos.fromLong(tag.getLong(KEY_POS));
 		IBlockState state = Block.getStateById(tag.getInteger(KEY_STATE));
 		return new Selection(pos, state);
+	}
+
+	public void setPos(BlockPos pos) {
+		this.pos = pos;
 	}
 
 }

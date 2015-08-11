@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
+import javax.vecmath.Point3d;
 import javax.vecmath.Point3i;
 
 import net.minecraft.block.state.IBlockState;
@@ -27,12 +28,11 @@ import org.snowyegret.geom.IDrawable;
 import org.snowyegret.geom.IntegerDomain;
 import org.snowyegret.geom.VoxelSet;
 import org.snowyegret.mojo.select.Selection;
+import org.snowyegret.mojo.select.SelectionSet;
 
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Ints;
 
-// Generates quads for cubes based on selections saved to file or an IDrawable
-// Cubes are scaled to fit inside a block
 // Used by BlockSavedModel and ItemModels for draw spells (package spell.draw) in EventHandlerClient#onModelBakeEvent
 public class GeneratedModel implements IBakedModel {
 
@@ -44,17 +44,26 @@ public class GeneratedModel implements IBakedModel {
 	private List generalQuads = Lists.newArrayList();
 	private List faceQuads = Lists.newArrayList();
 
-	// IBakedModel---------------------------------------------------------------------
-
 	// For case where BlockMaquetteSmartModel cannot get selections
 	// Returns a model with no quads
 	public GeneratedModel() {
 	}
 
+	// Creates a model for facing
+	public GeneratedModel(Iterable<Selection> selections, EnumFacing facing) {
+		// Rotate selections for facing
+		SelectionSet selectionSet = new SelectionSet(selections);
+		selectionSet.rotateHorizontal(facing);
+		createQuads(selectionSet.getSelections());
+	}
+
+	@Deprecated
 	public GeneratedModel(Iterable<Selection> selections) {
 		createQuads(selections);
 	}
 
+	// Generates quads for cubes based an IDrawable
+	// Cubes are scaled to fit inside a block
 	public GeneratedModel(IDrawable drawable, IBlockState state) {
 		System.out.println("drawable=" + drawable);
 
@@ -83,8 +92,6 @@ public class GeneratedModel implements IBakedModel {
 		createQuads(tag);
 	}
 
-	// IBakedModel---------------------------------------------------------------------
-
 	@Deprecated
 	public GeneratedModel(String path) {
 		// System.out.println("path=" + path);
@@ -93,6 +100,8 @@ public class GeneratedModel implements IBakedModel {
 			createQuads(tag);
 		}
 	}
+
+	// IBakedModel---------------------------------------------------------------------
 
 	@Override
 	public List getFaceQuads(EnumFacing side) {
@@ -172,6 +181,9 @@ public class GeneratedModel implements IBakedModel {
 		float scale = 1 / (float) (domain.maxDimension() + 1);
 		// System.out.println("scale=" + scale);
 
+		// TODO make positions of selections relative by substracting cornerClosestToOrigin
+		// Rotate the selections withing the maxDimension based on facing passed as parameter
+
 		BlockModelShapes shapes = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes();
 		numBlocks = 0;
 		for (Selection sel : selections) {
@@ -213,18 +225,18 @@ public class GeneratedModel implements IBakedModel {
 		// indices of x values of vertices are 0, 7, 14, 21
 		// indices of y values of vertices are 1, 8, 15, 22
 		// indices of z values of vertices are 2, 9, 16, 23
-		
+
 		// east: x
 		// south: z
 		// up: y
-		
+
 		switch (q.getFace()) {
 		case UP:
 			// Quad up is towards north
 			lr = t.getX();
 			ud = t.getZ();
 			fb = t.getY();
-			
+
 			v[0] = transform(v[0], lr, s);
 			v[7] = transform(v[7], lr, s);
 			v[14] = transform(v[14], lr, s);
@@ -356,9 +368,9 @@ public class GeneratedModel implements IBakedModel {
 		return new BakedQuad(v, q.getTintIndex(), q.getFace());
 	}
 
-	private int transform(int i, int t, float s) {
+	private int transform(int i, int translation, float scale) {
 		float f = Float.intBitsToFloat(i);
-		f = (f + t) * s;
+		f = (f + translation) * scale;
 		return Float.floatToRawIntBits(f);
 	}
 

@@ -74,8 +74,6 @@ public class BlockMaquette extends Block implements ITileEntityProvider {
 
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		Block a = Blocks.stone_stairs;
-		BlockStairs s;
 		return new BlockMaquetteTileEntity();
 	}
 
@@ -113,16 +111,7 @@ public class BlockMaquette extends Block implements ITileEntityProvider {
 	@Override
 	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
 		BlockMaquetteTileEntity te = (BlockMaquetteTileEntity) world.getTileEntity(pos);
-		System.out.println("te=" + te);
-
-		// NBTTagCompound tag = null;
-		// if (te != null) {
-		// tag = te.getTag();
-		// } else {
-		// System.out.println("Could not get path and tag. te=" + te);
-		// }
-		// System.out.println("tag=" + tag);
-		// return ((IExtendedBlockState) state).withProperty(PROPERTY_TAG, tag);
+		//System.out.println("te=" + te);
 
 		Iterable<Selection> selections = null;
 		String name = null;
@@ -132,7 +121,7 @@ public class BlockMaquette extends Block implements ITileEntityProvider {
 		} else {
 			System.out.println("Could not get name and selections. te=" + te);
 		}
-		// TODO
+		// TODO do this:
 		// return ((IExtendedBlockState) state).withProperty(PROPERTY_SELECTIONS, selections).withProperty(
 		// PROPERTY_NAME, name);
 		IBlockState extendedState = ((IExtendedBlockState) state).withProperty(PROPERTY_SELECTIONS, selections);
@@ -206,12 +195,9 @@ public class BlockMaquette extends Block implements ITileEntityProvider {
 		Modifiers modifiers = player.getModifiers();
 
 		// Rotate
-		// if (modifiers.isPressed(Modifier.SHIFT)) {
-		// // FIXME Do we need a model for each direction?
-		// boolean isRotated = rotateBlock(worldIn, pos, EnumFacing.UP);
-		// System.out.println("isRotated=" + isRotated);
-		// return isRotated;
-		// }
+		if (modifiers.isPressed(Modifier.SHIFT)) {
+			return rotateBlock(worldIn, pos, EnumFacing.UP);
+		}
 
 		// Export
 		if (modifiers.isPressed(Modifier.CTRL)) {

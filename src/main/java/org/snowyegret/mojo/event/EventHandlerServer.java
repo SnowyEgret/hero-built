@@ -19,6 +19,7 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.item.ItemExpireEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
@@ -142,25 +143,22 @@ public class EventHandlerServer {
 		}
 	}
 
-	// TODO Not necessary anymore. Tag is deleted with ItemStack
-	// @SubscribeEvent
-	// public void onItemExpire(ItemExpireEvent event) {
-	// ItemStack stack = event.entityItem.getEntityItem();
-	// if (stack.getItem() instanceof ItemBlock) {
-	// if (((ItemBlock) stack.getItem()).getBlock() instanceof BlockMaquette) {
-	// NBTTagCompound tag = stack.getTagCompound();
-	// String path = tag.getString(BlockMaquette.KEY_PATH);
-	// System.out.println("path=" + path);
-	// // TODO delete file
-	// // After all this, do we really want to delete the file?
-	// // What if the player has died with the only copy of a complex construction in his inventory?
-	// // If we allow overwrite of maquette name, the file will be deleted.
-	// // Is it really a problem if lots of unused maquette files accumulate?
-	// // Every world has its own folder of maquettes
-	// }
-	// }
-	// }
+	
+	// Delete models from cache
+	@SubscribeEvent
+	public void onItemExpire(ItemExpireEvent event) {
+		ItemStack stack = event.entityItem.getEntityItem();
+		if (stack.getItem() instanceof ItemBlock) {
+			if (((ItemBlock) stack.getItem()).getBlock() instanceof BlockMaquette) {
+				NBTTagCompound tag = stack.getTagCompound();
+				String name = tag.getString(BlockMaquetteTileEntity.KEY_NAME);
+				System.out.println("name=" + name);
+				// TODO Message client to delete models from cache.
+			}
+		}
+	}
 
+	// TODO We are on the server. Must also look in imports folder on client
 	// Import any maquettes found in imports folder
 	@SubscribeEvent
 	public void onEntityJoinWorld(EntityJoinWorldEvent event) {
@@ -212,7 +210,8 @@ public class EventHandlerServer {
 				}
 				System.out.println("inventory=" + player.getPlayer().inventory);
 
-				// TODO Delete file from import folder
+				// TODO Delete file from import folder?
+				// Maybe leave it there and only add to inventory if it is not there
 				// try {
 				// // Files.move(path, path.resolve(CommonProxy.PATH_SAVES));
 				// Files.move(path, Paths.get(CommonProxy.PATH_SAVES.toString(), path.getFileName().toString()));

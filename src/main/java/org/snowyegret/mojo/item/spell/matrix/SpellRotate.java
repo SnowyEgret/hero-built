@@ -39,6 +39,7 @@ public class SpellRotate extends AbstractSpellMatrix {
 		Point3d center = null;
 		if (rotateAboutCentroid) {
 			Vec3 c = player.getSelectionManager().getCentroid();
+			// TODO getCentroid returns Point3d
 			center = new Point3d(c.xCoord, c.yCoord, c.zCoord);
 		} else {
 			center = picks[0].point3d();
@@ -58,6 +59,8 @@ public class SpellRotate extends AbstractSpellMatrix {
 		}
 		double angle = Math.PI / 2;
 		Matrix4d matrix = new RotationMatrix(center, axis, counterClockwise ? angle : -angle);
+
+		// TODO
 		transformSelections(player, matrix, picks[0].side);
 	}
 

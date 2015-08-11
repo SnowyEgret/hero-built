@@ -26,22 +26,33 @@ public class BlockMaquetteSmartModel implements ISmartBlockModel {
 		// NBTTagCompound tag = ((IExtendedBlockState) state).getValue(BlockMaquette.PROPERTY_TAG);
 		Iterable<Selection> selections = ((IExtendedBlockState) state).getValue(BlockMaquette.PROPERTY_SELECTIONS);
 		String name = ((IExtendedBlockState) state).getValue(BlockMaquette.PROPERTY_NAME);
-		// TODO Name must be unique
-		if (selections == null) {
-			System.out.println("Could not get selections from extended block state. selections=" + selections);
+
+		// For getting one of four rotated models from cache
+		EnumFacing facing = (EnumFacing) state.getValue(BlockMaquette.FACING);
+
+		if (selections == null || !selections.iterator().hasNext() || name == null || facing == null) {
+			System.out.println("Returning a GeneratedModel with no quads.");
+			System.out.println("selections=" + selections);
+			System.out.println("name=" + name);
+			System.out.println("facing=" + facing);
 			return new GeneratedModel();
 		}
-		if (name == null) {
-			System.out.println("Could not get name from extended block state. name=" + name);
-			return new GeneratedModel();
-		}
-		if (!models.containsKey(name)) {
-			IBakedModel m = models.put(name, new GeneratedModel(selections));
-			System.out.println("Created new GeneratedModel");
+
+		// TODO Model should be oriented in same direction as selections when first placed
+		// TODO Models should be deleted from cache when item is deleted or expires
+		// TODO Name must be unique when maquette is created or the other model for that name will be retrieved
+		String n = name + "_" + facing.toString();
+		System.out.println("n=" + n);
+		if (!models.containsKey(n)) {
+			// if (!models.containsKey(name)) {
+			for (EnumFacing f : EnumFacing.HORIZONTALS) {
+				models.put(name + "_" + f.toString(), new GeneratedModel(selections, f));
+				System.out.println("Created GeneratedModel. name=" + name + "_" + f.toString());
+			}
 		}
 		// Seems we can lookup a null string. Model will just have no quads
-		model = models.get(name);
-		System.out.println("model=" + model);
+		model = models.get(n);
+		// System.out.println("model=" + model);
 		return model;
 	}
 
