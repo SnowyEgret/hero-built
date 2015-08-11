@@ -1,7 +1,0 @@
-{
-    "parent": "block/cube",
-    "textures": {
-        "all": "mojo:blocks/block_saved",
-        "particle": "blocks/lapis_block"
-    }
-}

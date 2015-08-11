@@ -12,7 +12,7 @@ import org.snowyegret.mojo.util.StringUtils;
 
 import com.google.common.base.Joiner;
 
-public class SpellInfo {
+public class OverlayInfo {
 
 	private String root;
 	private String name;
@@ -20,7 +20,7 @@ public class SpellInfo {
 	private List<String> picks = new ArrayList<>();
 	private Map<String, String> modifiers = new HashMap<>();
 
-	public SpellInfo(Spell spell) {
+	public OverlayInfo(Spell spell) {
 		// root = "item." + StringUtils.nameFor(spell.getClass()) + ".";
 		root = "item." + StringUtils.underscoreNameFor(spell.getClass()) + ".";
 		name = prepend("name");

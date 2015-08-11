@@ -52,7 +52,6 @@ public class BlockMaquette extends Block implements ITileEntityProvider {
 	// For passing BlockMaqetteTileEntity fields to smart model
 	public static final IUnlistedProperty PROP_SELECTIONS = new PropertySelections();
 	public static final IUnlistedProperty PROP_NAME = new PropertyName();
-
 	// For rotating block
 	public static final PropertyDirection PROP_FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 
@@ -126,6 +125,12 @@ public class BlockMaquette extends Block implements ITileEntityProvider {
 	public EnumWorldBlockLayer getBlockLayer() {
 		return EnumWorldBlockLayer.CUTOUT_MIPPED;
 	}
+
+	// @Override
+	// public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+	// //new Throwable().printStackTrace();
+	// return state; // for debugging - useful spot for a breakpoint. Not necessary.
+	// }
 
 	// @Override
 	// public CreativeTabs getCreativeTabToDisplayOn() {

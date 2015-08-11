@@ -17,12 +17,12 @@ import org.snowyegret.mojo.player.Player;
 
 public abstract class Spell extends ItemBase {
 
-	protected SpellInfo info;
+	protected OverlayInfo info;
 	private int numPicks;
 
 	public Spell(int numPicks) {
 		this.numPicks = numPicks;
-		info = new SpellInfo(this);
+		info = new OverlayInfo(this);
 	}
 
 	// FIXME Has no effect
@@ -55,7 +55,7 @@ public abstract class Spell extends ItemBase {
 	public abstract void invoke(Player player);
 
 	@SideOnly(Side.CLIENT)
-	public SpellInfo getInfo() {
+	public OverlayInfo getInfo() {
 		return info;
 	}
 

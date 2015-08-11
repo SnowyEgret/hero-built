@@ -1,5 +1,5 @@
 {
-  "parent": "mojo:block/block_saved_model",
+  "parent": "mojo:block/block_maquette_model",
   "display": {
     "thirdperson": {
       "rotation": [ 10, -45, 170 ],

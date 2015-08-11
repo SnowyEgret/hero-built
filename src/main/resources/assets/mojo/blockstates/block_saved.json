@@ -1,5 +1,0 @@
-{
-    "variants": {
-        "normal": { "model": "mojo:block_saved_model" }
-    }
-}

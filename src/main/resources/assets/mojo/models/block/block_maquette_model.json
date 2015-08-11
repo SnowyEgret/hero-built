@@ -1,7 +1,7 @@
 {
     "parent": "block/cube_all",
     "textures": {
-        "all": "mojo:blocks/block_selected",
+        "all": "mojo:blocks/block_maquette",
         "particle": "blocks/lapis_block"
     }
 }

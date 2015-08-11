@@ -12,7 +12,7 @@ import org.snowyegret.mojo.event.EventHandlerClient;
 import org.snowyegret.mojo.event.MouseHandler;
 import org.snowyegret.mojo.item.spell.Modifier;
 import org.snowyegret.mojo.item.spell.Spell;
-import org.snowyegret.mojo.item.spell.SpellInfo;
+import org.snowyegret.mojo.item.spell.OverlayInfo;
 import org.snowyegret.mojo.item.spell.transform.SpellFillRandom;
 import org.snowyegret.mojo.item.staff.Staff;
 import org.snowyegret.mojo.player.Player;
@@ -56,7 +56,7 @@ public class Overlay {
 		FontRenderer r = Minecraft.getMinecraft().fontRendererObj;
 		int rh = r.FONT_HEIGHT + 5;
 
-		SpellInfo info = spell.getInfo();
+		OverlayInfo info = spell.getInfo();
 		r.drawStringWithShadow(info.getName().toUpperCase(), x, y, WHITE);
 		String description = info.getDescription();
 		if (!description.isEmpty()) {

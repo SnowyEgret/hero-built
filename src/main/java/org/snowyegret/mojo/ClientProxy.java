@@ -50,12 +50,12 @@ public class ClientProxy extends CommonProxy {
 		ItemModelMesher mesher = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
 		String name = StringUtils.underscoreNameFor(BlockMaquette.class);
 		Item item = GameRegistry.findItem(MoJo.MODID, name);
-		// System.out.println("item=" + item);
-		// ModelResourceLocation mrl = new ModelResourceLocation(MoJo.MODID + ":block_saved", "inventory");
 		ModelResourceLocation mrl = new ModelResourceLocation(MoJo.MODID + ":" + name, "inventory");
 		mesher.register(item, META, mrl);
-		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + item.getUnlocalizedName() + " model="
-				+ mesher.getModelManager().getModel(mrl));
+		
+		System.out.println("item=" + item);
+		System.out.println("mrl=" + mrl);
+		System.out.println("model=" + mesher.getModelManager().getModel(mrl));
 	}
 
 	@Override
