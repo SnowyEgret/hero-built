@@ -2,9 +2,14 @@ package org.snowyegret.mojo.gui;
 
 import java.io.IOException;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
+import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.entity.Entity;
+import net.minecraft.item.Item;
 
+import org.lwjgl.opengl.GL11;
 import org.snowyegret.mojo.MoJo;
 import org.snowyegret.mojo.message.server.TextInputMessage;
 import org.snowyegret.mojo.player.Player;
@@ -67,4 +72,5 @@ public class GuiTextInputDialog extends GuiDialog {
 		textField.drawTextBox();
 		textField.setFocused(true);
 	}
+
 }

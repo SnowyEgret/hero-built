@@ -232,13 +232,13 @@ public class Player {
 		return props.getFont();
 	}
 
-	public void setBlockSavedPath(String blockSavedPath) {
-		props.setBlockSavedPath(blockSavedPath);
-	}
-
-	public String getBlockSavedPath() {
-		return props.getBlockSavedPath();
-	}
+	// public void setBlockSavedPath(String blockSavedPath) {
+	// props.setBlockSavedPath(blockSavedPath);
+	// }
+	//
+	// public String getBlockSavedPath() {
+	// return props.getBlockSavedPath();
+	// }
 
 	public Clipboard getClipboard() {
 		return props.getClipboard();

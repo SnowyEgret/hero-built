@@ -29,7 +29,7 @@ public class PlayerProperties implements IExtendedEntityProperties {
 	private Clipboard clipboard;
 	private Spell lastSpell;
 	private Spell lastInvokedSpell;
-	private String blockSavedPath;
+	//private String blockSavedPath;
 	private Font font;
 
 	public PlayerProperties(EntityPlayer entity) {
@@ -101,13 +101,13 @@ public class PlayerProperties implements IExtendedEntityProperties {
 		return clipboard;
 	}
 
-	public void setBlockSavedPath(String blockSavedPath) {
-		this.blockSavedPath = blockSavedPath;
-	}
-
-	public String getBlockSavedPath() {
-		return blockSavedPath;
-	}
+	// public void setBlockSavedPath(String blockSavedPath) {
+	// this.blockSavedPath = blockSavedPath;
+	// }
+	//
+	// public String getBlockSavedPath() {
+	// return blockSavedPath;
+	// }
 
 	public void setFont(Font font) {
 		this.font = font;

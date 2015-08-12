@@ -7,6 +7,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
 
 import org.snowyegret.mojo.MoJo;
+import org.snowyegret.mojo.block.BlockMaquette;
 import org.snowyegret.mojo.block.BlockMaquetteTileEntity;
 import org.snowyegret.mojo.gui.GuiHandler;
 import org.snowyegret.mojo.gui.ITextInput;
@@ -77,6 +78,10 @@ public class SpellMaquette extends Spell implements ITextInput {
 
 		Transaction t = new Transaction();
 		t.addAll(deletes);
+		// TODO Orient block
+		// IBlockState state = MoJo.blockMaquette.getDefaultState().withProperty(BlockMaquette.PROP_FACING,
+		// player.getHorizonatalFacing());
+		// t.add(new UndoableSetBlock(origin, player.getWorld().getState(origin), state));
 		t.add(new UndoableSetBlock(origin, player.getWorld().getState(origin), MoJo.blockMaquette.getDefaultState()));
 		t.dO(player);
 

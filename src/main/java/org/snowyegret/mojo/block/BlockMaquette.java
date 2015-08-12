@@ -155,7 +155,8 @@ public class BlockMaquette extends Block implements ITileEntityProvider, IOverla
 		if (world.isRemote) {
 			return;
 		}
-
+		
+		// Block is already placed and has a tile entity
 		Player player = new Player((EntityPlayer) playerIn);
 		Modifiers modifiers = player.getModifiers();
 		if (modifiers.isPressed(Modifier.CTRL)) {
@@ -171,6 +172,11 @@ public class BlockMaquette extends Block implements ITileEntityProvider, IOverla
 			}
 			player.getTransactionManager().doTransaction(undoables);
 		}
+		
+		// TODO Orient block
+		// IBlockState state = MoJo.blockMaquette.getDefaultState().withProperty(BlockMaquette.PROP_FACING,
+		// player.getHorizonatalFacing());
+		// t.add(new UndoableSetBlock(origin, player.getWorld().getState(origin), state));
 	}
 
 	// If this returns null, super.getDrops in getDrops with get an empty list.
