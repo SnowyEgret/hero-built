@@ -11,7 +11,11 @@ selection_info.size=Selections: %d
 
 # Blocks ##########
 
-tile.block_maquette.name = Maquette
+block.block_maquette.name=Block Maquette
+block.block_maquette.description=A scale maquette which can be expanded
+block.block_maquette.modifier.ctrl=Place expanded
+block.block_maquette.modifier.shift=Rotate (after placed)
+block.block_maquette.modifier.alt=Export (after placed)
 
 # Staffs ##########
 

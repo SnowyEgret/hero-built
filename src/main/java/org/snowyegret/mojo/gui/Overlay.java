@@ -48,6 +48,7 @@ public class Overlay {
 		this.message = message;
 	}
 
+	@Deprecated
 	// Called by ForgeEventHandler.onRenderGameOverlayEvent on the client side
 	public void drawSpell(Spell spell, Player player) {
 
@@ -56,7 +57,7 @@ public class Overlay {
 		FontRenderer r = Minecraft.getMinecraft().fontRendererObj;
 		int rh = r.FONT_HEIGHT + 5;
 
-		OverlayInfo info = spell.getInfo();
+		OverlayInfo info = spell.getOverlayInfo();
 		r.drawStringWithShadow(info.getName().toUpperCase(), x, y, WHITE);
 		String description = info.getDescription();
 		if (!description.isEmpty()) {
@@ -73,20 +74,27 @@ public class Overlay {
 				int dy = displacement.getY();
 				int dz = displacement.getZ();
 				if (dx != 0) {
-					r.drawStringWithShadow(((dx > 0) ? I18n.format("east") : I18n.format("west")) + ": " + (Math.abs(dx)), x, y += rh, RED);
+					r.drawStringWithShadow(
+							((dx > 0) ? I18n.format("east") : I18n.format("west")) + ": " + (Math.abs(dx)), x, y += rh,
+							RED);
 				}
 				if (dz != 0) {
-					r.drawStringWithShadow(((dz > 0) ? I18n.format("north") : I18n.format("south")) + ": " + (Math.abs(dz)), x, y += rh, RED);
+					r.drawStringWithShadow(
+							((dz > 0) ? I18n.format("north") : I18n.format("south")) + ": " + (Math.abs(dz)), x,
+							y += rh, RED);
 				}
 				if (dy != 0) {
-					r.drawStringWithShadow(((dy > 0) ? I18n.format("down") : I18n.format("up")) + ": " + (Math.abs(dy)), x, y += rh, RED);
+					r.drawStringWithShadow(
+							((dy > 0) ? I18n.format("down") : I18n.format("up")) + ": " + (Math.abs(dy)), x, y += rh,
+							RED);
 				}
 			}
 		}
 
 		if (EventHandlerClient.selectionInfo.getSize() != 0) {
-			//r.drawStringWithShadow("Selections: " + EventHandlerClient.selectionInfo.getSize(), x, y += rh, RED);
-			r.drawStringWithShadow(I18n.format("selection_info.size", EventHandlerClient.selectionInfo.getSize()), x, y += rh, RED);
+			// r.drawStringWithShadow("Selections: " + EventHandlerClient.selectionInfo.getSize(), x, y += rh, RED);
+			r.drawStringWithShadow(I18n.format("selection_info.size", EventHandlerClient.selectionInfo.getSize()), x,
+					y += rh, RED);
 		}
 
 		// TODO SpellFillRandom should set message
@@ -95,14 +103,15 @@ public class Overlay {
 		}
 
 		if (MouseHandler.isOrbiting) {
-			//r.drawStringWithShadow(I18n.format(player.getDirection().toString().toLowerCase()), x, y += rh, BLUE);
-			r.drawStringWithShadow(I18n.format(player.getHorizonatalFacing().toString().toLowerCase()), x, y += rh, BLUE);
+			// r.drawStringWithShadow(I18n.format(player.getDirection().toString().toLowerCase()), x, y += rh, BLUE);
+			r.drawStringWithShadow(I18n.format(player.getHorizonatalFacing().toString().toLowerCase()), x, y += rh,
+					BLUE);
 		}
 
-//		if (doubleValue != null) {
-//			String s = String.format("Distance: %.1f", doubleValue);
-//			r.drawStringWithShadow(s, x, y += rh, GREEN);
-//		}
+		// if (doubleValue != null) {
+		// String s = String.format("Distance: %.1f", doubleValue);
+		// r.drawStringWithShadow(s, x, y += rh, GREEN);
+		// }
 
 		if (message != null) {
 			if (intValue != null) {
@@ -123,6 +132,79 @@ public class Overlay {
 		FontRenderer r = Minecraft.getMinecraft().fontRendererObj;
 		String staffName = staff.getItemStackDisplayName(stack);
 		r.drawStringWithShadow(staffName + " has no spells", x, y, WHITE);
+	}
+
+	public void draw(IOverlayable overlayable, Player player) {
+		int x = 10;
+		int y = x;
+		FontRenderer r = Minecraft.getMinecraft().fontRendererObj;
+		int rh = r.FONT_HEIGHT + 5;
+
+		OverlayInfo info = overlayable.getOverlayInfo();
+		r.drawStringWithShadow(I18n.format(info.getName()).toUpperCase(), x, y, WHITE);
+		String description = I18n.format(info.getDescription());
+		if (!description.isEmpty()) {
+			r.drawStringWithShadow(description, x, y += rh, WHITE);
+		}
+		r.drawStringWithShadow(info.getPicks(), x, y += rh, GREEN);
+		r.drawStringWithShadow(info.getModifiers(), x, y += rh, BLUE);
+
+		// Display the dimensions of the impending volume if player is picking or shift selecting
+		boolean isPicking = EventHandlerClient.pickInfo.isPicking();
+		if (isPicking || (!isPicking && Modifier.SHIFT.isPressed())) {
+			if (displacement != null) {
+				int dx = displacement.getX();
+				int dy = displacement.getY();
+				int dz = displacement.getZ();
+				if (dx != 0) {
+					r.drawStringWithShadow(
+							((dx > 0) ? I18n.format("east") : I18n.format("west")) + ": " + (Math.abs(dx)), x, y += rh,
+							RED);
+				}
+				if (dz != 0) {
+					r.drawStringWithShadow(
+							((dz > 0) ? I18n.format("north") : I18n.format("south")) + ": " + (Math.abs(dz)), x,
+							y += rh, RED);
+				}
+				if (dy != 0) {
+					r.drawStringWithShadow(
+							((dy > 0) ? I18n.format("down") : I18n.format("up")) + ": " + (Math.abs(dy)), x, y += rh,
+							RED);
+				}
+			}
+		}
+
+		if (EventHandlerClient.selectionInfo.getSize() != 0) {
+			// r.drawStringWithShadow("Selections: " + EventHandlerClient.selectionInfo.getSize(), x, y += rh, RED);
+			r.drawStringWithShadow(I18n.format("selection_info.size", EventHandlerClient.selectionInfo.getSize()), x,
+					y += rh, RED);
+		}
+
+		// TODO SpellFillRandom should set message
+		if (overlayable instanceof SpellFillRandom) {
+			r.drawStringWithShadow(player.getHotbar().toString(), x, y += rh, BLUE);
+		}
+
+		if (MouseHandler.isOrbiting) {
+			// r.drawStringWithShadow(I18n.format(player.getDirection().toString().toLowerCase()), x, y += rh, BLUE);
+			r.drawStringWithShadow(I18n.format(player.getHorizonatalFacing().toString().toLowerCase()), x, y += rh,
+					BLUE);
+		}
+
+		// if (doubleValue != null) {
+		// String s = String.format("Distance: %.1f", doubleValue);
+		// r.drawStringWithShadow(s, x, y += rh, GREEN);
+		// }
+
+		if (message != null) {
+			if (intValue != null) {
+				r.drawStringWithShadow(I18n.format(message, intValue), x, y += rh, RED);
+			} else if (doubleValue != null) {
+				r.drawStringWithShadow(I18n.format(message, doubleValue), x, y += rh, RED);
+			} else {
+				r.drawStringWithShadow(I18n.format(message), x, y += rh, RED);
+			}
+		}
 	}
 
 }

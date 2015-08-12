@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.minecraft.block.Block;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -21,11 +22,16 @@ public class OverlayInfo {
 	private Map<String, String> modifiers = new HashMap<>();
 
 	public OverlayInfo(Spell spell) {
-		// root = "item." + StringUtils.nameFor(spell.getClass()) + ".";
 		root = "item." + StringUtils.underscoreNameFor(spell.getClass()) + ".";
 		name = prepend("name");
 		description = prepend("description");
 		addPicks(spell.getNumPicks());
+	}
+
+	public OverlayInfo(Block block) {
+		root = "block." + StringUtils.underscoreNameFor(block.getClass()) + ".";
+		name = prepend("name");
+		description = prepend("description");
 	}
 
 	public void addModifiers(Modifier... modifiers) {
@@ -58,14 +64,12 @@ public class OverlayInfo {
 		}
 	}
 
-	@SideOnly(Side.CLIENT)
 	public String getName() {
-		return net.minecraft.client.resources.I18n.format(name);
+		return name;
 	}
 
-	@SideOnly(Side.CLIENT)
 	public String getDescription() {
-		return net.minecraft.client.resources.I18n.format(description);
+		return description;
 	}
 
 	@SideOnly(Side.CLIENT)

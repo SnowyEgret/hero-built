@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockStairs;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -18,7 +17,6 @@ import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
@@ -37,8 +35,10 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.snowyegret.mojo.ClientProxy;
+import org.snowyegret.mojo.gui.IOverlayable;
 import org.snowyegret.mojo.item.spell.Modifier;
 import org.snowyegret.mojo.item.spell.Modifiers;
+import org.snowyegret.mojo.item.spell.OverlayInfo;
 import org.snowyegret.mojo.player.Player;
 import org.snowyegret.mojo.select.Selection;
 import org.snowyegret.mojo.undo.IUndoable;
@@ -46,7 +46,9 @@ import org.snowyegret.mojo.undo.UndoableSetBlock;
 
 import com.google.common.collect.Lists;
 
-public class BlockMaquette extends Block implements ITileEntityProvider {
+public class BlockMaquette extends Block implements ITileEntityProvider, IOverlayable {
+
+	protected OverlayInfo info;
 
 	public static final String EXTENTION = ".maquette";
 	// For passing BlockMaqetteTileEntity fields to smart model
@@ -57,7 +59,11 @@ public class BlockMaquette extends Block implements ITileEntityProvider {
 
 	public BlockMaquette() {
 		super(Material.clay);
-		this.setDefaultState(this.blockState.getBaseState().withProperty(PROP_FACING, EnumFacing.NORTH));
+		setDefaultState(this.blockState.getBaseState().withProperty(PROP_FACING, EnumFacing.NORTH));
+		info = new OverlayInfo(this);
+		info.addModifiers(Modifier.SHIFT);
+		info.addModifiers(Modifier.CTRL);
+		info.addModifiers(Modifier.ALT);
 	}
 
 	public IBlockState getStateFromMeta(int meta) {
@@ -188,13 +194,19 @@ public class BlockMaquette extends Block implements ITileEntityProvider {
 		Player player = new Player((EntityPlayer) playerIn);
 		Modifiers modifiers = player.getModifiers();
 
+		// Expand
+		if (modifiers.isPressed(Modifier.CTRL)) {
+			// TODO
+			return true;
+		}
+
 		// Rotate
 		if (modifiers.isPressed(Modifier.SHIFT)) {
 			return rotateBlock(worldIn, pos, EnumFacing.UP);
 		}
 
 		// Export
-		if (modifiers.isPressed(Modifier.CTRL)) {
+		if (modifiers.isPressed(Modifier.ALT)) {
 			// TODO modifier to export
 			// Write tag to file
 			try {
@@ -265,5 +277,10 @@ public class BlockMaquette extends Block implements ITileEntityProvider {
 	public void harvestBlock(World world, EntityPlayer player, BlockPos pos, IBlockState state, TileEntity te) {
 		super.harvestBlock(world, player, pos, state, te);
 		world.setBlockToAir(pos);
+	}
+
+	@Override
+	public OverlayInfo getOverlayInfo() {
+		return info;
 	}
 }

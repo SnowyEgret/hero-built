@@ -3,10 +3,12 @@ package org.snowyegret.mojo.player;
 import java.awt.Font;
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
@@ -15,6 +17,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 import org.snowyegret.mojo.MoJo;
 import org.snowyegret.mojo.geom.EnumPlane;
+import org.snowyegret.mojo.gui.IOverlayable;
 import org.snowyegret.mojo.item.spell.Modifiers;
 import org.snowyegret.mojo.item.spell.Spell;
 import org.snowyegret.mojo.item.staff.Staff;
@@ -36,12 +39,12 @@ public class Player {
 	private PlayerProperties props;
 	private String blockSavedPath;
 
-//	public enum Direction {
-//		NORTH,
-//		SOUTH,
-//		EAST,
-//		WEST;
-//	}
+	// public enum Direction {
+	// NORTH,
+	// SOUTH,
+	// EAST,
+	// WEST;
+	// }
 
 	public Player(EntityPlayer player) {
 		this.player = player;
@@ -68,42 +71,42 @@ public class Player {
 		return new Hotbar(player.inventory);
 	}
 
-//	public Direction getDirection() {
-//		int yaw = (int) (player.rotationYawHead);
-//		yaw += (yaw >= 0) ? 45 : -45;
-//		yaw /= 90;
-//		int modulus = yaw % 4;
-//		Direction direction = null;
-//		switch (modulus) {
-//		case 0:
-//			direction = Direction.SOUTH;
-//			break;
-//		case 1:
-//			direction = Direction.WEST;
-//			break;
-//		case -1:
-//			direction = Direction.EAST;
-//			break;
-//		case 2:
-//			direction = Direction.NORTH;
-//			break;
-//		case -2:
-//			direction = Direction.NORTH;
-//			break;
-//		case 3:
-//			direction = Direction.EAST;
-//			break;
-//		case -3:
-//			direction = Direction.WEST;
-//			break;
-//		default:
-//			throw new RuntimeException("Unexpected modulus. Got " + modulus);
-//		}
-//		return direction;
-//	}
+	// public Direction getDirection() {
+	// int yaw = (int) (player.rotationYawHead);
+	// yaw += (yaw >= 0) ? 45 : -45;
+	// yaw /= 90;
+	// int modulus = yaw % 4;
+	// Direction direction = null;
+	// switch (modulus) {
+	// case 0:
+	// direction = Direction.SOUTH;
+	// break;
+	// case 1:
+	// direction = Direction.WEST;
+	// break;
+	// case -1:
+	// direction = Direction.EAST;
+	// break;
+	// case 2:
+	// direction = Direction.NORTH;
+	// break;
+	// case -2:
+	// direction = Direction.NORTH;
+	// break;
+	// case 3:
+	// direction = Direction.EAST;
+	// break;
+	// case -3:
+	// direction = Direction.WEST;
+	// break;
+	// default:
+	// throw new RuntimeException("Unexpected modulus. Got " + modulus);
+	// }
+	// return direction;
+	// }
 
 	public EnumPlane getVerticalPlane() {
-		//switch (getDirection()) {
+		// switch (getDirection()) {
 		switch (getHorizonatalFacing()) {
 		case EAST:
 			return EnumPlane.VERTICAL_XY_EAST_WEST;
@@ -125,7 +128,12 @@ public class Player {
 	}
 
 	public Item getHeldItem() {
-		return getHeldItemStack().getItem();
+		ItemStack stack = getHeldItemStack();
+		if (stack != null) {
+			return getHeldItemStack().getItem();
+		} else {
+			return null;
+		}
 	}
 
 	public Spell getSpell() {
@@ -280,6 +288,29 @@ public class Player {
 
 	public EnumFacing getHorizonatalFacing() {
 		return player.getHorizontalFacing();
+	}
+
+	public IOverlayable getHeldOverlayable() {
+				
+		Item item = getHeldItem();
+		if (item instanceof ItemBlock) {
+			Block b = ((ItemBlock) item).getBlock();
+			if (b instanceof IOverlayable) {
+				return (IOverlayable) b;
+			}
+		}
+
+		Spell spell = getSpell();
+		if (spell != null) {
+			return (IOverlayable) spell;
+		}
+
+		Staff staff = getStaff();
+		if (staff != null) {
+			return (IOverlayable) staff;
+		}
+		
+		return null;
 	}
 
 }

@@ -11,11 +11,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import org.snowyegret.mojo.gui.IOverlayable;
 import org.snowyegret.mojo.item.ItemBase;
 import org.snowyegret.mojo.pick.PickManager;
 import org.snowyegret.mojo.player.Player;
 
-public abstract class Spell extends ItemBase {
+public abstract class Spell extends ItemBase implements IOverlayable {
 
 	protected OverlayInfo info;
 	private int numPicks;
@@ -55,7 +56,7 @@ public abstract class Spell extends ItemBase {
 	public abstract void invoke(Player player);
 
 	@SideOnly(Side.CLIENT)
-	public OverlayInfo getInfo() {
+	public OverlayInfo getOverlayInfo() {
 		return info;
 	}
 

@@ -9,6 +9,13 @@ up=En haut
 
 selection_info.size=Sélections: %d
 
+# Blocks ##########
+
+block.block_maquette.name=Block Maquette
+block.block_maquette.description=Une maquette qui peut etre expansionée
+block.block_maquette.modifier.ctrl=Placer dans son état expansionée
+block.block_maquette.modifier.shift=Rotationer (apres avoir été placée)
+block.block_maquette.modifier.alt=Exporter (apres avoir été placée)
 
 # Bâtons ##########
 
