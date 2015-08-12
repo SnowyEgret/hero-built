@@ -12,7 +12,6 @@ import net.minecraft.item.Item;
 import org.lwjgl.opengl.GL11;
 import org.snowyegret.mojo.MoJo;
 import org.snowyegret.mojo.message.server.TextInputMessage;
-import org.snowyegret.mojo.player.Player;
 
 public class GuiTextInputDialog extends GuiDialog {
 
@@ -22,8 +21,8 @@ public class GuiTextInputDialog extends GuiDialog {
 	private String text;
 	private final int margin = 20;
 
-	public GuiTextInputDialog(Player player, String... buttons) {
-		super(player, "Ok", "Cancel");
+	public GuiTextInputDialog(String... buttons) {
+		super("Ok", "Cancel");
 		if (buttons != null) {
 			for (String b : buttons) {
 				addButtonName(b);

@@ -27,14 +27,13 @@ public class GuiHandler implements IGuiHandler {
 	@Override
 	public Object getClientGuiElement(int id, EntityPlayer playerIn, World world, int x, int y, int z) {
 		//System.out.println("id=" + id);
-		Player player = new Player(playerIn);
 		switch (id) {
 		case GUI_DIALOG:
-			return new GuiDialog(player, "Ok", "Cancel");
+			return new GuiDialog("Ok", "Cancel");
 		case GUI_TEXT_INPUT_DIALOG:
-			return new GuiTextInputDialog(player);
+			return new GuiTextInputDialog();
 		case GUI_SPELL_TEXT:
-			return new GuiSpellText(player);
+			return new GuiSpellText();
 		case GUI_STAFF:
 			return new GuiStaff(new GuiStaffContainer(playerIn));			
 		default:

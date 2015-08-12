@@ -22,13 +22,11 @@ public class GuiDialog extends GuiScreen {
 	private int buttonWidth = 60;
 	protected int buttonHeight = 20;
 	protected int padding = 10;
-	protected Player player;
 	protected List<String> buttonNames = new ArrayList<>();
 	private int dx = 0;
 	private int buttonCount = 0;
 
-	public GuiDialog(Player player, String... buttonNames) {
-		this.player = player;
+	public GuiDialog(String... buttonNames) {
 		for (String b : buttonNames) {
 			this.buttonNames.add(b);
 		}
@@ -49,7 +47,7 @@ public class GuiDialog extends GuiScreen {
 		drawDefaultBackground();
 		int x = topLeftX();
 		int y = topLeftY();
-		GuiInventory.drawEntityOnScreen(x, y, 30, x - mouseX, y - mouseY, player.getPlayer());
+		GuiInventory.drawEntityOnScreen(x, y, 30, x - mouseX, y - mouseY, mc.thePlayer);
 		super.drawScreen(mouseX, mouseY, partialTicks);
 	}
 

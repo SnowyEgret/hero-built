@@ -14,14 +14,15 @@ public class GuiSpellText extends GuiTextInputDialog {
 
 	private static final int FONT = 2;
 
-	public GuiSpellText(Player player) {
-		super(player, "Font");
+	public GuiSpellText() {
+		super("Font");
 	}
 
 	@Override
 	protected void actionPerformed(GuiButton button) {
 		switch (button.id) {
 		case FONT:
+			Player player = new Player(mc.thePlayer);
 			// SpellText s = (SpellText) player.getHeldItem();
 			JFontChooser chooser = new JFontChooser();
 			// Font font = s.getDefaultFont();
