@@ -9,9 +9,11 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockTorch;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
@@ -58,7 +60,7 @@ public class Transaction implements IUndoable, Iterable {
 	// IUndoable-----------------------------------------------------------------
 
 	@Override
-	public IUndoable dO(Player player) {
+	public boolean dO(Player player) {
 		World world = player.getWorld().getWorld();
 		player.getTransactionManager().addTransaction(this);
 		List<BlockPos> reselects = Lists.newArrayList();
@@ -76,14 +78,14 @@ public class Transaction implements IUndoable, Iterable {
 			BlockPos pos = setBlock.pos;
 
 			Block blockToSet = setBlock.state.getBlock();
-			Block block = player.getWorld().getBlock(pos);
+			Block blockToReplace = player.getWorld().getBlock(pos);
 
 			// Implementation of Issue #162: Only set IPlantable if block below can sustain plant
 			// Set plantables on block above.
 			// Do not set if the block below cannot sustain a plant
 			// System.out.println("blockToSet=" + blockToSet);
 			if (blockToSet instanceof IPlantable) {
-				if (!block.canSustainPlant(world, pos, EnumFacing.UP, (IPlantable) blockToSet)) {
+				if (!blockToReplace.canSustainPlant(world, pos, EnumFacing.UP, (IPlantable) blockToSet)) {
 					continue;
 				}
 				pos = pos.up();
@@ -105,11 +107,20 @@ public class Transaction implements IUndoable, Iterable {
 			// Check for bounds, and call Block#isReplaceable and Block#canReplace
 			// Player is expected to break his way out.
 			// If the player reselects, when the player deselects the broken blocks will reappear.
-			boolean noCollisionCheck = false;
-			if (!world.canBlockBePlaced(blockToSet, pos, noCollisionCheck, EnumFacing.UP, player.getPlayer(),
-					(ItemStack) null)) {
+			// From World#canBlockBePlaced which does not give reason block cannot be placed
+			// What is intent of third parameter
+			AxisAlignedBB bb = blockToSet.getCollisionBoundingBox(world, pos, blockToSet.getDefaultState());
+			if (!world.checkNoEntityCollision(bb, null)) {
+				System.out.println("Collision with player. blockToSet=" + blockToSet);
 				continue;
 			}
+
+			// Do not understand parameters.
+			// if (!blockToSet.canReplace(world, pos, EnumFacing.UP, (ItemStack) null)) {
+			// // if (!blockToReplace.getMaterial().isReplaceable()) {
+			// System.out.println("Material not replaceable. material=" + blockToReplace.getMaterial().getClass());
+			// continue;
+			// }
 
 			// TODO
 			// ItemBlock.setTileEntityNBT
@@ -150,7 +161,7 @@ public class Transaction implements IUndoable, Iterable {
 		String sound = "ambient.weather.thunder";
 		// Block b;
 		// player.playSoundAtPlayer(sound);
-		return this;
+		return true;
 	}
 
 	@Override

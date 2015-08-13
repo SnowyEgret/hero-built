@@ -8,7 +8,7 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public interface IUndoable {
 
-	public IUndoable dO(Player player);
+	public boolean dO(Player player);
 
 	public void undo(Player player) throws NoSuchElementException;
 

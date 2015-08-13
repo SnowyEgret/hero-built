@@ -54,19 +54,19 @@ public class TransactionManager implements IUndoable {
 		currentNode = new Node();
 	}
 
-	public void doTransaction(Iterable<IUndoable>... undoables) {
+	public boolean doTransaction(Iterable<IUndoable>... undoables) {
 		Transaction t = new Transaction();
 		for (Iterable<IUndoable> iterable : undoables) {
 			t.addAll(iterable);
 		}
-		t.dO(player);
+		return t.dO(player);
 	}
 
 	// Interface IUndoable -------------------------------------
 
 	@Override
-	public IUndoable dO(Player player) {
-		return null;
+	public boolean dO(Player player) {
+		return true;
 	}
 
 	@Override

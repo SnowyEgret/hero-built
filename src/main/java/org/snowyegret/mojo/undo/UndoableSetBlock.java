@@ -29,9 +29,9 @@ public class UndoableSetBlock implements IUndoable {
 
 	// IUndoable--------------------------------------------------------------------------
 
-	public UndoableSetBlock dO(Player player) {
+	public boolean dO(Player player) {
 		player.getWorld().setState(pos, state);
-		return this;
+		return true;
 	}
 
 	@Override
