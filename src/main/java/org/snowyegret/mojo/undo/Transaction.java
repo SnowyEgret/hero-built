@@ -65,69 +65,16 @@ public class Transaction implements IUndoable, Iterable {
 		player.getTransactionManager().addTransaction(this);
 		List<BlockPos> reselects = Lists.newArrayList();
 
-		// Parameterize transaction contructor for UndoableSetBlock #161
-		// TODO undoables should be of type UndoableSetBlock. Parameterize Transaction constructor.
-		// Transaction t = new Transaction<UndoableSetBlock>();
-		// for (UndoableSetBlock u : undoables) {
-
 		for (IUndoable u : undoables) {
-
+			
 			// TODO call u.dO(player) and put all this in UndoableSetBlock.dO
-
-			UndoableSetBlock setBlock = (UndoableSetBlock) u;
-			BlockPos pos = setBlock.pos;
-
-			Block blockToSet = setBlock.state.getBlock();
-			Block blockToReplace = player.getWorld().getBlock(pos);
-
-			// Implementation of Issue #162: Only set IPlantable if block below can sustain plant
-			// Set plantables on block above.
-			// Do not set if the block below cannot sustain a plant
-			// System.out.println("blockToSet=" + blockToSet);
-			if (blockToSet instanceof IPlantable) {
-				if (!blockToReplace.canSustainPlant(world, pos, EnumFacing.UP, (IPlantable) blockToSet)) {
-					continue;
-				}
-				pos = pos.up();
-				setBlock.pos = pos;
-			}
-
-			// TODO Issue: Torches should be placed on block side (not replace the block) #164
-			// Not finished!
-			if (blockToSet instanceof BlockTorch) {
-				System.out.println("Got a torch");
-				// if (block == Blocks.air || !block.canPlaceBlockOnSide(w, pos, EnumFacing.UP)) {
-				// if (block == Blocks.air) {
-				// continue;
-				// }
-				// pos = pos.up();
-				// setBlock.pos = pos;
-			}
-
-			// Check for bounds, and call Block#isReplaceable and Block#canReplace
-			// Player is expected to break his way out.
-			// If the player reselects, when the player deselects the broken blocks will reappear.
-			// From World#canBlockBePlaced which does not give reason block cannot be placed
-			// What is intent of third parameter
-			AxisAlignedBB bb = blockToSet.getCollisionBoundingBox(world, pos, blockToSet.getDefaultState());
-			if (!world.checkNoEntityCollision(bb, null)) {
-				System.out.println("Collision with player. blockToSet=" + blockToSet);
-				continue;
-			}
-
-			// Do not understand parameters.
-			// if (!blockToSet.canReplace(world, pos, EnumFacing.UP, (ItemStack) null)) {
-			// // if (!blockToReplace.getMaterial().isReplaceable()) {
-			// System.out.println("Material not replaceable. material=" + blockToReplace.getMaterial().getClass());
-			// continue;
-			// }
-
-			// TODO
-			// ItemBlock.setTileEntityNBT
-
-			reselects.add(pos);
-
 			u.dO(player);
+			
+			// TODO try to find a more appropriate place for this.
+			if (u instanceof UndoableSetBlock) {
+				reselects.add(((UndoableSetBlock)u).pos);
+			}
+			
 		}
 
 		// Issue #99: Transform spells not reselecting with proper state

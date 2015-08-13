@@ -1,12 +1,16 @@
 package org.snowyegret.mojo.undo;
 
-import org.snowyegret.mojo.player.Player;
-import org.snowyegret.mojo.world.IWorld;
-
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockTorch;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.world.World;
+import net.minecraftforge.common.IPlantable;
+
+import org.snowyegret.mojo.player.Player;
 
 public class UndoableSetBlock implements IUndoable {
 
@@ -30,6 +34,60 @@ public class UndoableSetBlock implements IUndoable {
 	// IUndoable--------------------------------------------------------------------------
 
 	public boolean dO(Player player) {
+		//UndoableSetBlock setBlock = (UndoableSetBlock) u;
+		//BlockPos pos = setBlock.pos;
+		World world = player.getWorld().getWorld();
+
+		Block blockToSet = state.getBlock();
+		Block blockToReplace = player.getWorld().getBlock(pos);
+
+		// Implementation of Issue #162: Only set IPlantable if block below can sustain plant
+		// Set plantables on block above.
+		// Do not set if the block below cannot sustain a plant
+		// System.out.println("blockToSet=" + blockToSet);
+		if (blockToSet instanceof IPlantable) {
+			if (!blockToReplace.canSustainPlant(world, pos, EnumFacing.UP, (IPlantable) blockToSet)) {
+				return false;
+			}
+			pos = pos.up();
+			//setBlock.pos = pos;
+		}
+
+		// TODO Issue: Torches should be placed on block side (not replace the block) #164
+		// Not finished!
+		if (blockToSet instanceof BlockTorch) {
+			System.out.println("Got a torch");
+			// if (block == Blocks.air || !block.canPlaceBlockOnSide(w, pos, EnumFacing.UP)) {
+			// if (block == Blocks.air) {
+			// continue;
+			// }
+			// pos = pos.up();
+			// setBlock.pos = pos;
+		}
+
+		// Check for bounds, and call Block#isReplaceable and Block#canReplace
+		// Player is expected to break his way out.
+		// If the player reselects, when the player deselects the broken blocks will reappear.
+		// From World#canBlockBePlaced which does not give reason block cannot be placed
+		// What is intent of third parameter
+		AxisAlignedBB bb = blockToSet.getCollisionBoundingBox(world, pos, blockToSet.getDefaultState());
+		if (bb != null && !world.checkNoEntityCollision(bb, null)) {
+			System.out.println("Collision with player. blockToSet=" + blockToSet);
+			return false;
+		}
+
+		// Do not understand parameters.
+		// if (!blockToSet.canReplace(world, pos, EnumFacing.UP, (ItemStack) null)) {
+		// // if (!blockToReplace.getMaterial().isReplaceable()) {
+		// System.out.println("Material not replaceable. material=" + blockToReplace.getMaterial().getClass());
+		// continue;
+		// }
+
+		// TODO
+		// ItemBlock.setTileEntityNBT
+		
+		// TODO
+		//return player.getWorld().setState(pos, state);
 		player.getWorld().setState(pos, state);
 		return true;
 	}
@@ -41,7 +99,8 @@ public class UndoableSetBlock implements IUndoable {
 
 	@Override
 	public void redo(Player player) {
-		player.getWorld().setState(pos, state);
+		dO(player);
+		//player.getWorld().setState(pos, state);
 	}
 
 	// Implemented to save a large transaction to disk.
