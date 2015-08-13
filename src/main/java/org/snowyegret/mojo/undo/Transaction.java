@@ -9,6 +9,7 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockTorch;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.BlockPos;
@@ -68,14 +69,14 @@ public class Transaction implements IUndoable, Iterable {
 		// for (UndoableSetBlock u : undoables) {
 
 		for (IUndoable u : undoables) {
+
+			// TODO call u.dO(player) and put all this in UndoableSetBlock.dO
+
 			UndoableSetBlock setBlock = (UndoableSetBlock) u;
 			BlockPos pos = setBlock.pos;
 
 			Block blockToSet = setBlock.state.getBlock();
 			Block block = player.getWorld().getBlock(pos);
-
-			// TODO Not the right place for this.
-			// If all spells shared a common base class we could do it there.
 
 			// Implementation of Issue #162: Only set IPlantable if block below can sustain plant
 			// Set plantables on block above.
@@ -101,13 +102,17 @@ public class Transaction implements IUndoable, Iterable {
 				// setBlock.pos = pos;
 			}
 
-			// Do not set blocks on player.
+			// Check for bounds, and call Block#isReplaceable and Block#canReplace
 			// Player is expected to break his way out.
-			// Because blocks are selected, when the player deselects the broken blocks will reappear.
-			// Doing this here, and not in spell, permits comment above.
-			if (player.getBounds().contains(pos)) {
+			// If the player reselects, when the player deselects the broken blocks will reappear.
+			boolean noCollisionCheck = false;
+			if (!world.canBlockBePlaced(blockToSet, pos, noCollisionCheck, EnumFacing.UP, player.getPlayer(),
+					(ItemStack) null)) {
 				continue;
 			}
+
+			// TODO
+			// ItemBlock.setTileEntityNBT
 
 			reselects.add(pos);
 

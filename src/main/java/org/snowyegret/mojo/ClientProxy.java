@@ -1,12 +1,8 @@
 package org.snowyegret.mojo;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.ItemModelMesher;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.client.resources.model.ModelResourceLocation;
@@ -14,15 +10,14 @@ import net.minecraft.item.Item;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-import org.snowyegret.mojo.block.BlockPicked;
 import org.snowyegret.mojo.block.BlockMaquette;
+import org.snowyegret.mojo.block.BlockPicked;
 import org.snowyegret.mojo.block.BlockSelected;
 import org.snowyegret.mojo.util.ModelResourceLocations;
 import org.snowyegret.mojo.util.StringUtils;
 
 public class ClientProxy extends CommonProxy {
 
-	private static final int META = 0;
 
 	// https://github.com/TheGreyGhost/MinecraftByExample/blob/master/src/main/java/minecraftbyexample/mbe15_item_smartitemmodel/StartupClientOnly.java
 	@Override
@@ -32,10 +27,9 @@ public class ClientProxy extends CommonProxy {
 
 		for (Item i : items) {
 			ModelResourceLocation mrl = ModelResourceLocations.forClass(i.getClass());
-			mesher.register(i, META, mrl);
+			mesher.register(i, 0, mrl);
 			// System.out.println(i.getUnlocalizedName() + " model=" + mesher.getModelManager().getModel(mrl));
 		}
-
 	}
 
 	// https://github.com/TheGreyGhost/MinecraftByExample/blob/master/src/main/java/minecraftbyexample/mbe04_block_smartblockmodel1/StartupClientOnly.java
@@ -51,11 +45,12 @@ public class ClientProxy extends CommonProxy {
 		String name = StringUtils.underscoreNameFor(BlockMaquette.class);
 		Item item = GameRegistry.findItem(MoJo.MODID, name);
 		ModelResourceLocation mrl = new ModelResourceLocation(MoJo.MODID + ":" + name, "inventory");
-		mesher.register(item, META, mrl);
-		
+		mesher.register(item, 0, mrl);
+
 		System.out.println("item=" + item);
 		System.out.println("mrl=" + mrl);
 		System.out.println("model=" + mesher.getModelManager().getModel(mrl));
+		// BlockRendererDispatcher d;
 	}
 
 	@Override
@@ -77,6 +72,9 @@ public class ClientProxy extends CommonProxy {
 			@Override
 			protected ModelResourceLocation getModelResourceLocation(IBlockState iBlockState) {
 				return ModelResourceLocations.forClass(BlockMaquette.class);
+				// Same
+				// return new ModelResourceLocation("mojo:block_maquette#normal");
+				// return new ModelResourceLocation("mojo:block_maquette");
 			}
 		});
 	}

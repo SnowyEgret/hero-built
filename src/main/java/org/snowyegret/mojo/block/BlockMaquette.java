@@ -18,6 +18,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
@@ -42,13 +43,14 @@ import org.snowyegret.mojo.item.spell.OverlayInfo;
 import org.snowyegret.mojo.player.Player;
 import org.snowyegret.mojo.select.Selection;
 import org.snowyegret.mojo.undo.IUndoable;
+import org.snowyegret.mojo.undo.Transaction;
 import org.snowyegret.mojo.undo.UndoableSetBlock;
 
 import com.google.common.collect.Lists;
 
 public class BlockMaquette extends Block implements ITileEntityProvider, IOverlayable {
 
-	protected OverlayInfo info;
+	private OverlayInfo info;
 
 	public static final String EXTENTION = ".maquette";
 	// For passing BlockMaqetteTileEntity fields to smart model
@@ -149,43 +151,6 @@ public class BlockMaquette extends Block implements ITileEntityProvider, IOverla
 	// super.onBlockDestroyedByPlayer(worldIn, pos, state);
 	// }
 
-	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState stateIn, EntityLivingBase playerIn, ItemStack stack) {
-		// Only on server
-		if (world.isRemote) {
-			return;
-		}
-		
-		// Block is already placed and has a tile entity
-		Player player = new Player((EntityPlayer) playerIn);
-		Modifiers modifiers = player.getModifiers();
-		if (modifiers.isPressed(Modifier.CTRL)) {
-			// BlockMaquetteTileEntity:readFromNBT has been called because stack has tag with key 'BlockEntityTag'
-			// Set in #getDrops
-			// See comment in #getDrops
-			BlockMaquetteTileEntity te = (BlockMaquetteTileEntity) world.getTileEntity(pos);
-			List<IUndoable> undoables = Lists.newArrayList();
-			for (Selection s : te.getSelections()) {
-				BlockPos p = s.getPos().subtract(te.getOrigin());
-				p = p.add(pos);
-				undoables.add(new UndoableSetBlock(p, world.getBlockState(p), s.getState()));
-			}
-			player.getTransactionManager().doTransaction(undoables);
-		}
-		
-		// TODO Orient block
-		// IBlockState state = MoJo.blockMaquette.getDefaultState().withProperty(BlockMaquette.PROP_FACING,
-		// player.getHorizonatalFacing());
-		// t.add(new UndoableSetBlock(origin, player.getWorld().getState(origin), state));
-	}
-
-	// If this returns null, super.getDrops in getDrops with get an empty list.
-	// http://www.minecraftforge.net/forum/index.php/topic,32550.msg170136.html#msg170136
-	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-		return null;
-	}
-
 	// @Override
 	// public void onBlockClicked(World worldIn, BlockPos pos, EntityPlayer playerIn) {
 	// }
@@ -236,6 +201,45 @@ public class BlockMaquette extends Block implements ITileEntityProvider, IOverla
 		return false;
 	}
 
+	@Override
+	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState stateIn, EntityLivingBase playerIn, ItemStack stack) {
+		// Only on server
+		if (world.isRemote) {
+			return;
+		}
+
+		// Block is already placed and has a tile entity.
+		// TODO Could get selections from stack and move this to ItemBlockMaquette.placeBlockAt. No need to delete the
+		// BlockMaquette
+		Player player = new Player((EntityPlayer) playerIn);
+		Modifiers modifiers = player.getModifiers();
+		if (modifiers.isPressed(Modifier.CTRL)) {
+			// BlockMaquetteTileEntity:readFromNBT has been called because stack has tag with key 'BlockEntityTag'
+			// Set in #getDrops
+			// See comment in #getDrops
+			BlockMaquetteTileEntity te = (BlockMaquetteTileEntity) world.getTileEntity(pos);
+			List<IUndoable> undoables = Lists.newArrayList();
+			for (Selection s : te.getSelections()) {
+				BlockPos p = s.getPos().subtract(te.getOrigin());
+				p = p.add(pos);
+				undoables.add(new UndoableSetBlock(p, world.getBlockState(p), s.getState()));
+			}
+			player.getTransactionManager().doTransaction(undoables);
+		}
+
+	}
+
+	// If this returns null, super.getDrops in getDrops with get an empty list.
+	// http://www.minecraftforge.net/forum/index.php/topic,32550.msg170136.html#msg170136
+	@Override
+	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+		return null;
+	}
+
+	// @Override
+	// public void onBlockClicked(World worldIn, BlockPos pos, EntityPlayer playerIn) {
+	// }
+
 	// These methods (getDrops, removedByPlayer, harvestBlock) delay deletion of tile entity until block is picked up.
 	// http://www.minecraftforge.net/forum/index.php/topic,32477.msg169713.html
 	@Override
@@ -247,6 +251,8 @@ public class BlockMaquette extends Block implements ITileEntityProvider, IOverla
 			return itemStacks;
 		}
 
+		//ItemStack stack = new ItemStack(new ItemBlockMaquette(this));
+		//ItemStack stack = new ItemStack(new ItemBlock(this));
 		// http://www.minecraftforge.net/forum/index.php/topic,32550.msg170141.html#msg170141
 		// Choonster:
 		// Side note: if you create a compound tag with the key "BlockEntityTag" in an ItemStack's compound tag and your
@@ -289,4 +295,39 @@ public class BlockMaquette extends Block implements ITileEntityProvider, IOverla
 	public OverlayInfo getOverlayInfo() {
 		return info;
 	}
+
+	// private class ItemBlockMaquette extends ItemBlock {
+	//
+	// public ItemBlockMaquette(Block block) {
+	// super(block);
+	// }
+	//
+	// // Overridden to set block inside transaction so that it can be undone.
+	// // Overridden to not set block if ctrl (expand) is pressed
+	// @Override
+	// public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side,
+	// float hitX, float hitY, float hitZ, IBlockState newState) {
+	// // TODO Orient block
+	// // IBlockState state = MoJo.blockMaquette.getDefaultState().withProperty(BlockMaquette.PROP_FACING,
+	// // player.getHorizonatalFacing());
+	//
+	// Transaction t = new Transaction();
+	// t.add(new UndoableSetBlock(pos, world.getBlockState(pos), newState));
+	// t.dO(new Player(player));
+	// System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>t=" + t);
+	// // TODO Transaction.dO should return boolean if successful #311
+	// // if (!t.dO(player) return false;
+	//
+	// // Copied following code from super#placeBlockAt commenting out this line
+	// // if (!world.setBlockState(pos, newState, 3)) return false;
+	// IBlockState state = world.getBlockState(pos);
+	// if (state.getBlock() == this.block) {
+	// // Checks for tag with key 'BlockEntityTag'
+	// setTileEntityNBT(world, pos, stack, player);
+	// this.block.onBlockPlacedBy(world, pos, state, player, stack);
+	// }
+	// return true;
+	// }
+	//
+	// }
 }

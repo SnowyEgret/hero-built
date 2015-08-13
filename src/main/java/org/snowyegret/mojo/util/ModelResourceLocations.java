@@ -12,7 +12,7 @@ public class ModelResourceLocations {
 		if (Item.class.isAssignableFrom(cls)) {
 			return new ModelResourceLocation(MoJo.MODID + ":" + StringUtils.underscoreNameFor(cls), "inventory");
 		} else if (Block.class.isAssignableFrom(cls)) {
-			ModelResourceLocation mrl = new ModelResourceLocation(MoJo.MODID + ":" + StringUtils.underscoreNameFor(cls));
+			ModelResourceLocation mrl = new ModelResourceLocation(MoJo.MODID + ":" + StringUtils.underscoreNameFor(cls), "normal");
 			//System.out.println("mrl=" + mrl);
 			return mrl;
 		} else {
