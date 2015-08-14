@@ -17,6 +17,7 @@ import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+@Deprecated
 public class BlockPicked extends Block implements ITileEntityProvider {
 
 	public static final PropertyState PROPERTY_STATE = new PropertyState();
@@ -44,7 +45,7 @@ public class BlockPicked extends Block implements ITileEntityProvider {
 
 	@Override
 	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-		PrevStateTileEntity tileEntity = (PrevStateTileEntity) world.getTileEntity(pos);
+		BlockHightlightTileEntity tileEntity = (BlockHightlightTileEntity) world.getTileEntity(pos);
 		IBlockState prevState = null;
 		if (tileEntity != null) {
 			prevState = tileEntity.getPrevState();
@@ -56,7 +57,7 @@ public class BlockPicked extends Block implements ITileEntityProvider {
 
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		return new PrevStateTileEntity();
+		return new BlockHightlightTileEntity();
 	}
 
 }

@@ -15,8 +15,8 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-import org.snowyegret.mojo.block.BlockSelected;
-import org.snowyegret.mojo.block.PrevStateTileEntity;
+import org.snowyegret.mojo.block.BlockHighlight;
+import org.snowyegret.mojo.block.BlockHightlightTileEntity;
 import org.snowyegret.mojo.item.spell.Modifier;
 import org.snowyegret.mojo.item.spell.Modifiers;
 import org.snowyegret.mojo.item.spell.condition.ICondition;
@@ -88,8 +88,8 @@ public class MouseClickMessageHandler implements IMessageHandler<MouseClickMessa
 		if (isDoubleClick) {
 			lastSize = 0;
 			Block block = player.getWorld().getBlock(pos);
-			if (block instanceof BlockSelected) {
-				PrevStateTileEntity te = (PrevStateTileEntity) player.getWorld().getTileEntity(pos);
+			if (block instanceof BlockHighlight) {
+				BlockHightlightTileEntity te = (BlockHightlightTileEntity) player.getWorld().getTileEntity(pos);
 				block = te.getPrevState().getBlock();
 				// block = sm.getSelection(pos).getState().getBlock();
 			} else {

@@ -8,7 +8,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IExtendedEntityProperties;
 
-import org.snowyegret.mojo.MoJo;
 import org.snowyegret.mojo.item.spell.Modifiers;
 import org.snowyegret.mojo.item.spell.Spell;
 import org.snowyegret.mojo.pick.PickManager;
@@ -29,7 +28,6 @@ public class PlayerProperties implements IExtendedEntityProperties {
 	private Clipboard clipboard;
 	private Spell lastSpell;
 	private Spell lastInvokedSpell;
-	//private String blockSavedPath;
 	private Font font;
 
 	public PlayerProperties(EntityPlayer entity) {
@@ -65,14 +63,14 @@ public class PlayerProperties implements IExtendedEntityProperties {
 		if (fontString != null) {
 			font = Font.decode(fontString);
 		}
-		//System.out.println("tag=" + tag);
+		// System.out.println("tag=" + tag);
 	}
 
 	@Override
 	public void init(Entity entity, World world) {
 		modifiers = new Modifiers();
-		selectionManager = new SelectionManager(player, MoJo.blockSelected);
-		pickManager = new PickManager(player, MoJo.blockPicked);
+		selectionManager = new SelectionManager(player);
+		pickManager = new PickManager(player);
 		transactionManager = new TransactionManager(player);
 		clipboard = new Clipboard();
 		int fontSize = 24;
@@ -100,14 +98,6 @@ public class PlayerProperties implements IExtendedEntityProperties {
 	public Clipboard getClipboard() {
 		return clipboard;
 	}
-
-	// public void setBlockSavedPath(String blockSavedPath) {
-	// this.blockSavedPath = blockSavedPath;
-	// }
-	//
-	// public String getBlockSavedPath() {
-	// return blockSavedPath;
-	// }
 
 	public void setFont(Font font) {
 		this.font = font;

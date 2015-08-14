@@ -12,7 +12,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import org.snowyegret.mojo.block.BlockMaquette;
 import org.snowyegret.mojo.block.BlockPicked;
-import org.snowyegret.mojo.block.BlockSelected;
+import org.snowyegret.mojo.block.BlockHighlight;
 import org.snowyegret.mojo.util.ModelResourceLocations;
 import org.snowyegret.mojo.util.StringUtils;
 
@@ -56,24 +56,24 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public void setCustomStateMappers() {
 		System.out.println("Setting custom state mappers...");
-		ModelLoader.setCustomStateMapper(MoJo.blockSelected, new StateMapperBase() {
+		ModelLoader.setCustomStateMapper(MoJo.blockHighlight, new StateMapperBase() {
 			@Override
 			protected ModelResourceLocation getModelResourceLocation(IBlockState iBlockState) {
-				return ModelResourceLocations.forClass(BlockSelected.class);
+				return ModelResourceLocations.forClass(BlockHighlight.class);
 			}
 		});
-		ModelLoader.setCustomStateMapper(MoJo.blockPicked, new StateMapperBase() {
-			@Override
-			protected ModelResourceLocation getModelResourceLocation(IBlockState iBlockState) {
-				return ModelResourceLocations.forClass(BlockPicked.class);
-			}
-		});
+		// ModelLoader.setCustomStateMapper(MoJo.blockPicked, new StateMapperBase() {
+		// @Override
+		// protected ModelResourceLocation getModelResourceLocation(IBlockState iBlockState) {
+		// return ModelResourceLocations.forClass(BlockPicked.class);
+		// }
+		// });
 		ModelLoader.setCustomStateMapper(MoJo.blockMaquette, new StateMapperBase() {
 			@Override
 			protected ModelResourceLocation getModelResourceLocation(IBlockState iBlockState) {
 				return ModelResourceLocations.forClass(BlockMaquette.class);
 				// Same
-				// return new ModelResourceLocation("mojo:block_maquette#normal");
+				 //return new ModelResourceLocation("mojo:block_maquette#normal");
 				// return new ModelResourceLocation("mojo:block_maquette");
 			}
 		});

@@ -8,8 +8,8 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.Vec3i;
 
 import org.snowyegret.mojo.block.BlockPicked;
-import org.snowyegret.mojo.block.BlockSelected;
-import org.snowyegret.mojo.block.PrevStateTileEntity;
+import org.snowyegret.mojo.block.BlockHighlight;
+import org.snowyegret.mojo.block.BlockHightlightTileEntity;
 import org.snowyegret.mojo.item.spell.Spell;
 import org.snowyegret.mojo.message.client.SpellMessage;
 import org.snowyegret.mojo.player.Player;
@@ -36,12 +36,12 @@ public class SpellCleanup extends Spell {
 		IWorld w = player.getWorld();
 		for (BlockPos pos : allInBox) {
 			Block b = w.getState(pos).getBlock();
-			if (b instanceof BlockSelected || b instanceof BlockPicked) {
+			if (b instanceof BlockHighlight || b instanceof BlockPicked) {
 				positions.add(pos);
 			} else {
 				// Check that a PrevStateTileEntity has not been left in world at this position
 				TileEntity te = w.getTileEntity(pos);
-				if (te != null && te instanceof PrevStateTileEntity) {
+				if (te != null && te instanceof BlockHightlightTileEntity) {
 					te.invalidate();
 					System.out.println("Found a PrevStateTileEntity at a position not occupied"
 							+ " by a BlockSelected/Picked. Invalidating. te=" + te);

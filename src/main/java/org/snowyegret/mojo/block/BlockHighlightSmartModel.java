@@ -15,17 +15,19 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.client.model.ISmartBlockModel;
 import net.minecraftforge.common.property.IExtendedBlockState;
 
-public class BlockSelectedSmartModel implements ISmartBlockModel {
+public class BlockHighlightSmartModel implements ISmartBlockModel {
 
 	private IBakedModel model;
+	private int color;
 	private static final int COLOR = new Color(200, 200, 255).getRGB();
 
 	@Override
 	public IBakedModel handleBlockState(IBlockState state) {
-		IBlockState prevState = ((IExtendedBlockState) state).getValue(BlockSelected.PROPERTY_STATE);
+		IBlockState prevState = ((IExtendedBlockState) state).getValue(BlockHighlight.PROP_STATE);
+		color = ((IExtendedBlockState) state).getValue(BlockHighlight.PROP_COLOR);
 		// Fix for Crash with infinite loop at BlockSelected/PickedModel.isAmbientOcclusion #172
 		// When selecting blocks left in world with a selection spell, sometimes s was BlockSelected instead of null
-		if (prevState != null && prevState.getBlock() instanceof BlockSelected) {
+		if (prevState != null && prevState.getBlock() instanceof BlockHighlight) {
 			// TODO Can I get its extended state again?
 			System.out.println("State is BlockSelected. Setting prevState to null to avoid infinite loop");
 			prevState = null;
@@ -40,7 +42,7 @@ public class BlockSelectedSmartModel implements ISmartBlockModel {
 	}
 
 	@Override
-	public List getFaceQuads(EnumFacing face) { 
+	public List getFaceQuads(EnumFacing face) {
 		List<BakedQuad> quads = new ArrayList<>();
 		List<BakedQuad> faceQuads = model.getFaceQuads(face);
 		for (BakedQuad q : faceQuads) {
@@ -89,10 +91,14 @@ public class BlockSelectedSmartModel implements ISmartBlockModel {
 	private int[] tint(int[] vertexData) {
 		int[] vd = new int[vertexData.length];
 		System.arraycopy(vertexData, 0, vd, 0, vertexData.length);
-		vd[3] = COLOR;
-		vd[10] = COLOR;
-		vd[17] = COLOR;
-		vd[24] = COLOR;
+//		vd[3] = COLOR;
+//		vd[10] = COLOR;
+//		vd[17] = COLOR;
+//		vd[24] = COLOR;
+		vd[3] = color;
+		vd[10] = color;
+		vd[17] = color;
+		vd[24] = color;
 		return vd;
 	}
 

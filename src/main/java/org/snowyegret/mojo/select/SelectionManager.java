@@ -12,13 +12,15 @@ import net.minecraft.block.BlockAir;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.Vec3;
+import net.minecraftforge.common.property.IExtendedBlockState;
 
 import org.snowyegret.geom.IntegerDomain;
 import org.snowyegret.geom.VoxelSet;
+import org.snowyegret.mojo.MoJo;
 import org.snowyegret.mojo.block.BlockPicked;
 import org.snowyegret.mojo.block.BlockMaquette;
-import org.snowyegret.mojo.block.BlockSelected;
-import org.snowyegret.mojo.block.PrevStateTileEntity;
+import org.snowyegret.mojo.block.BlockHighlight;
+import org.snowyegret.mojo.block.BlockHightlightTileEntity;
 import org.snowyegret.mojo.message.client.SelectionMessage;
 import org.snowyegret.mojo.player.Player;
 import org.snowyegret.mojo.world.IWorld;
@@ -30,14 +32,12 @@ import com.google.common.collect.Sets;
 public class SelectionManager {
 
 	private Map<BlockPos, Selection> selMap = Maps.newLinkedHashMap();
-	private IBlockState blockSelected;
 	private List<BlockPos> reselects;
 	private Set<BlockPos> grownSelections = Sets.newHashSet();
 	private Player player;
 
-	public SelectionManager(Player player, Block blockSelected) {
+	public SelectionManager(Player player) {
 		this.player = player;
-		this.blockSelected = blockSelected.getDefaultState();
 	}
 
 	public void select(Iterable<BlockPos> pos) {
@@ -172,41 +172,30 @@ public class SelectionManager {
 			// System.out.println("BlockAir. Returning null.");
 			return null;
 		}
-		
+
 		// Selecting a BlockSaved deletes it's tile entity.
 		// No reason to select
 		if (b instanceof BlockMaquette) {
 			return null;
 		}
-		
-		if (b instanceof BlockSelected) {
+
+		if (b instanceof BlockHighlight) {
 			// Implementation of: Find a way to restore selected blocks to their previous state when they are left in
 			// world after a crash #173
 			// PrevStateTileEntity must call super.writeToNBT
-			System.out.println("Selecting a BlockSelected");
+			System.out.println("Selecting a BlockHighlight");
 			// System.out.println("This Should only occur when a selection is left in world after a crash.");
 			// System.out.println("Looking for previous state on tile entity");
 			// This should only be the case when a selection is left in the world after a crash.
 			// If the BlockSelected has a tile entity it will render properly, if not as black/magenta block
 			// Try to get its state from its tile entity so that a player can select it and restore its
 			// previous state by clearing the selections.
-			PrevStateTileEntity te = (PrevStateTileEntity) world.getTileEntity(pos);
+			BlockHightlightTileEntity te = (BlockHightlightTileEntity) world.getTileEntity(pos);
 			if (te != null) {
 				state = te.getPrevState();
 				// System.out.println("state=" + state);
 			} else {
-				System.out.println("Selected a BlockSelected with no tile entity");
-			}
-		}
-
-		if (b instanceof BlockPicked) {
-			System.out.println("Selecting a BlockPicked");
-			System.out.println("Looking for previous state on tile entity");
-			PrevStateTileEntity te = (PrevStateTileEntity) world.getTileEntity(pos);
-			if (te != null) {
-				state = te.getPrevState();
-			} else {
-				System.out.println("Selected a BlockPicked with no tile entity");
+				System.out.println("Selected a BlockHighlight with no tile entity");
 			}
 		}
 
@@ -217,9 +206,10 @@ public class SelectionManager {
 		s = new Selection(pos, state);
 		selMap.put(pos, s);
 
-		world.setState(pos, blockSelected);
-		PrevStateTileEntity tileEntity = (PrevStateTileEntity) world.getTileEntity(pos);
-		tileEntity.setPrevState(state);
+		world.setState(pos, MoJo.blockHighlight.getDefaultState());
+		BlockHightlightTileEntity te = (BlockHightlightTileEntity) world.getTileEntity(pos);
+		te.setPrevState(state);
+		te.setColor(BlockHighlight.COLOR_SELECTED);
 
 		return s;
 	}

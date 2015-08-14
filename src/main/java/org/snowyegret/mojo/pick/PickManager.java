@@ -3,15 +3,13 @@ package org.snowyegret.mojo.pick;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 
 import org.snowyegret.mojo.MoJo;
-import org.snowyegret.mojo.block.BlockSelected;
-import org.snowyegret.mojo.block.PrevStateTileEntity;
+import org.snowyegret.mojo.block.BlockHighlight;
+import org.snowyegret.mojo.block.BlockHightlightTileEntity;
 import org.snowyegret.mojo.message.client.PickMessage;
 import org.snowyegret.mojo.player.Player;
 import org.snowyegret.mojo.world.IWorld;
@@ -21,12 +19,10 @@ public class PickManager {
 	private LinkedList<Pick> picks = new LinkedList<>();
 	private LinkedList<Pick> lastPicks = new LinkedList<>();
 	private int numPicks = 0;
-	private IBlockState blockPicked;
 	private Player player;
 
-	public PickManager(Player player, Block blockPicked) {
+	public PickManager(Player player) {
 		this.player = player;
-		this.blockPicked = blockPicked.getDefaultState();
 	}
 
 	public Pick pick(BlockPos pos, EnumFacing side) {
@@ -105,28 +101,25 @@ public class PickManager {
 		}
 
 		IBlockState state = world.getActualState(pos);
-		PrevStateTileEntity tileEntity;
+		BlockHightlightTileEntity tileEntity;
 
-		if (state.getBlock() instanceof BlockSelected) {
-			//System.out.println("Picking a BlockSelected");
-			tileEntity = (PrevStateTileEntity) world.getTileEntity(pos);
+		if (state.getBlock() instanceof BlockHighlight) {
+			tileEntity = (BlockHightlightTileEntity) world.getTileEntity(pos);
 			state = tileEntity.getPrevState();
 			// If the BlockSelected is left in the world after a crash, prevState will be null.
 			// When selecting these blocks to delete or fill them, the previous state can simply be blockSelected
 			if (state == null) {
 				System.out.println("tileEntity.getPrevState() is null. Setting to BlockSelected default state.");
-				state = MoJo.blockSelected.getDefaultState();
+				state = MoJo.blockHighlight.getDefaultState();
 			}
 		}
 
 		Pick pick = new Pick(pos, state, side);
 		picks.add(pick);
-		world.setState(pos, blockPicked);
-		//if (!(state.getBlock() instanceof BlockSelected)) {
-		//System.out.println("state=" + state);
-		tileEntity = (PrevStateTileEntity) world.getTileEntity(pos);
+		world.setState(pos, MoJo.blockHighlight.getDefaultState());
+		tileEntity = (BlockHightlightTileEntity) world.getTileEntity(pos);
 		tileEntity.setPrevState(state);
-		//}
+		tileEntity.setColor(BlockHighlight.COLOR_PICKED);
 
 		return pick;
 	}

@@ -20,8 +20,8 @@ import org.snowyegret.mojo.block.BlockMaquette;
 import org.snowyegret.mojo.block.BlockMaquetteSmartModel;
 import org.snowyegret.mojo.block.BlockPicked;
 import org.snowyegret.mojo.block.BlockPickedSmartModel;
-import org.snowyegret.mojo.block.BlockSelected;
-import org.snowyegret.mojo.block.BlockSelectedSmartModel;
+import org.snowyegret.mojo.block.BlockHighlight;
+import org.snowyegret.mojo.block.BlockHighlightSmartModel;
 import org.snowyegret.mojo.gui.IOverlayable;
 import org.snowyegret.mojo.gui.Overlay;
 import org.snowyegret.mojo.gui.PickInfo;
@@ -103,7 +103,7 @@ public class EventHandlerClient {
 	@SubscribeEvent
 	public void onModelBake(ModelBakeEvent event) {
 		IRegistry r = event.modelRegistry;
-		r.putObject(ModelResourceLocations.forClass(BlockSelected.class), new BlockSelectedSmartModel());
+		r.putObject(ModelResourceLocations.forClass(BlockHighlight.class), new BlockHighlightSmartModel());
 		r.putObject(ModelResourceLocations.forClass(BlockPicked.class), new BlockPickedSmartModel());
 		r.putObject(ModelResourceLocations.forClass(BlockMaquette.class), new BlockMaquetteSmartModel());
 

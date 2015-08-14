@@ -9,7 +9,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.util.BlockPos;
 
-import org.snowyegret.mojo.block.BlockSelected;
+import org.snowyegret.mojo.block.BlockHighlight;
 import org.snowyegret.mojo.item.spell.Modifier;
 import org.snowyegret.mojo.item.spell.Modifiers;
 import org.snowyegret.mojo.item.spell.Spell;
@@ -86,7 +86,7 @@ public abstract class AbstractSpellSelect extends Spell {
 				}
 				// Do not select blocks if they are already selected
 				// Testing for BlockSelected and isSelected seems to perform equally
-				if (block instanceof BlockSelected) {
+				if (block instanceof BlockHighlight) {
 					continue;
 					// System.out.println("Position already selected");
 					// Select previously selected blocks if they have been left in world after a crash
@@ -130,7 +130,7 @@ public abstract class AbstractSpellSelect extends Spell {
 			for (BlockPos p : pattern) {
 				p = p.add(s.getPos());
 				Block b = player.getWorld().getBlock(p);
-				if (!(b instanceof BlockSelected)) {
+				if (!(b instanceof BlockHighlight)) {
 					selections.add(s.getPos());
 					break;
 				}

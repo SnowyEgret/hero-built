@@ -12,10 +12,12 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 
-public class PrevStateTileEntity extends TileEntity {
+public class BlockHightlightTileEntity extends TileEntity {
 
 	private IBlockState prevState;
-	private final String PREV_STATE_KEY = "st";
+	private static final String KEY_PREV_STATE = "st";
+	private int color;
+	private static final String KEY_COLOR = "c";
 
 	public IBlockState getPrevState() {
 		return prevState;
@@ -23,6 +25,14 @@ public class PrevStateTileEntity extends TileEntity {
 
 	public void setPrevState(IBlockState state) {
 		prevState = state;
+	}
+
+	public int getColor() {
+		return color;
+	}
+
+	public void setColor(int color) {
+		this.color = color;
 	}
 
 	// Fix for Selections not rendered properly after third pick of SpellSelectAll/Below/Above #167	@Override
@@ -40,7 +50,8 @@ public class PrevStateTileEntity extends TileEntity {
 		if (prevState == null) {
 			System.out.println("Could not write previous state to tag. prevState=" + prevState);
 		} else {
-			tag.setInteger(PREV_STATE_KEY, Block.getStateId(prevState));
+			tag.setInteger(KEY_PREV_STATE, Block.getStateId(prevState));
+			tag.setInteger(KEY_COLOR, color);
 			// TODO Do we have to write properties?
 			// for (Object name : prevState.getPropertyNames()) {
 			//
@@ -54,7 +65,8 @@ public class PrevStateTileEntity extends TileEntity {
 
 	@Override
 	public void readFromNBT(NBTTagCompound tag) {
-		prevState = Block.getStateById(tag.getInteger(PREV_STATE_KEY));
+		prevState = Block.getStateById(tag.getInteger(KEY_PREV_STATE));
+		color = tag.getInteger(KEY_COLOR);
 		super.readFromNBT(tag);
 	}
 
@@ -77,6 +89,8 @@ public class PrevStateTileEntity extends TileEntity {
 		StringBuilder builder = new StringBuilder();
 		builder.append("PrevStateTileEntity [prevState=");
 		builder.append(prevState);
+		builder.append(", color=");
+		builder.append(color);
 		builder.append(", isInvalid()=");
 		builder.append(isInvalid());
 		builder.append("]");

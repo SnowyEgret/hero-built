@@ -11,7 +11,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 
 import org.snowyegret.mojo.block.BlockPicked;
 import org.snowyegret.mojo.block.BlockMaquette;
-import org.snowyegret.mojo.block.BlockSelected;
+import org.snowyegret.mojo.block.BlockHighlight;
 
 @Mod(modid = MoJo.MODID, name = MoJo.NAME, version = MoJo.VERSION)
 public class MoJo {
@@ -27,8 +27,8 @@ public class MoJo {
 	public static CommonProxy proxy;
 
 	public static SimpleNetworkWrapper network;
-	public static BlockSelected blockSelected;
-	public static BlockPicked blockPicked;
+	public static BlockHighlight blockHighlight;
+	//public static BlockPicked blockPicked;
 	public static BlockMaquette blockMaquette;
 
 	@EventHandler
