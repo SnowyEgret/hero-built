@@ -1,10 +1,8 @@
 package org.snowyegret.mojo.event;
 
-import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiIngameMenu;
 import net.minecraft.client.resources.model.IBakedModel;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.IRegistry;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
@@ -16,12 +14,10 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.snowyegret.mojo.MoJo;
-import org.snowyegret.mojo.block.BlockMaquette;
-import org.snowyegret.mojo.block.BlockMaquetteSmartModel;
-import org.snowyegret.mojo.block.BlockPicked;
-import org.snowyegret.mojo.block.BlockPickedSmartModel;
 import org.snowyegret.mojo.block.BlockHighlight;
 import org.snowyegret.mojo.block.BlockHighlightSmartModel;
+import org.snowyegret.mojo.block.BlockMaquette;
+import org.snowyegret.mojo.block.BlockMaquetteSmartModel;
 import org.snowyegret.mojo.gui.IOverlayable;
 import org.snowyegret.mojo.gui.Overlay;
 import org.snowyegret.mojo.gui.PickInfo;
@@ -84,38 +80,35 @@ public class EventHandlerClient {
 			if (overlayable != null) {
 				overlay.draw(overlayable, player);
 			}
-
-//			Spell spell = player.getSpell();
-//			if (spell != null) {
-//				overlay.drawSpell(spell, player);
-//			} else {
-//				Staff staff = player.getStaff();
-//				if (staff != null) {
-//					overlay.drawStaff(staff, player);
-//					return;
-//				}
-//			}
-
 		}
 	}
 
-	// Put ISmartModels on model registery
+	// Put ISmartModels on model registry
 	@SubscribeEvent
 	public void onModelBake(ModelBakeEvent event) {
 		IRegistry r = event.modelRegistry;
 		r.putObject(ModelResourceLocations.forClass(BlockHighlight.class), new BlockHighlightSmartModel());
-		r.putObject(ModelResourceLocations.forClass(BlockPicked.class), new BlockPickedSmartModel());
-		r.putObject(ModelResourceLocations.forClass(BlockMaquette.class), new BlockMaquetteSmartModel());
+		// r.putObject(ModelResourceLocations.forClass(BlockMaquette.class), new BlockMaquetteSmartModel());
+		
+		// From MBE04 ModelBakeEventHandler:
+		// IBakedModel existingModel = (IBakedModel)object;
+		// CamouflageISmartBlockModelFactory customModel = new CamouflageISmartBlockModelFactory(existingModel);
+		// event.modelRegistry.putObject(CamouflageISmartBlockModelFactory.modelResourceLocation, customModel);
+		// From MBEO4 CamouflageISmartBlockModelFactory:
+		// public static final ModelResourceLocation modelResourceLocation = new ModelResourceLocation(
+		// "minecraftbyexample:mbe04_block_camouflage");
+		r.putObject(new ModelResourceLocation("mojo:block_maquette"), new BlockMaquetteSmartModel());
+		// r.putObject(new ModelResourceLocation("mojo:block_maquette", "inventory"), new BlockMaquetteSmartModel());
 
 		// Prepared in ClientProxy.registerItemModels
-		Object baseModel = event.modelRegistry.getObject(ModelResourceLocations.forClass(Staff.class));
+		IBakedModel baseModel = (IBakedModel) r.getObject(ModelResourceLocations.forClass(Staff.class));
 
-		r.putObject(ModelResourceLocations.forClass(StaffDraw.class), new StaffSmartModel((IBakedModel) baseModel));
-		r.putObject(ModelResourceLocations.forClass(StaffSelect.class), new StaffSmartModel((IBakedModel) baseModel));
-		r.putObject(ModelResourceLocations.forClass(StaffTransform.class), new StaffSmartModel((IBakedModel) baseModel));
-		r.putObject(ModelResourceLocations.forClass(StaffOak.class), new StaffSmartModel((IBakedModel) baseModel));
-		r.putObject(ModelResourceLocations.forClass(StaffBirch.class), new StaffSmartModel((IBakedModel) baseModel));
-		r.putObject(ModelResourceLocations.forClass(StaffAcacia.class), new StaffSmartModel((IBakedModel) baseModel));
+		r.putObject(ModelResourceLocations.forClass(StaffDraw.class), new StaffSmartModel(baseModel));
+		r.putObject(ModelResourceLocations.forClass(StaffSelect.class), new StaffSmartModel(baseModel));
+		r.putObject(ModelResourceLocations.forClass(StaffTransform.class), new StaffSmartModel(baseModel));
+		r.putObject(ModelResourceLocations.forClass(StaffOak.class), new StaffSmartModel(baseModel));
+		r.putObject(ModelResourceLocations.forClass(StaffBirch.class), new StaffSmartModel(baseModel));
+		r.putObject(ModelResourceLocations.forClass(StaffAcacia.class), new StaffSmartModel(baseModel));
 
 		// TODO This is not a smart model
 		// Try using a GeneratedModel for a spell

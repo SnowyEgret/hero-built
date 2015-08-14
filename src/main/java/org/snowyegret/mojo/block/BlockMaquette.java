@@ -167,7 +167,7 @@ public class BlockMaquette extends Block implements ITileEntityProvider, IOverla
 
 		// Expand
 		if (modifiers.isPressed(Modifier.CTRL)) {
-			// TODO
+			expand(worldIn, player, pos);
 			return true;
 		}
 
@@ -178,7 +178,6 @@ public class BlockMaquette extends Block implements ITileEntityProvider, IOverla
 
 		// Export
 		if (modifiers.isPressed(Modifier.ALT)) {
-			// TODO modifier to export
 			// Write tag to file
 			try {
 				// TODO if file exists
@@ -217,16 +216,20 @@ public class BlockMaquette extends Block implements ITileEntityProvider, IOverla
 			// BlockMaquetteTileEntity:readFromNBT has been called because stack has tag with key 'BlockEntityTag'
 			// Set in #getDrops
 			// See comment in #getDrops
-			BlockMaquetteTileEntity te = (BlockMaquetteTileEntity) world.getTileEntity(pos);
-			List<IUndoable> undoables = Lists.newArrayList();
-			for (Selection s : te.getSelections()) {
-				BlockPos p = s.getPos().subtract(te.getOrigin());
-				p = p.add(pos);
-				undoables.add(new UndoableSetBlock(p, world.getBlockState(p), s.getState()));
-			}
-			player.getTransactionManager().doTransaction(undoables);
+			expand(world, player, pos);
 		}
 
+	}
+
+	private void expand(World world, Player player, BlockPos pos) {
+		BlockMaquetteTileEntity te = (BlockMaquetteTileEntity) world.getTileEntity(pos);
+		List<IUndoable> undoables = Lists.newArrayList();
+		for (Selection s : te.getSelections()) {
+			BlockPos p = s.getPos().subtract(te.getOrigin());
+			p = p.add(pos);
+			undoables.add(new UndoableSetBlock(p, world.getBlockState(p), s.getState()));
+		}
+		player.getTransactionManager().doTransaction(undoables);
 	}
 
 	// If this returns null, super.getDrops in getDrops with get an empty list.

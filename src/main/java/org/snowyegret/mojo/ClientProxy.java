@@ -45,6 +45,7 @@ public class ClientProxy extends CommonProxy {
 		String name = StringUtils.underscoreNameFor(BlockMaquette.class);
 		Item item = GameRegistry.findItem(MoJo.MODID, name);
 		ModelResourceLocation mrl = new ModelResourceLocation(MoJo.MODID + ":" + name, "inventory");
+		//ModelResourceLocation mrl = new ModelResourceLocation(MoJo.MODID + ":" + name, "normal");
 		mesher.register(item, 0, mrl);
 
 		System.out.println("item=" + item);

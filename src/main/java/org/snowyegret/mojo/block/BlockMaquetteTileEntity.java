@@ -17,8 +17,6 @@ import com.google.common.collect.Lists;
 
 public class BlockMaquetteTileEntity extends TileEntity {
 
-	// See comment in #getDrops
-	//public static final String KEY_TAG = "BlockEntityTag";
 	public static final String KEY_SIZE = "size";
 	public static final String KEY_NAME = "name";
 	public static final String KEY_ORIGIN = "origin";
@@ -26,16 +24,6 @@ public class BlockMaquetteTileEntity extends TileEntity {
 	private String name;
 	private BlockPos origin;
 	private List<Selection> selections;
-
-	// private NBTTagCompound tag;
-	//
-	// public void setTag(NBTTagCompound tag) {
-	// this.tag = tag;
-	// }
-	//
-	// public NBTTagCompound getTag() {
-	// return tag;
-	// }
 
 	// We had to do this for PrevStateTileEntity
 	// @Override
