@@ -1,10 +1,13 @@
 package org.snowyegret.mojo.event;
 
+import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiIngameMenu;
 import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.IRegistry;
+import net.minecraft.world.World;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.ModelBakeEvent;
@@ -41,12 +44,24 @@ public class EventHandlerClient {
 	public static SelectionInfo selectionInfo = new SelectionInfo();
 	public static PickInfo pickInfo = new PickInfo();
 	public static Overlay overlay = new Overlay();
+	private BlockMaquette blockMaquetteUnderCursor;
 
 	// When the cursor falls on a new block update the overlay so that when it is rendered
 	// in onRenderGameOverlayEvent below it will show the distance from the first pick or selection.
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void onDrawBlockHightlight(DrawBlockHighlightEvent e) {
+
+		BlockPos cursorPos = e.target.getBlockPos();
+		if (cursorPos != null) {
+			Block b = Minecraft.getMinecraft().theWorld.getBlockState(cursorPos).getBlock();
+			if (b instanceof BlockMaquette) {
+				blockMaquetteUnderCursor = (BlockMaquette) b;
+			} else {
+				blockMaquetteUnderCursor = null;
+			}
+		}
+
 		Spell spell = new Player().getSpell();
 		if (spell != null) {
 			BlockPos pos = null;
@@ -61,12 +76,13 @@ public class EventHandlerClient {
 				}
 			}
 			if (pos != null) {
-				BlockPos p = e.target.getBlockPos();
-				if (p != null) {
-					overlay.setDisplacement(pos.subtract(p));
+				// BlockPos p = e.target.getBlockPos();
+				if (cursorPos != null) {
+					overlay.setDisplacement(pos.subtract(cursorPos));
 				}
 			}
 		}
+
 	}
 
 	// Draws information about the current spell to the overlay
@@ -79,6 +95,11 @@ public class EventHandlerClient {
 			IOverlayable overlayable = player.getHeldOverlayable();
 			if (overlayable != null) {
 				overlay.draw(overlayable, player);
+				return;
+			}
+
+			if (blockMaquetteUnderCursor != null) {
+				overlay.draw(blockMaquetteUnderCursor, player);
 			}
 		}
 	}
@@ -89,7 +110,7 @@ public class EventHandlerClient {
 		IRegistry r = event.modelRegistry;
 		r.putObject(ModelResourceLocations.forClass(BlockHighlight.class), new BlockHighlightSmartModel());
 		// r.putObject(ModelResourceLocations.forClass(BlockMaquette.class), new BlockMaquetteSmartModel());
-		
+
 		// From MBE04 ModelBakeEventHandler:
 		// IBakedModel existingModel = (IBakedModel)object;
 		// CamouflageISmartBlockModelFactory customModel = new CamouflageISmartBlockModelFactory(existingModel);

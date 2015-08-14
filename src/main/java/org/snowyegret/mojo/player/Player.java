@@ -291,7 +291,7 @@ public class Player {
 	}
 
 	public IOverlayable getHeldOverlayable() {
-				
+
 		Item item = getHeldItem();
 		if (item instanceof ItemBlock) {
 			Block b = ((ItemBlock) item).getBlock();
@@ -309,7 +309,7 @@ public class Player {
 		if (staff != null) {
 			return (IOverlayable) staff;
 		}
-		
+
 		return null;
 	}
 
