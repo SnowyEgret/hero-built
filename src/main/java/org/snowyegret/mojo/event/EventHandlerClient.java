@@ -107,21 +107,11 @@ public class EventHandlerClient {
 	// Put ISmartModels on model registry
 	@SubscribeEvent
 	public void onModelBake(ModelBakeEvent event) {
-		// event.modelRegistry.putObject(new ModelResourceLocation("mojo:block_maquette"), new
-		// BlockMaquetteSmartModel());
-		// event.modelRegistry.putObject(new ModelResourceLocation("mojo:block_maquette", "inventory"), new
-		// BlockMaquetteSmartModel());
 
 		IRegistry r = event.modelRegistry;
 		r.putObject(ModelResourceLocations.forClass(BlockHighlight.class), new BlockHighlightSmartModel());
 
-		// From MBE04 ModelBakeEventHandler:
-		// IBakedModel existingModel = (IBakedModel)object;
-		// CamouflageISmartBlockModelFactory customModel = new CamouflageISmartBlockModelFactory(existingModel);
-		// event.modelRegistry.putObject(CamouflageISmartBlockModelFactory.modelResourceLocation, customModel);
-		// From MBEO4 CamouflageISmartBlockModelFactory:
-		// public static final ModelResourceLocation modelResourceLocation = new ModelResourceLocation(
-		// "minecraftbyexample:mbe04_block_camouflage");
+		// http://www.minecraftforge.net/forum/index.php/topic,32900.0.html
 		BlockMaquetteSmartModel bmsm = new BlockMaquetteSmartModel();
 		r.putObject(new ModelResourceLocation("mojo:block_maquette"), bmsm);
 		r.putObject(new ModelResourceLocation("mojo:block_maquette", "inventory"), bmsm);

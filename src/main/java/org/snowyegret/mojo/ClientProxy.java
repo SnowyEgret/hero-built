@@ -63,12 +63,6 @@ public class ClientProxy extends CommonProxy {
 				return ModelResourceLocations.forClass(BlockHighlight.class);
 			}
 		});
-		// ModelLoader.setCustomStateMapper(MoJo.blockPicked, new StateMapperBase() {
-		// @Override
-		// protected ModelResourceLocation getModelResourceLocation(IBlockState iBlockState) {
-		// return ModelResourceLocations.forClass(BlockPicked.class);
-		// }
-		// });
 		ModelLoader.setCustomStateMapper(MoJo.blockMaquette, new StateMapperBase() {
 			@Override
 			protected ModelResourceLocation getModelResourceLocation(IBlockState iBlockState) {

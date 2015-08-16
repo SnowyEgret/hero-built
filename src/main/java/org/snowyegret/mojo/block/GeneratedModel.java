@@ -7,7 +7,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-import javax.vecmath.Point3d;
 import javax.vecmath.Point3i;
 
 import net.minecraft.block.state.IBlockState;
@@ -136,7 +135,8 @@ public class GeneratedModel implements IBakedModel {
 
 	@Override
 	public ItemCameraTransforms getItemCameraTransforms() {
-		return null;
+		return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes()
+				.getModelForState(Blocks.dirt.getDefaultState()).getItemCameraTransforms();
 	}
 
 	@Override

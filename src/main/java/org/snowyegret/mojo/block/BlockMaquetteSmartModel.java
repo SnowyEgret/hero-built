@@ -31,7 +31,7 @@ public class BlockMaquetteSmartModel implements ISmartBlockModel, ISmartItemMode
 		Iterable<Selection> selections = ((IExtendedBlockState) state).getValue(BlockMaquette.PROP_SELECTIONS);
 		EnumFacing facing = (EnumFacing) state.getValue(BlockMaquette.PROP_FACING);
 
-		generateQuads(name, selections, facing);
+		generateModel(name, selections, facing);
 		return this;
 	}
 
@@ -39,14 +39,14 @@ public class BlockMaquetteSmartModel implements ISmartBlockModel, ISmartItemMode
 	public IBakedModel handleItemState(ItemStack stack) {
 
 		BlockMaquetteTileEntity te = new BlockMaquetteTileEntity();
-		te.readFromNBT(stack.getTagCompound());
+		te.readFromNBT(stack.getTagCompound().getCompoundTag("BlockEntityTag"));
 
 		String name = te.getName();
 		Iterable<Selection> selections = te.getSelections();
-		//EnumFacing facing = te.getFacing();
+		// EnumFacing facing = te.getFacing();
 		EnumFacing facing = EnumFacing.NORTH;
 
-		generateQuads(name, selections, facing);
+		generateModel(name, selections, facing);
 		return this;
 	}
 
@@ -96,19 +96,19 @@ public class BlockMaquetteSmartModel implements ISmartBlockModel, ISmartItemMode
 	// TODO Model should be oriented in same direction as selections when first placed
 	// TODO Models should be deleted from cache when item is deleted or expires
 	// TODO Name must be unique when maquette is created or the other model for that name will be retrieved
-	private void generateQuads(String name, Iterable<Selection> selections, EnumFacing facing) {
-		
+	private void generateModel(String name, Iterable<Selection> selections, EnumFacing facing) {
+
 		if (selections == null || !selections.iterator().hasNext() || name == null || facing == null) {
 			System.out.println("selections=" + selections);
 			System.out.println("name=" + name);
 			System.out.println("facing=" + facing);
 			System.out.println("Returning a model with no quads.");
-			model =  new GeneratedModel();
+			model = new GeneratedModel();
 			return;
 		}
 
 		String n = name + "_" + facing.toString();
-		System.out.println("n=" + n);
+		//System.out.println("n=" + n);
 		if (!models.containsKey(n)) {
 			// if (!models.containsKey(name)) {
 			for (EnumFacing f : EnumFacing.HORIZONTALS) {
@@ -119,6 +119,5 @@ public class BlockMaquetteSmartModel implements ISmartBlockModel, ISmartItemMode
 		// Seems we can lookup a null string. Model will just have no quads
 		model = models.get(n);
 		// System.out.println("model=" + model);
-		//return this;
 	}
 }
