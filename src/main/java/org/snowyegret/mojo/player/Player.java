@@ -10,12 +10,15 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 import org.snowyegret.mojo.MoJo;
+import org.snowyegret.mojo.block.BlockMaquette;
+import org.snowyegret.mojo.block.BlockMaquetteTileEntity;
 import org.snowyegret.mojo.geom.EnumPlane;
 import org.snowyegret.mojo.gui.IOverlayable;
 import org.snowyegret.mojo.item.spell.Modifiers;
@@ -313,4 +316,36 @@ public class Player {
 		return null;
 	}
 
+	// Scans inventory to find a named maquette
+	// Used during import of maquettes from import folder
+	public BlockMaquette getMaquetteInInventory(String name) {
+		for (ItemStack stack : player.inventory.mainInventory) {
+			System.out.println("stack=" + stack);
+			if (stack != null) {
+				Item item = stack.getItem();
+				if (item instanceof ItemBlock) {
+					ItemBlock ib = (ItemBlock) item;
+					if (ib.getBlock() instanceof BlockMaquette) {
+						NBTTagCompound tag = stack.getTagCompound();
+						if (tag != null) {
+							tag = tag.getCompoundTag("BlockEntityTag");
+						}
+						if (tag != null) {
+							String n = tag.getString(BlockMaquetteTileEntity.KEY_NAME);
+							if (n != null) {
+								if (n.equals(name)) {
+									return (BlockMaquette) ib.getBlock();
+								}
+							} else {
+								System.out.println("Expected tag with key '" + BlockMaquetteTileEntity.KEY_NAME + "'");
+							}
+						} else {
+							System.out.println("Expected tag with key 'BlockEntityTag'");
+						}
+					}
+				}
+			}
+		}
+		return null;
+	}
 }

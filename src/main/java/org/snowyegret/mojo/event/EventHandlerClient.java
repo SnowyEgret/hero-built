@@ -107,9 +107,13 @@ public class EventHandlerClient {
 	// Put ISmartModels on model registry
 	@SubscribeEvent
 	public void onModelBake(ModelBakeEvent event) {
+		// event.modelRegistry.putObject(new ModelResourceLocation("mojo:block_maquette"), new
+		// BlockMaquetteSmartModel());
+		// event.modelRegistry.putObject(new ModelResourceLocation("mojo:block_maquette", "inventory"), new
+		// BlockMaquetteSmartModel());
+
 		IRegistry r = event.modelRegistry;
 		r.putObject(ModelResourceLocations.forClass(BlockHighlight.class), new BlockHighlightSmartModel());
-		// r.putObject(ModelResourceLocations.forClass(BlockMaquette.class), new BlockMaquetteSmartModel());
 
 		// From MBE04 ModelBakeEventHandler:
 		// IBakedModel existingModel = (IBakedModel)object;
@@ -118,8 +122,9 @@ public class EventHandlerClient {
 		// From MBEO4 CamouflageISmartBlockModelFactory:
 		// public static final ModelResourceLocation modelResourceLocation = new ModelResourceLocation(
 		// "minecraftbyexample:mbe04_block_camouflage");
-		r.putObject(new ModelResourceLocation("mojo:block_maquette"), new BlockMaquetteSmartModel());
-		// r.putObject(new ModelResourceLocation("mojo:block_maquette", "inventory"), new BlockMaquetteSmartModel());
+		BlockMaquetteSmartModel bmsm = new BlockMaquetteSmartModel();
+		r.putObject(new ModelResourceLocation("mojo:block_maquette"), bmsm);
+		r.putObject(new ModelResourceLocation("mojo:block_maquette", "inventory"), bmsm);
 
 		// Prepared in ClientProxy.registerItemModels
 		IBakedModel baseModel = (IBakedModel) r.getObject(ModelResourceLocations.forClass(Staff.class));

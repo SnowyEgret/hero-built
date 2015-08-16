@@ -143,7 +143,6 @@ public class EventHandlerServer {
 		}
 	}
 
-	
 	// Delete models from cache
 	@SubscribeEvent
 	public void onItemExpire(ItemExpireEvent event) {
@@ -191,7 +190,13 @@ public class EventHandlerServer {
 					System.out.println("Could not read file. e=" + e);
 					return;
 				}
-				System.out.println("tag=" + tag);
+				// System.out.println("tag=" + tag);
+
+				String name = tag.getString(BlockMaquetteTileEntity.KEY_NAME);
+				if (player.getMaquetteInInventory(name) != null) {
+					System.out.println("Player already has maquette in inventory. name="+name);
+					return;
+				}
 
 				ItemStack stack = new ItemStack(MoJo.blockMaquette);
 				// TODO Is this right?
@@ -200,15 +205,15 @@ public class EventHandlerServer {
 				stack.setTagCompound(t);
 				t.setTag("BlockEntityTag", tag);
 
-				//stack.setStackDisplayName(path.getFileName().toString());
-				stack.setStackDisplayName(tag.getString(BlockMaquetteTileEntity.KEY_NAME));
+				stack.setStackDisplayName(name);
 
 				boolean stackAdded = player.getPlayer().inventory.addItemStackToInventory(stack);
 				if (!stackAdded) {
 					System.out.println("No room in player's inventory.");
 					return;
 				}
-				System.out.println("inventory=" + player.getPlayer().inventory);
+				System.out.println("Imported maquette. name=" + name);
+				// System.out.println("inventory=" + player.getPlayer().inventory);
 
 				// TODO Delete file from import folder?
 				// Maybe leave it there and only add to inventory if it is not there
