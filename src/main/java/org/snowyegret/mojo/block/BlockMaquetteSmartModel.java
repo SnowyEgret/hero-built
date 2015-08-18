@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.IBakedModel;
@@ -38,8 +39,14 @@ public class BlockMaquetteSmartModel implements ISmartBlockModel, ISmartItemMode
 	@Override
 	public IBakedModel handleItemState(ItemStack stack) {
 
+		NBTTagCompound tag = stack.getTagCompound();
+		if (tag == null || tag.getCompoundTag("BlockEntityTag") == null) {
+			model = new GeneratedModel();
+			return this;
+		}
+		WorldRenderer a;
 		BlockMaquetteTileEntity te = new BlockMaquetteTileEntity();
-		te.readFromNBT(stack.getTagCompound().getCompoundTag("BlockEntityTag"));
+		te.readFromNBT(tag.getCompoundTag("BlockEntityTag"));
 
 		String name = te.getName();
 		Iterable<Selection> selections = te.getSelections();

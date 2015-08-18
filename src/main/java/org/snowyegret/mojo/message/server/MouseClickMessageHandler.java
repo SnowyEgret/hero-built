@@ -33,8 +33,8 @@ public class MouseClickMessageHandler implements IMessageHandler<MouseClickMessa
 
 	// Used by selectRecursive to terminate recursion
 	// Reinitialized every time selectRecursive is called
-	private int lastSize;
-	private static int MAX_NUM_SELECTIONS = 10000;
+	private int lastSize = 0;
+	private static int MAX_DOUBLECLICK_SELECTIONS = 9999;
 
 	@Override
 	public IMessage onMessage(final MouseClickMessage message, MessageContext ctx) {
@@ -51,7 +51,7 @@ public class MouseClickMessageHandler implements IMessageHandler<MouseClickMessa
 	// Private------------------------------------------------------------
 
 	private void processMessage(MouseClickMessage message, EntityPlayerMP playerIn) {
-		//System.out.println("message=" + message);
+		// System.out.println("message=" + message);
 		Player player = new Player(playerIn);
 		SelectionManager selectionManager = player.getSelectionManager();
 		MovingObjectType typeOfHit = message.getTypeOfHit();
@@ -87,26 +87,28 @@ public class MouseClickMessageHandler implements IMessageHandler<MouseClickMessa
 
 		if (isDoubleClick) {
 			lastSize = 0;
-			Block block = player.getWorld().getBlock(pos);
-			if (block instanceof BlockHighlight) {
+			Block blockToMatch = player.getWorld().getBlock(pos);
+			if (blockToMatch instanceof BlockHighlight) {
 				BlockHightlightTileEntity te = (BlockHightlightTileEntity) player.getWorld().getTileEntity(pos);
-				block = te.getPrevState().getBlock();
+				blockToMatch = te.getPrevState().getBlock();
 				// block = sm.getSelection(pos).getState().getBlock();
 			} else {
-				System.out.println("Expected a BlockSelected");
+				System.out.println("Expected a BlockHighlight");
 				return;
 			}
 			// TODO use isOnEdge(side) when ready
 			// FIXME IsOnExteriorEdge is selecting a double row
 			ICondition condition = null;
-			if (new IsOnExteriorEdge().apply(player.getWorld(), pos, null)) {
+			boolean isOnEdge = new IsOnExteriorEdge().apply(player.getWorld(), pos, null);
+			if (isOnEdge) {
 				condition = new IsOnExteriorEdge();
 			}
 			List<BlockPos> positions = Lists.newArrayList();
-			// Must put pos in list!
-			List<BlockPos> newPositions = Lists.newArrayList(pos);
-			selectRecursive(positions, newPositions, player.getWorld(), block, condition);
+			// Must put pos in new positions list!
+			//selectRecursive(positions, Lists.newArrayList(pos), player.getWorld(), blockToMatch, condition, player);
+			selectRecursive(positions, Sets.newHashSet(pos), player.getWorld(), blockToMatch, condition, player);
 			// System.out.println("size=" + positions.size());
+			System.out.println("postitions="+positions.size());
 			sm.select(positions);
 			return;
 		}
@@ -154,14 +156,21 @@ public class MouseClickMessageHandler implements IMessageHandler<MouseClickMessa
 		sm.select(pos);
 	}
 
-	private void selectRecursive(List<BlockPos> positions, List<BlockPos> newPositions, IWorld world, Block block, ICondition condition) {
-		List<BlockPos> newNewPositions = Lists.newArrayList();
+	private void selectRecursive(List<BlockPos> positions, Set<BlockPos> newPositions, IWorld world, Block blockToMatch, ICondition condition, Player player) {
+
+		Block blockUnderFoot = world.getBlock(player.getPosition().down());
+		//System.out.println("blockUnderFoot=" + blockUnderFoot);
+
+		//List<BlockPos> newNewPositions = Lists.newArrayList();
+		Set<BlockPos> newNewPositions = Sets.newHashSet();
 		for (BlockPos pos : newPositions) {
 			for (BlockPos p : Select.ALL_NO_CORNERS) {
 				p = p.add(pos);
 				Block b = world.getBlock(p);
-				if (b == block) {
-					if (!positions.contains(p)) {
+				// TODO modifier to select blockToMatch or blockUnderFoot
+				// if (b == blockToMatch) {
+				if (b != blockUnderFoot) {
+					//if (!positions.contains(p)) {
 						if (condition != null) {
 							if (condition.apply(world, pos, null)) {
 								positions.add(p);
@@ -171,15 +180,15 @@ public class MouseClickMessageHandler implements IMessageHandler<MouseClickMessa
 							positions.add(p);
 							newNewPositions.add(p);
 						}
-					}
+					//}
 				}
 			}
 		}
 		newPositions = newNewPositions;
 		int size = positions.size();
-		if (size < MAX_NUM_SELECTIONS && size > lastSize) {
+		if (size < MAX_DOUBLECLICK_SELECTIONS && size > lastSize) {
 			lastSize = size;
-			selectRecursive(positions, newPositions, world, block, condition);
+			selectRecursive(positions, newPositions, world, blockToMatch, condition, player);
 		}
 	}
 
